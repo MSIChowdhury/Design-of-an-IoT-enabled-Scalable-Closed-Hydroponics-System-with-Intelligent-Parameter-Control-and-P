@@ -1,5 +1,5 @@
 #include <SoftwareSerial.h>                           //we have to include the SoftwareSerial library, or else we can't use it
-#define rx 2                                          //define what pin rx is going to be
+#define rx 4                                          //define what pin rx is going to be
 #define tx 3                                          //define what pin tx is going to be
  
 SoftwareSerial myserial(rx, tx);                      //define how the soft serial port is going to work
@@ -28,6 +28,8 @@ void serialEvent()
  
 void loop()
 {
+
+while(sensor_string_complete == false){
   if (input_string_complete == true)                  //if a string from the PC has been received in its entirety
   {
     myserial.print(inputstring);                      //send that string to the Atlas Scientific product
@@ -45,7 +47,7 @@ void loop()
       sensor_string_complete = true;                  //set the flag
     }
   }
- 
+}
   if (sensor_string_complete == true)                 //if a string from the Atlas Scientific product has been received in its entirety
   {
     Serial.println(sensorstring);                     //send that string to the PC's serial monitor

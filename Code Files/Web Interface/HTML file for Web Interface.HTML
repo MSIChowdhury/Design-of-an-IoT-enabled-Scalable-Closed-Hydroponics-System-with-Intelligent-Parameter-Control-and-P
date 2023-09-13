@@ -2,48 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Real-Time Spreadsheet Updates</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheet Data</title>
 </head>
 <body>
-    <h1>Spreadsheet Data</h1>
+    <h1>Google Sheet Data</h1>
     <table>
         <thead>
             <tr>
-                <th>Value 1</th>
-                <th>Value 2</th>
-                <!-- Add more table headers for additional columns -->
+                <th>Column1</th>
+                <th>Column2</th>
+                <!-- Add headers for other columns -->
             </tr>
         </thead>
-        <tbody id="data-table">
+        <tbody>
             {% for row in data %}
-                <tr>
-                    <td>{{ row['value1'] }}</td>
-                    <td>{{ row['value2'] }}</td>
-                    <!-- Add more table cells for additional columns -->
-                </tr>
+            <tr>
+                <td>{{ row['Column1'] }}</td>
+                <td>{{ row['Column2'] }}</td>
+                <!-- Add cells for other columns -->
+            </tr>
             {% endfor %}
         </tbody>
     </table>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
-    <script>
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-
-        socket.on('update_data', function(data) {
-            // Update the table with new data when received
-            var tableBody = document.getElementById('data-table');
-            tableBody.innerHTML = '';
-
-            data.forEach(function(row) {
-                var newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td>${row['value1']}</td>
-                    <td>${row['value2']}</td>
-                    <!-- Add more cells for additional columns -->
-                `;
-                tableBody.appendChild(newRow);
-            });
-        });
-    </script>
 </body>
 </html>
