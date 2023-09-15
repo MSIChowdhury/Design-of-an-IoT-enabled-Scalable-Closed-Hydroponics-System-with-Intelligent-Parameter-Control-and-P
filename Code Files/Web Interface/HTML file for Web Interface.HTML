@@ -3,27 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Sheet Data</title>
+    <title>Web Interface for the Automated Hydroponics System</title>
 </head>
 <body>
-    <h1>Google Sheet Data</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Column1</th>
-                <th>Column2</th>
-                <!-- Add headers for other columns -->
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in data %}
-            <tr>
-                <td>{{ row['Column1'] }}</td>
-                <td>{{ row['Column2'] }}</td>
-                <!-- Add cells for other columns -->
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <header>
+        <h1>Web Interface for the Automated Hydroponics System</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#section1">Section 1</a></li>
+            <li><a href="#section2">Section 2</a></li>
+            <!-- Add more navigation links as needed -->
+        </ul>
+    </nav>
+
+    <section id="section1">
+        <h2>Visualizations</h2>
+        <!-- Embed ThingSpeak visualizations here using iframes -->
+        <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2271152/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+        <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2271152/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+        <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2271152/charts/4?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+        <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2271152/charts/5?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+        <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2271152/charts/6?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+        <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2271152/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Electrical+Conductivity&type=line&xaxis=Time&yaxis=Electrical+Conductivity"></iframe>
+
+    </section>
+
+    <section id="section2">
+        <h2>Updated Values</h2>
+        <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2271152/widgets/708232"></iframe>
+
+    </section>
+
+    <!-- Add more sections and content as needed -->
+
+    <footer>
+        <p>&copy; 2023 Your Website Name</p>
+    </footer>
 </body>
 </html>
