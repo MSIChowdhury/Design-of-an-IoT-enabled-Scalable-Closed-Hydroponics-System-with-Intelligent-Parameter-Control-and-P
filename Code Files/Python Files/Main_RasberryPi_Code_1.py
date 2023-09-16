@@ -1,38 +1,10 @@
+import gspread
 import serial
 import time
 from serial.tools import list_ports
-import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 import thingspeak
-
-
-
-#For Updating in Google Sheet
-channel_id = '2271152'
-write_key = 'JO2OUEE6JT9J6OIV'
-
-# Set your credentials JSON file path and Google Sheet name
-CREDENTIALS_FILE = 'automated-hydroponics-data-40ded0143ddf.json'
-SPREADSHEET_NAME = 'Test'
-WORKSHEET_NAME = 'Sheet1'
-
-# Authenticate using the JSON file
-scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name(CREDENTIALS_FILE, scope)
-client = gspread.authorize(creds)
-
-# Open the spreadsheet
-spreadsheet = client.open(SPREADSHEET_NAME)
-
-# Select the specific worksheet by name
-worksheet = spreadsheet.worksheet(WORKSHEET_NAME)
-
-
-
-ports = list_ports.comports()
-for port in ports:
-    print(port)
 
 #All Actuator Pin Numbers
 acid_motor = "22"
@@ -69,12 +41,33 @@ LighSwitchOnDuration = 60 #64800
 LightSwitchOffDuration = 60 #7200
 
 
-#Serial Communication classes
-#actuation = serial.Serial("/dev/ttyACM1", 9600)
-#serialCom = serial.Serial("/dev/ttyACM0",9600)
+channel_id = '2271152'
+write_key = 'JO2OUEE6JT9J6OIV'
 
-actuation = serial.Serial("COM5", 9600)
-serialCom = serial.Serial("COM7",9600)
+# Set your credentials JSON file path and Google Sheet name
+CREDENTIALS_FILE = 'automated-hydroponics-data-40ded0143ddf.json'
+SPREADSHEET_NAME = 'Test'
+WORKSHEET_NAME = 'Sheet1'
+
+# Authenticate using the JSON file
+scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+creds = ServiceAccountCredentials.from_json_keyfile_name(CREDENTIALS_FILE, scope)
+client = gspread.authorize(creds)
+
+# Open the spreadsheet
+spreadsheet = client.open(SPREADSHEET_NAME)
+
+# Select the specific worksheet by name
+worksheet = spreadsheet.worksheet(WORKSHEET_NAME)
+
+ports = list_ports.comports()
+for port in ports:
+    print("Port: ")
+    print(port)
+
+# serialCom = serial.Serial("/dev/ttyACM0",9600)
+serialCom = serial.Serial("COM7", 9600)
+actuation = serial.Serial('COM5', 9600)
 
 actuation.setDTR(False)
 time.sleep(1)
@@ -86,42 +79,39 @@ time.sleep(1)
 serialCom.flushInput()
 serialCom.setDTR(True)
 
-pH = 4
-time.sleep(1)
-
-#Some Initializations
-actuation.write((light_switch + ON).encode())
-LightSwitchDay = True
-LightSwitchOnTime = time.time()
 received_data = []
 
-while(1):
-
+while (1):
     try:
-        #Read a line of data
+        # Read a line of data
         current_time = datetime.datetime.now().strftime("%H:%M:%S")
         s_bytes = serialCom.readline()
         decoded_bytes = s_bytes.decode("utf-8").strip("\n\r")
 
         lines = decoded_bytes.split(',')
 
-        #Timestamp = float(lines[0])/1000
+        # Timestamp = float(lines[0])/1000
         EC = float(lines[0])
         pH = float(lines[1])
-        humidity = float(lines[2])
-        air_temperature = float(lines[3])
-        water_temperature = float(lines[4])
-        distance = float(lines[5])
+        Humidity = float(lines[2])
+        Air_temperature = float(lines[3])
+        Water_temperature = float(lines[4])
+        Distance = float(lines[5])
         print("Current time:", current_time)
         send_time = str(current_time)
-        data_to_send = [send_time, EC, pH, Humidity, Air_temperature, Water_temperature, Distance]  # Send EC to the Google Sheet
+        data_to_send = [send_time, EC, pH, Humidity, Air_temperature, Water_temperature,
+                        Distance]  # Send EC to the Google Sheet
         worksheet.append_row(data_to_send)
         channel = thingspeak.Channel(id=channel_id, api_key=write_key)
-        response = channel.update({'field1': EC, 'field2': pH, 'field3': Humidity, 'field4': Air_temperature, 'field5': Water_temperature, 'field6': Distance,})
-        
+        response = channel.update(
+            {'field1': EC, 'field2': pH, 'field3': Humidity, 'field4': Air_temperature, 'field5': Water_temperature,
+             'field6': Distance, })
+
 
     except:
         print("ERROR! There was an error in the code!")
+
+
 
 # #pH Control Unit
 #     if pHCheck == False:
@@ -217,8 +207,9 @@ while(1):
 #         actuation.write((water_temperature_motor + OFF).encode())
 #
 
-# # Air Cooler Control Unit
-#     if air_temperature > 22:
-#         actuation.write((air_temperature_motor + ON).encode())
-#     if air_temperature <= 22:
-#         actuation.write((air_temperature_motor + OFF).encode())
+    air_temperature = int(input("Enter: "))
+# Air Cooler Control Unit
+    if air_temperature > 22:
+        actuation.write((air_temperature_motor + ON).encode())
+    if air_temperature <= 22:
+        actuation.write((air_temperature_motor + OFF).encode())
