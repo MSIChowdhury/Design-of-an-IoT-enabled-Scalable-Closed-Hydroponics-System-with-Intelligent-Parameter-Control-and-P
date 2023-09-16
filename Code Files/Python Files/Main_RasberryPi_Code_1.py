@@ -25,8 +25,8 @@ OFF = ",1"
 pHCheck = True
 pHAcidOnFlag = False
 pHBaseOnFlag = False
-pHPumpDuration = 2.0
-pHCheckInterval = 2.0
+pHPumpDuration = 5.0
+pHCheckInterval = 180.0
 
 #All EC Flags
 ECCheck = True
@@ -34,7 +34,7 @@ ECAOnFlag = False
 ECBOnFlag = False
 ECAPumpDuration = 4.0
 ECBPumpDuration = 2.0
-ECCheckInterval = 5.0
+ECCheckInterval = 180.0
 
 #Light Cycle Flags
 LighSwitchOnDuration = 60 #64800
@@ -138,13 +138,13 @@ while (1):
             if pHAcidOnFlag == False:
                 pHAcidOnTime = time.time()
                 actuation.write((acid_motor + ON).encode())
-                print("!!! ACID PUMP IS ON !!!")
+                # print("!!! ACID PUMP IS ON !!!")
                 pHAcidOnFlag = True
 
         if pHAcidOnFlag == True :
             if(time.time() - pHAcidOnTime >= pHPumpDuration):
                 actuation.write((acid_motor + OFF).encode())
-                print("!!! ACID PUMP IS OFF !!!")
+                # print("!!! ACID PUMP IS OFF !!!")
                 previousPHCheckTime = time.time()
                 pHCheck = False
                 pHAcidOnFlag = False
@@ -154,13 +154,13 @@ while (1):
             if pHBaseOnFlag == False:
                 pHBaseOnTime = time.time()
                 actuation.write((base_motor + ON).encode())
-                print("!!! BASE PUMP IS ON !!!")
+                # print("!!! BASE PUMP IS ON !!!")
                 pHBaseOnFlag = True
 
         if pHBaseOnFlag == True:
             if (time.time() - pHBaseOnTime >= pHPumpDuration):
                 actuation.write((base_motor + OFF).encode())
-                print("!!! BASE PUMP IS OFF !!!")
+                # print("!!! BASE PUMP IS OFF !!!")
                 previousPHCheckTime = time.time()
                 pHCheck = False
                 pHBaseOnFlag = False
@@ -181,19 +181,19 @@ while (1):
                 ECBOnTime = time.time()
                 actuation.write((nutrient_a_motor + ON).encode())
                 actuation.write((nutrient_b_motor + ON).encode())
-                print("!!! NUTRIENT A PUMP IS ON !!!")
-                print("!!! NUTRIENT B PUMP IS ON !!!")
+                # print("!!! NUTRIENT A PUMP IS ON !!!")
+                # print("!!! NUTRIENT B PUMP IS ON !!!")
                 ECAOnFlag = True
                 ECBOnFlag = True
 
         if ECAOnFlag == True :
             if(time.time() - ECBOnTime >= ECBPumpDuration) and ECBOnFlag == True:
                 actuation.write((nutrient_b_motor + OFF).encode())
-                print("!!! NUTRIENT B PUMP IS OFF !!!")
+                # print("!!! NUTRIENT B PUMP IS OFF !!!")
                 ECBOnFlag = False
             if(time.time() - ECAOnTime >= ECAPumpDuration):
                 actuation.write((nutrient_a_motor + OFF).encode())
-                print("!!! NUTRIENT A PUMP IS OFF !!!")
+                # print("!!! NUTRIENT A PUMP IS OFF !!!")
                 previousECCheckTime = time.time()
                 ECCheck = False
                 ECAOnFlag = False
@@ -203,31 +203,31 @@ while (1):
     if LightSwitchDay == False:
         if (time.time() - LightSwitchOffTime >= LightSwitchOffDuration):
             actuation.write((light_switch + ON).encode())
-            print("!!! LIGHTS ARE ON. GOOD MORNING !!!")
+            # print("!!! LIGHTS ARE ON. GOOD MORNING !!!")
             LightSwitchOnTime = time.time()
             LightSwitchDay = True
 
     if LightSwitchDay == True:
         if (time.time() - LightSwitchOnTime >= LighSwitchOnDuration):
             actuation.write((light_switch + OFF).encode())
-            print("!!! LIGHTS ARE OFF. GOOD NIGHT !!!")
+            # print("!!! LIGHTS ARE OFF. GOOD NIGHT !!!")
             LightSwitchOffTime = time.time()
             LightSwitchDay = False
 
 # Water Cooler Control Unit
     if Water_temperature > 22:
         actuation.write((water_temperature_motor + ON).encode())
-        print("!!! WATER COOLER IS ON !!!")
+        # print("!!! WATER COOLER IS ON !!!")
     if Water_temperature <= 22:
         actuation.write((water_temperature_motor + OFF).encode())
-        print("!!! WATER COOLER IS OFF !!!")
+        # print("!!! WATER COOLER IS OFF !!!")
 
 
 # Air Cooler Control Unit
     if Air_temperature > 60:
         actuation.write((air_temperature_motor + ON).encode())
-        print("!!! AIR COOLER IS ON !!!")
+        # print("!!! AIR COOLER IS ON !!!")
     if Air_temperature <= 60:
         actuation.write((air_temperature_motor + OFF).encode())
-        print("!!! AIR COOLER IS OFF !!!")
+        # print("!!! AIR COOLER IS OFF !!!")
 
