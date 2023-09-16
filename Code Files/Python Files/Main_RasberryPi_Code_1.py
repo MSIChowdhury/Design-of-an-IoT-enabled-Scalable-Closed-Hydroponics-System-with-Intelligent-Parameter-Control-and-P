@@ -91,7 +91,7 @@ def printSensor():
     print("EC: ", EC, " microSiemens/m")
     print("Water Temperature: ", Water_temperature, " Celsius")
     print("Air Temperature: ", Air_temperature, " Celsius")
-    print("Humidity: ", EC, "%")
+    print("Humidity: ", Humidity, "%")
     print()
 
 
