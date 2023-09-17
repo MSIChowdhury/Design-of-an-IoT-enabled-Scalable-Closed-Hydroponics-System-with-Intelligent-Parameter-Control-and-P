@@ -7,13 +7,13 @@ import datetime
 import thingspeak
 
 #All Actuator Pin Numbers
-acid_motor = "22"
+acid_motor = "13"
 base_motor = "23"
 nutrient_a_motor = "24"
 nutrient_b_motor = "25"
 distilled_water_motor = "26"
 
-air_temperature_motor = "13"
+air_temperature_motor = "40"
 water_temperature_motor = "41"
 light_switch = "42"
 
@@ -119,7 +119,7 @@ while (1):
         print("ERROR! There was an error in the code!")
 
 
-
+    pH = 7
 #pH Control Unit
     if pHCheck == False:
         if(time.time() - previousPHCheckTime >= pHCheckInterval):
