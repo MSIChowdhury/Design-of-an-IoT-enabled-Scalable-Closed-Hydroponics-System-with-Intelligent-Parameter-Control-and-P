@@ -167,13 +167,12 @@ void loop() {
   EC = 1023;
   pH = 7.05;
   humidity = 90;
-  air_temperature = 30;
-  water_temperature = 25;
+  air_temperature = 30.0;
+  water_temperature = 25.0;
   distance = 10;
-  Test_EC = Test_EC + 1;
 
-  
-  Serial.print(Test_EC);
+ 
+  Serial.print(EC);
   Serial.print(",");
   Serial.print(pH);
   Serial.print(",");
