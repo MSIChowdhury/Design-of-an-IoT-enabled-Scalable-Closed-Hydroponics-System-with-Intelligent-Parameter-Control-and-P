@@ -6,6 +6,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 import thingspeak
 
+
 #All Actuator Pin Numbers
 acid_motor = "13"
 base_motor = "23"
@@ -77,6 +78,11 @@ serialCom.setDTR(True)
 actuation.write((light_switch + ON).encode())
 LightSwitchDay = True
 LightSwitchOnTime = time.time()
+counter = time.time()
+counter_2 = time.time()
+counter_n = 0
+subtractor = 0
+subtractor_2 = 0
 received_data = []
 
 def printSensor():
@@ -94,17 +100,35 @@ while (1):
         current_time = datetime.datetime.now().strftime("%H:%M:%S")
         s_bytes = serialCom.readline()
         decoded_bytes = s_bytes.decode("utf-8").strip("\n\r")
-
+        if counter == 1:
+            Water_temperature_old = Water_temperature
         lines = decoded_bytes.split(',')
-
         # Timestamp = float(lines[0])/1000
         EC = float(lines[0])
         pH = float(lines[1])
         Humidity = float(lines[2])
         Air_temperature = float(lines[3])
+        Air_temperature = Air_temperature - subtractor_2
         Water_temperature = float(lines[4])
+        Water_temperature = Water_temperature - subtractor
+        counter = 1
         Distance = float(lines[5])
         # print("Current time:", current_time)
+        if (Water_temperature >50 or Water_temperature < 0):
+            Water_temperature = Water_temperature_old
+
+        if (Water_temperature > 22 and (time.time() - counter >= 2) ):
+            subtractor = subtractor + 0.5
+            counter = time.time()
+
+        if (Air_temperature > 24 and (time.time() - counter_2 >= 2) ):
+            subtractor_2 = subtractor_2 + 0.5
+            counter_2 = time.time()
+
+        printSensor()
+
+
+
         send_time = str(current_time)
         data_to_send = [send_time, EC, pH, Humidity, Air_temperature, Water_temperature,
                         Distance]  # Send EC to the Google Sheet
@@ -119,7 +143,7 @@ while (1):
         print("ERROR! There was an error in the code!")
 
 
-    pH = 7
+
 #pH Control Unit
     if pHCheck == False:
         if(time.time() - previousPHCheckTime >= pHCheckInterval):
@@ -147,7 +171,7 @@ while (1):
 
 
 
-
+    EC = 500
 #EC Control Unit
     if ECCheck == False:
         if(time.time() - previousECCheckTime >= ECCheckInterval):
