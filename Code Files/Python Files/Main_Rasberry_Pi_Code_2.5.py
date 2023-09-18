@@ -81,6 +81,7 @@ LightSwitchOnTime = time.time()
 counter = time.time()
 counter_2 = time.time()
 counter_n = 0
+counter_start = 0
 subtractor = 0
 subtractor_2 = 0
 received_data = []
@@ -100,7 +101,7 @@ while (1):
         current_time = datetime.datetime.now().strftime("%H:%M:%S")
         s_bytes = serialCom.readline()
         decoded_bytes = s_bytes.decode("utf-8").strip("\n\r")
-        if counter == 1:
+        if counter_n == 1:
             Water_temperature_old = Water_temperature
         lines = decoded_bytes.split(',')
         # Timestamp = float(lines[0])/1000
@@ -111,23 +112,28 @@ while (1):
         Air_temperature = Air_temperature - subtractor_2
         Water_temperature = float(lines[4])
         Water_temperature = Water_temperature - subtractor
-        counter = 1
+        counter_n = 1
         Distance = float(lines[5])
         # print("Current time:", current_time)
+
         if (Water_temperature >50 or Water_temperature < 0):
             Water_temperature = Water_temperature_old
 
-        if (Water_temperature > 22 and (time.time() - counter >= 2) ):
-            subtractor = subtractor + 0.5
+        if (Water_temperature > 22 and (time.time() - counter >= 20) ):
+            subtractor = subtractor + 0.05
             counter = time.time()
 
-        if (Air_temperature > 24 and (time.time() - counter_2 >= 2) ):
-            subtractor_2 = subtractor_2 + 0.5
+        if (Air_temperature > 24 and (time.time() - counter_2 >= 20) ):
+            subtractor_2 = subtractor_2 + 0.05
             counter_2 = time.time()
 
         if pH < 4 or pH > 14:
             pH = 7.0
         printSensor()
+
+        if counter_start == 0:
+            start = input("Enter to start Actuation: ")
+            counter_start = 1
 
 
 
