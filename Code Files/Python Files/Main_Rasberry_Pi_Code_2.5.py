@@ -125,6 +125,8 @@ while (1):
             subtractor_2 = subtractor_2 + 0.5
             counter_2 = time.time()
 
+        if pH < 4 or pH > 14:
+            pH = 7.0
         printSensor()
 
 

@@ -55,6 +55,7 @@ float waterLevel;
 float groundLevel= 13;
 //
 
+int count_flag = 0;
 
 
 void setup()
@@ -83,55 +84,55 @@ void serialEvent() {                                  //if the hardware serial p
 
 void loop() {
 
-////PH
-//while(sensor_string_complete == false){
-//  if (myserial.available() > 0) {                     //if we see that the Atlas Scientific product has sent a character
-//    char inchar = (char)myserial.read();              //get the char we just received
-//    sensorstring += inchar;                           //add the char to the var called sensorstring
-//    if (inchar == '\r') {                             //if the incoming character is a <CR>
-//      sensor_string_complete = true;                  //set the flag
-//    }
-//  }
-//}
-//
-//  if (sensor_string_complete == true) {               //if a string from the Atlas Scientific product has been received in its entirety
-////    Serial.println(sensorstring);                     //send that string to the PC's serial monitor
-//    
-//                                              //uncomment this section to see how to convert the pH reading from a string to a float 
-//    if (isdigit(sensorstring[0])) {                   //if the first character in the string is a digit
-//      pH = sensorstring.toFloat();                    //convert the string to a floating point number so it can be evaluated by the Arduino
-//    }
-//
-//    sensorstring = "";                                //clear the string
-//    sensor_string_complete = false;                   //reset the flag used to tell if we have received a completed string from the Atlas Scientific product
-//  }
-//
-//// PH
+//PH
+while(sensor_string_complete == false){
+  if (myserial.available() > 0) {                     //if we see that the Atlas Scientific product has sent a character
+    char inchar = (char)myserial.read();              //get the char we just received
+    sensorstring += inchar;                           //add the char to the var called sensorstring
+    if (inchar == '\r') {                             //if the incoming character is a <CR>
+      sensor_string_complete = true;                  //set the flag
+    }
+  }
+}
+
+  if (sensor_string_complete == true) {               //if a string from the Atlas Scientific product has been received in its entirety
+//    Serial.println(sensorstring);                     //send that string to the PC's serial monitor
+    
+                                              //uncomment this section to see how to convert the pH reading from a string to a float 
+    if (isdigit(sensorstring[0])) {                   //if the first character in the string is a digit
+      pH = sensorstring.toFloat();                    //convert the string to a floating point number so it can be evaluated by the Arduino
+    }
+
+    sensorstring = "";                                //clear the string
+    sensor_string_complete = false;                   //reset the flag used to tell if we have received a completed string from the Atlas Scientific product
+  }
+
+// PH
 
 
+
+//EC
+    Wire.beginTransmission(address);                                            //call the circuit by its ID number.
+    Wire.write("r");                                                   //transmit the command that was sent through the serial port.
+    Wire.endTransmission();                                                     //end the I2C data transmission.
+
+    delay(570);                                                             //wait the correct amount of time for the circuit to complete its instruction.
+    Wire.requestFrom(address, 32, 1);                                         //call the circuit and request 32 bytes (this could be too small, but it is the max i2c buffer size for an Arduino)
+    code = Wire.read();                                                       //the first byte is the response code, we read this separately.
+
+    while (Wire.available()) {                 //are there bytes to receive.
+      in_char = Wire.read();                   //receive a byte.
+      ec_data[i] = in_char;                    //load this byte into our array.
+      i += 1;                                  //incur the counter for the array element.
+      if (in_char == 0) {                      //if we see that we have been sent a null command.
+        i = 0;                                 //reset the counter i to 0.
+        break;                                 //exit the while loop.
+      }
+    }
+    
+    EC=atof(ec_data);
 
 ////EC
-//    Wire.beginTransmission(address);                                            //call the circuit by its ID number.
-//    Wire.write("r");                                                   //transmit the command that was sent through the serial port.
-//    Wire.endTransmission();                                                     //end the I2C data transmission.
-//
-//    delay(570);                                                             //wait the correct amount of time for the circuit to complete its instruction.
-//    Wire.requestFrom(address, 32, 1);                                         //call the circuit and request 32 bytes (this could be too small, but it is the max i2c buffer size for an Arduino)
-//    code = Wire.read();                                                       //the first byte is the response code, we read this separately.
-//
-//    while (Wire.available()) {                 //are there bytes to receive.
-//      in_char = Wire.read();                   //receive a byte.
-//      ec_data[i] = in_char;                    //load this byte into our array.
-//      i += 1;                                  //incur the counter for the array element.
-//      if (in_char == 0) {                      //if we see that we have been sent a null command.
-//        i = 0;                                 //reset the counter i to 0.
-//        break;                                 //exit the while loop.
-//      }
-//    }
-//    
-//    EC=atof(ec_data);
-//
-//////EC
 
 
   //This Section measures air temperature and humidity start
@@ -164,14 +165,17 @@ void loop() {
   
   //Ultrasonic Sensor END
 
-  EC = 1023;
-  pH = 7.05;
-  humidity = 90;
-  air_temperature = 30.0;
-  water_temperature = 25.0;
-  distance = 10;
+//  EC = 1023;
+//  pH = 7.05;
+//  humidity = 90;
+//  air_temperature = 30.0;
+//  water_temperature = 25.0;
+//  distance = 10;
 
- 
+  if(count_flag = 0){
+    delay(1000);
+    count_flag = 1;
+  }
   Serial.print(EC);
   Serial.print(",");
   Serial.print(pH);
@@ -186,7 +190,7 @@ void loop() {
   Serial.print(water_temperature);
   Serial.print(",");
   
-  Serial.print(distance);
+  Serial.print(waterLevel);
   Serial.println();
 
  
