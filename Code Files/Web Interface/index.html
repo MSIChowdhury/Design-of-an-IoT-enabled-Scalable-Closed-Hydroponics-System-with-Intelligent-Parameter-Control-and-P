@@ -131,5 +131,23 @@
         // Initial call to display current time
         displayCurrentTime();
     </script>
+        <form id="command-form">
+        <input type="text" name="command" placeholder="Enter a command">
+        <button type="submit">Send Command</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#command-form').submit(function(e) {
+                e.preventDefault();
+                var command = $('input[name="command"]').val();
+                $.post('http://192.168.1.20:5000/send_command', { command: command }, function(response) {
+                    console.log(response);
+                    // Handle the response as needed
+                });
+            });
+        });
+    </script>
 </body>
 </html>
