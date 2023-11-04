@@ -1,4 +1,5 @@
 import requests
+from flask import Flask, render_template, request
 
 # Replace 'YOUR_API_KEY' with your ThingSpeak API key
 api_key = 'A64SDPA5T2NT2M40'
@@ -61,10 +62,10 @@ while True:
         'field7': sensor7_value,
     }
 
-    response = requests.get(base_url, params=sensor_data)
+    channel = thingspeak.Channel(id=channel_id, api_key=write_key)
+    response = channel.update({'field1': EC, 'field2': pH, 'field3': Humidity, 'field4': A_Temp, 'field5': W_Temp, 'field6': Water_Level, 'field7': CO2})
+        
 
-    if response.status_code == 200:
-        print(f"Variable 1: {pH}, Variable 2: {EC}, Variable 3: {A_Temp}, Variable 4: {W_Temp}, Variable 5: {Humidity}, Variable 6: {Water_Level}, Variable 7: {CO2}")
-    else:
-        print('Failed to send data to ThingSpeak')
+    # except:
+    #     print("There was an error in the core or in sending the data")
 
