@@ -34,7 +34,7 @@ ECAOnFlag = False
 ECBOnFlag = False
 ECAPumpDuration = 4.0
 ECBPumpDuration = 2.0
-ECCheckInterval = 180.0
+ECCheckInterval = 4.0
 
 #Light Cycle Flags
 LighSwitchOnDuration = 60 #64800
@@ -65,9 +65,10 @@ for port in ports:
     print("Port: ")
     print(port)
 
-# serialCom = serial.Serial("/dev/ttyACM0",9600)
-serialCom = serial.Serial("COM7", 9600)
-actuation = serial.Serial('COM5', 9600)
+actuation = serial.Serial("/dev/ttyACM0",9600)
+serialCom = serial.Serial("/dev/ttyACM1",9600)
+
+
 
 actuation.setDTR(False)
 time.sleep(1)
@@ -120,6 +121,7 @@ while (1):
         response = channel.update(
             {'field1': EC, 'field2': pH, 'field3': Humidity, 'field4': Air_temperature, 'field5': Water_temperature,
              'field6': Distance, })
+        EC = 600
         printSensor()
 
     except:
@@ -168,6 +170,7 @@ while (1):
 
 
 #EC Control Unit
+    EC = 600
     if ECCheck == False:
         if(time.time() - previousECCheckTime >= ECCheckInterval):
             ECCheck = True
@@ -181,8 +184,9 @@ while (1):
                 ECBOnTime = time.time()
                 actuation.write((nutrient_a_motor + ON).encode())
                 actuation.write((nutrient_b_motor + ON).encode())
-                # print("!!! NUTRIENT A PUMP IS ON !!!")
+                print("!!! NUTRIENT A PUMP IS ON !!!")
                 # print("!!! NUTRIENT B PUMP IS ON !!!")
+                time.sleep(5)
                 ECAOnFlag = True
                 ECBOnFlag = True
 
@@ -222,12 +226,12 @@ while (1):
         actuation.write((water_temperature_motor + OFF).encode())
         # print("!!! WATER COOLER IS OFF !!!")
 
-
+    
 # Air Cooler Control Unit
-    if Air_temperature > 60:
+    if Air_temperature > 22:
         actuation.write((air_temperature_motor + ON).encode())
         # print("!!! AIR COOLER IS ON !!!")
-    if Air_temperature <= 60:
+    if Air_temperature <= 22:
         actuation.write((air_temperature_motor + OFF).encode())
         # print("!!! AIR COOLER IS OFF !!!")
 

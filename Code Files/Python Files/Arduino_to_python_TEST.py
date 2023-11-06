@@ -5,9 +5,12 @@ import time
 
 ports = list_ports.comports()
 for port in ports:
+    print("Port: ")
     print(port)
+    
 
-serialCom = serial.Serial("COM9",9600)
+
+serialCom = serial.Serial("/dev/ttyACM0",9600)
 
 
 serialCom.setDTR(False)
@@ -25,14 +28,16 @@ while(1):
 
         lines = decoded_bytes.split(',')
 
-        EC = float(lines[0])
-        pH = float(lines[1])
-        Humidity = float(lines[2])
-        Air_temperature = float(lines[3])
-        Water_temperature = float(lines[4])
-        Distance = float(lines[5])
-
-        print(EC/2)
+        Timestamp = float(lines[0])/1000
+        EC = float(lines[1])
+        pH = float(lines[2])
+        Humidity = float(lines[3])
+        Air_temperature = float(lines[4])
+        Water_temperature = float(lines[5])
+        Distance = float(lines[6])
+        Timestamp_python = float(time.time())
+        print(Timestamp_python)
+        
 
     except:
         print("ERROR! There was an error in the code!")

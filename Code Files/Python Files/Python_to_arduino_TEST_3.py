@@ -70,11 +70,8 @@ LightSwitchOffDuration = 60 #7200
 
 
 #Serial Communication classes
-#actuation = serial.Serial("/dev/ttyACM1", 9600)
-#serialCom = serial.Serial("/dev/ttyACM0",9600)
-
-actuation = serial.Serial("COM5", 9600)
-serialCom = serial.Serial("COM7",9600)
+actuation = serial.Serial("/dev/ttyACM1", 9600)
+serialCom = serial.Serial("/dev/ttyACM0",9600)
 
 actuation.setDTR(False)
 time.sleep(1)
@@ -217,8 +214,8 @@ while(1):
 #         actuation.write((water_temperature_motor + OFF).encode())
 #
 
-# # Air Cooler Control Unit
-#     if air_temperature > 22:
-#         actuation.write((air_temperature_motor + ON).encode())
-#     if air_temperature <= 22:
-#         actuation.write((air_temperature_motor + OFF).encode())
+# Air Cooler Control Unit
+    if air_temperature > 22:
+        actuation.write((air_temperature_motor + ON).encode())
+    if air_temperature <= 22:
+        actuation.write((air_temperature_motor + OFF).encode())

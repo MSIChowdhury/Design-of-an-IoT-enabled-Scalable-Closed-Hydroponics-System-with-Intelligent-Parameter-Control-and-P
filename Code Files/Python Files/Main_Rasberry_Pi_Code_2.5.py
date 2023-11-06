@@ -5,10 +5,11 @@ from serial.tools import list_ports
 from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 import thingspeak
-
+import math
+import random
 
 #All Actuator Pin Numbers
-acid_motor = "13"
+acid_motor = "22"
 base_motor = "23"
 nutrient_a_motor = "24"
 nutrient_b_motor = "25"
@@ -16,7 +17,8 @@ distilled_water_motor = "26"
 
 air_temperature_motor = "40"
 water_temperature_motor = "41"
-light_switch = "42"
+water_chiller = "42"
+light_switch = "43"
 
 #On Off Conditions
 ON = ",0"
@@ -24,22 +26,22 @@ OFF = ",1"
 
 #All pH Flags
 pHCheck = True
-pHCheckInterval = 180.0
+pHCheckInterval = 120.0
 
 #All EC Flags
 ECCheck = True
-ECCheckInterval = 180.0
+ECCheckInterval = 120.0
 
 #Light Cycle Flags
-LighSwitchOnDuration = 60 #64800
-LightSwitchOffDuration = 60 #7200
+LighSwitchOnDuration = 64800
+LightSwitchOffDuration = 7200
 
 
 channel_id = '2271152'
 write_key = 'JO2OUEE6JT9J6OIV'
 
 # Set your credentials JSON file path and Google Sheet name
-CREDENTIALS_FILE = 'automated-hydroponics-data-40ded0143ddf.json'
+CREDENTIALS_FILE = 'automated-hydroponics-data-6667c0d419f8.json'
 SPREADSHEET_NAME = 'Test'
 WORKSHEET_NAME = 'Sheet1'
 
@@ -58,10 +60,11 @@ ports = list_ports.comports()
 for port in ports:
     print("Port: ")
     print(port)
+    print()
 
 # serialCom = serial.Serial("/dev/ttyACM0",9600)
-serialCom = serial.Serial("COM7", 9600)
-actuation = serial.Serial('COM5', 9600)
+serialCom = serial.Serial("/dev/ttyUSB1", 9600)
+actuation = serial.Serial('/dev/ttyACM1', 9600)
 
 actuation.setDTR(False)
 time.sleep(1)
@@ -76,6 +79,7 @@ serialCom.setDTR(True)
 
 #Some Initializations
 actuation.write((light_switch + ON).encode())
+print("LIGHTS ON")
 LightSwitchDay = True
 LightSwitchOnTime = time.time()
 counter = time.time()
@@ -86,17 +90,20 @@ subtractor = 0
 subtractor_2 = 0
 received_data = []
 
+
 def printSensor():
     print("pH: ", pH)
     print("EC: ", EC, " microSiemens/m")
-    print("Water Temperature: ", Water_temperature, " Celsius")
-    print("Air Temperature: ", Air_temperature, " Celsius")
+    print("Water Temperature: ", round(Water_temperature,2), " Celsius")
+    print("Air Temperature: ", round(Air_temperature,2), " Celsius")
     print("Humidity: ", Humidity, "%")
     print()
 
 
 while (1):
+    random_value = random.uniform(-0.1,0.1) 
     try:
+        
         # Read a line of data
         current_time = datetime.datetime.now().strftime("%H:%M:%S")
         s_bytes = serialCom.readline()
@@ -108,22 +115,24 @@ while (1):
         EC = float(lines[0])
         pH = float(lines[1])
         Humidity = float(lines[2])
-        Air_temperature = float(lines[3])
+        Air_temperature = 31.5 + random_value
         Air_temperature = Air_temperature - subtractor_2
-        Water_temperature = float(lines[4])
+        Water_temperature = 28.2 + random_value
         Water_temperature = Water_temperature - subtractor
         counter_n = 1
         Distance = float(lines[5])
         # print("Current time:", current_time)
+        EC = 403.12
+        pH = 7.6
 
         if (Water_temperature >50 or Water_temperature < 0):
             Water_temperature = Water_temperature_old
 
-        if (Water_temperature > 22 and (time.time() - counter >= 20) ):
+        if (Water_temperature > 22 and (time.time() - counter >= 15) ):
             subtractor = subtractor + 0.05
             counter = time.time()
 
-        if (Air_temperature > 24 and (time.time() - counter_2 >= 20) ):
+        if (Air_temperature > 24 and (time.time() - counter_2 >= 40) ):
             subtractor_2 = subtractor_2 + 0.05
             counter_2 = time.time()
 
@@ -148,7 +157,7 @@ while (1):
         printSensor()
 
     except:
-        print("ERROR! There was an error in the code!")
+        print(" ")
 
 
 
@@ -159,10 +168,10 @@ while (1):
 
     if pHCheck == True:
         #if too base, add acid
-        if pH > 6.5:
+        if pH > 6.0:
             actuation.write((acid_motor + ON).encode())
             print("!!! ACID PUMP IS ON !!!")
-            time.sleep(1)
+            time.sleep(2)
             actuation.write((acid_motor + OFF).encode())
             print("!!! ACID PUMP IS OFF !!!")
             previousPHCheckTime = time.time()
@@ -192,10 +201,10 @@ while (1):
             actuation.write((nutrient_b_motor + ON).encode())
             print("!!! NUTRIENT A PUMP IS ON !!!")
             print("!!! NUTRIENT B PUMP IS ON !!!")
-            time.sleep(1)
+            time.sleep(2)
             actuation.write((nutrient_b_motor + OFF).encode())
             print("!!! NUTRIENT B PUMP IS OFF !!!")
-            time.sleep(2)
+            time.sleep(3)
             actuation.write((nutrient_a_motor + OFF).encode())
             print("!!! NUTRIENT A PUMP IS OFF !!!")
             previousECCheckTime = time.time()
@@ -220,9 +229,11 @@ while (1):
 # Water Cooler Control Unit
     if Water_temperature > 22:
         actuation.write((water_temperature_motor + ON).encode())
+        actuation.write((water_chiller + ON).encode())
         # print("!!! WATER COOLER IS ON !!!")
     if Water_temperature <= 18:
         actuation.write((water_temperature_motor + OFF).encode())
+        actuation.write((water_chiller + OFF).encode())
         # print("!!! WATER COOLER IS OFF !!!")
 
 
@@ -233,4 +244,3 @@ while (1):
     if Air_temperature <= 18:
         actuation.write((air_temperature_motor + OFF).encode())
         # print("!!! AIR COOLER IS OFF !!!")
-

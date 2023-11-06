@@ -39,8 +39,8 @@ for port in ports:
     
 
 
-#serialCom = serial.Serial("/dev/ttyACM0",9600)
-serialCom = serial.Serial("COM7",9600)
+serialCom = serial.Serial("/dev/ttyACM0",9600)
+
 
 serialCom.setDTR(False)
 time.sleep(1)
