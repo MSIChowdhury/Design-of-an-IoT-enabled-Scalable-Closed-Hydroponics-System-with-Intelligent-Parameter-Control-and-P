@@ -1,4 +1,4 @@
-#include <SoftwareSerial.h>                           //we have to include the SoftwareSerial library, or else we can't use it
+ #include <SoftwareSerial.h>                           //we have to include the SoftwareSerial library, or else we can't use it
 #define rx 4                                          //define what pin rx is going to be
 #define tx 3                                          //define what pin tx is going to be
  
