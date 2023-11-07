@@ -8,19 +8,19 @@ write_key = 'A64SDPA5T2NT2M40'
 channel_id = '2331508'
 
 # Define the range for each variable
-pH_min = 0
-pH_max = 14
-EC_min = 10
-EC_max = 3000
-A_Temp_min = 15
-A_Temp_max = 50
-W_Temp_min = 15
-W_Temp_max = 50
-Humidity_min = 30
-Humidity_max = 100
+pH_min = 5.6
+pH_max = 6.0
+EC_min = 1100
+EC_max = 1700
+A_Temp_min = 24
+A_Temp_max = 19
+W_Temp_min = 24
+W_Temp_max = 26
+Humidity_min = 50
+Humidity_max = 70
 Water_Level_min = 2
 Water_Level_max = 10
-CO2_min = 200
+CO2_min = 2000
 CO2_max = 5000
 
 # Function to generate a random value within the specified range
