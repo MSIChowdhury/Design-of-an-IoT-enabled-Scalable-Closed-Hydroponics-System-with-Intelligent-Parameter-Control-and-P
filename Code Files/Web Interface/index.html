@@ -110,9 +110,6 @@
 
     <!-- Add more sections and content as needed -->
 
-    <footer>
-        <p>&copy; Web Interface for the Automated Hydroponics System</p>
-    </footer>
 
     <script>
         // Function to display current time
@@ -135,7 +132,7 @@
 
     </script>
 
-<h1>Choose a Python script to run:</h1>
+<h1>Choose the type of plant you want to grow:</h1>
     <form method="POST" action="http://192.168.1.2:5000/run_script">
         <select name="script_name">
             <option value="Lettuce">Lettuce</option>
@@ -144,20 +141,31 @@
         </select>
         <br><br>
         <input type="submit" value="Run Script">
+        <span id="current-script">Current Script: None</span>
     </form>
+     
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#command-form').submit(function(e) {
-                e.preventDefault();
-                var command = $('input[name="command"]').val();
-                $.post('http://192.168.1.2:5000/send_command', { command: command }, function(response) {
-                    console.log(response);
-                    // Handle the response as needed
-                });
-            });
+<script>
+    // Function to get the currently running script from the server
+    function getCurrentScript() {
+        $.get('http://192.168.1.2:5000/current_script', function(response) {
+            // Update the content of the "current-script" span with the received script name
+            $('#current-script').text('Current Script: ' + response.scriptName);
         });
-    </script>
+    }
+
+    // Periodically update the currently running script every 5 seconds (adjust the interval as needed)
+    setInterval(getCurrentScript, 5000);
+
+    // Initial call to get the current script
+    getCurrentScript();
+</script>
+
+
+<footer>
+    <p>&copy; Web Interface for the Automated Hydroponics System</p>
+</footer>
+
 </body>
 </html>
