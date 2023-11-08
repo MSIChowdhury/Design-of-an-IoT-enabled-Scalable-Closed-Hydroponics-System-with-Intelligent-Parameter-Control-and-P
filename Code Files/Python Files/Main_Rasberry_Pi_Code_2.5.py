@@ -9,18 +9,16 @@ import math
 import random
 
 #All Actuator Pin Numbers
-distilled_water_motor = "22"
+acid_motor = "22"
+base_motor = "23"
+nutrient_a_motor = "24"
+nutrient_b_motor = "25"
+distilled_water_motor = "26"
 
-acid_motor = "46"
-base_motor = "48"
-nutrient_a_motor = "42"
-nutrient_b_motor = "44"
-
-air_temperature_motor = "50"
-water_temperature_motor = "34"
-light_switch = "36"
-CO2_relay = "38"
-
+air_temperature_motor = "40"
+water_temperature_motor = "41"
+water_chiller = "42"
+light_switch = "43"
 
 #On Off Conditions
 ON = ",0"
@@ -28,7 +26,7 @@ OFF = ",1"
 
 #All pH Flags
 pHCheck = True
-pHCheckInterval = 120.0 #Seconds
+pHCheckInterval = 120.0
 
 #All EC Flags
 ECCheck = True
