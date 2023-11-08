@@ -5,6 +5,7 @@ import datetime
 import thingspeak
 import math
 
+#Actuators Pin Numbers
 air_temperature_motor = "50"
 CO2_relay = "38"
 
@@ -12,15 +13,16 @@ CO2_relay = "38"
 ON = ",0"
 OFF = ",1"
 
-
+#See the available ports to use in Serial Communication address
 ports = list_ports.comports()
 for port in ports:
     print("Port: ")
     print(port)
     print()
 
-sensing = serial.Serial("COM10", 9600)
-actuation = serial.Serial('COM5', 9600)
+#Serial Communication , Adress Must be changed in Raspberry Pi
+sensing = serial.Serial("COM10", 9600)   #/dev/ttyUSB1
+actuation = serial.Serial('COM5', 9600)  #dev/ttyACM1
 
 actuation.setDTR(False)
 time.sleep(1)
@@ -36,13 +38,13 @@ received_data = []
 
 
 def printSensor():
+    """ This Function prints The sensor values """
     print("CO2: ", CO2, "PPM")
     print("Air Temperature: ", round(Air_temperature, 2), " Celsius")
     print("Humidity: ", Humidity, "%")
     print("Water Temperature: ", Water_temperature, " Celsius")
     print("Water Level: ", round(Water_level, 2), " cm")
     print()
-
 
 while (1):
     try:
