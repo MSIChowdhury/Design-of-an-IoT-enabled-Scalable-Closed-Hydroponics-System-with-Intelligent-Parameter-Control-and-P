@@ -10,8 +10,8 @@ def is_port_available(host, port):
         return False
 
 # Example usage:
-hostname = '0.0.0.0'  # Replace with your hostname or IP
-port = 5000  # Replace with the port you want to check
+hostname = '192.168.1.4'  # Replace with your hostname or IP
+port = 6000  # Replace with the port you want to check
 
 if is_port_available(hostname, port):
     print(f"The address {hostname}:{port} is available for binding.")

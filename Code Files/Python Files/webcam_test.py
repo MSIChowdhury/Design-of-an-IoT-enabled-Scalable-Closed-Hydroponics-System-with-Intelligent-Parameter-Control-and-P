@@ -1,25 +1,23 @@
 import cv2
 
+# Open the default camera (usually the built-in or the first USB camera)
 cap = cv2.VideoCapture(0)
-_, frame = cap.read()
-cv2.imshow("Live Video", frame)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
-image_counter = 1  # Initialize the counter for image naming
-
-def take_picture(image_counter):
-    x = input("Give input: ")
-    ret, frame = cap.read()
-    cv2.imshow("Live Video", frame)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    # Save the captured image with a serial name
-    image_filename = f"Day_{image_counter}.jpg"
-    cv2.imwrite(image_filename, frame)
-
 
 while True:
-    take_picture(image_counter)
-    image_counter += 1
+    # Read a frame from the camera
+    ret, frame = cap.read()
 
+    if not ret:
+        print("Error reading the frame")
+        break
+
+    # Display the frame in a window
+    cv2.imshow('Live Video Stream', frame)
+
+    # Break the loop if the 'q' key is pressed
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release the camera and close the window
+cap.release()
+cv2.destroyAllWindows()

@@ -4,6 +4,7 @@
 MHZ19 myMHZ19;                                             // Constructor for library
 
 unsigned long getDataTimer = 0;
+int CO2;
 
 void setup()
 {
@@ -14,12 +15,19 @@ void setup()
 
     myMHZ19.autoCalibration(false);                              // Turn auto calibration ON (OFF autoCalibration(false))
     delay(1000);
+    
+    for(int j=0; j<=5; j++){
+      CO2 = myMHZ19.getCO2();
+      delay(1000);
+    }
+    
 }
 
 void loop()
 {
     if (millis() - getDataTimer >= 2000)
     {
+        Serial.println("Hola");
         int CO2; 
 
         /* note: getCO2() default is command "CO2 Unlimited". This returns the correct CO2 reading even 
