@@ -1,10 +1,5 @@
 import cv2
-
 cap = cv2.VideoCapture(0)
-_, frame = cap.read()
-cv2.imshow("Live Video", frame)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
 
 image_counter = 1  # Initialize the counter for image naming
 
