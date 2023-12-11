@@ -9,19 +9,19 @@ DallasTemperature dallasTemperature(&oneWire);
 float water_temperature = 0;
 
 
-////EC
-//#define address 100              //default I2C ID number for EZO EC Circuit.
-//
-//char computerdata[32];           //we make a 32 byte character array to hold incoming data from a pc/mac/other.
-//byte code = 0;                   //used to hold the I2C response code.
-//char ec_data[32];                //we make a 32 byte character array to hold incoming data from the EC circuit.
-//byte in_char = 0;                //used as a 1 byte buffer to store inbound bytes from the EC Circuit.
-//byte i = 0;                      //counter used for ec_data array.
-//
-//float EC;
-//float Test_EC=0;  //float var used to hold the float value of the conductivity.
-//
-////EC
+//EC
+#define address 100              //default I2C ID number for EZO EC Circuit.
+
+char computerdata[32];           //we make a 32 byte character array to hold incoming data from a pc/mac/other.
+byte code = 0;                   //used to hold the I2C response code.
+char ec_data[32];                //we make a 32 byte character array to hold incoming data from the EC circuit.
+byte in_char = 0;                //used as a 1 byte buffer to store inbound bytes from the EC Circuit.
+byte i = 0;                      //counter used for ec_data array.
+
+float EC;
+float Test_EC=0;  //float var used to hold the float value of the conductivity.
+
+//EC
 
 ////pH
 //#include <SoftwareSerial.h>                           //we have to include the SoftwareSerial library, or else we can't use it
@@ -55,10 +55,10 @@ void setup()
   Wire.begin();
   Serial.begin(9600);
   
-  //PH Setup
-  //myserial.begin(9600);                               //set baud rate for the software serial port to 9600
-  //inputstring.reserve(10);                            //set aside some bytes for receiving data from the PC
-  //sensorstring.reserve(30);  
+////  PH Setup
+//  myserial.begin(9600);                               //set baud rate for the software serial port to 9600
+//  inputstring.reserve(10);                            //set aside some bytes for receiving data from the PC
+//  sensorstring.reserve(30);  
   
   //Water Temperature Setup
   dallasTemperature.begin();
@@ -76,6 +76,7 @@ void setup()
 
 void loop() {
 
+float pH = 6.0;
 ////PH
 //while(sensor_string_complete == false){
 //  if (myserial.available() > 0) {                     //if we see that the Atlas Scientific product has sent a character
@@ -103,28 +104,28 @@ void loop() {
 
 
 
+//EC
+    Wire.beginTransmission(address);                                            //call the circuit by its ID number.
+    Wire.write("r");                                                   //transmit the command that was sent through the serial port.
+    Wire.endTransmission();                                                     //end the I2C data transmission.
+
+    delay(570);                                                             //wait the correct amount of time for the circuit to complete its instruction.
+    Wire.requestFrom(address, 32, 1);                                         //call the circuit and request 32 bytes (this could be too small, but it is the max i2c buffer size for an Arduino)
+    code = Wire.read();                                                       //the first byte is the response code, we read this separately.
+
+    while (Wire.available()) {                 //are there bytes to receive.
+      in_char = Wire.read();                   //receive a byte.
+      ec_data[i] = in_char;                    //load this byte into our array.
+      i += 1;                                  //incur the counter for the array element.
+      if (in_char == 0) {                      //if we see that we have been sent a null command.
+        i = 0;                                 //reset the counter i to 0.
+        break;                                 //exit the while loop.
+      }
+    }
+    
+    EC=atof(ec_data); //Unit is micro-siemens/cm
+
 ////EC
-//    Wire.beginTransmission(address);                                            //call the circuit by its ID number.
-//    Wire.write("r");                                                   //transmit the command that was sent through the serial port.
-//    Wire.endTransmission();                                                     //end the I2C data transmission.
-//
-//    delay(570);                                                             //wait the correct amount of time for the circuit to complete its instruction.
-//    Wire.requestFrom(address, 32, 1);                                         //call the circuit and request 32 bytes (this could be too small, but it is the max i2c buffer size for an Arduino)
-//    code = Wire.read();                                                       //the first byte is the response code, we read this separately.
-//
-//    while (Wire.available()) {                 //are there bytes to receive.
-//      in_char = Wire.read();                   //receive a byte.
-//      ec_data[i] = in_char;                    //load this byte into our array.
-//      i += 1;                                  //incur the counter for the array element.
-//      if (in_char == 0) {                      //if we see that we have been sent a null command.
-//        i = 0;                                 //reset the counter i to 0.
-//        break;                                 //exit the while loop.
-//      }
-//    }
-//    
-//    EC=atof(ec_data);
-//
-//////EC
 
 
 
@@ -162,10 +163,11 @@ void loop() {
     count_flag = 1;
   }
   
-//  Serial.print(EC);
-//  Serial.print(",");
-//  Serial.print(pH);
-//  Serial.print(",");
+  Serial.print(EC);
+  Serial.print(",");
+  
+  Serial.print(pH);
+  Serial.print(",");
 
   Serial.print(water_temperature);
   Serial.print(",");
