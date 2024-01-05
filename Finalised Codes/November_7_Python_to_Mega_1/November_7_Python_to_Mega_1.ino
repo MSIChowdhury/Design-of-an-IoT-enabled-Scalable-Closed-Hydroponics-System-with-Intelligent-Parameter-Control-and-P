@@ -57,7 +57,7 @@ void setup() {
 
 void loop() {
   
-    if (millis() - getDataTimer >= 1100)
+    if (millis() - getDataTimer >= 60000)
     {
         CO2 = myMHZ19.getCO2();                       
    
