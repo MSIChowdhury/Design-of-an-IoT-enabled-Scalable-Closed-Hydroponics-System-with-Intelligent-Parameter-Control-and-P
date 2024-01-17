@@ -278,21 +278,21 @@ while True:
                     previousECCheckTime = time.time()
                     ECCheck = False
 
-            # # Water Cooler Control Unit
-            # if Water_temperature > 22:
-            #     actuation.write((water_chiller_motor + ON).encode())
-            #     # print("!!! WATER COOLER IS ON !!!")
-            # if Water_temperature <= 18:
-            #     actuation.write((water_chiller_motor + OFF).encode())
-            #     # print("!!! WATER COOLER IS OFF !!!")
+            # Water Cooler Control Unit
+            if Water_temperature > 18:
+                actuation.write((water_chiller_motor + ON).encode())
+                # print("!!! WATER COOLER IS ON !!!")
+            if Water_temperature <= 16:
+                actuation.write((water_chiller_motor + OFF).encode())
+                # print("!!! WATER COOLER IS OFF !!!")
 
-            # # Air Cooler Control Unit
-            # if Air_temperature > 22:
-            #     actuation.write((air_temperature_motor + ON).encode())
-            #     # print("!!! AIR COOLER IS ON !!!")
-            # if Air_temperature <= 18:
-            #     actuation.write((air_temperature_motor + OFF).encode())
-            #     # print("!!! AIR COOLER IS OFF !!!")
+            # Air Cooler Control Unit
+            if Air_temperature > 20:
+                actuation.write((air_temperature_motor + ON).encode())
+                # print("!!! AIR COOLER IS ON !!!")
+            if Air_temperature <= 16:
+                actuation.write((air_temperature_motor + OFF).encode())
+                # print("!!! AIR COOLER IS OFF !!!")
 
 
             # Day-Night Control Unit (Grow Light Control Unit)
