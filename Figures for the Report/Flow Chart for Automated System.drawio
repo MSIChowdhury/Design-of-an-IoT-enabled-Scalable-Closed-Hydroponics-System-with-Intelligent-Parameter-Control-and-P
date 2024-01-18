@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-01-17T11:13:34.930Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0" etag="pi5RFt-mjJcNJxnsLSzk" version="22.1.18" type="device" pages="2">
+<mxfile host="app.diagrams.net" modified="2024-01-17T20:09:49.904Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0" etag="SLkMVg-0-9FztwIlFhQI" version="22.1.18" type="device" pages="2">
   <diagram name="State Space Diagram for Q-Learning Crawler Bot" id="42789a77-a242-8287-6e28-9cd8cfd52e62">
     <mxGraphModel dx="1831" dy="824" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
@@ -116,45 +116,51 @@
     </mxGraphModel>
   </diagram>
   <diagram id="5tbCX5jEYmH8GKAfMmCw" name="Page-2">
-    <mxGraphModel dx="595" dy="330" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="980" pageHeight="1390" math="0" shadow="0">
+    <mxGraphModel dx="155" dy="463" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1000" pageHeight="1390" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="mi87LsrhBHEXmnDrMvHd-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-1" target="mi87LsrhBHEXmnDrMvHd-2">
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="189.01" y="96" as="sourcePoint" />
+            <mxPoint x="189.01" y="149" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-120" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-1" target="mi87LsrhBHEXmnDrMvHd-116">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-1" value="Start" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="32.5" y="9" width="120" height="80" as="geometry" />
+          <mxGeometry x="132.88" y="16" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-2" target="mi87LsrhBHEXmnDrMvHd-3">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-2" value="pH sensor turned ON&lt;br&gt;EC sensor turned ON&lt;br&gt;CO&lt;sub style=&quot;font-size: 7px;&quot;&gt;2&lt;/sub&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&amp;nbsp;&lt;/font&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&amp;nbsp;sensor turned ON&lt;br&gt;Water Temperature sensor turned ON&lt;br&gt;Air Temperature sensor turned ON&lt;br&gt;Humidity sensor turned ON&lt;br&gt;Ultrasonic Distance sensor turned ON&lt;br&gt;&lt;/font&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="5" y="142" width="175" height="175" as="geometry" />
+          <mxGeometry x="105.38" y="149" width="175" height="175" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-3" target="mi87LsrhBHEXmnDrMvHd-4">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-3" value="5 second delay" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
-          <mxGeometry x="233" y="199.5" width="120" height="60" as="geometry" />
+          <mxGeometry x="333.38" y="206.5" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-4" target="mi87LsrhBHEXmnDrMvHd-5">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-4" value="All sensors start taking readings at regular intervals" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="405" y="199.5" width="120" height="60" as="geometry" />
+          <mxGeometry x="505.38" y="206.5" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-5" target="mi87LsrhBHEXmnDrMvHd-6">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-5" value="Sensor readings sent to the Arduino Nano" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="577" y="199.5" width="120" height="60" as="geometry" />
+          <mxGeometry x="677.38" y="206.5" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-6" target="mi87LsrhBHEXmnDrMvHd-7">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="mi87LsrhBHEXmnDrMvHd-6" value="Sensor readings sent to the Arduino Nano" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="752" y="199.5" width="120" height="60" as="geometry" />
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-6" value="Arduino Nano applied Median Filter to sensor readings" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="852.38" y="206.5" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-7" target="mi87LsrhBHEXmnDrMvHd-8">
           <mxGeometry relative="1" as="geometry" />
@@ -163,10 +169,10 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-7" value="Arduino Nano sends sensor data to the Raspberry Pi" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="752" y="376" width="120" height="60" as="geometry" />
+          <mxGeometry x="852.38" y="383" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-8" value="ThingSpeak &lt;br&gt;Channel" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="752" y="518" width="120" height="80" as="geometry" />
+          <mxGeometry x="852.38" y="468" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-9" target="mi87LsrhBHEXmnDrMvHd-20">
           <mxGeometry relative="1" as="geometry" />
@@ -175,24 +181,24 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-9" value="Is pH below 5.8?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="598.5" y="361" width="104.5" height="90" as="geometry" />
+          <mxGeometry x="698.88" y="368" width="104.5" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="mi87LsrhBHEXmnDrMvHd-20" value="Acid Doser turned ON" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="592.12" y="471" width="117.25" height="60" as="geometry" />
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-20" value="Acid Doser turned ON for 0.3 seconds" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="692.5" y="478" width="117.25" height="60" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-23">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="524.8095238095236" y="471" as="targetPoint" />
+            <mxPoint x="625.1895238095236" y="478" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-23" target="mi87LsrhBHEXmnDrMvHd-30">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-23" value="Is pH above 6.5?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="472.5" y="361" width="104.5" height="90" as="geometry" />
+          <mxGeometry x="572.88" y="368" width="104.5" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="mi87LsrhBHEXmnDrMvHd-27" value="Base Doser turned ON" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="466.13" y="471" width="117.25" height="60" as="geometry" />
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-27" value="Base Doser turned ON&amp;nbsp;for 0.3 seconds" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="566.51" y="478" width="117.25" height="60" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-30" target="mi87LsrhBHEXmnDrMvHd-32">
           <mxGeometry relative="1" as="geometry" />
@@ -200,11 +206,14 @@
         <mxCell id="mi87LsrhBHEXmnDrMvHd-38" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-30" target="mi87LsrhBHEXmnDrMvHd-34">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="mi87LsrhBHEXmnDrMvHd-30" value="Is EC below &lt;br&gt;1000?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="346" y="361" width="104.5" height="90" as="geometry" />
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-100" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-30" target="mi87LsrhBHEXmnDrMvHd-99">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="mi87LsrhBHEXmnDrMvHd-32" value="Nutrient Doser turned ON" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="339.62" y="471" width="117.25" height="60" as="geometry" />
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-30" value="Is EC below &lt;br&gt;1000?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="446.38" y="368" width="104.5" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-32" value="&lt;br&gt;Nutrient B Doser turned ON&amp;nbsp;for 0.7 seconds&lt;br&gt;&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="478" width="117.25" height="60" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-43" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-34" target="mi87LsrhBHEXmnDrMvHd-42">
           <mxGeometry relative="1" as="geometry" />
@@ -212,35 +221,234 @@
         <mxCell id="mi87LsrhBHEXmnDrMvHd-46" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-34" target="mi87LsrhBHEXmnDrMvHd-45">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="mi87LsrhBHEXmnDrMvHd-34" value="Is EC above&lt;br&gt;1200?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="219" y="361" width="104.5" height="90" as="geometry" />
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-34" value="Is EC above&lt;br&gt;1250?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="319.38" y="368" width="104.5" height="90" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-35" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="643" y="443" width="60" height="30" as="geometry" />
+          <mxGeometry x="743.38" y="450" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-36" value="No" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="559" y="376" width="60" height="30" as="geometry" />
+          <mxGeometry x="661.38" y="383" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-37" value="No" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="430" y="376" width="60" height="30" as="geometry" />
+          <mxGeometry x="533.38" y="383" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-39" value="No" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="302" y="376" width="60" height="30" as="geometry" />
+          <mxGeometry x="406.38" y="383" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-40" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="517" y="443" width="60" height="30" as="geometry" />
+          <mxGeometry x="617.38" y="450" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-41" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="388" y="443" width="60" height="30" as="geometry" />
+          <mxGeometry x="488.38" y="450" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="mi87LsrhBHEXmnDrMvHd-42" value="Distilled Water Doser turned ON" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="212.62" y="471" width="117.25" height="60" as="geometry" />
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-42" value="Distilled Water Doser turned ON for 3 seconds" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="313" y="478" width="117.25" height="60" as="geometry" />
         </mxCell>
         <mxCell id="mi87LsrhBHEXmnDrMvHd-44" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="263" y="443" width="60" height="30" as="geometry" />
+          <mxGeometry x="363.38" y="450" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="mi87LsrhBHEXmnDrMvHd-45" value="Is EC above&lt;br&gt;1200?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="95" y="361" width="104.5" height="90" as="geometry" />
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-48" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-45" target="mi87LsrhBHEXmnDrMvHd-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-54" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-45" target="mi87LsrhBHEXmnDrMvHd-51">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-45" value="Is Water Temperature above&lt;br&gt;18?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="195.38" y="368" width="104.5" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-47" value="Water Chiller turned ON" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="189.01" y="478" width="117.25" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-49" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="236.38" y="450" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-50" value="No" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="282.38" y="383" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-53" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-51" target="mi87LsrhBHEXmnDrMvHd-52">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-51" value="Is Water Temperature&lt;br&gt;&amp;nbsp;below&lt;br&gt;16?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="72.38" y="368" width="104.5" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-52" value="Water Chiller turned OFF" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="66" y="478" width="117.25" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-55" value="No" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="156.38" y="383" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-56" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="112.38" y="450" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-60" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-57" target="mi87LsrhBHEXmnDrMvHd-59">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-62" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-57" target="mi87LsrhBHEXmnDrMvHd-61">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-57" value="Is Air &lt;br&gt;Temperature&lt;br&gt;&amp;nbsp;above&lt;br&gt;20?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="72.38" y="555" width="104.5" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-58" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-51" target="mi87LsrhBHEXmnDrMvHd-57">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="103" y="553" as="sourcePoint" />
+            <mxPoint x="20" y="600" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="17" y="413" />
+              <mxPoint x="17" y="600" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-59" value="Air Chiller turned ON" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="66" y="665" width="117.25" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-64" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-61" target="mi87LsrhBHEXmnDrMvHd-63">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-91" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-61" target="mi87LsrhBHEXmnDrMvHd-73">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-61" value="Is Air &lt;br&gt;Temperature&lt;br&gt;&amp;nbsp;below&lt;br&gt;16?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="195.39" y="555" width="104.5" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-63" value="Air Chiller turned OFF" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="189.01" y="665" width="117.25" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-68" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="mi87LsrhBHEXmnDrMvHd-67">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="371.66666666666674" y="644.9684210526318" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-71" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="mi87LsrhBHEXmnDrMvHd-69">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="423.8799999999999" y="600" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-72" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="mi87LsrhBHEXmnDrMvHd-70">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="498.6666666666665" y="644.9598086124404" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-77" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-73" target="mi87LsrhBHEXmnDrMvHd-75">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-80" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-73" target="mi87LsrhBHEXmnDrMvHd-78">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-73" value="Is CO&lt;span style=&quot;font-size: 7px;&quot;&gt;&lt;sub style=&quot;font-size: 6px;&quot;&gt;2&lt;/sub&gt;&lt;/span&gt;&lt;br&gt;below&lt;br&gt;2000?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="321.90999999999997" y="555" width="104.5" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-81" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-75">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500.1579310344828" y="665" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-92" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-75" target="mi87LsrhBHEXmnDrMvHd-85">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-75" value="Is CO&lt;font size=&quot;1&quot;&gt;&lt;sub style=&quot;font-size: 7px;&quot;&gt;2&lt;/sub&gt;&lt;/font&gt;&lt;br&gt;above&lt;br&gt;2000?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="447.9" y="555" width="104.5" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-78" value="&lt;sub style=&quot;&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&amp;nbsp; &amp;nbsp;CO&lt;sub&gt;2&lt;/sub&gt;&amp;nbsp;Delivery System turned ON&amp;nbsp;&amp;nbsp;&lt;/font&gt;&lt;/sub&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="315.53" y="665" width="117.25" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-82" value="&lt;sub style=&quot;&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&amp;nbsp; &amp;nbsp;CO&lt;sub&gt;2&lt;/sub&gt;&amp;nbsp;Delivery System turned OFF&amp;nbsp;&amp;nbsp;&lt;/font&gt;&lt;/sub&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="441.52" y="665" width="117.25" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-88" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-83" target="mi87LsrhBHEXmnDrMvHd-87">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-83" value="Is Water Level below 8.5?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="698.8800000000001" y="555" width="104.5" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-90" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-85" target="mi87LsrhBHEXmnDrMvHd-89">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-94" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-85" target="mi87LsrhBHEXmnDrMvHd-83">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-85" value="Is Water Level above 10.5?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="571.58" y="555" width="107.11" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-87" value="&lt;sub style=&quot;&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&amp;nbsp; &amp;nbsp;Distilled Water Doser turned ON for 3 seconds&amp;nbsp;&lt;/font&gt;&lt;/sub&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="692.5" y="665" width="117.25" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-89" value="&lt;sub style=&quot;&quot;&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&amp;nbsp; &amp;nbsp;Distilled Water Doser turned OFF&amp;nbsp;&amp;nbsp;&lt;/font&gt;&lt;/sub&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="566.5099999999999" y="665" width="117.25" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-95" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-83">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="843.3800000000006" y="600" as="sourcePoint" />
+            <mxPoint x="190" y="120" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1017.67" y="600" />
+              <mxPoint x="1017.67" y="120" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-99" value="&lt;br&gt;Nutrient A Doser turned ON&amp;nbsp;for 2.8 seconds&lt;br&gt;&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="290" width="117.25" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-101" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="488.38" y="350" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-103" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="112.38" y="635" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-104" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="236.38" y="635" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-105" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="363.88" y="635" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-106" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="492.4" y="635" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-109" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="617.38" y="635" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-110" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="743.38" y="635" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-111" value="No" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="156.38" y="570" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-112" value="No" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="280.38" y="570" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-113" value="No" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="406.38" y="570" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-114" value="No" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="530" y="570" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-115" value="No" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="660" y="570" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-121" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-116" target="mi87LsrhBHEXmnDrMvHd-117">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-116" value="Grow lights turned ON" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="321.52" y="26" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-122" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-117" target="mi87LsrhBHEXmnDrMvHd-118">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-117" value="Timer for 18 &lt;br&gt;hours turned ON" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="26" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-123" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-118" target="mi87LsrhBHEXmnDrMvHd-119">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-118" value="Grow lights turned OFF" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="-60" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-124" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mi87LsrhBHEXmnDrMvHd-119" target="mi87LsrhBHEXmnDrMvHd-116">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mi87LsrhBHEXmnDrMvHd-119" value="Timer for 6 &lt;br&gt;hours turned ON" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="321.91" y="-60" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
