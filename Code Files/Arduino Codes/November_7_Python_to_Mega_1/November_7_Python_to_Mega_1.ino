@@ -23,10 +23,24 @@ void setup() {
   Serial1.begin(9600);
   
   pinMode(50,OUTPUT);
+  pinMode(48,OUTPUT);
+  pinMode(46,OUTPUT);
+  pinMode(44,OUTPUT);
+  pinMode(42,OUTPUT);
+  pinMode(40,OUTPUT);
   pinMode(38,OUTPUT);
+  pinMode(36,OUTPUT);
+  pinMode(34,OUTPUT);
   
   digitalWrite(50, HIGH);
+  digitalWrite(48, HIGH);
+  digitalWrite(46, HIGH); 
+  digitalWrite(44, HIGH); 
+  digitalWrite(42, HIGH); 
+  digitalWrite(40, HIGH); 
   digitalWrite(38, HIGH); 
+  digitalWrite(36, HIGH); 
+  digitalWrite(34, HIGH);  
 
   //Air Temperature and Humidity Sensor
   dht.begin();
@@ -43,7 +57,7 @@ void setup() {
 
 void loop() {
   
-    if (millis() - getDataTimer >= 1100)
+    if (millis() - getDataTimer >= 60000)
     {
         CO2 = myMHZ19.getCO2();                       
    

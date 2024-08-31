@@ -40,17 +40,34 @@ L_upper_values = [1300, 6.5, 26, 22, 15, 2100];
 num_initializations = 10;  % Number of random initializations
 
 % Define the learning rates to test
-lr_values = [0.1, 0.25, 0.5, 0.75];
+lr_step = 0.001;
+lr_start = lr_step;
+lr_end = 1 - lr_step;
+lr_values = lr_start:lr_step:lr_end;
 
-% Initialize a table to store results for each learning rate
-lr_results = table('Size', [length(lr_values), 4], ...
-                   'VariableTypes', {'double', 'double', 'cell', 'cell'}, ...
-                   'VariableNames', {'LearningRate', 'TotalCost', 'BestAlpha', 'BestBeta'});
+% Initialize arrays to store results for each learning rate
+total_costs = zeros(size(lr_values));
+best_alphas = cell(size(lr_values));
+best_betas = cell(size(lr_values));
+
+% Create figure and plot objects for real-time plotting
+figure;
+h = plot(NaN, NaN, 'b-', 'LineWidth', 2);
+xlabel('Learning Rate');
+ylabel('Total Cost Function Value');
+title('Total Cost Function vs Learning Rate (Real-time)');
+grid on;
+xlim('auto');
+ylim('auto');
+
+% Initialize table to store results for CSV
+results_table = table('Size', [0, num_sensors + 2], 'VariableTypes', ['double', repmat({'double'}, 1, num_sensors + 1)]);
+results_table.Properties.VariableNames = ['LearningRate', sensor_columns, 'TotalCost'];
 
 % Main loop for different learning rates
 for lr_idx = 1:length(lr_values)
     lr = lr_values(lr_idx);
-    fprintf('Processing with learning rate: %.2f\n', lr);
+    fprintf('Processing with learning rate: %.3f\n', lr);
 
     % Initialize best overall results for this learning rate
     global_best_alpha = zeros(length(sensor_columns), 1);
@@ -184,7 +201,7 @@ for lr_idx = 1:length(lr_values)
                 alpha_values(col_idx) = alpha_new;
                 beta_values(col_idx) = beta_new;
                 
-                fprintf('At Lr = %.2f, Iteration %d for Initialization %d/%d for %s: alpha: %.10f, beta: %.10f, cost: %.10f\n',lr, iteration_count, init, num_initializations, sensor_columns{col_idx}, alpha_new, beta_new, c1);
+                fprintf('At Lr = %.3f, Iteration %d for Initialization %d/%d for %s: alpha: %.10f, beta: %.10f, cost: %.10f\n',lr, iteration_count, init, num_initializations, sensor_columns{col_idx}, alpha_new, beta_new, c1);
                 
                 iteration_count = iteration_count + 1;
                 
@@ -229,33 +246,30 @@ for lr_idx = 1:length(lr_values)
     total_cost = sum(global_best_cost);
     
     % Store results for this learning rate
-    lr_results.LearningRate(lr_idx) = lr;
-    lr_results.TotalCost(lr_idx) = total_cost;
-    lr_results.BestAlpha{lr_idx} = global_best_alpha;
-    lr_results.BestBeta{lr_idx} = global_best_beta;
-end
+    total_costs(lr_idx) = total_cost;
+    best_alphas{lr_idx} = global_best_alpha;
+    best_betas{lr_idx} = global_best_beta;
 
-% Display the results for each learning rate
-disp('Results for each learning rate:');
-for i = 1:height(lr_results)
-    fprintf('Learning Rate: %.2f\n', lr_results.LearningRate(i));
-    fprintf('Total Cost: %.6f\n', lr_results.TotalCost(i));
-    fprintf('Best Alpha values:\n');
-    disp(lr_results.BestAlpha{i});
-    fprintf('Best Beta values:\n');
-    disp(lr_results.BestBeta{i});
-    fprintf('\n');
+    % Update the plot
+    set(h, 'XData', lr_values(1:lr_idx), 'YData', total_costs(1:lr_idx));
+    xlim('auto');
+    ylim('auto');
+    drawnow;  % Force MATLAB to update the plot
+
+    % Add results to the table
+    new_row = [lr, global_best_cost', total_cost];
+    results_table = [results_table; array2table(new_row, 'VariableNames', results_table.Properties.VariableNames)];
 end
 
 % Find the best learning rate
-[best_total_cost, best_lr_idx] = min(lr_results.TotalCost);
-best_lr = lr_results.LearningRate(best_lr_idx);
-best_alpha = lr_results.BestAlpha{best_lr_idx};
-best_beta = lr_results.BestBeta{best_lr_idx};
+[best_total_cost, best_lr_idx] = min(total_costs);
+best_lr = lr_values(best_lr_idx);
+best_alpha = best_alphas{best_lr_idx};
+best_beta = best_betas{best_lr_idx};
 
-% Display the best results across all learning rates
+% Display the best results
 fprintf('\nBest overall results:\n');
-fprintf('Best learning rate: %.2f\n', best_lr);
+fprintf('Best learning rate: %.3f\n', best_lr);
 fprintf('Sum of lowest costs: %.6f\n', best_total_cost);
 
 for col_idx = 1:length(sensor_columns)
@@ -273,6 +287,10 @@ hours = floor(elapsed_time / 3600);
 minutes = floor((elapsed_time - hours * 3600) / 60);
 seconds = elapsed_time - hours * 3600 - minutes * 60;
 fprintf('Total time elapsed: %02d:%02d:%05.2f\n', hours, minutes, seconds);
+
+% Save results to CSV file
+writetable(results_table, 'C:\Users\SAMEER\optimization_results (resolution = 0.001).csv');
+fprintf('Results saved to optimization_results (resolution = 0.001).csv\n');
 
 % Helper function to compute error counts
 function [total_error_counts, VT] = computeErrorCounts(sensor_values, alpha, beta, xi, L_lower, L_upper)

@@ -142,7 +142,7 @@ while True:
         s_bytes = actuation.readline()
         if s_bytes:
             decoded_bytes = s_bytes.decode('utf-8').strip("\n\r")
-            print(decoded_bytes)
+            #print(decoded_bytes)
             lines = decoded_bytes.split(',')
             CO2 = float(lines[0])
             Air_temperature = float(lines[1])
@@ -155,12 +155,13 @@ while True:
         s_bytes_sensing = sensing.readline()
         if s_bytes_sensing:
             decoded_bytes_sensing = s_bytes_sensing.decode('utf-8').strip("\n\r")
-            print(decoded_bytes_sensing)
+            #print(decoded_bytes_sensing)
             lines_sensing = decoded_bytes_sensing.split(',')
             sense_length = len(lines_sensing)
             if sense_length == 3:
                 EC = float(lines_sensing[0])
                 pH = float(lines_sensing[1])
+                pH = round((pH - 0.3), 2)
                 Water_temperature = float(lines_sensing[2])
             if sense_length == 2:
                 pH = lines_sensing[0]
@@ -267,7 +268,6 @@ while True:
             sensing.setDTR(True)
 
     except Exception as e:
-        print("Error happened in code:", e)
         sensing.close()
         actuation.close()
         time.sleep(5)
