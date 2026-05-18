@@ -1,0 +1,8 @@
+name: swat
+domain: secure water treatment
+role: request_access_closed_loop_benchmark
+path: data/raw/swat/
+access: "Request through iTrust; do not redistribute raw files."
+source: https://www.sutd.edu.sg/itrust/itrust-labs/datasets/dataset-characteristics/swat/
+notes: "11 days continuous operation; 7 normal and 4 attack days; 51 sensors/actuators; normal/abnormal labels."
+

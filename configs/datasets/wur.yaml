@@ -1,0 +1,8 @@
+name: wur
+domain: autonomous greenhouse challenge
+role: domain_adjacent_cea_validation
+path: data/raw/wur/
+access: "Use WUR dataset DOI and local placement."
+source: https://research.wur.nl/en/datasets/3rd-autonomous-greenhouse-challenge-time-series-data-on-realized-/
+notes: "Greenhouse climate time series and annotated lettuce images; use for CEA false alarm and synthetic fault validation unless labels support more."
+

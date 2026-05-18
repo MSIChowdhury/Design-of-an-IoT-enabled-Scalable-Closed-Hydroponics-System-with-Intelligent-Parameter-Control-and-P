@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Generated local data and results
+data/raw/**/*
+data/interim/**/*
+data/processed/**/*
+data/synthetic/**/*
+results/metrics/**/*
+results/tables/**/*
+results/figures/**/*
+results/run_metadata/**/*
+
+# Keep placeholders and documentation
+!data/raw/**/
+!data/interim/**/
+!data/processed/**/
+!data/synthetic/**/
+!data/**/.gitkeep
+!data/README.md
+!results/metrics/**/
+!results/tables/**/
+!results/figures/**/
+!results/run_metadata/**/
+!results/**/.gitkeep
+!results/README.md
+
+# Logs and local environments
+*.log
+.env
+.venv/
+venv/

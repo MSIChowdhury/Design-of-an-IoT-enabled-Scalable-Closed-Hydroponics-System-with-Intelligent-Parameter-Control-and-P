@@ -1,0 +1,8 @@
+name: damadics
+domain: industrial actuator/process benchmark
+role: actuator_fault_benchmark
+path: data/raw/damadics/
+access: "Download benchmark files from official DAMADICS page."
+source: https://iair.mchtr.pw.edu.pl/Damadics
+notes: "Lublin Sugar Factory data; fault-free operation, natural faults, and artificial faults."
+

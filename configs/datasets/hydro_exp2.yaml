@@ -1,0 +1,9 @@
+name: hydro_exp2
+domain: closed hydroponic CEA
+role: target_domain_holdout
+path: data/raw/hydroponic/experiment_2.csv
+timestamp_column: timestamp
+sampling_seconds: 15
+labels: data/raw/hydroponic/experiment_2_events.csv
+notes: "Expected from original hydroponic trial logs; not currently committed."
+

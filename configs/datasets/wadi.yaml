@@ -1,0 +1,8 @@
+name: wadi
+domain: water distribution
+role: request_access_distributed_benchmark
+path: data/raw/wadi/
+access: "Request through iTrust; do not redistribute raw files."
+source: https://www.sutd.edu.sg/itrust/itrust-labs/datasets/dataset-characteristics/wadi/
+notes: "16 days operation; 14 normal and 2 attack days; 123 sensors/actuators; labels available in updated files."
+

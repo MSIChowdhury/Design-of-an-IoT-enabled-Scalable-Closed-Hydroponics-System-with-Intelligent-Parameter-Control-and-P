@@ -1,0 +1,53 @@
+import math
+
+from aasvr.core import AASVR, AASVRConfig, SensorConfig
+from aasvr.robust_scale import robust_delta_scale
+from aasvr.states import SensorState
+
+
+def sensor() -> SensorConfig:
+    return SensorConfig(
+        name="pH",
+        physical_min=0,
+        physical_max=14,
+        control_low=5.8,
+        control_high=6.5,
+        rate_limit=0.02,
+        uncertainty=0.01,
+        xi_min=0.05,
+        confirm_samples=2,
+        cooldown_samples=2,
+    )
+
+
+def test_robust_delta_scale_ignores_single_outlier() -> None:
+    scale = robust_delta_scale([1, 1.01, 1.02, 9, 1.03, 1.04])
+    assert math.isfinite(scale)
+    assert scale < 0.05
+
+
+def test_aasvr_rejects_single_physical_range_fault_without_actuation() -> None:
+    model = AASVR(AASVRConfig(sensors=(sensor(),), q_min=0.7))
+    model.update({"timestamp": 1, "pH": 6.1})
+    decision = model.update({"timestamp": 2, "pH": 99})[0]
+    assert decision.gate_result == "reject"
+    assert decision.state == SensorState.SUSPECT_TRANSIENT
+    assert not decision.actuation_authorized
+    assert decision.trusted_value == 6.1
+
+
+def test_aasvr_authorizes_persistent_trusted_control_violation() -> None:
+    model = AASVR(AASVRConfig(sensors=(sensor(),), q_min=0.7))
+    decisions = []
+    for i in range(4):
+        decisions.append(model.update({"timestamp": i, "pH": 6.55})[0])
+    assert any(decision.actuation_authorized for decision in decisions)
+
+
+def test_aasvr_escalates_persistent_fault() -> None:
+    model = AASVR(AASVRConfig(sensors=(sensor(),), persistent_limit=3))
+    model.update({"timestamp": 0, "pH": 6.1})
+    decisions = [model.update({"timestamp": i, "pH": 99})[0] for i in range(1, 5)]
+    assert decisions[-1].state == SensorState.FAULT_ALERT
+    assert decisions[-1].alert
+

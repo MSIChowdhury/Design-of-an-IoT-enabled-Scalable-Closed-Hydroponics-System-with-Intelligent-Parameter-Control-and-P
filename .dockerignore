@@ -7,3 +7,11 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 *.log
+data/raw/
+data/interim/
+data/processed/
+data/synthetic/
+results/metrics/
+results/tables/
+results/figures/
+results/run_metadata/

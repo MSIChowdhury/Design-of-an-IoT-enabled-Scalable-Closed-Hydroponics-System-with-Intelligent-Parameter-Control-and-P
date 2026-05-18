@@ -1,0 +1,87 @@
+\documentclass[preprint,12pt]{elsarticle}
+
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+
+\journal{ISA Transactions}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Actuation-Aware Sensor Validation and Rectification for Fault-Resilient Closed-Loop Measurement and Control}
+
+\begin{abstract}
+Closed-loop automation can convert transient sensor faults into unsafe or unnecessary actuation. This paper proposes AASVR, an actuation-aware sensor validation and rectification method for multivariate measurement/control systems. AASVR combines robust rate/range plausibility gates, state-machine persistence logic, actuator-aware confirmation windows, and bounded rectification before control authorization. The method is evaluated on hydroponic deployment data and benchmarked against conventional filtering and process-monitoring baselines using external closed-loop process-control datasets. Across real and injected faults, AASVR is designed to reduce anomalous pass-through and false actuation while preserving low detection delay and real-time feasibility. The results evaluate whether actuation-aware validation provides a safer measurement-to-control layer for low-cost closed-loop systems.
+\end{abstract}
+
+\begin{keyword}
+sensor validation \sep data rectification \sep fault detection \sep process control \sep hydroponics \sep actuation
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Introduction}
+Closed-loop measurement and control systems continuously convert sensor observations into actuator decisions. In low-cost deployed systems, transient sensor faults can therefore become physical interventions rather than only data-quality problems. This article frames hydroponic controlled-environment agriculture as the primary deployment testbed for a general actuation-aware validation method.
+
+\section{Related Work}
+\subsection{Sensor faults in closed-loop measurement and control}
+\subsection{Filtering and data-rectification methods}
+\subsection{Process-control benchmark datasets}
+\subsection{Hydroponic CEA as a validation testbed}
+
+\section{Problem Formulation}
+\subsection{Measurement stream and trusted state}
+\subsection{Sensor anomaly and actuation-risk definitions}
+\subsection{Control-aware objective function}
+
+\section{Proposed Method: AASVR}
+\subsection{Overview}
+\subsection{Robust plausibility gating}
+\subsection{State-machine persistence logic}
+\subsection{Rectification policy}
+\subsection{Actuation authorization}
+\subsection{Parameter optimization}
+\subsection{Computational complexity}
+
+\section{Materials and Evaluation Protocol}
+\subsection{Hydroponic deployment datasets}
+\subsection{External benchmark datasets}
+\subsection{Synthetic fault injection}
+\subsection{Baseline methods}
+\subsection{Evaluation metrics}
+\subsection{Statistical analysis}
+
+\section{Results}
+\subsection{Hydroponic failure-mode characterization}
+\subsection{Hydroponic replay benchmark}
+\subsection{External benchmark performance}
+\subsection{Synthetic fault-injection robustness}
+\subsection{Ablation and sensitivity analysis}
+\subsection{Runtime feasibility}
+\subsection{Agronomic application demonstration}
+
+\section{Discussion}
+\subsection{Why actuation awareness matters}
+\subsection{Cross-domain generalization}
+\subsection{Practical deployment recommendations}
+\subsection{Limitations}
+
+\section{Conclusion}
+AASVR provides a lightweight actuation-aware measurement validation layer for closed-loop systems. The evaluation is designed to test whether robust measurement validation, state-machine persistence, rectification, and actuation authorization reduce anomaly pass-through and false actuation compared with conventional filtering baselines.
+
+\section*{Data Availability}
+An anonymized supplementary archive will provide code, configuration files, processed-data descriptors, and reproducibility scripts. Restricted third-party datasets are not redistributed; scripts are provided for use after researchers obtain access from the original providers.
+
+\section*{Declaration of Competing Interest}
+To be completed in the separate submission package.
+
+\section*{Declaration of Generative AI and AI-Assisted Technologies}
+To be completed if AI-assisted tools are used in manuscript preparation.
+
+\bibliographystyle{elsarticle-num}
+\bibliography{references}
+
+\end{document}
+

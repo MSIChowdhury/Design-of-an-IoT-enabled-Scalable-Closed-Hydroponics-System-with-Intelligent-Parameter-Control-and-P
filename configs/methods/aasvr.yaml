@@ -1,0 +1,85 @@
+q_min: 0.7
+scale_multiplier: 3.0
+transient_limit: 2
+persistent_limit: 5
+rectification_mode: hold
+sensors:
+  - name: pH
+    physical_min: 0.0
+    physical_max: 14.0
+    control_low: 5.8
+    control_high: 6.5
+    rate_limit: 0.03
+    uncertainty: 0.01
+    xi_min: 0.05
+    window: 9
+    confirm_samples: 3
+    cooldown_samples: 4
+    actuators: ["acid_doser", "base_doser"]
+    expected_direction: bidirectional
+  - name: EC
+    physical_min: 0.0
+    physical_max: 5000.0
+    control_low: 900.0
+    control_high: 1300.0
+    rate_limit: 8.0
+    uncertainty: 5.0
+    xi_min: 20.0
+    window: 9
+    confirm_samples: 3
+    cooldown_samples: 4
+    actuators: ["nutrient_pump", "water_pump"]
+    expected_direction: bidirectional
+  - name: Air_Temp
+    physical_min: -10.0
+    physical_max: 60.0
+    control_low: 20.0
+    control_high: 26.0
+    rate_limit: 0.03
+    uncertainty: 0.2
+    xi_min: 0.2
+    window: 9
+    confirm_samples: 3
+    cooldown_samples: 4
+    actuators: ["fan", "cooler"]
+    expected_direction: decreasing
+  - name: Water_Temp
+    physical_min: 0.0
+    physical_max: 50.0
+    control_low: 18.0
+    control_high: 22.0
+    rate_limit: 0.02
+    uncertainty: 0.2
+    xi_min: 0.2
+    window: 9
+    confirm_samples: 3
+    cooldown_samples: 4
+    actuators: ["water_chiller"]
+    expected_direction: decreasing
+  - name: Water_Level
+    physical_min: 0.0
+    physical_max: 40.0
+    control_low: 8.0
+    control_high: 15.0
+    rate_limit: 0.05
+    uncertainty: 0.2
+    xi_min: 0.2
+    window: 9
+    confirm_samples: 3
+    cooldown_samples: 4
+    actuators: ["reservoir_pump"]
+    expected_direction: increasing
+  - name: CO2
+    physical_min: 250.0
+    physical_max: 5000.0
+    control_low: 700.0
+    control_high: 1200.0
+    rate_limit: 3.0
+    uncertainty: 30.0
+    xi_min: 40.0
+    window: 9
+    confirm_samples: 3
+    cooldown_samples: 4
+    actuators: ["co2_valve", "ventilation_fan"]
+    expected_direction: bidirectional
+

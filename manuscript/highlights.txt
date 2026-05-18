@@ -1,0 +1,6 @@
+- Actuation-aware validation prevents unsafe sensor-driven control.
+- AASVR combines robust gates, persistence states, and rectification.
+- Hydroponic logs and process benchmarks validate the method.
+- False actuation and anomaly pass-through are jointly evaluated.
+- The method is lightweight enough for edge control systems.
+

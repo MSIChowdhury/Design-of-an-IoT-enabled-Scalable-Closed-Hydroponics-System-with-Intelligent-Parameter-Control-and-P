@@ -16,6 +16,10 @@ The research compares the proposed automated treatment against soil-based and ma
 - `Code Files/Jupyter Notebooks/Xgboost Regressor for Automatic Hydroponics System Growth Parameter Control.ipynb`: synthetic dataset generation, XGBoost regressor training/evaluation, hyperparameter search, model export, and model reload examples; expects generated files such as `Sample_Data_5000.csv`, `Sample_Data_50000.csv`, and `xgboost_regressor_model.json`.
 - `Code Files/MATLAB Codes/Error_Resilience_Algorithm_Optimisation.m`: MATLAB optimization script for alpha/beta sensor-error resilience parameters across EC, pH, air temperature, water temperature, water level, and CO2. It currently contains absolute Windows paths for input/output CSVs that should be parameterized before automated container runs.
 - `3D CAD Files/`: SolidWorks parts and assemblies for the hydroponics piping/tube structure. These are binary CAD assets and are not runnable inside the software container.
+- `src/aasvr/`: reproducible Python implementation of Actuation-Aware Sensor Validation and Rectification (AASVR), baseline wrappers, toy data, fault injection, and metrics.
+- `configs/`: YAML manifests for AASVR parameters, baselines, hydroponic datasets, and external process-control benchmark datasets.
+- `scripts/`: reproducible command-line pipeline for dataset checks, toy preparation, method execution, synthetic fault injection, metrics, tables, figures, and manuscript checks.
+- `manuscript/`: ISA Transactions scaffold including anonymized manuscript, title page, highlights, cover letter, data statement, and rewrite notes.
 
 ## Container-First Workflow
 
@@ -49,6 +53,12 @@ Open an interactive project shell:
 docker compose run --rm project-shell
 ```
 
+Run the AASVR toy reproducibility pipeline:
+
+```bash
+docker compose run --rm project-shell make all
+```
+
 Run MATLAB-like scripts with Octave from inside the container when compatible:
 
 ```bash
@@ -65,6 +75,7 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - Record every project-maintenance change in the change log below, including container, documentation, dependency, and workflow updates.
 - Do not commit new secrets. The existing Google service-account JSON appears sensitive; avoid copying it into derived files, logs, screenshots, or documentation.
 - Do not assume missing datasets are available. The notebooks reference CSV files that are not currently present in the repository.
+- Do not commit raw external benchmark datasets, request-access SWaT/WaDi files, or generated large outputs. Use local `data/raw/` placement and scripts/configs to reproduce.
 - Preserve binary CAD files unless the user explicitly asks for CAD changes.
 
 ## Verification Notes
@@ -73,8 +84,10 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - The Docker image includes Python/Jupyter dependencies and GNU Octave for MATLAB-like execution.
 - The static dashboard can be served from `Code Files/Web Interface` through the `web` compose service.
 - Full notebook and MATLAB verification requires the missing CSV datasets referenced above.
+- The AASVR code path supports a toy smoke test with `python scripts/run_all.py --toy` and `make all`.
 
 ## Change Log
 
 - 2026-05-18: Added `AGENTS.md` project memory, container-first workflow, Docker configuration, Python dependency manifest, and Docker ignore rules.
 - 2026-05-18: Documented that every completed change set should be committed, pushed to the configured remote, and recorded in this file.
+- 2026-05-18: Added AASVR research package scaffold, dataset/method configs, reproducible scripts, tests, result/data placeholders, and ISA Transactions manuscript/submission artifacts.

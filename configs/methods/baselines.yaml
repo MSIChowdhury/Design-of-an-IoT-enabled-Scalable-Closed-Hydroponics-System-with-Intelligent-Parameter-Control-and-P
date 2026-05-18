@@ -1,0 +1,19 @@
+required:
+  - raw_threshold
+  - original
+  - moving_average
+  - moving_median
+  - hampel
+  - kalman
+  - ewma
+  - cusum
+  - pca
+optional:
+  - isolation_forest
+  - one_class_svm
+  - local_outlier_factor
+defaults:
+  window: 5
+  threshold_multiplier: 3.0
+  alpha: 0.2
+
