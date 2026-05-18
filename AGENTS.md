@@ -90,6 +90,7 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - Treat `data/raw/hydroponic/Hydroponics Data First Trial.csv` as local raw Experiment 1 data if present. It is ignored by git and should not be committed.
 - Exclude `Water_Level` from primary hydroponic analysis until a defensible calibration/physical mapping is available.
 - Preserve binary CAD files unless the user explicitly asks for CAD changes.
+- Keep `Paper Files/` easy to view and edit after Docker/LaTeX runs: ownership should be the workspace user/group (`vsj23:vsj23` in this checkout), directories should allow `u+rwX,g+rwX,o+rX`, and files should allow user/group writes plus world read access. If Docker creates root-owned LaTeX outputs, repair ownership and permissions before finishing the task.
 
 ## Verification Notes
 
@@ -122,3 +123,4 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - 2026-05-18: Added native-label aggregation-threshold sensitivity analysis for external timestamp-level datasets so HAI/SKAB results report the fixed 30% headline rule plus recall, specificity, and balanced-accuracy tradeoffs across 10%--90% sensor-fraction thresholds.
 - 2026-05-18: Added a new ISA Transactions AASVR paper package under `Paper Files/` with author and blinded LaTeX entry points, focused BibTeX references, TikZ architecture/state-machine diagrams, copied paper figures, manifest, figure audit, editor notes, and Docker/Make TeX build support.
 - 2026-05-18: Replaced the original `Paper Files/elsarticle-template-num.tex` entry point with a compatibility wrapper to the new `main_aasvr.tex` manuscript so the legacy filename opens the current AASVR paper.
+- 2026-05-18: Normalized `Paper Files/` ownership and permissions for easy viewing/editing after Docker-generated LaTeX outputs, and recorded the permission convention as a standing workflow rule.
