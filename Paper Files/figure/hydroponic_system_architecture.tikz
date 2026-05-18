@@ -1,0 +1,42 @@
+\begin{tikzpicture}[node distance=7mm and 8mm]
+\tikzset{
+  block/.style={rectangle, rounded corners=2pt, draw=black!70, line width=0.6pt,
+    minimum width=24mm, minimum height=8mm, align=center, font=\scriptsize, inner sep=3pt},
+  process/.style={block, fill=green!14, draw=green!55!black},
+  sense/.style={block, fill=blue!12, draw=blue!60!black},
+  compute/.style={block, fill=orange!18, draw=orange!70!black},
+  act/.style={block, fill=red!10, draw=red!70!black},
+  data/.style={block, fill=gray!12, draw=black!55},
+  flow/.style={-{Stealth[length=2mm,width=1.5mm]}, line width=0.65pt, draw=black!75},
+  safe/.style={-{Stealth[length=2mm,width=1.5mm]}, dashed, line width=0.65pt, draw=red!75!black},
+  lab/.style={font=\tiny, align=center, fill=white, inner sep=1pt}
+}
+
+\node[process] (gm) {Growth module\\lettuce canopy};
+\node[process, below=13mm of gm] (nscm) {Nutrient-solution\\container module};
+
+\node[sense, left=18mm of gm] (envs) {DHT22, CO2,\\camera};
+\node[sense, left=18mm of nscm] (waters) {pH, EC, water\\temperature, level};
+
+\node[compute, right=19mm of gm] (nano) {Arduino Nano\\sensor acquisition};
+\node[compute, right=of nano] (pi) {Raspberry Pi 4B\\AASVR + control};
+\node[compute, below=13mm of pi] (mega) {Arduino Mega\\actuator interface};
+
+\node[act, right=18mm of mega] (acts) {Dosing pumps,\\chiller, valve,\\air cooler, pump};
+\node[data, above=9mm of pi] (cloud) {ThingSpeak +\\dashboard};
+
+\draw[flow] (gm) -- node[lab, left] {solution return} (nscm);
+\draw[flow] (nscm.east) -- ++(8mm,0) |- node[lab, pos=0.25, right] {recirculation} (gm.east);
+
+\draw[flow] (gm) -- (envs);
+\draw[flow] (nscm) -- (waters);
+\draw[flow] (envs) -- (nano);
+\draw[flow] (waters) -- (nano);
+\draw[flow] (nano) -- node[lab, above] {15 s samples} (pi);
+\draw[flow] (pi) -- node[lab, right] {authorized commands} (mega);
+\draw[flow] (mega) -- (acts);
+\draw[flow] (acts.west) -| node[lab, below] {physical correction} (nscm.east);
+\draw[flow] (acts.north) |- (gm.east);
+\draw[flow] (pi) -- (cloud);
+\draw[safe] (pi.south west) -- node[lab, below] {suppress untrusted actuation} (mega.north west);
+\end{tikzpicture}

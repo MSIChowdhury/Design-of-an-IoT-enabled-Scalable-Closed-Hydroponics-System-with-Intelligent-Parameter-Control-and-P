@@ -11,6 +11,7 @@
 \usepackage{tikz}
 \usepackage{url}
 \usetikzlibrary{arrows.meta,automata,positioning,calc,fit,backgrounds}
+\setlength{\emergencystretch}{2em}
 
 \journal{ISA Transactions}
 
@@ -18,7 +19,7 @@
 
 \begin{frontmatter}
 
-\title{Actuation-Aware Sensor Validation and Rectification for Fault-Resilient Closed-Loop Measurement and Control}
+\title{Actuation-Aware Sensor Validation for Fault-Resilient Closed-Loop Hydroponic Control}
 
 \ifdefined\AASVRBLINDED
 \author{Author information removed for double-anonymized review}
@@ -34,7 +35,7 @@
 \fi
 
 \begin{abstract}
-Closed-loop automation can convert transient sensor faults into unnecessary actuation. We propose AASVR, an actuation-aware sensor validation and rectification method for measurement/control systems. AASVR combines robust range and rate gates, uncommanded-trend checks, state-machine persistence logic, bounded rectification, and actuation authorization. We evaluate the method on hydroponic deployment data with injected faults and on public HAI and SKAB process datasets using conventional filtering and monitoring baselines. In hydroponic replay, AASVR achieved 0.859 balanced accuracy and reduced mean false actuation to 0.145 events per trial. SKAB and HAI results show useful cross-domain transfer, but also reveal threshold-dependent specificity. The results support actuation-aware validation as a lightweight safety layer for low-cost closed-loop systems.
+Closed-loop hydroponic systems can convert transient sensor faults into unnecessary dosing, cooling, pumping, or carbon dioxide actuation. This paper presents a fault-resilient hydroponic control system whose central method is AASVR, an actuation-aware sensor validation and rectification layer. AASVR combines robust range and rate gates, uncommanded-trend checks, persistence states, bounded rectification, and actuation authorization. The system is evaluated on hydroponic deployment data with injected faults and on public HAI and SKAB process datasets. In hydroponic replay, AASVR achieved 0.859 balanced accuracy and reduced mean false actuation to 0.145 events per trial. The results support actuation-aware validation as a practical safety layer for low-cost hydroponic automation.
 \end{abstract}
 
 \begin{keyword}
@@ -44,13 +45,15 @@ sensor validation \sep data rectification \sep fault detection \sep process cont
 \end{frontmatter}
 
 \section{Introduction}
-Closed-loop measurement and control systems convert sensor observations into actuator decisions. In this setting, a faulty measurement is not only a data-quality issue. It can become a physical command that doses acid, changes pumping, starts cooling, or otherwise perturbs the process. We study this problem in a hydroponic controlled-environment agriculture system, where low-cost sensors and slow plant-relevant dynamics make fault rejection and control safety tightly coupled.
+Hydroponic controlled-environment systems depend on continuous measurement and actuation. In a recirculating Nutrient Film Technique (NFT) installation, the same data stream that describes pH, electrical conductivity (EC), air temperature, humidity, water temperature, water level, and carbon dioxide (CO2) can also trigger dosing pumps, chillers, valves, cooling devices, and circulation equipment. A faulty measurement is therefore not only a data-quality issue. It can become a physical command that perturbs the nutrient solution or growth environment.
 
-Conventional filtering methods are useful, but they usually ask whether a measurement looks noisy or anomalous in the signal domain. They do not directly ask whether the value is trustworthy enough to update the control state or authorize an actuator. We therefore introduce \emph{actuation-aware sensor validation and rectification} as the central problem. The key observation is simple: the validation layer should distinguish values that may be logged for diagnosis from values that may safely drive actuation.
+This coupling is especially important in low-cost hydroponic deployments because sensors may spike, drift, saturate, drop out, or respond slowly after a real actuator command. A single high-pH spike should not immediately authorize acid dosing; a temporary EC excursion should not be treated the same as a persistent concentration shift; and water-level values without defensible calibration should not be allowed to dominate the control analysis. These examples motivate a validation layer that is aware of the downstream actuation decision.
 
-We propose AASVR, an online method that combines robust plausibility gates, persistence states, bounded rectification, and actuation authorization. Hydroponics is used as the primary deployment testbed because the same measurement stream affects pH, electrical conductivity, temperature, humidity, and carbon dioxide control. Public HAI and SKAB datasets are used as external stress tests for the same validation interface. These external datasets are not used to make agronomic claims.
+Conventional filtering methods are useful, but they usually ask whether a measurement looks noisy or anomalous in the signal domain. They do not directly ask whether the value is trustworthy enough to update the control state or authorize an actuator. We therefore introduce \emph{actuation-aware sensor validation and rectification} as the central problem for fault-resilient hydroponic control. The key observation is that a value may be worth logging for diagnosis while still being too untrusted to drive a pump, valve, or cooler.
 
-The contributions are as follows. First, we formulate sensor-fault handling in closed-loop systems as an actuation-aware validation and rectification problem. Second, we implement AASVR as a streaming state-machine method with bounded updates and explicit actuation authorization. Third, we evaluate the method on real hydroponic time series with synthetic faults, ablations, and public external benchmarks. Fourth, we provide a reproducible Docker and LaTeX workflow with dataset descriptors and paper-generation artifacts.
+We present a closed-loop NFT hydroponic system as the primary engineered platform and propose AASVR as its central fault-resilience method. AASVR combines robust plausibility gates, persistence states, bounded rectification, and explicit actuation authorization. Public HAI and SKAB process datasets are used as external stress tests for the same validation interface, but they are not used to make agronomic claims.
+
+The contributions are as follows. First, we describe an integrated closed-loop hydroponic sensing and control platform with separate growth and nutrient-solution modules. Second, we formulate sensor-fault handling in that platform as an actuation-aware validation and rectification problem. Third, we implement AASVR as a streaming state-machine method with bounded updates and explicit actuation authorization. Fourth, we evaluate the method on real hydroponic time series with synthetic faults, ablations, and public external benchmarks. Fifth, we provide a reproducible Docker and LaTeX workflow with dataset descriptors and paper-generation artifacts.
 
 \section{Related Work}
 \subsection{Sensor faults in closed-loop systems}
@@ -62,8 +65,56 @@ The baseline family used in this paper covers common online filters and process-
 \subsection{External process datasets}
 Public process datasets provide independent stress tests for measurement validation. HAI 21.03 contains industrial-control attack data from a hardware-in-the-loop testbed \cite{shin2021haicon}. SKAB contains multivariate process-loop experiments with anomaly and changepoint labels \cite{skab2020}. SWaT, WaDi, and Tennessee Eastman are relevant larger benchmarks, but the current paper reports only the public benchmark paths that are already processed in this repository \cite{swatDataset,wadiDataset,tepDataset}.
 
+\section{Hydroponic System Design and Deployment}
+The target platform is a closed NFT hydroponic system for lettuce growth. It is organized into two physical modules. The Growth Module houses the plants, lighting, air-temperature and humidity sensing, CO2 sensing, visual monitoring, and environmental actuation. The Nutrient Solution Container Module stores and recirculates the nutrient solution and contains the water-quality sensors and nutrient-solution actuators.
+
+\begin{figure*}[t]
+\centering
+\resizebox{0.98\textwidth}{!}{\input{figure/hydroponic_system_architecture.tikz}}
+\caption{Hydroponic system architecture used as the primary deployment platform. Sensors in the Growth Module and Nutrient Solution Container Module are acquired through the Arduino Nano and sent to the Raspberry Pi 4B at approximately 15-second cadence. The Raspberry Pi logs data, updates the dashboard, runs the validation/control logic, and sends only authorized commands to the Arduino Mega actuator interface. AASVR is positioned between raw sensing and actuation so that untrusted values can be logged without directly triggering pumps, valves, chillers, or cooling devices.}
+\label{fig:hydro_system}
+\end{figure*}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{figure/fullsystemactual.JPG}
+\caption{Physical hydroponic system during operation. The photograph is included to show that the evaluation data come from a deployed closed-loop apparatus rather than from a purely simulated process.}
+\label{fig:system_photo}
+\end{figure}
+
+The Growth Module uses a DHT22 sensor for air temperature and humidity and an MH-Z19C nondispersive infrared CO2 sensor for gas concentration. CO2 regulation is implemented through a normally closed pneumatic solenoid valve connected to a CO2 cylinder. Air-temperature regulation is supported by a thermoelectric cooler. Two 40 W LED grow-light arrays provide a controlled light cycle, and a camera provides visual monitoring of the crop during the growth cycle.
+
+The Nutrient Solution Container Module uses an Atlas Scientific analog pH kit, an Atlas Scientific Mini Conductivity K 1.0 kit for EC, a water-temperature sensor, and a JSN-SR04T waterproof ultrasonic distance sensor for water level. pH correction is implemented through acid/base dosing, and EC correction through concentrated nutrient solution or distilled-water addition. After a pH or EC dosing action, the dosing subsystem is disabled for a 10-minute mixing interval before further dosing is allowed. A refrigerative water chiller regulates nutrient-solution temperature, an aerator runs throughout the growth cycle to support dissolved oxygen, and a water pump recirculates nutrient solution through the NFT channels.
+
+The control unit connects sensors to an Arduino Nano and actuators to an Arduino Mega. Both microcontrollers communicate with a Raspberry Pi 4 Model B, which serves as the central control computer. The Raspberry Pi receives median-filtered sensor readings from the Arduino Nano, logs the readings, updates the ThingSpeak-backed dashboard, applies the validation/control logic, and sends authorized actuation commands to the Arduino Mega. The dashboard and camera feed are retained as deployment infrastructure; they are not claimed as the research contribution of this paper.
+
+\begin{table}[t]
+\centering
+\caption{Hydroponic platform components relevant to measurement validation and actuation. Water level is listed because it is part of the deployed system, but it is excluded from the primary quantitative analysis because the available raw values are not defensibly calibrated.}
+\label{tab:system_components}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lll}
+\toprule
+Subsystem & Measurements & Actuation or use \\
+\midrule
+Growth module & Air temperature, humidity & Thermoelectric cooling \\
+Growth module & CO2 concentration & CO2 solenoid valve \\
+Growth module & Camera feed & Visual crop monitoring \\
+Growth module & Light schedule & LED grow lights \\
+Solution module & pH & Acid/base dosing, 10 min lockout \\
+Solution module & EC & Nutrient/water dosing, 10 min lockout \\
+Solution module & Water temperature & Refrigerative chiller \\
+Solution module & Water level & Warning only in this analysis \\
+Solution module & Recirculation state & Pump and aerator operation \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+This architecture makes sensor validation a control-safety problem. A conventional smoother can reduce noise, but it does not decide whether a measurement is safe enough to authorize acid dosing, nutrient dosing, CO2 release, or cooling. AASVR is therefore introduced as a layer between the sensing loop and the actuator loop, rather than as an offline data-cleaning step.
+
 \section{Problem Formulation}
-For sensor $s$ at time $t$, let $y_s(t)$ be the raw measurement and $\hat{x}_s(t)$ be the trusted value exposed to control. The method observes recent history $Y_s(t-w:t)$, broad physical limits $[P_{s,\min},P_{s,\max}]$, a control band $[L_s^a,U_s^a]$, a rate limit $r_s$, and any available actuator state $a(t)$.
+For hydroponic sensor $s$ at time $t$, let $y_s(t)$ be the raw measurement and $\hat{x}_s(t)$ be the trusted value exposed to control. The method observes recent history $Y_s(t-w:t)$, broad physical limits $[P_{s,\min},P_{s,\max}]$, a control band $[L_s^a,U_s^a]$, a rate limit $r_s$, and any available actuator state $a(t)$. In this system, $s$ may correspond to pH, EC, humidity, air temperature, water temperature, or CO2, while $a(t)$ may represent dosing, cooling, circulation, or gas-release activity.
 
 We define a measurement as \emph{untrusted} when it is missing, physically implausible, rate-inconsistent, inconsistent with recent trusted state, or inconsistent with expected actuator effects. We define a \emph{false actuation} as an authorization caused by untrusted evidence. A \emph{missed actuation} is a failure to authorize action when the trusted state remains outside the control band.
 
@@ -80,7 +131,7 @@ where the terms respectively measure anomalous pass-through, false rejection, fa
 
 \section{Proposed Method: AASVR}
 \subsection{Overview}
-Figure~\ref{fig:architecture} summarizes the AASVR pipeline. The method separates four decisions that are often conflated: measurement validation, trusted-state update, rectification, and actuation authorization. This separation is the core design choice.
+Figure~\ref{fig:architecture} summarizes the AASVR pipeline. The method separates four decisions that are often conflated: measurement validation, trusted-state update, rectification, and actuation authorization. This separation is the core design choice. In the hydroponic system, this means that a suspicious pH value can be stored with a diagnostic flag while acid/base dosing remains suppressed until the value is persistent and trusted.
 
 \begin{figure*}[t]
 \centering
@@ -98,10 +149,10 @@ The accepted deviation tolerance is
 \begin{equation}
 \xi_s(t)=\max(\xi_{s,\min},c_s\sigma_{\Delta,s}(t),r_s\Delta t,u_s).
 \end{equation}
-A reading must satisfy broad physical range, maximum rate, and trusted-state deviation gates. A separate trend guard rejects slow monotonic movement when no relevant actuator activity explains the direction of change.
+A reading must satisfy broad physical range, maximum rate, and trusted-state deviation gates. A separate trend guard rejects slow monotonic movement when no relevant actuator activity explains the direction of change. The broad physical range is deliberately different from the crop-control band: for example, a pH value can be undesirable for lettuce while still being physically possible and therefore not automatically a sensor fault.
 
 \subsection{State-machine persistence logic}
-Figure~\ref{fig:state_machine} shows the five persistence states. A single failed gate moves a sensor into a suspect transient state. Repeated failures create a persistent-deviation state. Consistent evidence can be accepted as a new process regime, while missing, stuck, saturated, or contradictory readings escalate to fault alert.
+Figure~\ref{fig:state_machine} shows the five persistence states. A single failed gate moves a sensor into a suspect transient state. Repeated failures create a persistent-deviation state. Consistent evidence can be accepted as a new process regime, while missing, stuck, saturated, or contradictory readings escalate to fault alert. This matters for hydroponics because real mixing and thermal responses can take multiple samples after dosing or cooling, whereas isolated spikes should not immediately change the trusted state.
 
 \begin{figure}[t]
 \centering
@@ -111,7 +162,7 @@ Figure~\ref{fig:state_machine} shows the five persistence states. A single faile
 \end{figure}
 
 \subsection{Rectification and actuation authorization}
-When a reading is accepted, AASVR sets $\hat{x}_s(t)=y_s(t)$. When it is suspect, the method either holds $\hat{x}_s(t-1)$ or applies a bounded update limited by $r_s\Delta t$. Actuation is authorized only if the trusted value is outside the control band, the violation persists for the configured number of samples, the sensor state is normal or accepted-regime-shift, the trust score is sufficient, and the actuator is not in cooldown.
+When a reading is accepted, AASVR sets $\hat{x}_s(t)=y_s(t)$. When it is suspect, the method either holds $\hat{x}_s(t-1)$ or applies a bounded update limited by $r_s\Delta t$. Actuation is authorized only if the trusted value is outside the control band, the violation persists for the configured number of samples, the sensor state is normal or accepted-regime-shift, the trust score is sufficient, and the actuator is not in cooldown. For pH and EC, this rule complements the 10-minute dosing lockout already present in the deployed system; for CO2 and temperature, it prevents transient readings from becoming immediate gas-release or cooling commands.
 
 \begin{algorithm}[t]
 \caption{Streaming AASVR update for one sensor}
@@ -133,9 +184,9 @@ When a reading is accepted, AASVR sets $\hat{x}_s(t)=y_s(t)$. When it is suspect
 \end{algorithmic}
 \end{algorithm}
 
-\section{Materials and Evaluation Protocol}
+\section{Evaluation Protocol}
 \subsection{Hydroponic deployment data}
-The hydroponic data contain 121244 raw rows collected from 2024-02-27 to 2024-03-28 at a median cadence of approximately 16 seconds. The primary analysis uses electrical conductivity, pH, humidity, air temperature, water temperature, and carbon dioxide. Water level is excluded because the available raw values are not defensibly calibrated.
+The hydroponic data contain 121244 raw rows collected from 2024-02-27 to 2024-03-28 at a median cadence of approximately 16 seconds. The primary analysis uses EC, pH, humidity, air temperature, water temperature, and CO2. Water level is part of the deployed system but is excluded from the primary analysis because the available raw values are not defensibly calibrated.
 
 \subsection{External benchmarks}
 HAI 21.03 and SKAB are used as public external stress tests. HAI labels are timestamp-level attack indicators over an industrial-control testbed. SKAB labels are timestamp-level anomaly indicators over process-loop experiments. For these datasets, a timestamp is predicted abnormal when at least 30\% of sensor streams reject or alert. We also report a threshold sensitivity sweep from 10\% to 90\%.
@@ -144,6 +195,30 @@ HAI 21.03 and SKAB are used as public external stress tests. HAI labels are time
 The baselines are raw thresholding, the original manuscript method, moving average, moving median, Hampel, Kalman, EWMA, CUSUM, and PCA-style monitoring. The hydroponic synthetic-fault benchmark reports precision, recall, specificity, balanced accuracy, event recall, detection delay, false alarm events, and false actuation. Native-label external benchmarks report timestamp-level precision, recall, specificity, and balanced accuracy.
 
 \section{Results}
+\subsection{Hydroponic deployment characterization}
+The deployment data are first used to characterize the real measurement background on which AASVR operates. The 121244-row feed covers a continuous 30-day lettuce growth period, with approximately 16-second median sampling. The key point for this paper is not that the dashboard collected data, but that the closed-loop system generated the kind of sensor-to-actuator stream in which a bad reading can trigger a physical correction.
+
+\begin{table}[t]
+\centering
+\caption{Hydroponic measurement streams used in the primary AASVR analysis. The table separates deployed sensing from quantitative use so that the water-level exclusion is explicit rather than hidden.}
+\label{tab:hydro_streams}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llll}
+\toprule
+Variable & Module & Primary analysis & Control relevance \\
+\midrule
+EC & Solution & Yes & Nutrient/water dosing evidence \\
+pH & Solution & Yes & Acid/base dosing evidence \\
+Humidity & Growth & Yes & Growth-environment monitoring \\
+Air temperature & Growth & Yes & Air-cooling evidence \\
+Water temperature & Solution & Yes & Chiller evidence \\
+CO2 & Growth & Yes & CO2 valve evidence \\
+Water level & Solution & No & Warning channel; calibration unresolved \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
 \subsection{Hydroponic synthetic-fault benchmark}
 Table~\ref{tab:hydro_synth} summarizes the primary target-domain result. AASVR achieved the highest balanced accuracy and the lowest mean false-actuation count among the compared methods. The absolute precision is low because the injected faults occupy a small fraction of all sensor-samples, so balanced accuracy, recall, specificity, and false actuation are more informative for the control-safety question.
 
@@ -200,8 +275,18 @@ Bounded prediction mode & 0.810 & 0.734 & 0.476 \\
 \end{tabular}
 \end{table}
 
-\subsection{External benchmark performance}
-Table~\ref{tab:external} reports the fixed 30\% native-label protocol for HAI and SKAB. AASVR ranks first on both datasets under this fixed rule, but the nature of the result differs. HAI has high specificity and modest recall, while SKAB has high recall and low specificity.
+\subsection{Representative hydroponic trace}
+Figure~\ref{fig:ph_trace} shows a pH replay segment. The trace is included to connect the aggregate benchmark to the actual deployment setting. It illustrates the measurement-to-state transformation that precedes any actuation decision.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{figure/hydro_exp1_ph_trace.png}
+\caption{Representative pH replay from the hydroponic deployment data. The raw stream and AASVR trusted estimate are plotted over an early segment of the experiment. The figure is not used as a ground-truth fault label; it is included to show how the method exposes a trusted state rather than passing every raw measurement directly to the controller.}
+\label{fig:ph_trace}
+\end{figure}
+
+\subsection{External benchmark stress tests}
+Table~\ref{tab:external} reports the fixed 30\% native-label protocol for HAI and SKAB. These datasets are included after the hydroponic results because they are supporting stress tests, not replacements for the target system. AASVR ranks first on both datasets under this fixed rule, but the nature of the result differs. HAI has high specificity and modest recall, while SKAB has high recall and low specificity.
 
 \begin{table}[t]
 \centering
@@ -233,28 +318,28 @@ SKAB & Kalman & 0.376 & 0.975 & 0.349 & 0.662 \\
 \label{fig:rank}
 \end{figure}
 
-\subsection{Representative hydroponic trace}
-Figure~\ref{fig:ph_trace} shows a pH replay segment. The trace is included to connect the aggregate benchmark to the actual deployment setting. It illustrates the measurement-to-state transformation that precedes any actuation decision.
+\subsection{Agronomic operation evidence}
+The lettuce growth trials are retained as deployment evidence, not as causal proof that AASVR improved crop yield. The automated treatment differed from the soil and manual DWC controls in enclosure, lighting, cooling, nutrient delivery, CO2 regulation, and automation. The agronomic comparison therefore shows that the system operated through complete growth cycles while supporting the method evaluation; it is not used to isolate the effect of the validation algorithm.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.9\linewidth]{figure/hydro_exp1_ph_trace.png}
-\caption{Representative pH replay from the hydroponic deployment data. The raw stream and AASVR trusted estimate are plotted over an early segment of the experiment. The figure is not used as a ground-truth fault label; it is included to show how the method exposes a trusted state rather than passing every raw measurement directly to the controller.}
-\label{fig:ph_trace}
+\includegraphics[width=0.9\linewidth]{figure/agronomic_parameters_violinplots_new.pdf}
+\caption{Agronomic measurements from the hydroponic deployment and comparison treatments. These data are included as secondary operation evidence for the closed-loop hydroponic platform. They are not interpreted as causal evidence that AASVR alone improved plant growth because multiple system-level factors differ between treatments.}
+\label{fig:agronomic}
 \end{figure}
 
 \section{Discussion}
 \subsection{Why actuation awareness matters}
-The ablation results show why actuation-aware validation should be evaluated with control metrics. A detector can produce the same point-wise score while changing the number of authorized actuator events. For hydroponic systems, this distinction is practical because unnecessary dosing or cooling can disturb the process even if the signal-level anomaly score appears acceptable.
+The ablation results show why actuation-aware validation should be evaluated with control metrics. A detector can produce the same point-wise score while changing the number of authorized actuator events. For hydroponic systems, this distinction is practical because unnecessary acid/base dosing, nutrient dosing, CO2 release, or cooling can disturb the process even if the signal-level anomaly score appears acceptable.
 
 \subsection{Cross-domain generalization}
 The external benchmark results support a cautious generalization claim. AASVR can run on independent industrial-control and process-loop datasets with the same streaming interface. However, HAI attacks and SKAB process anomalies are not identical to low-cost hydroponic sensor faults. The external results therefore test robustness of the validation principle, not agronomic performance.
 
 \subsection{Limitations}
-The hydroponic experiment does not provide independent reference instruments for every sensor at every time point. Synthetic fault injection is therefore necessary for controlled scoring, but injected faults cannot cover every real failure mode. The external datasets use timestamp-level labels, so the multivariate aggregation threshold affects the result. Crop outcomes are treated only as deployment context because enclosure, lighting, cooling, nutrient delivery, carbon dioxide regulation, and automation are confounded.
+The hydroponic experiment does not provide independent reference instruments for every sensor at every time point. Synthetic fault injection is therefore necessary for controlled scoring, but injected faults cannot cover every real failure mode. The external datasets use timestamp-level labels, so the multivariate aggregation threshold affects the result. Water level is excluded from primary analysis because the available raw values are not defensibly calibrated. Crop outcomes are treated only as deployment context because enclosure, lighting, cooling, nutrient delivery, carbon dioxide regulation, and automation are confounded.
 
 \section{Conclusion}
-We proposed AASVR, an actuation-aware sensor validation and rectification method for closed-loop measurement and control systems. The method separates validation, state update, rectification, and actuation authorization so that untrusted measurements can be logged without directly driving the controller. On hydroponic synthetic faults, AASVR improved balanced accuracy and reduced false actuation compared with conventional baselines. Public SKAB and HAI benchmarks show that the same interface transfers to external process data, while also exposing threshold-dependent tradeoffs that should be reported rather than hidden.
+We presented a closed-loop hydroponic control system and proposed AASVR as its actuation-aware sensor validation and rectification layer. The method separates validation, state update, rectification, and actuation authorization so that untrusted measurements can be logged without directly driving physical commands. On hydroponic synthetic faults, AASVR improved balanced accuracy and reduced false actuation compared with conventional baselines. Public SKAB and HAI benchmarks show that the same interface transfers to external process data while exposing threshold-dependent tradeoffs that should be reported rather than hidden.
 
 \section*{Data Availability}
 The repository contains code, configuration files, processed-data descriptors, Docker workflow files, and paper-generation assets. Raw hydroponic and external benchmark files are not committed to the repository. Public datasets can be obtained from their original providers, and request-access datasets should be obtained under the providers' terms.

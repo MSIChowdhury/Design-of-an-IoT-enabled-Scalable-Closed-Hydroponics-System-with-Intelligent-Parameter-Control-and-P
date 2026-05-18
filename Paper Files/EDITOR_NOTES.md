@@ -1,6 +1,7 @@
 # Editor Notes
 
-- The current paper draft is method-focused and intentionally demotes the web dashboard, XGBoost classifier, and crop-yield superiority claims.
+- The current paper draft is hydroponic-system first while keeping AASVR as the research contribution. It intentionally demotes the web dashboard, XGBoost classifier, and crop-yield superiority claims.
+- The NFT platform, sensors, actuators, Raspberry Pi/Arduino control stack, and deployment photograph should remain visible before the abstract AASVR formulation.
 - Hydroponic water level is excluded from primary analysis because the raw values are not defensibly calibrated.
 - Hydroponic scoring relies on synthetic fault injection over real signal backgrounds because independent reference instruments are unavailable for every sensor at every time point.
 - HAI and SKAB are external stress tests, not evidence that hydroponic sensor faults and cyber-physical attacks are identical.
