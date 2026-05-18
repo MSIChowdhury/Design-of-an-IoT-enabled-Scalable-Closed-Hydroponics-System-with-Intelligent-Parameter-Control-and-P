@@ -1,4 +1,4 @@
-.PHONY: test smoke prepare evaluate figures manuscript-check real all stats subset-protocol
+.PHONY: test smoke prepare evaluate figures manuscript-check paper real all stats subset-protocol
 
 PYTHON ?= python
 
@@ -31,6 +31,10 @@ subset-protocol:
 
 manuscript-check:
 	$(PYTHON) scripts/check_manuscript.py
+
+paper:
+	cd "Paper Files" && latexmk -pdf -interaction=nonstopmode -halt-on-error main_aasvr.tex
+	cd "Paper Files" && latexmk -pdf -interaction=nonstopmode -halt-on-error main_aasvr_blinded.tex
 
 real:
 	$(PYTHON) scripts/run_all.py --available-real

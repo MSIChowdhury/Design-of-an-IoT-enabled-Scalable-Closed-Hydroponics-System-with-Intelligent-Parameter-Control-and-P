@@ -40,3 +40,19 @@ data/raw/**/.git/
 .env
 .venv/
 venv/
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.lof
+*.lot
+*.out
+*.run.xml
+*.spl
+*.synctex.gz
+*.toc

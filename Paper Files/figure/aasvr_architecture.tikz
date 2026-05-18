@@ -1,0 +1,41 @@
+\begin{tikzpicture}[node distance=7mm and 9mm]
+\tikzset{
+  block/.style={rectangle, rounded corners=2pt, draw=black!70, line width=0.6pt,
+    minimum width=21mm, minimum height=8mm, align=center, font=\scriptsize, inner sep=3pt},
+  input/.style={block, fill=blue!12, draw=blue!60!black},
+  module/.style={block, fill=orange!18, draw=orange!70!black},
+  output/.style={block, fill=green!16, draw=green!55!black},
+  danger/.style={block, fill=red!12, draw=red!70!black},
+  flow/.style={-{Stealth[length=2mm,width=1.5mm]}, line width=0.65pt, draw=black!75},
+  suppress/.style={-{Stealth[length=2mm,width=1.5mm]}, dashed, line width=0.65pt, draw=red!75!black},
+  note/.style={font=\scriptsize, align=center, text=black!75}
+}
+
+\node[input] (raw) {Raw sensor\\$y_s(t)$};
+\node[module, right=of raw] (gate) {Robust\\plausibility gate};
+\node[module, right=of gate] (state) {Persistence\\state machine};
+\node[module, right=of state] (rect) {Bounded\\rectification};
+\node[output, right=of rect] (trusted) {Trusted state\\$\hat{x}_s(t)$};
+
+\node[module, below=10mm of state] (auth) {Actuation\\authorization};
+\node[output, right=of auth] (act) {Controller and\\actuator};
+\node[input, below=10mm of auth] (process) {Closed-loop\\process};
+\node[danger, below=10mm of gate] (fault) {Suppress, log,\\or alert};
+
+\draw[flow] (raw) -- (gate);
+\draw[flow] (gate) -- node[above, font=\tiny] {accepted/suspect} (state);
+\draw[flow] (state) -- (rect);
+\draw[flow] (rect) -- (trusted);
+\draw[flow] (trusted.south) |- (auth.east);
+\draw[flow] (auth) -- node[above, font=\tiny] {$A_s(t)=1$} (act);
+\draw[flow] (act.south) |- (process.east);
+\draw[flow] (process.west) -| node[pos=0.25, left, font=\tiny] {new sample} (raw.south);
+
+\draw[suppress] (gate.south) -- (fault.north);
+\draw[suppress] (state.south west) -- (fault.north east);
+\draw[suppress] (fault.east) -- node[below, font=\tiny] {$A_s(t)=0$} (auth.west);
+
+\node[note, above=4mm of gate] {measurement validation};
+\node[note, above=4mm of rect] {state update};
+\node[note, below=4mm of auth] {control-aware decision};
+\end{tikzpicture}
