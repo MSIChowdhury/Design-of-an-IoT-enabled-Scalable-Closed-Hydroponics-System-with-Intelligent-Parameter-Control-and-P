@@ -111,3 +111,4 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - 2026-05-17: Added the next robustness iteration: AASVR ablations, bootstrap uncertainty, method ranking, sensor-wise/fault-type analysis outputs, and real-pipeline table/figure hooks.
 - 2026-05-17: Made `scripts/` importable during pytest by adding package metadata and including the repo root on pytest's Python path.
 - 2026-05-17: Removed a stale unused tuning-script import so the project lint check passes for the analysis pipeline.
+- 2026-05-17: Added an uncommanded-trend guard to AASVR for slow monotonic drift faults that stay inside physical range and per-sample rate gates, plus an ablation variant that disables the guard.

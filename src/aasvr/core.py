@@ -6,7 +6,7 @@ from typing import Any
 
 import numpy as np
 
-from aasvr.robust_scale import tolerance
+from aasvr.robust_scale import robust_delta_scale, tolerance
 from aasvr.states import SensorState
 
 
@@ -23,6 +23,9 @@ class SensorConfig:
     window: int = 9
     confirm_samples: int = 3
     cooldown_samples: int = 3
+    trend_window: int = 9
+    trend_threshold_multiplier: float = 1.0
+    trend_min_monotonic_fraction: float = 0.75
     actuators: tuple[str, ...] = ()
     expected_direction: str = "unknown"
 
@@ -132,6 +135,10 @@ class AASVR:
                 reasons.append("rate_limit")
                 plausible = False
 
+        if plausible and self._uncommanded_trend(runtime, sample, y, xi):
+            reasons.append("uncommanded_trend")
+            plausible = False
+
         actuator_consistency = self._actuator_consistency(runtime, sample, y)
 
         if plausible:
@@ -220,12 +227,14 @@ class AASVR:
         range_score = 0.0 if "physical_range" in reasons else 1.0
         rate_score = 0.0 if "rate_limit" in reasons else 1.0
         delta_score = 0.0 if "trusted_delta" in reasons else 1.0
+        trend_score = 0.0 if "uncommanded_trend" in reasons else 1.0
         missing_score = 0.0 if "missing" in reasons else 1.0
         persistence_score = float(np.clip(1.0 - 0.2 * runtime.failed_count, 0.0, 1.0))
         plausibility_score = 1.0 if plausible else 0.35 * min(
             range_score,
             rate_score,
             delta_score,
+            trend_score,
             missing_score,
         )
         weighted = (
@@ -241,11 +250,40 @@ class AASVR:
         components = (
             f"range={range_score:.3f}",
             f"rate={rate_score:.3f}",
+            f"trend={trend_score:.3f}",
             f"persistence={persistence_score:.3f}",
             f"actuator_consistency={actuator_consistency:.3f}",
             f"missingness={missing_score:.3f}",
         )
         return float(np.clip(score, 0.0, 1.0)), components
+
+    def _uncommanded_trend(
+        self,
+        runtime: _SensorRuntime,
+        sample: dict[str, Any],
+        y: float,
+        xi: float,
+    ) -> bool:
+        cfg = runtime.config
+        if cfg.trend_window <= 1 or self._has_active_actuator(cfg, sample):
+            return False
+        values = [value for value in list(runtime.history)[-(cfg.trend_window - 1) :] if np.isfinite(value)]
+        values.append(y)
+        if len(values) < cfg.trend_window:
+            return False
+        arr = np.asarray(values, dtype=float)
+        net_delta = arr[-1] - arr[0]
+        local_scale = robust_delta_scale(arr)
+        threshold = max(cfg.xi_min, cfg.uncertainty, cfg.trend_threshold_multiplier * local_scale)
+        if abs(net_delta) <= threshold:
+            return False
+        diffs = np.diff(arr)
+        if not np.any(np.abs(diffs) > max(cfg.uncertainty, cfg.xi_min) * 0.1):
+            return False
+        direction = np.sign(net_delta)
+        same_direction = np.sum(np.sign(diffs) == direction)
+        monotonic_fraction = same_direction / max(len(diffs), 1)
+        return bool(monotonic_fraction >= cfg.trend_min_monotonic_fraction)
 
     def _actuator_consistency(
         self,
@@ -256,8 +294,7 @@ class AASVR:
         cfg = runtime.config
         if not cfg.actuators or runtime.last_raw_value is None or not np.isfinite(y):
             return 1.0
-        active = any(_truthy(sample.get(actuator)) for actuator in cfg.actuators)
-        if not active:
+        if not self._has_active_actuator(cfg, sample):
             return 1.0
         delta = y - runtime.last_raw_value
         if cfg.expected_direction == "decreasing":
@@ -265,6 +302,9 @@ class AASVR:
         if cfg.expected_direction == "increasing":
             return 1.0 if delta >= -max(cfg.uncertainty, cfg.xi_min) else 0.0
         return 1.0 if abs(delta) <= max(cfg.rate_limit * self.dt_seconds, cfg.xi_min) else 0.5
+
+    def _has_active_actuator(self, cfg: SensorConfig, sample: dict[str, Any]) -> bool:
+        return bool(cfg.actuators and any(_truthy(sample.get(actuator)) for actuator in cfg.actuators))
 
     def _authorize(self, runtime: _SensorRuntime, trust_score: float) -> bool:
         cfg = runtime.config

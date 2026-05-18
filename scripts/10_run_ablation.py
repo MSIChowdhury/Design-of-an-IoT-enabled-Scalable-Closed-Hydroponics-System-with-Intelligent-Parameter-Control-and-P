@@ -113,11 +113,13 @@ def _primary_sensor_config(config: AASVRConfig) -> AASVRConfig:
 def _ablation_variants(config: AASVRConfig) -> list[tuple[str, AASVRConfig, str]]:
     no_confirmation = replace(config, sensors=_replace_sensors(config.sensors, confirm_samples=1))
     no_cooldown = replace(config, sensors=_replace_sensors(config.sensors, cooldown_samples=0))
+    no_trend_guard = replace(config, sensors=_replace_sensors(config.sensors, trend_window=0))
     slow_escalation = replace(config, transient_limit=999, persistent_limit=1000)
     return [
         ("full_aasvr", config, "gate_reject"),
         ("alert_only_scoring", config, "alert"),
         ("no_robust_mad_scale", replace(config, scale_multiplier=0.0), "gate_reject"),
+        ("no_uncommanded_trend_guard", no_trend_guard, "gate_reject"),
         ("no_persistence_escalation", slow_escalation, "gate_reject"),
         ("no_actuation_confirmation", no_confirmation, "gate_reject"),
         ("no_cooldown", no_cooldown, "gate_reject"),

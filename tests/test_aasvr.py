@@ -67,3 +67,18 @@ def test_aasvr_penalizes_actuator_inconsistent_response() -> None:
     decision = model.update({"timestamp": 1, "pH": 6.2, "acid_doser": 1})[0]
     assert decision.actuator_consistency == 0.0
     assert decision.trust_score < 0.7
+
+
+def test_aasvr_rejects_slow_uncommanded_trend() -> None:
+    cfg = SensorConfig(
+        **{
+            **sensor().__dict__,
+            "trend_window": 4,
+            "trend_threshold_multiplier": 1.0,
+            "trend_min_monotonic_fraction": 0.75,
+        }
+    )
+    model = AASVR(AASVRConfig(sensors=(cfg,), q_min=0.7, scale_multiplier=1.0))
+    decisions = [model.update({"timestamp": idx, "pH": value})[0] for idx, value in enumerate([6.0, 6.03, 6.06, 6.09])]
+    assert decisions[-1].gate_result == "reject"
+    assert "uncommanded_trend" in decisions[-1].reason_codes
