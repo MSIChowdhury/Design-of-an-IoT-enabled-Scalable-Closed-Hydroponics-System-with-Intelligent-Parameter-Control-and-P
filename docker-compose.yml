@@ -1,0 +1,37 @@
+services:
+  jupyter:
+    build: .
+    image: hydroponics-project:latest
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    ports:
+      - "8888:8888"
+    command: >
+      jupyter lab
+      --ip=0.0.0.0
+      --port=8888
+      --no-browser
+      --allow-root
+      --ServerApp.token=''
+      --ServerApp.password=''
+
+  web:
+    build: .
+    image: hydroponics-project:latest
+    working_dir: /workspace/Code Files/Web Interface
+    volumes:
+      - .:/workspace
+    ports:
+      - "8080:8080"
+    command: python -m http.server 8080
+
+  project-shell:
+    build: .
+    image: hydroponics-project:latest
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    command: bash
+    profiles:
+      - tools
