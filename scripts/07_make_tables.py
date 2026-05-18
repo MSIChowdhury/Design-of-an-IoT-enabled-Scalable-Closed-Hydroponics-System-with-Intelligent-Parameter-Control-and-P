@@ -86,6 +86,11 @@ def make_hydro_exp1_tables() -> None:
         frame = pd.read_csv(tuning).head(10)
         frame.to_csv(out_dir / "hydro_exp1_aasvr_tuning_top.csv", index=False)
         print(f"Wrote {out_dir / 'hydro_exp1_aasvr_tuning_top.csv'}")
+    external_thresholds = ROOT / "results/metrics/external_native_threshold_best.csv"
+    if external_thresholds.exists():
+        frame = pd.read_csv(external_thresholds)
+        frame.to_csv(out_dir / "external_native_threshold_best.csv", index=False)
+        print(f"Wrote {out_dir / 'external_native_threshold_best.csv'}")
 
 
 def make_all_available_tables() -> None:

@@ -147,6 +147,24 @@ def make_all_available_figures() -> None:
     plt.savefig(out, dpi=160)
     plt.close()
     print(f"Wrote {out}")
+    threshold_path = ROOT / "results/metrics/external_native_threshold_sensitivity.csv"
+    if threshold_path.exists():
+        threshold = pd.read_csv(threshold_path)
+        aasvr = threshold[threshold["method"].eq("aasvr")].copy()
+        if not aasvr.empty:
+            out = out_dir / "external_aasvr_threshold_sensitivity.png"
+            plt.figure(figsize=(8, 4))
+            for dataset, frame in aasvr.groupby("dataset"):
+                frame = frame.sort_values("threshold")
+                plt.plot(frame["threshold"], frame["balanced_accuracy"], marker="o", label=dataset)
+            plt.xlabel("Sensor-fraction aggregation threshold")
+            plt.ylabel("Balanced accuracy")
+            plt.title("AASVR native-label threshold sensitivity")
+            plt.legend()
+            plt.tight_layout()
+            plt.savefig(out, dpi=160)
+            plt.close()
+            print(f"Wrote {out}")
 
 
 if __name__ == "__main__":

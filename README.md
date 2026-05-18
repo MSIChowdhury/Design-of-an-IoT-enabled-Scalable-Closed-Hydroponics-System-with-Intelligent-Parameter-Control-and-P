@@ -64,6 +64,8 @@ The current public external benchmark path also supports the HAI `21.03/test1` p
 
 The SKAB public process-loop benchmark is now supported as the primary easy-access external dataset. Native SKAB labels are also timestamp-level, so the same 30% multivariate aggregation rule is used for the headline comparison. In the latest local run, AASVR had the highest SKAB balanced accuracy among implemented methods, with high recall and a high false-positive rate that should be discussed as a sensitivity/specificity tradeoff.
 
+For native timestamp-label datasets, the pipeline also reports an aggregation-threshold sensitivity analysis. The fixed 30% rule remains the headline protocol, while the sensitivity table shows how recall, specificity, false-positive rate, and balanced accuracy change when the required fraction of rejecting/alerting sensor streams is varied.
+
 ## Acknowledgements
 
 We gratefully acknowledge the financial support provided
