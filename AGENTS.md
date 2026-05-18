@@ -117,3 +117,4 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - 2026-05-18: Added manual hydroponic event-label merging, AASVR-driven annotation template generation, generic CSV external-dataset preparation, availability-aware external replay/scoring, and cross-dataset table/figure hooks.
 - 2026-05-18: Added a defensible benchmark-subset protocol and safer download profiles so TEP/WUR/HAI/SWaT/WaDi/DAMADICS can be documented without requiring huge archive downloads by default.
 - 2026-05-18: Added a real HAI 21.03 paper-subset preparation path, timestamp-level label alignment, and corrected the cross-dataset benchmark table to use hydroponic synthetic-fault results rather than rule-label replay as the hydroponic headline.
+- 2026-05-18: Added timestamp-level multivariate scoring for native attack-label datasets such as HAI, using a fixed 30% sensor-stream fraction rule for the headline external benchmark table.

@@ -60,7 +60,7 @@ Current AASVR performance on the hydroponic Experiment 1 synthetic-fault benchma
 
 These results are synthetic-fault benchmark results, not agronomic causality claims. Crop-yield and dashboard material are retained only as deployment context.
 
-The current public external benchmark path also supports the HAI `21.03/test1` paper subset. In the latest local run, AASVR had the highest HAI balanced accuracy among implemented methods, but the value was modest, so it should be framed as cross-domain stress testing rather than a dominance claim.
+The current public external benchmark path also supports the HAI `21.03/test1` paper subset. Native HAI attack labels are timestamp-level, so the headline HAI table uses a timestamp-level multivariate score: a timestamp is flagged when at least 30% of sensor streams reject/alert. In the latest local run, AASVR had the highest HAI balanced accuracy among implemented methods, but the result should be framed as cross-domain stress testing rather than a dominance claim.
 
 ## Acknowledgements
 

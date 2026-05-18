@@ -97,11 +97,23 @@ def make_all_available_tables() -> None:
     if hydro_synthetic.exists():
         frame = pd.read_csv(hydro_synthetic).copy()
         frame.insert(0, "dataset", "hydro_exp1_synthetic")
+        frame["evaluation_unit"] = "sensor_sample"
         frames.append(frame)
+    native_event_datasets = set()
+    for path in sorted(metrics_dir.glob("*_native_event_summary.csv")):
+        dataset = path.name.removesuffix("_native_event_summary.csv")
+        if not _dataset_available_for_tables(dataset):
+            continue
+        frame = pd.read_csv(path)
+        if {"dataset", "method"}.issubset(frame.columns):
+            native_event_datasets.add(dataset)
+            frames.append(frame)
     for path in sorted(metrics_dir.glob("*_summary.csv")):
         if path.name in {"toy_summary.csv", "hydro_exp1_summary.csv", "hydro_exp1_synthetic_summary.csv"}:
             continue
         dataset = path.name.removesuffix("_summary.csv")
+        if dataset in native_event_datasets:
+            continue
         if not _dataset_available_for_tables(dataset):
             continue
         frame = pd.read_csv(path)

@@ -185,6 +185,86 @@ def compute_prepared_dataset(dataset: str) -> None:
     out = out_dir / f"{dataset}_summary.csv"
     pd.DataFrame(rows).sort_values(["dataset", "method"]).to_csv(out, index=False)
     print(f"Wrote {out}")
+    if _has_timestamp_level_labels(labels):
+        native_out = out_dir / f"{dataset}_native_event_summary.csv"
+        _compute_timestamp_fraction_summary(dataset, labels, threshold=0.30).to_csv(native_out, index=False)
+        print(f"Wrote {native_out}")
+
+
+def _has_timestamp_level_labels(labels: pd.DataFrame) -> bool:
+    return "sensor" in labels and labels["sensor"].fillna("").astype(str).str.len().eq(0).all()
+
+
+def _compute_timestamp_fraction_summary(
+    dataset: str,
+    labels: pd.DataFrame,
+    *,
+    threshold: float,
+) -> pd.DataFrame:
+    actual = (
+        labels.assign(timestamp=labels["timestamp"].astype(str))
+        .groupby("timestamp")["fault"]
+        .max()
+        .astype(bool)
+    )
+    rows = []
+    out_dir = ROOT / "results/metrics"
+    for path in sorted(out_dir.glob(f"{dataset}_*_decisions.csv")):
+        method = path.name.removeprefix(f"{dataset}_").removesuffix("_decisions.csv")
+        decisions = pd.read_csv(path)
+        if method == "aasvr":
+            flag = decisions.get("gate_result", pd.Series("", index=decisions.index)).eq("reject")
+        else:
+            flag = decisions.get("alert", pd.Series(False, index=decisions.index)).astype(bool)
+        scores = (
+            decisions.assign(predicted=flag)
+            .groupby(decisions["timestamp"].astype(str))["predicted"]
+            .mean()
+            .reindex(actual.index)
+            .fillna(False)
+        )
+        predicted = scores >= threshold
+        row = _classification_row(actual, predicted)
+        row.update(
+            {
+                "dataset": dataset,
+                "method": method,
+                "evaluation_unit": "timestamp",
+                "aggregation": "sensor_fraction",
+                "threshold": threshold,
+            }
+        )
+        rows.append(row)
+    return pd.DataFrame(rows).sort_values("balanced_accuracy", ascending=False)
+
+
+def _classification_row(actual: pd.Series, predicted: pd.Series) -> dict[str, float]:
+    actual = actual.astype(bool)
+    predicted = predicted.astype(bool)
+    tp = int((predicted & actual).sum())
+    fp = int((predicted & ~actual).sum())
+    fn = int((~predicted & actual).sum())
+    tn = int((~predicted & ~actual).sum())
+    precision = _safe_div(tp, tp + fp)
+    recall = _safe_div(tp, tp + fn)
+    specificity = _safe_div(tn, tn + fp)
+    return {
+        "precision": precision,
+        "recall": recall,
+        "f1": _safe_div(2 * precision * recall, precision + recall),
+        "specificity": specificity,
+        "balanced_accuracy": (recall + specificity) / 2,
+        "false_positive_rate": _safe_div(fp, fp + tn),
+        "false_negative_rate": _safe_div(fn, fn + tp),
+        "true_positive": tp,
+        "false_positive": fp,
+        "false_negative": fn,
+        "true_negative": tn,
+    }
+
+
+def _safe_div(num: float, den: float) -> float:
+    return float(num / den) if den else 0.0
 
 
 if __name__ == "__main__":
