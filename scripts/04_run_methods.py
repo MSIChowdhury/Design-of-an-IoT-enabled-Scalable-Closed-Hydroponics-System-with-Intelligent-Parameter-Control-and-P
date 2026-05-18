@@ -80,7 +80,8 @@ def run_hydro_exp1() -> None:
     out_dir = ROOT / "results/metrics"
     out_dir.mkdir(parents=True, exist_ok=True)
     run_aasvr_with_config(frame, config).to_csv(out_dir / "hydro_exp1_aasvr_decisions.csv", index=False)
-    baselines = load_yaml(ROOT / "configs/methods/baselines.yaml")["required"]
+    baseline_config = load_yaml(ROOT / "configs/methods/baselines.yaml")
+    baselines = baseline_config.get("full_replay", baseline_config["required"])
     for method in baselines:
         baseline_out = run_baseline_on_frame(frame, sensors, method)
         baseline_out.to_csv(out_dir / f"hydro_exp1_{method}_decisions.csv", index=False)

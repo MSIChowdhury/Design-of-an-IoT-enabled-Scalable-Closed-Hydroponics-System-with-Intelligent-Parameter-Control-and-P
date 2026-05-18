@@ -8,12 +8,15 @@ required:
   - ewma
   - cusum
   - pca
-optional:
   - isolation_forest
   - one_class_svm
   - local_outlier_factor
+optional: []
+full_replay: []
 defaults:
   window: 5
+  ml_calibration_fraction: 0.2
+  ml_contamination: 0.05
   threshold_multiplier: 3.0
   alpha: 0.2
   cusum_drift: 0.5

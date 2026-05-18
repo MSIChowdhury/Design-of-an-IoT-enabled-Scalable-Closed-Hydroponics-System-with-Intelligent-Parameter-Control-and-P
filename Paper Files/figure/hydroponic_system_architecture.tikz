@@ -1,42 +1,32 @@
-\begin{tikzpicture}[node distance=7mm and 8mm]
+\begin{tikzpicture}[node distance=10mm and 13mm]
 \tikzset{
   block/.style={rectangle, rounded corners=2pt, draw=black!70, line width=0.6pt,
-    minimum width=24mm, minimum height=8mm, align=center, font=\scriptsize, inner sep=3pt},
-  process/.style={block, fill=green!14, draw=green!55!black},
-  sense/.style={block, fill=blue!12, draw=blue!60!black},
-  compute/.style={block, fill=orange!18, draw=orange!70!black},
-  act/.style={block, fill=red!10, draw=red!70!black},
-  data/.style={block, fill=gray!12, draw=black!55},
+    minimum width=27mm, minimum height=9mm, align=center, font=\scriptsize, inner sep=3pt},
+  process/.style={block, fill=green!12, draw=green!55!black, minimum width=34mm, minimum height=12mm},
+  sense/.style={block, fill=blue!10, draw=blue!60!black},
+  compute/.style={block, fill=orange!14, draw=orange!70!black},
+  guard/.style={block, fill=yellow!16, draw=yellow!45!black, minimum width=34mm},
+  act/.style={block, fill=red!8, draw=red!70!black},
+  data/.style={block, fill=gray!10, draw=black!50},
   flow/.style={-{Stealth[length=2mm,width=1.5mm]}, line width=0.65pt, draw=black!75},
-  safe/.style={-{Stealth[length=2mm,width=1.5mm]}, dashed, line width=0.65pt, draw=red!75!black},
+  stop/.style={-{Stealth[length=2mm,width=1.5mm]}, dashed, line width=0.65pt, draw=red!70!black},
   lab/.style={font=\tiny, align=center, fill=white, inner sep=1pt}
 }
 
-\node[process] (gm) {Growth module\\lettuce canopy};
-\node[process, below=13mm of gm] (nscm) {Nutrient-solution\\container module};
+\node[process] (hydro) {Closed NFT\\hydroponic system};
+\node[sense, above=of hydro] (sensors) {pH, EC, CO2,\\temperature, humidity};
+\node[compute, right=of sensors] (nano) {Arduino Nano\\sensor acquisition};
+\node[guard, right=of nano] (aasvr) {Raspberry Pi 4B\\AASVR + control};
+\node[compute, below=of aasvr] (mega) {Arduino Mega\\actuator interface};
+\node[act, left=of mega] (actuators) {Dosing, cooling,\\gas, circulation};
+\node[data, below=of actuators] (log) {Logs, dashboard,\\diagnostic flags};
 
-\node[sense, left=18mm of gm] (envs) {DHT22, CO2,\\camera};
-\node[sense, left=18mm of nscm] (waters) {pH, EC, water\\temperature, level};
-
-\node[compute, right=19mm of gm] (nano) {Arduino Nano\\sensor acquisition};
-\node[compute, right=of nano] (pi) {Raspberry Pi 4B\\AASVR + control};
-\node[compute, below=13mm of pi] (mega) {Arduino Mega\\actuator interface};
-
-\node[act, right=18mm of mega] (acts) {Dosing pumps,\\chiller, valve,\\air cooler, pump};
-\node[data, above=9mm of pi] (cloud) {ThingSpeak +\\dashboard};
-
-\draw[flow] (gm) -- node[lab, left] {solution return} (nscm);
-\draw[flow] (nscm.east) -- ++(8mm,0) |- node[lab, pos=0.25, right] {recirculation} (gm.east);
-
-\draw[flow] (gm) -- (envs);
-\draw[flow] (nscm) -- (waters);
-\draw[flow] (envs) -- (nano);
-\draw[flow] (waters) -- (nano);
-\draw[flow] (nano) -- node[lab, above] {15 s samples} (pi);
-\draw[flow] (pi) -- node[lab, right] {authorized commands} (mega);
-\draw[flow] (mega) -- (acts);
-\draw[flow] (acts.west) -| node[lab, below] {physical correction} (nscm.east);
-\draw[flow] (acts.north) |- (gm.east);
-\draw[flow] (pi) -- (cloud);
-\draw[safe] (pi.south west) -- node[lab, below] {suppress untrusted actuation} (mega.north west);
+\draw[flow] (hydro) -- node[lab, left] {measure} (sensors);
+\draw[flow] (sensors) -- node[lab, above] {raw readings} (nano);
+\draw[flow] (nano) -- node[lab, above] {15--16 s samples} (aasvr);
+\draw[flow] (aasvr) -- node[lab, right] {trusted decisions} (mega);
+\draw[flow] (mega) -- node[lab, above] {authorized\\commands} (actuators);
+\draw[flow] (actuators.west) -- node[lab, above] {physical effect} (hydro.east);
+\draw[flow] (aasvr.south west) to[out=-120,in=20] node[lab, pos=0.58, above] {logs} (log.east);
+\draw[stop] (mega.south west) to[out=-130,in=0] node[lab, pos=0.55, below] {untrusted values\\logged only} (log.east);
 \end{tikzpicture}

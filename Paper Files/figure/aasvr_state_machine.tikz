@@ -1,12 +1,12 @@
-\begin{tikzpicture}[node distance=16mm and 18mm]
+\begin{tikzpicture}[node distance=18mm and 20mm]
 \tikzset{
   statebox/.style={rectangle, rounded corners=2pt, draw=black!70, line width=0.6pt,
-    minimum width=27mm, minimum height=8mm, align=center, font=\scriptsize, inner sep=3pt},
+    minimum width=29mm, minimum height=8mm, align=center, font=\scriptsize, inner sep=3pt},
   normal/.style={statebox, fill=green!14, draw=green!55!black},
   suspect/.style={statebox, fill=yellow!18, draw=yellow!45!black},
-  persistent/.style={statebox, fill=orange!18, draw=orange!70!black},
-  accepted/.style={statebox, fill=blue!12, draw=blue!60!black},
-  fault/.style={statebox, fill=red!12, draw=red!70!black},
+  persistent/.style={statebox, fill=orange!16, draw=orange!70!black},
+  accepted/.style={statebox, fill=blue!10, draw=blue!60!black},
+  fault/.style={statebox, fill=red!9, draw=red!70!black},
   flow/.style={-{Stealth[length=2mm,width=1.5mm]}, line width=0.65pt, draw=black!75},
   back/.style={-{Stealth[length=2mm,width=1.5mm]}, line width=0.6pt, draw=black!55},
   lab/.style={font=\tiny, align=center, fill=white, inner sep=1pt}
@@ -15,14 +15,14 @@
 \node[normal] (normal) {Normal};
 \node[suspect, right=of normal] (suspect) {Suspect\\transient};
 \node[persistent, right=of suspect] (persistent) {Persistent\\deviation};
-\node[accepted, above right=12mm and 12mm of persistent] (accepted) {Accepted\\regime shift};
-\node[fault, below right=12mm and 12mm of persistent] (fault) {Fault-alert};
+\node[accepted, above=of persistent] (accepted) {Accepted\\regime shift};
+\node[fault, below=of persistent] (fault) {Fault-alert};
 
-\draw[flow] (normal) -- node[lab, above] {gate fails} (suspect);
-\draw[back] (suspect) to[bend left=18] node[lab, below] {plausible again} (normal);
-\draw[flow] (suspect) -- node[lab, above] {failure persists} (persistent);
-\draw[flow] (persistent) -- node[lab, above, sloped] {consistent new level} (accepted);
-\draw[flow] (persistent) -- node[lab, below, sloped] {missing, stuck,\\or implausible} (fault);
-\draw[back] (accepted.west) to[bend left=25] node[lab, above] {state confirmed} (normal.north);
-\draw[back] (fault.south west) to[bend right=35] node[lab, below] {maintenance\\or reset} (normal.south);
+\draw[flow] (normal) -- node[lab, above] {failed gate} (suspect);
+\draw[flow] (suspect) -- node[lab, above] {repeated failure} (persistent);
+\draw[flow] (persistent) -- node[lab, right] {consistent new level} (accepted);
+\draw[flow] (persistent) -- node[lab, right] {stuck, missing,\\or implausible} (fault);
+\draw[back] (suspect.south west) to[out=-160,in=-20] node[lab, below] {plausible again} (normal.south east);
+\draw[back] (accepted.west) to[out=180,in=55] node[lab, above] {confirmed} (normal.north);
+\draw[back] (fault.west) to[out=180,in=-55] node[lab, below] {maintenance/reset} (normal.south);
 \end{tikzpicture}
