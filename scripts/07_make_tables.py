@@ -16,6 +16,8 @@ def main() -> None:
     args = parser.parse_args()
     if args.hydro_exp1 or args.all_available:
         make_hydro_exp1_tables()
+        if args.all_available:
+            make_all_available_tables()
         if not args.toy:
             return
     if not args.toy:
@@ -84,6 +86,55 @@ def make_hydro_exp1_tables() -> None:
         frame = pd.read_csv(tuning).head(10)
         frame.to_csv(out_dir / "hydro_exp1_aasvr_tuning_top.csv", index=False)
         print(f"Wrote {out_dir / 'hydro_exp1_aasvr_tuning_top.csv'}")
+
+
+def make_all_available_tables() -> None:
+    out_dir = ROOT / "results/tables"
+    metrics_dir = ROOT / "results/metrics"
+    processed_dir = ROOT / "data/processed"
+    frames = []
+    for path in sorted(metrics_dir.glob("*_summary.csv")):
+        if path.name in {"toy_summary.csv", "hydro_exp1_synthetic_summary.csv"}:
+            continue
+        dataset = path.name.removesuffix("_summary.csv")
+        if not _dataset_available_for_tables(dataset):
+            continue
+        frame = pd.read_csv(path)
+        if {"dataset", "method"}.issubset(frame.columns):
+            frames.append(frame)
+    if frames:
+        combined = pd.concat(frames, ignore_index=True)
+        combined.to_csv(out_dir / "all_available_summary.csv", index=False)
+        combined.sort_values(["dataset", "balanced_accuracy"], ascending=[True, False]).to_csv(
+            out_dir / "main_benchmark_table.csv", index=False
+        )
+        print(f"Wrote {out_dir / 'all_available_summary.csv'}")
+        print(f"Wrote {out_dir / 'main_benchmark_table.csv'}")
+    dataset_rows = []
+    for metadata_path in sorted(processed_dir.glob("*_metadata.csv")):
+        dataset = metadata_path.name.removesuffix("_metadata.csv")
+        if not _dataset_available_for_tables(dataset):
+            continue
+        metadata = pd.read_csv(metadata_path)
+        dataset_rows.append(
+            {
+                "dataset": dataset,
+                "variables": len(metadata),
+                "sensors": int(metadata.get("role", pd.Series(dtype=str)).eq("sensor").sum()),
+                "actuators": int(metadata.get("role", pd.Series(dtype=str)).eq("actuator").sum()),
+                "metadata_path": str(metadata_path),
+            }
+        )
+    if dataset_rows:
+        pd.DataFrame(dataset_rows).to_csv(out_dir / "dataset_summary.csv", index=False)
+        print(f"Wrote {out_dir / 'dataset_summary.csv'}")
+
+
+def _dataset_available_for_tables(dataset: str) -> bool:
+    if dataset == "hydro_exp1":
+        return True
+    raw_dir = ROOT / "data/raw" / dataset
+    return raw_dir.exists() and any(path.is_file() for path in raw_dir.rglob("*.csv"))
 
 
 if __name__ == "__main__":

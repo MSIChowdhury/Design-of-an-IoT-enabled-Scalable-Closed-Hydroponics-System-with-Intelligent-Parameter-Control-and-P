@@ -22,6 +22,7 @@ The research compares the proposed automated treatment against soil-based and ma
 - `configs/`: YAML manifests for AASVR parameters, baselines, hydroponic datasets, and external process-control benchmark datasets.
 - `scripts/`: reproducible command-line pipeline for dataset checks, toy preparation, method execution, synthetic fault injection, metrics, tables, figures, and manuscript checks.
 - `scripts/10_run_ablation.py` and `scripts/11_statistical_analysis.py`: hydroponic Experiment 1 robustness layer for AASVR component ablations, bootstrap confidence intervals, method ranks, sensor-wise summaries, and fault-type summaries.
+- External dataset scripts are availability-aware: place local CSV files under the configured `data/raw/<dataset>/` directory, then run `make real` to prepare, replay methods, score native labels, and include them in cross-dataset tables.
 - `manuscript/`: ISA Transactions scaffold including anonymized manuscript, title page, highlights, cover letter, data statement, and rewrite notes.
 
 ## Container-First Workflow
@@ -112,3 +113,4 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - 2026-05-17: Made `scripts/` importable during pytest by adding package metadata and including the repo root on pytest's Python path.
 - 2026-05-17: Removed a stale unused tuning-script import so the project lint check passes for the analysis pipeline.
 - 2026-05-17: Added an uncommanded-trend guard to AASVR for slow monotonic drift faults that stay inside physical range and per-sample rate gates, plus an ablation variant that disables the guard.
+- 2026-05-18: Added manual hydroponic event-label merging, AASVR-driven annotation template generation, generic CSV external-dataset preparation, availability-aware external replay/scoring, and cross-dataset table/figure hooks.

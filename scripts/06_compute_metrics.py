@@ -28,7 +28,7 @@ def main() -> None:
         compute_hydro_exp1()
         return
     if args.dataset:
-        print(f"Skipping {args.dataset}; no method outputs are available yet.")
+        compute_prepared_dataset(args.dataset)
         return
     if not args.toy:
         print("Use --toy, --hydro-exp1, or --dataset hydro_exp1.")
@@ -161,6 +161,30 @@ def compute_hydro_exp1_synthetic() -> None:
     print(f"Wrote {detail_path}")
     print(f"Wrote {summary_path}")
     print(f"Wrote {fault_type_path}")
+
+
+def compute_prepared_dataset(dataset: str) -> None:
+    labels_path = ROOT / f"data/processed/{dataset}_labels.parquet"
+    if not labels_path.exists():
+        print(f"Skipping {dataset}; prepared labels are not available.")
+        return
+    labels = pd.read_parquet(labels_path)
+    out_dir = ROOT / "results/metrics"
+    rows = []
+    for path in sorted(out_dir.glob(f"{dataset}_*_decisions.csv")):
+        method = path.name.removeprefix(f"{dataset}_").removesuffix("_decisions.csv")
+        decisions = pd.read_csv(path)
+        prediction_mode = "gate_reject" if method == "aasvr" else "auto"
+        metrics = compute_metrics(decisions, labels, prediction_mode=prediction_mode)
+        row = {"dataset": dataset, "method": method}
+        row.update(metrics.__dict__)
+        rows.append(row)
+    if not rows:
+        print(f"Skipping {dataset}; no method decisions are available.")
+        return
+    out = out_dir / f"{dataset}_summary.csv"
+    pd.DataFrame(rows).sort_values(["dataset", "method"]).to_csv(out, index=False)
+    print(f"Wrote {out}")
 
 
 if __name__ == "__main__":

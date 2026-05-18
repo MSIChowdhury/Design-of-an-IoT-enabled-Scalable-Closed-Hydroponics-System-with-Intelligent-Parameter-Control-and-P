@@ -1,8 +1,8 @@
-# Design of an IoT-enabled Scalable Closed Hydroponics System with Intelligent Parameter Control and Persistent Sensing Error Resilience
+# AASVR Hydroponic Closed-Loop Control Study
 
 ## Overview
 
-This repository contains the implementation of an IoT-enabled scalable closed hydroponics system with intelligent parameter control and persistent sensing error resilience. The project aims to address the challenges posed by climate change and global warming to traditional agriculture by developing an advanced automated hydroponics solution.
+This repository supports a reproducible research article on **Actuation-Aware Sensor Validation and Rectification (AASVR)** for closed-loop measurement and control systems. The hydroponic system is the primary deployment testbed, and the current analysis focuses on whether sensor validation, rectification, persistence logic, and actuation authorization reduce anomaly pass-through and false actuation.
 
 ## Authors
 
@@ -14,42 +14,42 @@ This repository contains the implementation of an IoT-enabled scalable closed hy
 - Dr. Lafifa Jamal - Department of Robotics and Mechatronics Engineering, University of Dhaka, Bangladesh
 - Dr. Md Asaduzzaman - Department of Agriculture and Food Technology, Kyoto University of Advanced Sciences
 
-## Features
+## Current Research Focus
 
-1. Automated monitoring and control of key physical parameters for optimal plant growth
-2. Web-based dashboard for displaying sensor data
-3. Intelligent control action classifier using machine learning
-4. Persistent error resilience algorithm for improved sensor data accuracy
+1. Streaming AASVR implementation for sensor validation and rectification.
+2. Hydroponic Experiment 1 preprocessing and reproducible Docker pipeline.
+3. Synthetic fault injection for spikes, dropout, drift, bias, noise bursts, and steps.
+4. Baseline comparison against thresholding, moving filters, Hampel, Kalman, EWMA, CUSUM, and PCA-style monitoring.
+5. Ablation, bootstrap confidence intervals, sensor-wise summaries, and fault-type summaries.
+6. Availability-aware external benchmark scaffolding for TEP, WUR, HAI, SWaT, WaDi, and DAMADICS when raw files are placed locally.
 
-## System Components
+## Reproducible Workflow
 
-- IoT-enabled sensors and actuators
-- Web-based dashboard
-- Machine learning models for intelligent control
-- Error resilience algorithm
+Run all project work through Docker:
 
-## Experiments and Results
+```bash
+docker compose run --rm project-shell make real
+```
 
-1. Two experimental iterations under different weather conditions
-2. Comparison of the system against soil-based and manual Deep Water Culture (DWC) methods
-3. Significantly higher fresh mass yield compared to traditional methods
-4. Successful implementation of the error resilience algorithm, reducing erroneous sensor data instances
+The locally available hydroponic feed is expected at:
 
-## Machine Learning Models
+```text
+data/raw/hydroponic/Hydroponics Data First Trial.csv
+```
 
-- Multiple models trained and tested
-- XGBoostClassifier achieved the best performance:
-  - Accuracy: 0.98
-  - Recall: 0.97
-  - Precision: 0.96
-  - F1-score: 0.96
+Raw and generated data are ignored by git. External benchmark raw files should be placed under their configured `data/raw/<dataset>/` directories and regenerated locally.
 
-## Error Resilience Algorithm
+## Current Hydroponic Synthetic-Fault Result
 
-- Developed as a constrained optimization problem
-- Utilizes a cost function and adaptive multi-parameter λ-weighted minimization approach
-- Implemented update policies for improved performance
-- Resulted in ~4 times reduction in instances of erroneous sensor data
+Current AASVR performance on the hydroponic Experiment 1 synthetic-fault benchmark:
+
+- Balanced accuracy: 0.859
+- Recall: 0.839
+- Specificity: 0.880
+- Mean false actuations per trial: 0.145
+- Bootstrap 95% CI for balanced accuracy: 0.844 to 0.874
+
+These results are synthetic-fault benchmark results, not agronomic causality claims. Crop-yield and dashboard material are retained only as deployment context.
 
 ## Acknowledgements
 

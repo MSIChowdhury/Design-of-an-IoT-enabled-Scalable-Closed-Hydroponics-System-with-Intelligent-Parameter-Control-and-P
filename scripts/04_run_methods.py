@@ -9,6 +9,7 @@ from aasvr.config import load_aasvr_config, load_yaml
 from aasvr.core import AASVRConfig
 from aasvr.pipeline import run_aasvr_on_frame, run_aasvr_with_config, run_baseline_on_frame
 from aasvr.prepare import HYDRO_PRIMARY_SENSORS
+from aasvr.registry import sensors_from_metadata
 from aasvr.toydata import make_toy_hydroponic_data
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,7 +29,7 @@ def main() -> None:
         run_hydro_exp1()
         return
     if args.dataset:
-        print(f"Skipping {args.dataset}; no prepared measurements are available yet.")
+        run_prepared_dataset(args.dataset)
         return
     if not args.toy:
         print("Use --toy, --hydro-exp1, or --dataset hydro_exp1.")
@@ -72,6 +73,40 @@ def run_hydro_exp1() -> None:
         baseline_out = run_baseline_on_frame(frame, sensors, method)
         baseline_out.to_csv(out_dir / f"hydro_exp1_{method}_decisions.csv", index=False)
     print(f"Wrote hydro_exp1 decisions to {out_dir}")
+
+
+def run_prepared_dataset(dataset: str) -> None:
+    frame_path = ROOT / f"data/processed/{dataset}_measurements.parquet"
+    metadata_path = ROOT / f"data/processed/{dataset}_metadata.csv"
+    if not frame_path.exists() or not metadata_path.exists():
+        print(f"Skipping {dataset}; prepared measurements/metadata are not available.")
+        return
+    frame = pd.read_parquet(frame_path)
+    metadata = pd.read_csv(metadata_path)
+    sensors = sensors_from_metadata(metadata)
+    if not sensors:
+        print(f"Skipping {dataset}; metadata contains no sensor variables.")
+        return
+    sensor_names = [sensor.name for sensor in sensors if sensor.name in frame.columns]
+    frame = frame[["timestamp", *sensor_names]].copy()
+    sensors = tuple(sensor for sensor in sensors if sensor.name in sensor_names)
+    config = load_aasvr_config(ROOT / "configs/methods/aasvr.yaml")
+    config = AASVRConfig(
+        sensors=sensors,
+        q_min=config.q_min,
+        scale_multiplier=config.scale_multiplier,
+        transient_limit=config.transient_limit,
+        persistent_limit=config.persistent_limit,
+        rectification_mode=config.rectification_mode,
+    )
+    out_dir = ROOT / "results/metrics"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    run_aasvr_with_config(frame, config).to_csv(out_dir / f"{dataset}_aasvr_decisions.csv", index=False)
+    baselines = load_yaml(ROOT / "configs/methods/baselines.yaml")["required"]
+    for method in baselines:
+        baseline_out = run_baseline_on_frame(frame, sensors, method)
+        baseline_out.to_csv(out_dir / f"{dataset}_{method}_decisions.csv", index=False)
+    print(f"Wrote {dataset} decisions to {out_dir}")
 
 
 if __name__ == "__main__":

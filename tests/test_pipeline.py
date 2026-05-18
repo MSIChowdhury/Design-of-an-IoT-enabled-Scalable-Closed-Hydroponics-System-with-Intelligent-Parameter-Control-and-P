@@ -4,6 +4,7 @@ import pandas as pd
 
 from aasvr.config import load_aasvr_config
 from aasvr.pipeline import run_aasvr_on_frame
+from aasvr.registry import sensors_from_metadata
 from aasvr.toydata import make_toy_hydroponic_data
 from scripts.download_datasets import render_note
 
@@ -48,3 +49,24 @@ def test_download_note_documents_raw_data_policy() -> None:
     )
     assert "Raw files" in note
     assert "data/raw/tep" in note
+
+
+def test_sensors_from_metadata_uses_physical_bounds_for_generic_datasets() -> None:
+    sensors = sensors_from_metadata(
+        pd.DataFrame(
+            {
+                "variable": ["XMEAS1", "XMV1"],
+                "role": ["sensor", "actuator"],
+                "physical_min": [0.0, 0.0],
+                "physical_max": [10.0, 1.0],
+                "control_low": ["", ""],
+                "control_high": ["", ""],
+                "rate_limit": [0.5, 1.0],
+                "expected_direction": ["unknown", "unknown"],
+            }
+        )
+    )
+    assert len(sensors) == 1
+    assert sensors[0].name == "XMEAS1"
+    assert sensors[0].control_low == 0.0
+    assert sensors[0].control_high == 10.0

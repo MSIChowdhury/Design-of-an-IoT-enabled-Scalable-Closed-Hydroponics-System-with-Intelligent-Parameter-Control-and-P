@@ -17,6 +17,8 @@ def main() -> None:
     args = parser.parse_args()
     if args.hydro_exp1 or args.all_available:
         make_hydro_exp1_figures()
+        if args.all_available:
+            make_all_available_figures()
         if not args.toy:
             return
     if not args.toy:
@@ -116,6 +118,35 @@ def make_hydro_exp1_figures() -> None:
             plt.savefig(out, dpi=160)
             plt.close()
             print(f"Wrote {out}")
+
+
+def make_all_available_figures() -> None:
+    summary_path = ROOT / "results/tables/main_benchmark_table.csv"
+    if not summary_path.exists():
+        return
+    summary = pd.read_csv(summary_path)
+    if summary.empty or "balanced_accuracy" not in summary:
+        return
+    out_dir = ROOT / "results/figures"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    rank_rows = []
+    for dataset, frame in summary.groupby("dataset"):
+        ranked = frame[["method", "balanced_accuracy"]].copy()
+        ranked["rank"] = ranked["balanced_accuracy"].rank(method="average", ascending=False)
+        ranked["dataset"] = dataset
+        rank_rows.append(ranked)
+    ranks = pd.concat(rank_rows, ignore_index=True)
+    plot = ranks.groupby("method", as_index=False)["rank"].mean().sort_values("rank", ascending=True)
+    out = out_dir / "cross_dataset_rank_plot.png"
+    plt.figure(figsize=(8, 4))
+    plt.barh(plot["method"], plot["rank"])
+    plt.gca().invert_yaxis()
+    plt.xlabel("Mean rank by balanced accuracy")
+    plt.title("Available-dataset method ranking")
+    plt.tight_layout()
+    plt.savefig(out, dpi=160)
+    plt.close()
+    print(f"Wrote {out}")
 
 
 if __name__ == "__main__":

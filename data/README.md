@@ -29,3 +29,7 @@ Use `python scripts/run_all.py --available-real` to run locally available real d
 
 For the current first-trial hydroponic feed, `Water_Level` is retained only in raw data
 and excluded from primary analysis until calibration is available.
+
+External dataset support is availability-aware. Place CSV files under the configured
+`data/raw/<dataset>/` directory and rerun `make real`; missing datasets are skipped
+without failing the hydroponic pipeline.

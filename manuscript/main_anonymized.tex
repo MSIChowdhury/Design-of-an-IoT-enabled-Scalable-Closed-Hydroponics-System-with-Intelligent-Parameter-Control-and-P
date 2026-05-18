@@ -92,6 +92,7 @@ Point-wise metrics are reported with event-wise metrics because point-only anoma
 \subsection{Hydroponic replay benchmark}
 \subsection{External benchmark performance}
 \subsection{Synthetic fault-injection robustness}
+On the current hydroponic Experiment 1 synthetic-fault benchmark, AASVR reached a balanced accuracy of 0.859, recall of 0.839, and specificity of 0.880, with a mean false-actuation count of 0.145 per trial. Bootstrap resampling gave a 95\% confidence interval of 0.844--0.874 for balanced accuracy. These values are reported for injected faults over the real hydroponic signal background and are not interpreted as independent agronomic evidence.
 \subsection{Ablation and sensitivity analysis}
 The ablation protocol disables robust scaling, uncommanded-trend detection, state escalation, actuation confirmation, cooldown logic, and bounded rectification in turn. This tests whether AASVR's performance comes from the full actuation-aware validation pipeline rather than from a single threshold rule.
 \subsection{Runtime feasibility}
@@ -102,6 +103,7 @@ The ablation protocol disables robust scaling, uncommanded-trend detection, stat
 \subsection{Cross-domain generalization}
 \subsection{Practical deployment recommendations}
 \subsection{Limitations}
+The hydroponic evidence currently combines rule-derived labels, optional manual annotations, and synthetic fault injection because independent reference instruments are not available for every sensor at every time point. External process-control datasets are used only for cross-domain measurement/control validation and do not support agronomic conclusions.
 
 \section{Conclusion}
 AASVR provides a lightweight actuation-aware measurement validation layer for closed-loop systems. The evaluation is designed to test whether robust measurement validation, state-machine persistence, rectification, and actuation authorization reduce anomaly pass-through and false actuation compared with conventional filtering baselines.

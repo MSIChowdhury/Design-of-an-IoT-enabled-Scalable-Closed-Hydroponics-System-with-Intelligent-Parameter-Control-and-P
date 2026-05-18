@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+EXTERNAL_DATASETS = ("tep", "wur", "hai", "swat", "wadi", "damadics")
 
 
 def main() -> None:
@@ -50,7 +51,22 @@ def run_available_real() -> None:
     ]
     for command in commands:
         subprocess.run([sys.executable, *command], check=True)
+    for dataset in EXTERNAL_DATASETS:
+        if not _has_raw_csv(dataset):
+            print(f"Skipping {dataset}; no CSV raw files found under data/raw/{dataset}/.")
+            continue
+        subprocess.run([sys.executable, "scripts/02_prepare_datasets.py", "--dataset", dataset], check=True)
+        if not (ROOT / f"data/processed/{dataset}_measurements.parquet").exists():
+            continue
+        subprocess.run([sys.executable, "scripts/04_run_methods.py", "--dataset", dataset], check=True)
+        subprocess.run([sys.executable, "scripts/06_compute_metrics.py", "--dataset", dataset], check=True)
+    subprocess.run([sys.executable, "scripts/07_make_tables.py", "--all-available"], check=True)
     print("Available real-data pipeline completed.")
+
+
+def _has_raw_csv(dataset: str) -> bool:
+    raw_dir = ROOT / "data/raw" / dataset
+    return raw_dir.exists() and any(path.is_file() for path in raw_dir.rglob("*.csv"))
 
 
 if __name__ == "__main__":

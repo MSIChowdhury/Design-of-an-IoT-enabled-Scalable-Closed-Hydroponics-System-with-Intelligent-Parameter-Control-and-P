@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from aasvr.prepare import prepare_hydro_exp1
+from aasvr.prepare import prepare_external_csv_dataset, prepare_hydro_exp1
 from aasvr.toydata import write_toy_dataset
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,10 +29,14 @@ def main() -> None:
         print(f"Wrote {prepared.quality_path}")
         return
     if args.dataset:
-        print(
-            f"Skipping {args.dataset}; place raw files under data/raw/{args.dataset}/ "
-            "and extend the dataset-specific loader when files are available."
-        )
+        prepared = prepare_external_csv_dataset(args.dataset, root=ROOT)
+        if prepared is None:
+            print(f"Skipping {args.dataset}; no CSV raw files found under data/raw/{args.dataset}/.")
+            return
+        print(f"Wrote {prepared.measurements_path}")
+        print(f"Wrote {prepared.labels_path}")
+        print(f"Wrote {prepared.metadata_path}")
+        print(f"Wrote {prepared.quality_path}")
         return
     if args.toy:
         csv_path = write_toy_dataset(ROOT / "data/raw/hydroponic/toy_hydroponic.csv")
