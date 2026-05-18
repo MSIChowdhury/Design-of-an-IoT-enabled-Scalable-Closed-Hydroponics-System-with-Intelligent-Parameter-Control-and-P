@@ -4,5 +4,11 @@ role: domain_adjacent_cea_validation
 path: data/raw/wur/
 access: "Use WUR dataset DOI and local placement."
 source: https://research.wur.nl/en/datasets/3rd-autonomous-greenhouse-challenge-time-series-data-on-realized-/
+source_url: https://doi.org/10.4121/21960932
+access_type: public_large_manual_download
+redistribution_allowed: false
+prepared_outputs:
+  measurements: data/processed/wur_measurements.parquet
+  labels: data/processed/wur_labels.parquet
+  metadata: data/processed/wur_metadata.csv
 notes: "Greenhouse climate time series and annotated lettuce images; use for CEA false alarm and synthetic fault validation unless labels support more."
-

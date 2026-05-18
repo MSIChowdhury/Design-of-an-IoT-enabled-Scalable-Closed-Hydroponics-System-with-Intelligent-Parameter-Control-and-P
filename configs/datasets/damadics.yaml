@@ -4,5 +4,11 @@ role: actuator_fault_benchmark
 path: data/raw/damadics/
 access: "Download benchmark files from official DAMADICS page."
 source: https://iair.mchtr.pw.edu.pl/Damadics
+source_url: https://iair.mchtr.pw.edu.pl/Damadics
+access_type: public_or_manual_download
+redistribution_allowed: false
+prepared_outputs:
+  measurements: data/processed/damadics_measurements.parquet
+  labels: data/processed/damadics_labels.parquet
+  metadata: data/processed/damadics_metadata.csv
 notes: "Lublin Sugar Factory data; fault-free operation, natural faults, and artificial faults."
-

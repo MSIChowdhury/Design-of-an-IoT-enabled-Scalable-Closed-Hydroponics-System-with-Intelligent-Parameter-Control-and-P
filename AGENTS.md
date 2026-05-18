@@ -18,6 +18,7 @@ The research compares the proposed automated treatment against soil-based and ma
 - `3D CAD Files/`: SolidWorks parts and assemblies for the hydroponics piping/tube structure. These are binary CAD assets and are not runnable inside the software container.
 - `src/aasvr/`: reproducible Python implementation of Actuation-Aware Sensor Validation and Rectification (AASVR), baseline wrappers, toy data, fault injection, and metrics.
 - `src/aasvr/loaders.py` and `src/aasvr/schemas.py`: canonical dataset loading/schema helpers for hydroponic logs and external process-control benchmark files that are placed locally under `data/raw/`.
+- `src/aasvr/prepare.py`: real hydroponic Experiment 1 preprocessing; keeps `EC`, `pH`, `Humidity`, `Air_Temp`, `Water_Temp`, and `CO2` for primary analysis and excludes `Water_Level` because the raw values are not calibrated.
 - `configs/`: YAML manifests for AASVR parameters, baselines, hydroponic datasets, and external process-control benchmark datasets.
 - `scripts/`: reproducible command-line pipeline for dataset checks, toy preparation, method execution, synthetic fault injection, metrics, tables, figures, and manuscript checks.
 - `manuscript/`: ISA Transactions scaffold including anonymized manuscript, title page, highlights, cover letter, data statement, and rewrite notes.
@@ -60,6 +61,12 @@ Run the AASVR toy reproducibility pipeline:
 docker compose run --rm project-shell make all
 ```
 
+Run the locally available real-data pipeline:
+
+```bash
+docker compose run --rm project-shell make real
+```
+
 Run MATLAB-like scripts with Octave from inside the container when compatible:
 
 ```bash
@@ -77,6 +84,8 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - Do not commit new secrets. The existing Google service-account JSON appears sensitive; avoid copying it into derived files, logs, screenshots, or documentation.
 - Do not assume missing datasets are available. The notebooks reference CSV files that are not currently present in the repository.
 - Do not commit raw external benchmark datasets, request-access SWaT/WaDi files, or generated large outputs. Use local `data/raw/` placement and scripts/configs to reproduce.
+- Treat `data/raw/hydroponic/Hydroponics Data First Trial.csv` as local raw Experiment 1 data if present. It is ignored by git and should not be committed.
+- Exclude `Water_Level` from primary hydroponic analysis until a defensible calibration/physical mapping is available.
 - Preserve binary CAD files unless the user explicitly asks for CAD changes.
 
 ## Verification Notes
@@ -86,6 +95,7 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - The static dashboard can be served from `Code Files/Web Interface` through the `web` compose service.
 - Full notebook and MATLAB verification requires the missing CSV datasets referenced above.
 - The AASVR code path supports a toy smoke test with `python scripts/run_all.py --toy` and `make all`.
+- The real hydroponic Experiment 1 path supports `python scripts/run_all.py --available-real` and `make real` when the local raw CSV exists.
 
 ## Change Log
 
@@ -93,3 +103,4 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - 2026-05-18: Documented that every completed change set should be committed, pushed to the configured remote, and recorded in this file.
 - 2026-05-18: Added AASVR research package scaffold, dataset/method configs, reproducible scripts, tests, result/data placeholders, and ISA Transactions manuscript/submission artifacts.
 - 2026-05-18: Strengthened AASVR with actuator-consistency trust components, expanded baseline behavior, canonical dataset loaders, event/control-safety metrics, synthetic fault grids, additional tests, and literature-backed manuscript sections.
+- 2026-05-18: Added real hydroponic Experiment 1 preprocessing, availability-aware real-data pipeline commands, external dataset acquisition notes/config metadata, and a documented decision to exclude uncalibrated `Water_Level` from primary analysis.

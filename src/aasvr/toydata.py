@@ -14,6 +14,7 @@ def make_toy_hydroponic_data(rows: int = 240, seed: int = 42) -> pd.DataFrame:
             "timestamp": t,
             "pH": 6.1 + 0.04 * rng.normal(size=rows),
             "EC": 1100 + 12 * rng.normal(size=rows),
+            "Humidity": 72 + 1.5 * rng.normal(size=rows),
             "Air_Temp": 24 + 0.2 * rng.normal(size=rows),
             "Water_Temp": 21 + 0.1 * rng.normal(size=rows),
             "Water_Level": 12 + 0.05 * rng.normal(size=rows),

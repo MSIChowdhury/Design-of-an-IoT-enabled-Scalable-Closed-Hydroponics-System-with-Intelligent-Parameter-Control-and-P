@@ -4,5 +4,11 @@ role: request_access_closed_loop_benchmark
 path: data/raw/swat/
 access: "Request through iTrust; do not redistribute raw files."
 source: https://www.sutd.edu.sg/itrust/itrust-labs/datasets/dataset-characteristics/swat/
+source_url: https://www.sutd.edu.sg/itrust/itrust-labs/datasets/dataset-characteristics/swat/
+access_type: request_access
+redistribution_allowed: false
+prepared_outputs:
+  measurements: data/processed/swat_measurements.parquet
+  labels: data/processed/swat_labels.parquet
+  metadata: data/processed/swat_metadata.csv
 notes: "11 days continuous operation; 7 normal and 4 attack days; 51 sensors/actuators; normal/abnormal labels."
-

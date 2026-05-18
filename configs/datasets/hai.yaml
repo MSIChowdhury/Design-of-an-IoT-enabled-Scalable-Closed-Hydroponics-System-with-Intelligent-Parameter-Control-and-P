@@ -1,0 +1,14 @@
+name: hai
+domain: industrial control system
+role: optional_public_ics_benchmark
+path: data/raw/hai/
+access: "Public GitHub dataset; clone or download locally if optional ICS validation is needed."
+source: https://github.com/icsdataset/hai
+source_url: https://github.com/icsdataset/hai
+access_type: public_git
+redistribution_allowed: false
+prepared_outputs:
+  measurements: data/processed/hai_measurements.parquet
+  labels: data/processed/hai_labels.parquet
+  metadata: data/processed/hai_metadata.csv
+notes: "Optional public ICS anomaly benchmark for additional cross-domain robustness after hydro_exp1, TEP, and WUR."

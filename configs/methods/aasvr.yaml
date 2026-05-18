@@ -43,6 +43,19 @@ sensors:
     cooldown_samples: 4
     actuators: ["fan", "cooler"]
     expected_direction: decreasing
+  - name: Humidity
+    physical_min: 0.0
+    physical_max: 100.0
+    control_low: 60.0
+    control_high: 80.0
+    rate_limit: 0.08
+    uncertainty: 1.0
+    xi_min: 1.0
+    window: 9
+    confirm_samples: 3
+    cooldown_samples: 4
+    actuators: ["humidifier", "dehumidifier"]
+    expected_direction: bidirectional
   - name: Water_Temp
     physical_min: 0.0
     physical_max: 50.0
@@ -82,4 +95,3 @@ sensors:
     cooldown_samples: 4
     actuators: ["co2_valve", "ventilation_fan"]
     expected_direction: bidirectional
-

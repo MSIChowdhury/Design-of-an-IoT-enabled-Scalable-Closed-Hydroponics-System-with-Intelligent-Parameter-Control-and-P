@@ -4,5 +4,11 @@ role: open_process_fault_benchmark
 path: data/raw/tep/
 access: "Open DTU/Figshare CC0 dataset; large download."
 source: https://data.dtu.dk/articles/dataset/Tennessee_Eastman_Reference_Data_for_Fault-Detection_and_Decision_Support_Systems/13385936
+source_url: https://data.dtu.dk/articles/dataset/Tennessee_Eastman_Reference_Data_for_Fault-Detection_and_Decision_Support_Systems/13385936
+access_type: public_manual_download
+redistribution_allowed: false
+prepared_outputs:
+  measurements: data/processed/tep_measurements.parquet
+  labels: data/processed/tep_labels.parquet
+  metadata: data/processed/tep_metadata.csv
 notes: "28 process faults, 6 operating modes, 500 simulations per fault, 100-hour simulations at 3-minute sampling."
-

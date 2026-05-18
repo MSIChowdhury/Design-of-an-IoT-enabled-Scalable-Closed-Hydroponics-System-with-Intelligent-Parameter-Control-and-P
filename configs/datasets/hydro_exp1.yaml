@@ -1,9 +1,14 @@
 name: hydro_exp1
 domain: closed hydroponic CEA
 role: development_tuning
-path: data/raw/hydroponic/experiment_1.csv
-timestamp_column: timestamp
-sampling_seconds: 15
-labels: data/raw/hydroponic/experiment_1_events.csv
-notes: "Expected from original hydroponic trial logs; not currently committed."
-
+path: "data/raw/hydroponic/Hydroponics Data First Trial.csv"
+timestamp_column: Timestamp
+sampling_seconds: 16
+labels: data/processed/hydro_exp1_rule_labels.parquet
+prepared_measurements: data/processed/hydro_exp1_measurements.parquet
+prepared_metadata: data/processed/hydro_exp1_metadata.csv
+access_type: local_private
+redistribution_allowed: false
+primary_sensors: ["EC", "pH", "Humidity", "Air_Temp", "Water_Temp", "CO2"]
+exclude_sensors: ["Water_Level"]
+notes: "Real first-trial feed is available locally. Water_Level is excluded from primary analysis because the raw values are uncalibrated and mostly negative."

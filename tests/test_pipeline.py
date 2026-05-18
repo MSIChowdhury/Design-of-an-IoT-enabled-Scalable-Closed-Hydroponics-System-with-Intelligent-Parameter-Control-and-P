@@ -5,6 +5,7 @@ import pandas as pd
 from aasvr.config import load_aasvr_config
 from aasvr.pipeline import run_aasvr_on_frame
 from aasvr.toydata import make_toy_hydroponic_data
+from scripts.download_datasets import render_note
 
 
 def test_toy_pipeline_runs(tmp_path: Path) -> None:
@@ -33,3 +34,17 @@ sensors:
     assert isinstance(decisions, pd.DataFrame)
     assert len(decisions) == len(frame)
     assert load_aasvr_config(config_path).sensors[0].name == "pH"
+
+
+def test_download_note_documents_raw_data_policy() -> None:
+    note = render_note(
+        "tep",
+        {
+            "source": "https://example.test",
+            "access": "manual",
+            "use": "benchmark",
+            "target": "data/raw/tep",
+        },
+    )
+    assert "Raw files" in note
+    assert "data/raw/tep" in note

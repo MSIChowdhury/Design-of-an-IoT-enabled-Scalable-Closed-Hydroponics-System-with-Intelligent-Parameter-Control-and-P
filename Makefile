@@ -1,4 +1,4 @@
-.PHONY: test smoke prepare evaluate figures manuscript-check all
+.PHONY: test smoke prepare evaluate figures manuscript-check real all
 
 PYTHON ?= python
 
@@ -24,5 +24,7 @@ figures:
 manuscript-check:
 	$(PYTHON) scripts/check_manuscript.py
 
-all: test smoke manuscript-check
+real:
+	$(PYTHON) scripts/run_all.py --available-real
 
+all: test smoke manuscript-check

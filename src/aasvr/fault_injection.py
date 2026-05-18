@@ -28,6 +28,7 @@ def inject_fault(frame: pd.DataFrame, spec: FaultSpec) -> tuple[pd.DataFrame, pd
     )
     end = min(spec.start + spec.duration, len(out))
     idx = out.index[spec.start:end]
+    out[spec.sensor] = pd.to_numeric(out[spec.sensor], errors="coerce").astype(float)
     original = out.loc[idx, spec.sensor].astype(float)
     if spec.fault_type == "spike":
         out.loc[idx, spec.sensor] = original + spec.magnitude
