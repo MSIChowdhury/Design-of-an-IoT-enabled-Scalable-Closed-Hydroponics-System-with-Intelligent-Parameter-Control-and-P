@@ -1,4 +1,4 @@
-.PHONY: test smoke prepare evaluate figures manuscript-check real all
+.PHONY: test smoke prepare evaluate figures manuscript-check real all stats
 
 PYTHON ?= python
 
@@ -20,6 +20,10 @@ evaluate:
 figures:
 	$(PYTHON) scripts/07_make_tables.py --toy
 	$(PYTHON) scripts/08_make_figures.py --toy
+
+stats:
+	$(PYTHON) scripts/10_run_ablation.py --hydro-exp1
+	$(PYTHON) scripts/11_statistical_analysis.py --hydro-exp1
 
 manuscript-check:
 	$(PYTHON) scripts/check_manuscript.py

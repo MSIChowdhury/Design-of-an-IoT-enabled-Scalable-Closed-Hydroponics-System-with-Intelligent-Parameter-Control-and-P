@@ -43,6 +43,8 @@ def run_available_real() -> None:
         ["scripts/05_inject_faults.py", "--hydro-exp1"],
         ["scripts/06_compute_metrics.py", "--hydro-exp1"],
         ["scripts/09_tune_aasvr.py", "--hydro-exp1"],
+        ["scripts/10_run_ablation.py", "--hydro-exp1"],
+        ["scripts/11_statistical_analysis.py", "--hydro-exp1"],
         ["scripts/07_make_tables.py", "--hydro-exp1"],
         ["scripts/08_make_figures.py", "--hydro-exp1"],
     ]

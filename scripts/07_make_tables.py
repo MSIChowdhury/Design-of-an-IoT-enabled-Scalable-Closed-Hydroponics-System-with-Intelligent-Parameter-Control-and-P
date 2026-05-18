@@ -54,6 +54,31 @@ def make_hydro_exp1_tables() -> None:
         frame = pd.read_csv(by_fault)
         frame.to_csv(out_dir / "hydro_exp1_synthetic_by_fault_type.csv", index=False)
         print(f"Wrote {out_dir / 'hydro_exp1_synthetic_by_fault_type.csv'}")
+    by_sensor = ROOT / "results/metrics/hydro_exp1_synthetic_by_sensor.csv"
+    if by_sensor.exists():
+        frame = pd.read_csv(by_sensor)
+        frame.to_csv(out_dir / "hydro_exp1_synthetic_by_sensor.csv", index=False)
+        print(f"Wrote {out_dir / 'hydro_exp1_synthetic_by_sensor.csv'}")
+    by_sensor_fault = ROOT / "results/metrics/hydro_exp1_synthetic_by_sensor_fault_type.csv"
+    if by_sensor_fault.exists():
+        frame = pd.read_csv(by_sensor_fault)
+        frame.to_csv(out_dir / "hydro_exp1_synthetic_by_sensor_fault_type.csv", index=False)
+        print(f"Wrote {out_dir / 'hydro_exp1_synthetic_by_sensor_fault_type.csv'}")
+    bootstrap = ROOT / "results/metrics/hydro_exp1_bootstrap_ci.csv"
+    if bootstrap.exists():
+        frame = pd.read_csv(bootstrap)
+        frame.to_csv(out_dir / "hydro_exp1_bootstrap_ci.csv", index=False)
+        print(f"Wrote {out_dir / 'hydro_exp1_bootstrap_ci.csv'}")
+    ranks = ROOT / "results/metrics/hydro_exp1_method_ranks.csv"
+    if ranks.exists():
+        frame = pd.read_csv(ranks)
+        frame.to_csv(out_dir / "hydro_exp1_method_ranks.csv", index=False)
+        print(f"Wrote {out_dir / 'hydro_exp1_method_ranks.csv'}")
+    ablation = ROOT / "results/metrics/hydro_exp1_ablation_summary.csv"
+    if ablation.exists():
+        frame = pd.read_csv(ablation)
+        frame.to_csv(out_dir / "hydro_exp1_ablation_summary.csv", index=False)
+        print(f"Wrote {out_dir / 'hydro_exp1_ablation_summary.csv'}")
     tuning = ROOT / "results/metrics/hydro_exp1_aasvr_tuning.csv"
     if tuning.exists():
         frame = pd.read_csv(tuning).head(10)

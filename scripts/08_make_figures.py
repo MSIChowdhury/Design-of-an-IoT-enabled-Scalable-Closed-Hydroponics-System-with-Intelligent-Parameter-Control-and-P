@@ -72,6 +72,50 @@ def make_hydro_exp1_figures() -> None:
         plt.savefig(out, dpi=160)
         plt.close()
         print(f"Wrote {out}")
+    ablation_path = ROOT / "results/metrics/hydro_exp1_ablation_summary.csv"
+    if ablation_path.exists():
+        ablation = pd.read_csv(ablation_path).sort_values("balanced_accuracy", ascending=True)
+        out = out_dir / "hydro_exp1_ablation_balanced_accuracy.png"
+        plt.figure(figsize=(8, 4))
+        plt.barh(ablation["variant"], ablation["balanced_accuracy"])
+        plt.xlabel("Mean balanced accuracy")
+        plt.title("AASVR ablation benchmark")
+        plt.tight_layout()
+        plt.savefig(out, dpi=160)
+        plt.close()
+        print(f"Wrote {out}")
+    ci_path = ROOT / "results/metrics/hydro_exp1_bootstrap_ci.csv"
+    if ci_path.exists():
+        ci = pd.read_csv(ci_path)
+        metric = ci[ci["metric"] == "balanced_accuracy"].sort_values("mean", ascending=True)
+        if not metric.empty:
+            out = out_dir / "hydro_exp1_balanced_accuracy_ci.png"
+            lower = metric["mean"] - metric["ci_low"]
+            upper = metric["ci_high"] - metric["mean"]
+            plt.figure(figsize=(8, 4))
+            plt.barh(metric["method"], metric["mean"], xerr=[lower, upper], capsize=3)
+            plt.xlabel("Balanced accuracy with bootstrap 95% CI")
+            plt.title("Hydroponic synthetic-fault uncertainty")
+            plt.tight_layout()
+            plt.savefig(out, dpi=160)
+            plt.close()
+            print(f"Wrote {out}")
+    fault_path = ROOT / "results/metrics/hydro_exp1_synthetic_by_fault_type.csv"
+    if fault_path.exists():
+        fault = pd.read_csv(fault_path)
+        pivot = fault.pivot(index="fault_type", columns="method", values="balanced_accuracy")
+        if not pivot.empty:
+            out = out_dir / "hydro_exp1_fault_type_heatmap.png"
+            plt.figure(figsize=(9, 4))
+            plt.imshow(pivot, aspect="auto", vmin=0, vmax=1, cmap="viridis")
+            plt.xticks(range(len(pivot.columns)), pivot.columns, rotation=45, ha="right")
+            plt.yticks(range(len(pivot.index)), pivot.index)
+            plt.colorbar(label="Balanced accuracy")
+            plt.title("Fault-type robustness")
+            plt.tight_layout()
+            plt.savefig(out, dpi=160)
+            plt.close()
+            print(f"Wrote {out}")
 
 
 if __name__ == "__main__":
