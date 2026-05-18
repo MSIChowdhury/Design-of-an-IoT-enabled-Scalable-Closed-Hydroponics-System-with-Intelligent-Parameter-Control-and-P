@@ -58,7 +58,8 @@ def compute_hydro_exp1() -> None:
     for path in sorted(out_dir.glob("hydro_exp1_*_decisions.csv")):
         method = path.name.removeprefix("hydro_exp1_").removesuffix("_decisions.csv")
         decisions = pd.read_csv(path)
-        metrics = compute_metrics(decisions, labels)
+        prediction_mode = "gate_reject" if method == "aasvr" else "auto"
+        metrics = compute_metrics(decisions, labels, prediction_mode=prediction_mode)
         row = {"dataset": "hydro_exp1", "method": method}
         row.update(metrics.__dict__)
         rows.append(row)
@@ -115,9 +116,11 @@ def compute_hydro_exp1_synthetic() -> None:
         for method in methods:
             if method == "aasvr":
                 decisions = run_aasvr_with_config(faulted, config)
+                prediction_mode = "gate_reject"
             else:
                 decisions = run_baseline_on_frame(faulted, sensors, method)
-            metrics = compute_metrics(decisions, labels)
+                prediction_mode = "auto"
+            metrics = compute_metrics(decisions, labels, prediction_mode=prediction_mode)
             row = {
                 "dataset": "hydro_exp1",
                 "trial_id": trial.trial_id,

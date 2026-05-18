@@ -24,8 +24,13 @@ class Metrics:
     alerts: int
 
 
-def compute_metrics(decisions: pd.DataFrame, labels: pd.DataFrame | None = None) -> Metrics:
-    predicted = _prediction_series(decisions).to_numpy(dtype=bool)
+def compute_metrics(
+    decisions: pd.DataFrame,
+    labels: pd.DataFrame | None = None,
+    *,
+    prediction_mode: str = "auto",
+) -> Metrics:
+    predicted = _prediction_series(decisions, prediction_mode=prediction_mode).to_numpy(dtype=bool)
     if labels is None:
         actual = np.zeros_like(predicted, dtype=bool)
     else:
@@ -63,7 +68,11 @@ def _safe_div(num: float, den: float) -> float:
     return float(num / den) if den else 0.0
 
 
-def _prediction_series(decisions: pd.DataFrame) -> pd.Series:
+def _prediction_series(decisions: pd.DataFrame, *, prediction_mode: str = "auto") -> pd.Series:
+    if prediction_mode == "alert":
+        return decisions.get("alert", pd.Series(False, index=decisions.index)).astype(bool)
+    if prediction_mode == "gate_reject":
+        return decisions.get("gate_result", pd.Series("", index=decisions.index)).eq("reject")
     if "alert" in decisions:
         return decisions["alert"].astype(bool)
     if "gate_result" in decisions:

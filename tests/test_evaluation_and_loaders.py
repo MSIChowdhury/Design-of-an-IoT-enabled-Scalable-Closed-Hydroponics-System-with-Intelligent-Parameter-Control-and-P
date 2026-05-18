@@ -21,6 +21,22 @@ def test_event_metrics_count_detection_delay_and_false_alarm() -> None:
     assert metrics.false_alarm_events == 1
 
 
+def test_aasvr_gate_reject_prediction_mode_scores_suspect_rejections() -> None:
+    decisions = pd.DataFrame(
+        {
+            "alert": [False, False, False],
+            "gate_result": ["accept", "reject", "accept"],
+            "actuation_authorized": [False, False, False],
+            "unsafe_band": [False, False, False],
+        }
+    )
+    labels = pd.DataFrame({"fault": [False, True, False]})
+    alert_metrics = compute_metrics(decisions, labels, prediction_mode="alert")
+    gate_metrics = compute_metrics(decisions, labels, prediction_mode="gate_reject")
+    assert alert_metrics.recall == 0.0
+    assert gate_metrics.recall == 1.0
+
+
 def test_csv_loader_returns_canonical_frames(tmp_path: Path) -> None:
     path = tmp_path / "sample.csv"
     pd.DataFrame(
