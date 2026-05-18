@@ -55,10 +55,17 @@ def inject_hydro_exp1() -> None:
     summaries = []
     rng = np.random.default_rng(29)
     max_start = max(len(frame) - 31, 1)
-    for sensor in ("pH", "CO2", "EC"):
+    magnitudes_by_sensor = {
+        "pH": (0.5, 2.0),
+        "CO2": (500.0, 2000.0),
+        "EC": (100.0, 400.0),
+        "Air_Temp": (2.0, 8.0),
+        "Water_Temp": (1.0, 4.0),
+    }
+    for sensor, magnitudes in magnitudes_by_sensor.items():
         trial_id = 0
         for fault_type in ("spike", "multi_spike", "dropout", "drift", "bias", "noise_burst", "step"):
-            for magnitude in (2.0, 4.0):
+            for magnitude in magnitudes:
                 for duration in (1, 5, 30):
                     for rep in range(2):
                         trial_id += 1

@@ -60,6 +60,18 @@ def make_hydro_exp1_figures() -> None:
         plt.savefig(out, dpi=160)
         plt.close()
         print(f"Wrote {out}")
+    summary_path = ROOT / "results/metrics/hydro_exp1_synthetic_summary.csv"
+    if summary_path.exists():
+        summary = pd.read_csv(summary_path).sort_values("balanced_accuracy", ascending=True)
+        out = out_dir / "hydro_exp1_synthetic_balanced_accuracy.png"
+        plt.figure(figsize=(8, 4))
+        plt.barh(summary["method"], summary["balanced_accuracy"])
+        plt.xlabel("Mean balanced accuracy")
+        plt.title("Hydroponic synthetic-fault benchmark")
+        plt.tight_layout()
+        plt.savefig(out, dpi=160)
+        plt.close()
+        print(f"Wrote {out}")
 
 
 if __name__ == "__main__":

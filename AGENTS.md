@@ -104,3 +104,4 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - 2026-05-18: Added AASVR research package scaffold, dataset/method configs, reproducible scripts, tests, result/data placeholders, and ISA Transactions manuscript/submission artifacts.
 - 2026-05-18: Strengthened AASVR with actuator-consistency trust components, expanded baseline behavior, canonical dataset loaders, event/control-safety metrics, synthetic fault grids, additional tests, and literature-backed manuscript sections.
 - 2026-05-18: Added real hydroponic Experiment 1 preprocessing, availability-aware real-data pipeline commands, external dataset acquisition notes/config metadata, and a documented decision to exclude uncalibrated `Water_Level` from primary analysis.
+- 2026-05-18: Added windowed synthetic-fault method-comparison metrics for hydroponic Experiment 1 so paper results are not dominated by physical-range rule labels.

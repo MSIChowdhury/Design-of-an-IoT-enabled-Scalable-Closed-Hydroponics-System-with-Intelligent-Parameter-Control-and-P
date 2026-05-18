@@ -44,6 +44,16 @@ def make_hydro_exp1_tables() -> None:
         frame = pd.read_csv(quality)
         frame.to_csv(out_dir / "hydro_exp1_data_quality.csv", index=False)
         print(f"Wrote {out_dir / 'hydro_exp1_data_quality.csv'}")
+    synthetic = ROOT / "results/metrics/hydro_exp1_synthetic_summary.csv"
+    if synthetic.exists():
+        frame = pd.read_csv(synthetic)
+        frame.to_csv(out_dir / "hydro_exp1_synthetic_summary.csv", index=False)
+        print(f"Wrote {out_dir / 'hydro_exp1_synthetic_summary.csv'}")
+    by_fault = ROOT / "results/metrics/hydro_exp1_synthetic_by_fault_type.csv"
+    if by_fault.exists():
+        frame = pd.read_csv(by_fault)
+        frame.to_csv(out_dir / "hydro_exp1_synthetic_by_fault_type.csv", index=False)
+        print(f"Wrote {out_dir / 'hydro_exp1_synthetic_by_fault_type.csv'}")
 
 
 if __name__ == "__main__":
