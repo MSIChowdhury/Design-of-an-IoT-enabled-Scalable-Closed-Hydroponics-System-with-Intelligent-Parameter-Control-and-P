@@ -16,4 +16,7 @@ defaults:
   window: 5
   threshold_multiplier: 3.0
   alpha: 0.2
-
+  cusum_drift: 0.5
+  cusum_threshold: 5.0
+  kalman_process_var: 0.01
+  kalman_measurement_var: 1.0

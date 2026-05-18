@@ -17,6 +17,7 @@ The research compares the proposed automated treatment against soil-based and ma
 - `Code Files/MATLAB Codes/Error_Resilience_Algorithm_Optimisation.m`: MATLAB optimization script for alpha/beta sensor-error resilience parameters across EC, pH, air temperature, water temperature, water level, and CO2. It currently contains absolute Windows paths for input/output CSVs that should be parameterized before automated container runs.
 - `3D CAD Files/`: SolidWorks parts and assemblies for the hydroponics piping/tube structure. These are binary CAD assets and are not runnable inside the software container.
 - `src/aasvr/`: reproducible Python implementation of Actuation-Aware Sensor Validation and Rectification (AASVR), baseline wrappers, toy data, fault injection, and metrics.
+- `src/aasvr/loaders.py` and `src/aasvr/schemas.py`: canonical dataset loading/schema helpers for hydroponic logs and external process-control benchmark files that are placed locally under `data/raw/`.
 - `configs/`: YAML manifests for AASVR parameters, baselines, hydroponic datasets, and external process-control benchmark datasets.
 - `scripts/`: reproducible command-line pipeline for dataset checks, toy preparation, method execution, synthetic fault injection, metrics, tables, figures, and manuscript checks.
 - `manuscript/`: ISA Transactions scaffold including anonymized manuscript, title page, highlights, cover letter, data statement, and rewrite notes.
@@ -91,3 +92,4 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - 2026-05-18: Added `AGENTS.md` project memory, container-first workflow, Docker configuration, Python dependency manifest, and Docker ignore rules.
 - 2026-05-18: Documented that every completed change set should be committed, pushed to the configured remote, and recorded in this file.
 - 2026-05-18: Added AASVR research package scaffold, dataset/method configs, reproducible scripts, tests, result/data placeholders, and ISA Transactions manuscript/submission artifacts.
+- 2026-05-18: Strengthened AASVR with actuator-consistency trust components, expanded baseline behavior, canonical dataset loaders, event/control-safety metrics, synthetic fault grids, additional tests, and literature-backed manuscript sections.

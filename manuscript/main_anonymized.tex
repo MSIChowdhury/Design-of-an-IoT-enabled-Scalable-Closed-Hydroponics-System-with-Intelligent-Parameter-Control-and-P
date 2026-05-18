@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{url}
 
 \journal{ISA Transactions}
 
@@ -27,21 +28,53 @@ Closed-loop measurement and control systems continuously convert sensor observat
 
 \section{Related Work}
 \subsection{Sensor faults in closed-loop measurement and control}
+Low-cost closed-loop systems are exposed to missing samples, spikes, drift, stuck-at faults, saturation, and rate-inconsistent readings. In process-control settings, these faults are not only data-quality defects: once a controller consumes the measurement, the fault can become an actuator command. Sensor-data quality reviews distinguish detection, identification, correction, and recovery as separate tasks, which motivates treating validation and rectification as explicit stages rather than hiding them inside a smoothing filter \cite{teh2020sensorquality}.
+
 \subsection{Filtering and data-rectification methods}
+Common online approaches include threshold rules, moving averages, moving medians, Hampel filters, Kalman filters, EWMA, CUSUM, and multivariate PCA monitoring using Hotelling's $T^2$ and SPE/Q statistics. These methods are useful baselines but they normally score the measurement stream itself. AASVR instead adds a downstream authorization question: whether a value is trustworthy enough to update the control state or trigger actuation.
+
 \subsection{Process-control benchmark datasets}
+Independent process-control benchmarks are needed because hydroponic deployments rarely contain complete ground truth. SWaT and WaDi provide water-process sensor and actuator streams with labeled abnormal periods, Tennessee Eastman provides repeated simulated process-fault cases, DAMADICS provides industrial actuator-fault data, and the WUR greenhouse challenge provides domain-adjacent controlled-environment data. These datasets test cross-domain robustness; they are not used to make agronomic claims.
+
 \subsection{Hydroponic CEA as a validation testbed}
+Recent IoT-hydroponics reviews emphasize that many systems remain prototypes with limited reproducibility, weak interoperability, and scarce public code or datasets \cite{beyondprototypes2025}. This project therefore treats reproducible scripts, containerized execution, dataset descriptors, and benchmark protocols as part of the contribution.
 
 \section{Problem Formulation}
 \subsection{Measurement stream and trusted state}
+For sensor $s$ at time $t$, the raw measurement is $y_s(t)$ and the trusted value exposed to control is $\hat{x}_s(t)$. The controller may also observe actuator states $a(t)$, broad physical limits $[P_{s,\min}, P_{s,\max}]$, control bands $[L^a_s,U^a_s]$, and a sensor-specific rate limit $r_s$.
+
 \subsection{Sensor anomaly and actuation-risk definitions}
+An anomalous reading is a missing, physically implausible, rate-inconsistent, or history-inconsistent observation. A false actuation is an actuator authorization caused by untrusted or faulty measurement evidence. A missed actuation is a failure to authorize action when the trusted process state remains outside the control band.
+
 \subsection{Control-aware objective function}
+The method is evaluated with a multi-objective criterion,
+\[
+J(\theta)=w_1E_{\mathrm{pass}}+w_2E_{\mathrm{reject}}+w_3A_{\mathrm{false}}+
+w_4A_{\mathrm{missed}}+w_5D_{\mathrm{delay}}+w_6T_{\mathrm{unsafe}}+w_7C_{\mathrm{compute}},
+\]
+where the terms respectively penalize anomalous pass-through, false rejection, false actuation, missed actuation, detection delay, residence outside safe bands, and computational cost.
 
 \section{Proposed Method: AASVR}
 \subsection{Overview}
 \subsection{Robust plausibility gating}
+The robust measurement-change scale is estimated with MAD:
+\[
+\sigma_{\Delta,s}(t)=1.4826\operatorname{MAD}(\Delta y_s(t-w:t)).
+\]
+The tolerance is
+\[
+\xi_s(t)=\max(\xi_{s,\min}, c_s\sigma_{\Delta,s}(t), r_s\Delta t, u_s).
+\]
+A reading is initially plausible only if it satisfies physical range, rate, and trusted-state deviation constraints.
+
 \subsection{State-machine persistence logic}
+AASVR uses five states: Normal, Suspect transient, Persistent deviation, Accepted regime shift, and Fault-alert. Transient failures hold or predict the trusted value; repeated failures escalate toward fault alert unless a consistent new regime is confirmed.
+
 \subsection{Rectification policy}
+Accepted readings update $\hat{x}_s(t)$. Suspect readings hold the previous trusted value or apply bounded prediction. Fault-alert readings are logged and withheld from single-sensor actuation authorization.
+
 \subsection{Actuation authorization}
+Actuation requires a trusted out-of-band state, persistence for $k_s$ samples, sufficient trust score, allowed cooldown state, and consistency between actuator activity and the expected response direction when actuator-state data are available.
 \subsection{Parameter optimization}
 \subsection{Computational complexity}
 
@@ -51,6 +84,7 @@ Closed-loop measurement and control systems continuously convert sensor observat
 \subsection{Synthetic fault injection}
 \subsection{Baseline methods}
 \subsection{Evaluation metrics}
+Point-wise metrics are reported with event-wise metrics because point-only anomaly scores can misrepresent time-series detection quality. Event recall, time-to-first-detection, detection delay, false alarm events, false actuation, missed actuation, unsafe-band residence time, and runtime per sample are primary outcomes.
 \subsection{Statistical analysis}
 
 \section{Results}
@@ -84,4 +118,3 @@ To be completed if AI-assisted tools are used in manuscript preparation.
 \bibliography{references}
 
 \end{document}
-

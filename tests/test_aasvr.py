@@ -34,6 +34,7 @@ def test_aasvr_rejects_single_physical_range_fault_without_actuation() -> None:
     assert decision.state == SensorState.SUSPECT_TRANSIENT
     assert not decision.actuation_authorized
     assert decision.trusted_value == 6.1
+    assert any(component.startswith("range=") for component in decision.trust_components)
 
 
 def test_aasvr_authorizes_persistent_trusted_control_violation() -> None:
@@ -51,3 +52,18 @@ def test_aasvr_escalates_persistent_fault() -> None:
     assert decisions[-1].state == SensorState.FAULT_ALERT
     assert decisions[-1].alert
 
+
+def test_aasvr_penalizes_actuator_inconsistent_response() -> None:
+    cfg = sensor()
+    cfg = SensorConfig(
+        **{
+            **cfg.__dict__,
+            "actuators": ("acid_doser",),
+            "expected_direction": "decreasing",
+        }
+    )
+    model = AASVR(AASVRConfig(sensors=(cfg,), q_min=0.7))
+    model.update({"timestamp": 0, "pH": 6.1})
+    decision = model.update({"timestamp": 1, "pH": 6.2, "acid_doser": 1})[0]
+    assert decision.actuator_consistency == 0.0
+    assert decision.trust_score < 0.7

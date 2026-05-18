@@ -49,7 +49,10 @@ class AASVRDecision:
     rectification_action: str
     actuation_authorized: bool
     alert: bool
+    actuator_consistency: float = 1.0
+    unsafe_band: bool = False
     reason_codes: tuple[str, ...] = ()
+    trust_components: tuple[str, ...] = ()
 
 
 @dataclass
@@ -63,6 +66,7 @@ class _SensorRuntime:
     accepted_count: int = 0
     band_violation_count: int = 0
     cooldown_remaining: int = 0
+    last_authorized_value: float | None = None
 
 
 class AASVR:
@@ -87,11 +91,11 @@ class AASVR:
         timestamp = sample.get("timestamp")
         decisions = []
         for name, runtime in self._sensors.items():
-            decisions.append(self._update_sensor(runtime, sample.get(name), timestamp))
+            decisions.append(self._update_sensor(runtime, sample, sample.get(name), timestamp))
         return decisions
 
     def _update_sensor(
-        self, runtime: _SensorRuntime, raw: Any, timestamp: Any
+        self, runtime: _SensorRuntime, sample: dict[str, Any], raw: Any, timestamp: Any
     ) -> AASVRDecision:
         cfg = runtime.config
         y = _to_float(raw)
@@ -128,6 +132,8 @@ class AASVR:
                 reasons.append("rate_limit")
                 plausible = False
 
+        actuator_consistency = self._actuator_consistency(runtime, sample, y)
+
         if plausible:
             runtime.failed_count = 0
             runtime.accepted_count += 1
@@ -158,9 +164,17 @@ class AASVR:
             runtime.history.append(y)
             runtime.last_raw_value = y
 
-        trust_score = self._trust_score(runtime, plausible, reasons)
+        trust_score, components = self._trust_score(
+            runtime,
+            plausible,
+            reasons,
+            actuator_consistency,
+        )
         authorized = self._authorize(runtime, trust_score)
+        if authorized:
+            runtime.last_authorized_value = runtime.trusted_value
         alert = runtime.state == SensorState.FAULT_ALERT
+        unsafe_band = self._unsafe_band(runtime)
         return AASVRDecision(
             timestamp=timestamp,
             sensor=cfg.name,
@@ -174,7 +188,10 @@ class AASVR:
             rectification_action=rectification_action,
             actuation_authorized=authorized,
             alert=alert,
+            actuator_consistency=actuator_consistency,
+            unsafe_band=unsafe_band,
             reason_codes=tuple(reasons),
+            trust_components=components,
         )
 
     def _next_failed_state(self, runtime: _SensorRuntime) -> SensorState:
@@ -193,19 +210,61 @@ class AASVR:
         step = float(np.clip(y - runtime.trusted_value, -max_step, max_step))
         return runtime.trusted_value + step
 
-    def _trust_score(self, runtime: _SensorRuntime, plausible: bool, reasons: list[str]) -> float:
-        if plausible:
+    def _trust_score(
+        self,
+        runtime: _SensorRuntime,
+        plausible: bool,
+        reasons: list[str],
+        actuator_consistency: float,
+    ) -> tuple[float, tuple[str, ...]]:
+        range_score = 0.0 if "physical_range" in reasons else 1.0
+        rate_score = 0.0 if "rate_limit" in reasons else 1.0
+        delta_score = 0.0 if "trusted_delta" in reasons else 1.0
+        missing_score = 0.0 if "missing" in reasons else 1.0
+        persistence_score = float(np.clip(1.0 - 0.2 * runtime.failed_count, 0.0, 1.0))
+        plausibility_score = 1.0 if plausible else 0.35 * min(
+            range_score,
+            rate_score,
+            delta_score,
+            missing_score,
+        )
+        weighted = (
+            0.25 * range_score
+            + 0.20 * rate_score
+            + 0.20 * persistence_score
+            + 0.20 * actuator_consistency
+            + 0.15 * missing_score
+        )
+        if actuator_consistency < 0.5:
+            weighted = min(weighted, 0.65)
+        score = min(weighted, plausibility_score if not plausible else weighted)
+        components = (
+            f"range={range_score:.3f}",
+            f"rate={rate_score:.3f}",
+            f"persistence={persistence_score:.3f}",
+            f"actuator_consistency={actuator_consistency:.3f}",
+            f"missingness={missing_score:.3f}",
+        )
+        return float(np.clip(score, 0.0, 1.0)), components
+
+    def _actuator_consistency(
+        self,
+        runtime: _SensorRuntime,
+        sample: dict[str, Any],
+        y: float,
+    ) -> float:
+        cfg = runtime.config
+        if not cfg.actuators or runtime.last_raw_value is None or not np.isfinite(y):
             return 1.0
-        penalties = {
-            "missing": 0.4,
-            "physical_range": 0.5,
-            "rate_limit": 0.25,
-            "trusted_delta": 0.25,
-        }
-        score = 1.0 - sum(penalties.get(reason, 0.2) for reason in reasons)
-        if runtime.failed_count:
-            score -= min(0.4, 0.1 * runtime.failed_count)
-        return float(np.clip(score, 0.0, 1.0))
+        active = any(_truthy(sample.get(actuator)) for actuator in cfg.actuators)
+        if not active:
+            return 1.0
+        delta = y - runtime.last_raw_value
+        if cfg.expected_direction == "decreasing":
+            return 1.0 if delta <= max(cfg.uncertainty, cfg.xi_min) else 0.0
+        if cfg.expected_direction == "increasing":
+            return 1.0 if delta >= -max(cfg.uncertainty, cfg.xi_min) else 0.0
+        return 1.0 if abs(delta) <= max(cfg.rate_limit * self.dt_seconds, cfg.xi_min) else 0.5
 
     def _authorize(self, runtime: _SensorRuntime, trust_score: float) -> bool:
         cfg = runtime.config
@@ -228,6 +287,13 @@ class AASVR:
             return True
         return False
 
+    def _unsafe_band(self, runtime: _SensorRuntime) -> bool:
+        trusted = runtime.trusted_value
+        if trusted is None or not np.isfinite(trusted):
+            return False
+        cfg = runtime.config
+        return bool(trusted < cfg.control_low or trusted > cfg.control_high)
+
 
 def _to_float(value: Any) -> float:
     try:
@@ -235,3 +301,8 @@ def _to_float(value: Any) -> float:
     except (TypeError, ValueError):
         return float("nan")
 
+
+def _truthy(value: Any) -> bool:
+    if isinstance(value, str):
+        return value.strip().lower() in {"1", "true", "on", "open", "active", "yes"}
+    return bool(value)
