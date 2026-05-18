@@ -14,3 +14,4 @@ Cross-dataset manuscript tables are generated when prepared datasets exist:
 - `results/tables/dataset_summary.csv`
 - `results/tables/main_benchmark_table.csv`
 - `results/figures/cross_dataset_rank_plot.png`
+- `results/tables/benchmark_subset_protocol.csv`

@@ -1,4 +1,4 @@
-.PHONY: test smoke prepare evaluate figures manuscript-check real all stats
+.PHONY: test smoke prepare evaluate figures manuscript-check real all stats subset-protocol
 
 PYTHON ?= python
 
@@ -24,6 +24,10 @@ figures:
 stats:
 	$(PYTHON) scripts/10_run_ablation.py --hydro-exp1
 	$(PYTHON) scripts/11_statistical_analysis.py --hydro-exp1
+
+subset-protocol:
+	$(PYTHON) scripts/download_datasets.py --all --profile paper
+	$(PYTHON) scripts/12_make_subset_protocol.py --profile paper
 
 manuscript-check:
 	$(PYTHON) scripts/check_manuscript.py

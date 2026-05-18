@@ -12,3 +12,23 @@ prepared_outputs:
   labels: data/processed/wadi_labels.parquet
   metadata: data/processed/wadi_metadata.csv
 notes: "16 days operation; 14 normal and 2 attack days; 123 sensors/actuators; labels available in updated files."
+download_profiles:
+  minimal:
+    action: request_access_notes
+    expected_size_mb: 0
+    reason: "Dataset requires iTrust approval; no automated download without access."
+  paper:
+    action: local_files_required
+    expected_size_mb: 0
+    reason: "Use approved local files if provided by the researcher."
+  full:
+    action: local_files_required
+    expected_size_mb: 0
+subset_protocol:
+  default_profile: paper
+  subset_files: "Use approved local normal/test CSV files if available under data/raw/wadi/."
+  selected_faults: "Native normal/attack labels from approved WaDi files."
+  max_runs: 1
+  max_rows: 100000
+  selection_rationale: "Distributed water-process benchmark tests scalability beyond the hydroponic target system."
+  limitation: "Not included in quantitative tables unless approved raw files are locally present."

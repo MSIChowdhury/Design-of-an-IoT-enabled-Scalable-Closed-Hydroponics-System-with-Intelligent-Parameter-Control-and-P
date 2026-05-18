@@ -81,6 +81,7 @@ Actuation requires a trusted out-of-band state, persistence for $k_s$ samples, s
 \section{Materials and Evaluation Protocol}
 \subsection{Hydroponic deployment datasets}
 \subsection{External benchmark datasets}
+External benchmarks are evaluated with a fixed subset protocol rather than full archival downloads. This is necessary because some public benchmark archives are tens to hundreds of gigabytes and some water-process datasets require access approval. Subsets are selected before evaluation by domain and fault-mechanism diversity, with file choices, maximum rows, and limitations recorded in a reproducible subset-protocol table. These subset results are used to test cross-domain plausibility of actuation-aware validation, not to claim exhaustive benchmark dominance.
 \subsection{Synthetic fault injection}
 \subsection{Baseline methods}
 \subsection{Evaluation metrics}
@@ -103,7 +104,7 @@ The ablation protocol disables robust scaling, uncommanded-trend detection, stat
 \subsection{Cross-domain generalization}
 \subsection{Practical deployment recommendations}
 \subsection{Limitations}
-The hydroponic evidence currently combines rule-derived labels, optional manual annotations, and synthetic fault injection because independent reference instruments are not available for every sensor at every time point. External process-control datasets are used only for cross-domain measurement/control validation and do not support agronomic conclusions.
+The hydroponic evidence currently combines rule-derived labels, optional manual annotations, and synthetic fault injection because independent reference instruments are not available for every sensor at every time point. External process-control datasets are evaluated through documented subsets unless full local archives are provided, so they support cross-domain measurement/control validation rather than exhaustive leaderboard-style claims. They do not support agronomic conclusions.
 
 \section{Conclusion}
 AASVR provides a lightweight actuation-aware measurement validation layer for closed-loop systems. The evaluation is designed to test whether robust measurement validation, state-machine persistence, rectification, and actuation authorization reduce anomaly pass-through and false actuation compared with conventional filtering baselines.

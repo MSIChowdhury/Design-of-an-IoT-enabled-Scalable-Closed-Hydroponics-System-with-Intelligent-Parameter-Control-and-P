@@ -12,3 +12,23 @@ prepared_outputs:
   labels: data/processed/swat_labels.parquet
   metadata: data/processed/swat_metadata.csv
 notes: "11 days continuous operation; 7 normal and 4 attack days; 51 sensors/actuators; normal/abnormal labels."
+download_profiles:
+  minimal:
+    action: request_access_notes
+    expected_size_mb: 0
+    reason: "Dataset requires iTrust approval; no automated download without access."
+  paper:
+    action: local_files_required
+    expected_size_mb: 0
+    reason: "Use approved local files if provided by the researcher."
+  full:
+    action: local_files_required
+    expected_size_mb: 0
+subset_protocol:
+  default_profile: paper
+  subset_files: "Use approved local normal/test CSV files if available under data/raw/swat/."
+  selected_faults: "Native normal/attack labels from approved SWaT files."
+  max_runs: 1
+  max_rows: 100000
+  selection_rationale: "Request-access water-treatment benchmark tests transfer to sensor/actuator water processes."
+  limitation: "Not included in quantitative tables unless approved raw files are locally present."

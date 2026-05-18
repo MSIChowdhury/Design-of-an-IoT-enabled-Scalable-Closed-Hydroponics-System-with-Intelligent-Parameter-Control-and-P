@@ -2,7 +2,7 @@ name: tep
 domain: chemical process simulation
 role: open_process_fault_benchmark
 path: data/raw/tep/
-access: "Open DTU/Figshare CC0 dataset; large download."
+access: "Open DTU/Figshare CC0 dataset; full archive is about 133 GB, so default workflow uses a documented subset protocol."
 source: https://data.dtu.dk/articles/dataset/Tennessee_Eastman_Reference_Data_for_Fault-Detection_and_Decision_Support_Systems/13385936
 source_url: https://data.dtu.dk/articles/dataset/Tennessee_Eastman_Reference_Data_for_Fault-Detection_and_Decision_Support_Systems/13385936
 access_type: public_manual_download
@@ -12,3 +12,45 @@ prepared_outputs:
   labels: data/processed/tep_labels.parquet
   metadata: data/processed/tep_metadata.csv
 notes: "28 process faults, 6 operating modes, 500 simulations per fault, 100-hour simulations at 3-minute sampling."
+download_profiles:
+  minimal:
+    action: metadata_only
+    expected_size_mb: 1
+    reason: "Avoids 20+ GB HDF5 files while documenting source/provenance."
+  paper:
+    action: local_subset_required
+    expected_size_mb: 50
+    reason: "Use a small converted TEP CSV/XLSX subset when placed locally."
+  full:
+    action: figshare_files
+    expected_size_mb: 132960
+    files:
+      - name: TEP_Mode1.h5
+        size_bytes: 23924710848
+        url: https://ndownloader.figshare.com/files/26003087
+      - name: TEP_Mode2.h5
+        size_bytes: 23897125720
+        url: https://ndownloader.figshare.com/files/26003162
+      - name: TEP_Mode3.h5
+        size_bytes: 23921551744
+        url: https://ndownloader.figshare.com/files/26003492
+      - name: TEP_Mode4.h5
+        size_bytes: 23219369960
+        url: https://ndownloader.figshare.com/files/26024015
+      - name: TEP_Mode5.h5
+        size_bytes: 23890304712
+        url: https://ndownloader.figshare.com/files/26028068
+      - name: TEP_Mode6.h5
+        size_bytes: 23907566544
+        url: https://ndownloader.figshare.com/files/26034659
+      - name: Readme.html
+        size_bytes: 8493
+        url: https://ndownloader.figshare.com/files/26775368
+subset_protocol:
+  default_profile: paper
+  subset_files: "Use a small converted TEP CSV/XLSX source placed under data/raw/tep/; do not require the 133 GB DTU archive."
+  selected_faults: "fault-free plus five representative process faults covering abrupt, drift-like, disturbance, noise-like, and slow/hard-to-detect behavior."
+  max_runs: 10
+  max_rows: 100000
+  selection_rationale: "Predefined fault-diversity subset evaluates cross-domain robustness without claiming exhaustive TEP dominance."
+  limitation: "Subset results support plausibility and robustness only; full-archive TEP benchmarking is optional."

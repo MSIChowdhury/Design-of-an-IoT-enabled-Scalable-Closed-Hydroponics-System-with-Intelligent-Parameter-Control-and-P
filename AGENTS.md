@@ -23,6 +23,7 @@ The research compares the proposed automated treatment against soil-based and ma
 - `scripts/`: reproducible command-line pipeline for dataset checks, toy preparation, method execution, synthetic fault injection, metrics, tables, figures, and manuscript checks.
 - `scripts/10_run_ablation.py` and `scripts/11_statistical_analysis.py`: hydroponic Experiment 1 robustness layer for AASVR component ablations, bootstrap confidence intervals, method ranks, sensor-wise summaries, and fault-type summaries.
 - External dataset scripts are availability-aware: place local CSV files under the configured `data/raw/<dataset>/` directory, then run `make real` to prepare, replay methods, score native labels, and include them in cross-dataset tables.
+- External benchmark acquisition defaults to the `paper` subset profile, which writes notes and subset-protocol tables without downloading very large public archives. Use `--profile full --download` only as an explicit opt-in.
 - `manuscript/`: ISA Transactions scaffold including anonymized manuscript, title page, highlights, cover letter, data statement, and rewrite notes.
 
 ## Container-First Workflow
@@ -114,3 +115,4 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - 2026-05-17: Removed a stale unused tuning-script import so the project lint check passes for the analysis pipeline.
 - 2026-05-17: Added an uncommanded-trend guard to AASVR for slow monotonic drift faults that stay inside physical range and per-sample rate gates, plus an ablation variant that disables the guard.
 - 2026-05-18: Added manual hydroponic event-label merging, AASVR-driven annotation template generation, generic CSV external-dataset preparation, availability-aware external replay/scoring, and cross-dataset table/figure hooks.
+- 2026-05-18: Added a defensible benchmark-subset protocol and safer download profiles so TEP/WUR/HAI/SWaT/WaDi/DAMADICS can be documented without requiring huge archive downloads by default.

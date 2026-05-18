@@ -12,3 +12,23 @@ prepared_outputs:
   labels: data/processed/damadics_labels.parquet
   metadata: data/processed/damadics_metadata.csv
 notes: "Lublin Sugar Factory data; fault-free operation, natural faults, and artificial faults."
+download_profiles:
+  minimal:
+    action: acquisition_notes
+    expected_size_mb: 1
+    reason: "Official page does not expose a stable direct download endpoint in the current workflow."
+  paper:
+    action: local_files_required
+    expected_size_mb: 0
+    reason: "Use locally downloaded official benchmark files if available."
+  full:
+    action: local_files_required
+    expected_size_mb: 0
+subset_protocol:
+  default_profile: paper
+  subset_files: "Use official local DAMADICS CSV/MAT files if available under data/raw/damadics/."
+  selected_faults: "Fault-free, natural faulty, and artificial faulty states where labels are available."
+  max_runs: 1
+  max_rows: 100000
+  selection_rationale: "Industrial actuator benchmark strengthens the actuation/process-control angle."
+  limitation: "Not included in quantitative tables unless official raw files are locally present and parsed."

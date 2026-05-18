@@ -13,9 +13,15 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--toy", action="store_true", help="Run the toy reproducibility pipeline.")
     parser.add_argument("--available-real", action="store_true", help="Run every locally available real dataset pipeline.")
+    parser.add_argument(
+        "--dataset-profile",
+        choices=["minimal", "paper", "full"],
+        default="paper",
+        help="External benchmark acquisition/subset profile to document.",
+    )
     args = parser.parse_args()
     if args.available_real:
-        run_available_real()
+        run_available_real(dataset_profile=args.dataset_profile)
         return
     if not args.toy:
         print("Use --toy or --available-real.")
@@ -33,7 +39,7 @@ def main() -> None:
     print("Toy pipeline completed.")
 
 
-def run_available_real() -> None:
+def run_available_real(*, dataset_profile: str = "paper") -> None:
     raw_hydro = ROOT / "data/raw/hydroponic/Hydroponics Data First Trial.csv"
     if not raw_hydro.exists():
         print(f"Skipping hydro_exp1; missing {raw_hydro}")
@@ -51,6 +57,14 @@ def run_available_real() -> None:
     ]
     for command in commands:
         subprocess.run([sys.executable, *command], check=True)
+    subprocess.run(
+        [sys.executable, "scripts/download_datasets.py", "--all", "--profile", dataset_profile],
+        check=True,
+    )
+    subprocess.run(
+        [sys.executable, "scripts/12_make_subset_protocol.py", "--profile", dataset_profile],
+        check=True,
+    )
     for dataset in EXTERNAL_DATASETS:
         if not _has_raw_csv(dataset):
             print(f"Skipping {dataset}; no CSV raw files found under data/raw/{dataset}/.")

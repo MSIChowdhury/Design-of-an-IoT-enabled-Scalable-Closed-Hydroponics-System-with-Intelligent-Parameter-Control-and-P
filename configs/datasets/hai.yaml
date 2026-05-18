@@ -12,3 +12,23 @@ prepared_outputs:
   labels: data/processed/hai_labels.parquet
   metadata: data/processed/hai_metadata.csv
 notes: "Optional public ICS anomaly benchmark for additional cross-domain robustness after hydro_exp1, TEP, and WUR."
+download_profiles:
+  minimal:
+    action: git_metadata_or_shallow_clone
+    expected_size_mb: 10
+    reason: "Clone metadata and repository structure without requiring all Git LFS payloads."
+  paper:
+    action: git_lfs_subset
+    expected_size_mb: 500
+    reason: "Use one normal train file and one attack/test file from a fixed public HAI version."
+  full:
+    action: git_lfs_full
+    expected_size_mb: 1000
+subset_protocol:
+  default_profile: paper
+  subset_files: "Use one fixed train CSV/GZ and one fixed test CSV/GZ from the same HAI version."
+  selected_faults: "Native HAI attack/anomaly labels in the selected test file."
+  max_runs: 1
+  max_rows: 100000
+  selection_rationale: "Public ICS benchmark gives closed-loop process context while keeping analysis tractable."
+  limitation: "HAI cyber-physical attacks are not identical to hydroponic sensor faults."

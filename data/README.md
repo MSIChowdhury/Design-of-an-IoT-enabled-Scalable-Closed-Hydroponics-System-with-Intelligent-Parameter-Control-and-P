@@ -33,3 +33,7 @@ and excluded from primary analysis until calibration is available.
 External dataset support is availability-aware. Place CSV files under the configured
 `data/raw/<dataset>/` directory and rerun `make real`; missing datasets are skipped
 without failing the hydroponic pipeline.
+
+Use `python scripts/download_datasets.py --all --profile paper` to write acquisition
+notes without downloading large archives. Use `--profile full --download` only when
+you intentionally want full public archives such as the 133 GB DTU TEP data.

@@ -2,7 +2,7 @@ name: wur
 domain: autonomous greenhouse challenge
 role: domain_adjacent_cea_validation
 path: data/raw/wur/
-access: "Use WUR dataset DOI and local placement."
+access: "Use WUR dataset DOI and local placement; full archive is image-heavy and about 45 GB."
 source: https://research.wur.nl/en/datasets/3rd-autonomous-greenhouse-challenge-time-series-data-on-realized-/
 source_url: https://doi.org/10.4121/21960932
 access_type: public_large_manual_download
@@ -12,3 +12,30 @@ prepared_outputs:
   labels: data/processed/wur_labels.parquet
   metadata: data/processed/wur_metadata.csv
 notes: "Greenhouse climate time series and annotated lettuce images; use for CEA false alarm and synthetic fault validation unless labels support more."
+download_profiles:
+  minimal:
+    action: metadata_only
+    expected_size_mb: 1
+    reason: "Avoids downloading image-heavy ZIP archives while recording source/provenance."
+  paper:
+    action: local_timeseries_required
+    expected_size_mb: 200
+    reason: "Use extracted time-series CSV/XLSX files only; exclude lettuce image files."
+  full:
+    action: figshare_files
+    expected_size_mb: 45400
+    files:
+      - name: 1st Experiment.zip
+        size_bytes: 24448982832
+        url: https://ndownloader.figshare.com/files/39548203
+      - name: 2nd Experiment.zip
+        size_bytes: 20932413219
+        url: https://ndownloader.figshare.com/files/39552442
+subset_protocol:
+  default_profile: paper
+  subset_files: "Use only extracted greenhouse climate/control time-series files placed under data/raw/wur/."
+  selected_faults: "No native anomaly labels assumed; use normal greenhouse periods plus synthetic spike, drift, dropout, bias, noise-burst, and step faults."
+  max_runs: 1
+  max_rows: 100000
+  selection_rationale: "Domain-adjacent CEA validation tests false alarms and synthetic-fault behavior without downloading image-heavy archives."
+  limitation: "WUR subset does not support supervised anomaly claims unless defensible event labels are present locally."
