@@ -21,7 +21,7 @@ This repository supports a reproducible research article on **Actuation-Aware Se
 3. Synthetic fault injection for spikes, dropout, drift, bias, noise bursts, and steps.
 4. Baseline comparison against thresholding, moving filters, Hampel, Kalman, EWMA, CUSUM, and PCA-style monitoring.
 5. Ablation, bootstrap confidence intervals, sensor-wise summaries, and fault-type summaries.
-6. Availability-aware external benchmark scaffolding for TEP, WUR, HAI, SWaT, WaDi, and DAMADICS when raw files are placed locally.
+6. Availability-aware external benchmark scaffolding for TEP, WUR, HAI, SKAB, MetroPT-3, BATADAL, SWaT, WaDi, and DAMADICS when raw files are placed locally.
 7. A documented benchmark-subset protocol so external validation is smaller, reproducible, and not cherry-picked.
 
 ## Reproducible Workflow
@@ -46,7 +46,7 @@ data/raw/hydroponic/Hydroponics Data First Trial.csv
 
 Raw and generated data are ignored by git. External benchmark raw files should be placed under their configured `data/raw/<dataset>/` directories and regenerated locally.
 
-Large public archives are not downloaded by default. The paper workflow uses the `paper` profile, which documents fixed subset rules for defensible cross-domain validation. Full TEP/WUR archive download remains an explicit opt-in through `scripts/download_datasets.py --profile full --download`.
+Large public archives are not downloaded by default. The paper workflow uses the `paper` profile, which documents fixed subset rules for defensible cross-domain validation. SKAB is compact enough to clone directly; MetroPT-3 is manageable but still downloaded only when requested. Full TEP/WUR archive download remains an explicit opt-in through `scripts/download_datasets.py --profile full --download`.
 
 ## Current Hydroponic Synthetic-Fault Result
 
@@ -61,6 +61,8 @@ Current AASVR performance on the hydroponic Experiment 1 synthetic-fault benchma
 These results are synthetic-fault benchmark results, not agronomic causality claims. Crop-yield and dashboard material are retained only as deployment context.
 
 The current public external benchmark path also supports the HAI `21.03/test1` paper subset. Native HAI attack labels are timestamp-level, so the headline HAI table uses a timestamp-level multivariate score: a timestamp is flagged when at least 30% of sensor streams reject/alert. In the latest local run, AASVR had the highest HAI balanced accuracy among implemented methods, but the result should be framed as cross-domain stress testing rather than a dominance claim.
+
+The SKAB public process-loop benchmark is now supported as the primary easy-access external dataset. Native SKAB labels are also timestamp-level, so the same 30% multivariate aggregation rule is used for the headline comparison. In the latest local run, AASVR had the highest SKAB balanced accuracy among implemented methods, with high recall and a high false-positive rate that should be discussed as a sensitivity/specificity tradeoff.
 
 ## Acknowledgements
 

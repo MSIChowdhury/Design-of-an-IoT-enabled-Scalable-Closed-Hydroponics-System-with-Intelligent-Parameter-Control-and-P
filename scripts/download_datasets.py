@@ -4,14 +4,26 @@ import argparse
 import shutil
 import subprocess
 import urllib.request
+import zipfile
 from pathlib import Path
 from typing import Any
 
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-DATASETS = ("tep", "wur", "hai", "swat", "wadi", "damadics")
-PUBLIC_DATASETS = ("tep", "wur", "hai")
+DATASETS = (
+    "tep",
+    "tep_csv",
+    "wur",
+    "hai",
+    "skab",
+    "metropt3",
+    "batadal",
+    "swat",
+    "wadi",
+    "damadics",
+)
+PUBLIC_DATASETS = ("tep", "tep_csv", "wur", "hai", "skab", "metropt3")
 
 
 def main() -> None:
@@ -24,7 +36,7 @@ def main() -> None:
     )
     parser.add_argument("--download", action="store_true", help="Execute supported downloads.")
     parser.add_argument("--dry-run", action="store_true", help="Print acquisition plan only.")
-    parser.add_argument("--all-public", action="store_true", help="Handle TEP, WUR, and HAI.")
+    parser.add_argument("--all-public", action="store_true", help="Handle public-download datasets.")
     parser.add_argument("--all", action="store_true", help="Handle every configured external dataset.")
     for name in DATASETS:
         parser.add_argument(f"--{name}", action="store_true", help=f"Handle {name}.")
@@ -98,6 +110,16 @@ def _execute_profile(name: str, config: dict[str, Any], profile: str, target: Pa
     if action in {"git_metadata_or_shallow_clone", "git_lfs_subset", "git_lfs_full"} and name == "hai":
         _clone_hai(target, full_lfs=action == "git_lfs_full")
         return
+    if action == "git_shallow_clone" and name == "skab":
+        _clone_repo(target / "skab_repo", "https://github.com/waico/SKAB.git")
+        return
+    if action == "uci_zip_subset" and name == "metropt3":
+        _download_and_extract_zip(
+            "https://archive.ics.uci.edu/static/public/791/metropt+3+dataset.zip",
+            target / "metropt3.zip",
+            target,
+        )
+        return
     print(f"No automatic download for {name} profile {profile}; use the notes in {target / 'DOWNLOAD_NOTES.md'}.")
 
 
@@ -113,12 +135,27 @@ def _download_file(url: str, target: Path, expected_size: int) -> None:
 
 def _clone_hai(target: Path, *, full_lfs: bool) -> None:
     repo = target / "hai_repo"
-    if not repo.exists():
-        subprocess.run(["git", "clone", "--depth", "1", "https://github.com/icsdataset/hai.git", str(repo)], check=True)
+    _clone_repo(repo, "https://github.com/icsdataset/hai.git")
     if full_lfs and shutil.which("git-lfs"):
         subprocess.run(["git", "-C", str(repo), "lfs", "pull"], check=True)
     elif full_lfs:
         print("git-lfs is not installed; cloned HAI metadata but did not fetch LFS payloads.")
+
+
+def _clone_repo(repo: Path, url: str) -> None:
+    if repo.exists():
+        print(f"Skipping existing repository {repo}")
+        return
+    subprocess.run(["git", "clone", "--depth", "1", url, str(repo)], check=True)
+
+
+def _download_and_extract_zip(url: str, archive: Path, target: Path) -> None:
+    if not archive.exists():
+        print(f"Downloading {url} -> {archive}")
+        urllib.request.urlretrieve(url, archive)
+    with zipfile.ZipFile(archive) as zip_file:
+        zip_file.extractall(target)
+    print(f"Extracted {archive} into {target}")
 
 
 def _ensure_space(profile_data: dict[str, Any], target: Path) -> None:

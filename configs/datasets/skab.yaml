@@ -1,0 +1,37 @@
+name: skab
+domain: industrial water-pump process loop
+role: public_process_loop_anomaly_benchmark
+path: data/raw/skab/
+access: "Public GitHub benchmark with compact semicolon-delimited CSV experiments."
+source: https://github.com/waico/SKAB
+source_url: https://github.com/waico/SKAB
+access_type: public_git
+redistribution_allowed: true
+timestamp_column: datetime
+label_column: anomaly
+prepared_outputs:
+  measurements: data/processed/skab_measurements.parquet
+  labels: data/processed/skab_labels.parquet
+  metadata: data/processed/skab_metadata.csv
+notes: "SKAB provides 35 multivariate experiments from a process-loop testbed; each anomalous file includes native anomaly and changepoint labels."
+download_profiles:
+  minimal:
+    action: git_shallow_clone
+    expected_size_mb: 20
+    reason: "Clone the compact public repository containing all CSV experiments."
+  paper:
+    action: git_shallow_clone
+    expected_size_mb: 20
+    reason: "Use the complete compact CSV corpus because it is small enough for reproducible paper validation."
+  full:
+    action: git_shallow_clone
+    expected_size_mb: 20
+    reason: "The full public corpus is already compact."
+subset_protocol:
+  default_profile: paper
+  subset_files: "Use all CSV files under the SKAB data directory, including anomaly-free calibration and labeled anomaly experiments."
+  selected_faults: "Native SKAB anomaly/changepoint labels from valve and other process-loop experiments."
+  max_runs: 35
+  max_rows: 100000
+  selection_rationale: "A compact, fully public, labeled process-loop benchmark strengthens external validation without oversized downloads."
+  limitation: "SKAB faults are process-loop anomalies, not hydroponic-specific sensor faults or agronomic outcomes."

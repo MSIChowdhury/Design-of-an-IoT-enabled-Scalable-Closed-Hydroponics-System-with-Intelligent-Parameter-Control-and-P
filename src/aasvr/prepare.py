@@ -7,7 +7,8 @@ import yaml
 import pandas as pd
 
 from aasvr.labels import labels_from_events, load_manual_events, merge_label_sources
-from aasvr.loaders import load_csv_dataset
+from aasvr.loaders import infer_metadata, load_csv_dataset
+from aasvr.schemas import canonicalize_measurements, empty_labels
 
 
 HYDRO_EXP1_RAW = Path("data/raw/hydroponic/Hydroponics Data First Trial.csv")
@@ -102,6 +103,14 @@ def prepare_external_csv_dataset(
         prepared = prepare_hai_subset(root=root, config=config)
         if prepared is not None:
             return prepared
+    if dataset == "skab":
+        prepared = prepare_skab_subset(root=root, config=config)
+        if prepared is not None:
+            return prepared
+    if dataset == "metropt3":
+        prepared = prepare_metropt3_subset(root=root, config=config)
+        if prepared is not None:
+            return prepared
     raw_path = root / str(config["path"])
     raw_file = _first_csv(raw_path)
     if raw_file is None:
@@ -145,6 +154,137 @@ def prepare_external_csv_dataset(
         metadata_path=metadata_path,
         quality_path=quality_path,
     )
+
+
+def prepare_skab_subset(
+    *,
+    root: Path,
+    config: dict,
+    processed_dir: str | Path = "data/processed",
+    metadata_dir: str | Path = "results/run_metadata",
+) -> PreparedDataset | None:
+    raw_root = root / str(config["path"])
+    repo_root = raw_root / "skab_repo"
+    data_root = repo_root / "data"
+    if not data_root.exists():
+        return None
+    subset = config.get("subset_protocol", {})
+    max_rows = int(subset.get("max_rows", 100000))
+    files = sorted(data_root.rglob("*.csv"))
+    if not files:
+        return None
+
+    measurement_parts = []
+    label_parts = []
+    rows_seen = 0
+    feature_columns: list[str] | None = None
+    for path in files:
+        if rows_seen >= max_rows:
+            break
+        frame = pd.read_csv(path, sep=";")
+        if frame.empty or "datetime" not in frame:
+            continue
+        take = min(len(frame), max_rows - rows_seen)
+        frame = frame.iloc[:take].copy()
+        rows_seen += len(frame)
+        run_id = f"{path.parent.name}/{path.stem}"
+        frame["timestamp"] = pd.to_datetime(frame["datetime"], errors="coerce", utc=True)
+        sensor_columns = [
+            col
+            for col in frame.columns
+            if col not in {"datetime", "timestamp", "anomaly", "changepoint"}
+            and pd.api.types.is_numeric_dtype(frame[col])
+        ]
+        if feature_columns is None:
+            feature_columns = sensor_columns
+        frame = frame.dropna(subset=["timestamp"]).reset_index(drop=True)
+        measurements = frame[["timestamp", *sensor_columns]].copy()
+        measurements.insert(1, "dataset", "skab")
+        measurements.insert(2, "split", run_id)
+        measurement_parts.append(measurements)
+        anomaly = frame["anomaly"].fillna(0).astype(bool) if "anomaly" in frame else False
+        changepoint = frame["changepoint"].fillna(0).astype(bool) if "changepoint" in frame else False
+        label_parts.append(
+            pd.DataFrame(
+                {
+                    "timestamp": frame["timestamp"],
+                    "dataset": "skab",
+                    "event_id": [run_id] * len(frame),
+                    "sensor": "",
+                    "fault": anomaly,
+                    "fault_type": anomaly.map({True: "native_anomaly", False: ""})
+                    if hasattr(anomaly, "map")
+                    else "",
+                    "severity": changepoint.map({True: "changepoint", False: "native"})
+                    if hasattr(changepoint, "map")
+                    else "native",
+                    "label_source": "native_skab",
+                    "confidence": anomaly.map({True: 1.0, False: 0.0}) if hasattr(anomaly, "map") else 0.0,
+                }
+            )
+        )
+
+    if not measurement_parts:
+        return None
+    measurements = pd.concat(measurement_parts, ignore_index=True)
+    labels = pd.concat(label_parts, ignore_index=True)
+    metadata = make_skab_metadata(measurements, feature_columns or [])
+    quality = make_generic_quality_report("skab", measurements, metadata)
+
+    processed_dir = root / processed_dir
+    metadata_dir = root / metadata_dir
+    processed_dir.mkdir(parents=True, exist_ok=True)
+    metadata_dir.mkdir(parents=True, exist_ok=True)
+    measurements_path = processed_dir / "skab_measurements.parquet"
+    labels_path = processed_dir / "skab_labels.parquet"
+    metadata_path = processed_dir / "skab_metadata.csv"
+    quality_path = metadata_dir / "skab_data_quality.csv"
+    measurements.to_parquet(measurements_path, index=False)
+    labels.to_parquet(labels_path, index=False)
+    metadata.to_csv(metadata_path, index=False)
+    quality.to_csv(quality_path, index=False)
+    return PreparedDataset(measurements_path, labels_path, metadata_path, quality_path)
+
+
+def prepare_metropt3_subset(
+    *,
+    root: Path,
+    config: dict,
+    processed_dir: str | Path = "data/processed",
+    metadata_dir: str | Path = "results/run_metadata",
+) -> PreparedDataset | None:
+    raw_root = root / str(config["path"])
+    raw_file = _first_csv(raw_root)
+    if raw_file is None:
+        return None
+    subset = config.get("subset_protocol", {})
+    max_rows = int(subset.get("max_rows", 100000))
+    frame = pd.read_csv(raw_file, nrows=max_rows)
+    timestamp_column = _timestamp_column(frame, config.get("timestamp_column")) or "timestamp"
+    if timestamp_column not in frame:
+        return None
+    label_column = _label_column(frame, config.get("label_column"))
+    actuator_columns = tuple(config.get("actuator_columns", ()))
+    measurements = canonicalize_measurements(
+        frame.drop(columns=[label_column], errors="ignore"),
+        dataset="metropt3",
+        split="uci-paper-subset",
+        timestamp_column=timestamp_column,
+    )
+    labels = empty_labels(measurements, label_source="native" if label_column else "none")
+    if label_column and label_column in frame:
+        numeric_labels = pd.to_numeric(frame[label_column], errors="coerce")
+        labels["fault"] = numeric_labels.fillna(0).ne(0)
+        labels["fault_type"] = labels["fault"].map({True: "native_anomaly", False: ""})
+        labels["confidence"] = labels["fault"].map({True: 1.0, False: 0.0})
+    metadata = infer_metadata(measurements, dataset="metropt3", actuator_columns=actuator_columns)
+    prepared = PreparedDataset(
+        measurements_path=_write_parquet_subset(root / processed_dir / "metropt3_measurements.parquet", measurements),
+        labels_path=_write_parquet_subset(root / processed_dir / "metropt3_labels.parquet", labels),
+        metadata_path=_write_csv(root / processed_dir / "metropt3_metadata.csv", metadata),
+        quality_path=_write_csv(root / metadata_dir / "metropt3_data_quality.csv", make_generic_quality_report("metropt3", measurements, metadata)),
+    )
+    return prepared
 
 
 def prepare_hai_subset(
@@ -206,6 +346,36 @@ def prepare_hai_subset(
     return PreparedDataset(measurements_path, labels_path, metadata_path, quality_path)
 
 
+def make_skab_metadata(measurements: pd.DataFrame, feature_columns: list[str]) -> pd.DataFrame:
+    calibration = measurements[measurements["split"].eq("anomaly-free/anomaly-free")]
+    if calibration.empty:
+        calibration = measurements
+    rows = []
+    for column in feature_columns:
+        values = pd.to_numeric(calibration[column], errors="coerce").dropna()
+        if values.empty:
+            continue
+        physical_min = float(values.quantile(0.001))
+        physical_max = float(values.quantile(0.999))
+        if physical_max <= physical_min:
+            physical_max = physical_min + 1.0
+        rows.append(
+            {
+                "dataset": "skab",
+                "variable": column,
+                "role": "sensor",
+                "unit": "",
+                "physical_min": physical_min,
+                "physical_max": physical_max,
+                "control_low": "",
+                "control_high": "",
+                "rate_limit": max(float(values.diff().abs().quantile(0.999) or 0.0), 1e-6),
+                "expected_direction": "unknown",
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 def make_hai_metadata(train: pd.DataFrame, feature_columns: list[str]) -> pd.DataFrame:
     rows = []
     for column in feature_columns:
@@ -232,6 +402,18 @@ def make_hai_metadata(train: pd.DataFrame, feature_columns: list[str]) -> pd.Dat
             }
         )
     return pd.DataFrame(rows)
+
+
+def _write_parquet_subset(path: Path, frame: pd.DataFrame) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    frame.to_parquet(path, index=False)
+    return path
+
+
+def _write_csv(path: Path, frame: pd.DataFrame) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    frame.to_csv(path, index=False)
+    return path
 
 
 def make_rule_labels(measurements: pd.DataFrame) -> pd.DataFrame:

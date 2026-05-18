@@ -12,8 +12,12 @@ SENSOR_HINTS = {
     "swat": ("FIT", "LIT", "AIT", "PIT", "DPIT"),
     "wadi": ("1_", "2_", "3_", "FIT", "LIT", "AIT", "PIT"),
     "tep": ("XMEAS", "XMV"),
+    "tep_csv": ("XMEAS", "XMV", "MEAS"),
     "damadics": ("CV", "PV", "SP", "F"),
     "wur": ("air", "co2", "rh", "temp", "radiation", "heat", "vent"),
+    "skab": ("Accelerometer", "Current", "Pressure", "Temperature", "Thermocouple", "Voltage", "Flow"),
+    "metropt3": ("TP", "H", "pressure", "temperature", "current", "Reservoir"),
+    "batadal": ("T", "F", "P", "L", "V", "S"),
 }
 
 
@@ -35,9 +39,13 @@ def load_csv_dataset(
     )
     labels = empty_labels(measurements, label_source="native" if label_column else "none")
     if label_column and label_column in frame:
-        labels["fault"] = frame[label_column].astype(str).str.lower().isin(
-            {"1", "true", "attack", "abnormal", "fault", "faulty"}
-        )
+        numeric_labels = pd.to_numeric(frame[label_column], errors="coerce")
+        if numeric_labels.notna().any():
+            labels["fault"] = numeric_labels.fillna(0).ne(0)
+        else:
+            labels["fault"] = frame[label_column].astype(str).str.lower().isin(
+                {"1", "true", "attack", "abnormal", "fault", "faulty", "yes"}
+            )
         labels["fault_type"] = labels["fault"].map({True: "native_anomaly", False: ""})
         labels["confidence"] = labels["fault"].map({True: 1.0, False: 0.0})
     actuator_columns = tuple(actuator_columns)
@@ -91,4 +99,3 @@ def _infer_role(column: str, dataset: str) -> str:
     if upper.startswith(("P", "MV", "XMV")) or "ACT" in upper or "VALVE" in upper:
         return "actuator"
     return "sensor"
-

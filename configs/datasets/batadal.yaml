@@ -1,0 +1,37 @@
+name: batadal
+domain: water distribution
+role: optional_water_distribution_attack_benchmark
+path: data/raw/batadal/
+access: "Public benchmark through challenge mirrors/manual placement; automatic download disabled until source provenance is confirmed."
+source: BATADAL water distribution attack detection benchmark
+source_url: ""
+access_type: public_manual_download
+redistribution_allowed: false
+timestamp_column: DATETIME
+label_column: ATT_FLAG
+prepared_outputs:
+  measurements: data/processed/batadal_measurements.parquet
+  labels: data/processed/batadal_labels.parquet
+  metadata: data/processed/batadal_metadata.csv
+notes: "Supported as a local-file benchmark path. Use only with a defensible source and native attack labels."
+download_profiles:
+  minimal:
+    action: notes_only
+    expected_size_mb: 1
+    reason: "Document required local files while avoiding unverifiable mirrors."
+  paper:
+    action: local_subset_required
+    expected_size_mb: 50
+    reason: "Use locally placed challenge CSV files with native attack labels."
+  full:
+    action: local_subset_required
+    expected_size_mb: 50
+    reason: "No automatic full download until provenance is locked."
+subset_protocol:
+  default_profile: paper
+  subset_files: "Place BATADAL challenge CSV files locally under data/raw/batadal/."
+  selected_faults: "Native attack labels from the challenge files."
+  max_runs: 1
+  max_rows: 100000
+  selection_rationale: "Water-distribution attacks are a strong water/process-control analog when source provenance is defensible."
+  limitation: "Do not report BATADAL results unless the raw source and label semantics are documented."

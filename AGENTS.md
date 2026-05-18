@@ -22,7 +22,7 @@ The research compares the proposed automated treatment against soil-based and ma
 - `configs/`: YAML manifests for AASVR parameters, baselines, hydroponic datasets, and external process-control benchmark datasets.
 - `scripts/`: reproducible command-line pipeline for dataset checks, toy preparation, method execution, synthetic fault injection, metrics, tables, figures, and manuscript checks.
 - `scripts/10_run_ablation.py` and `scripts/11_statistical_analysis.py`: hydroponic Experiment 1 robustness layer for AASVR component ablations, bootstrap confidence intervals, method ranks, sensor-wise summaries, and fault-type summaries.
-- External dataset scripts are availability-aware: place local CSV files under the configured `data/raw/<dataset>/` directory, then run `make real` to prepare, replay methods, score native labels, and include them in cross-dataset tables.
+- External dataset scripts are availability-aware: place local CSV files under the configured `data/raw/<dataset>/` directory, then run `make real` to prepare, replay methods, score native labels, and include them in cross-dataset tables. Public easy-access routes currently include HAI and SKAB, with supported paths for MetroPT-3, BATADAL, and a small TEP CSV subset.
 - External benchmark acquisition defaults to the `paper` subset profile, which writes notes and subset-protocol tables without downloading very large public archives. Use `--profile full --download` only as an explicit opt-in.
 - `manuscript/`: ISA Transactions scaffold including anonymized manuscript, title page, highlights, cover letter, data statement, and rewrite notes.
 
@@ -118,3 +118,4 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - 2026-05-18: Added a defensible benchmark-subset protocol and safer download profiles so TEP/WUR/HAI/SWaT/WaDi/DAMADICS can be documented without requiring huge archive downloads by default.
 - 2026-05-18: Added a real HAI 21.03 paper-subset preparation path, timestamp-level label alignment, and corrected the cross-dataset benchmark table to use hydroponic synthetic-fault results rather than rule-label replay as the hydroponic headline.
 - 2026-05-18: Added timestamp-level multivariate scoring for native attack-label datasets such as HAI, using a fixed 30% sensor-stream fraction rule for the headline external benchmark table.
+- 2026-05-18: Added SKAB, MetroPT-3, BATADAL, and small TEP CSV dataset configs; implemented SKAB and MetroPT-3 preparation routes; extended downloader, run pipeline, tests, README, and manuscript text; and generated a SKAB native-label benchmark result with AASVR ranked first by balanced accuracy under the fixed 30% timestamp aggregation rule.

@@ -116,3 +116,36 @@ def test_prepare_external_csv_dataset_writes_canonical_outputs(tmp_path: Path) -
     labels = pd.read_parquet(prepared.labels_path)
     assert measurements["dataset"].eq("tep").all()
     assert labels["fault"].tolist() == [False, True]
+
+
+def test_prepare_skab_subset_writes_timestamp_level_labels(tmp_path: Path) -> None:
+    config_dir = tmp_path / "configs/datasets"
+    raw_dir = tmp_path / "data/raw/skab/skab_repo/data/valve1"
+    config_dir.mkdir(parents=True)
+    raw_dir.mkdir(parents=True)
+    (config_dir / "skab.yaml").write_text(
+        """
+name: skab
+path: data/raw/skab/
+role: test
+subset_protocol:
+  max_rows: 100
+""",
+        encoding="utf-8",
+    )
+    pd.DataFrame(
+        {
+            "datetime": ["2020-01-01 00:00:00", "2020-01-01 00:00:01"],
+            "Pressure": [1.0, 2.0],
+            "Current": [0.2, 0.3],
+            "anomaly": [0, 1],
+            "changepoint": [0, 1],
+        }
+    ).to_csv(raw_dir / "0.csv", sep=";", index=False)
+    prepared = prepare_external_csv_dataset("skab", root=tmp_path)
+    assert prepared is not None
+    measurements = pd.read_parquet(prepared.measurements_path)
+    labels = pd.read_parquet(prepared.labels_path)
+    assert measurements["dataset"].eq("skab").all()
+    assert labels["sensor"].fillna("").eq("").all()
+    assert labels["fault"].tolist() == [False, True]

@@ -6,7 +6,18 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-EXTERNAL_DATASETS = ("tep", "wur", "hai", "swat", "wadi", "damadics")
+EXTERNAL_DATASETS = (
+    "tep",
+    "tep_csv",
+    "wur",
+    "hai",
+    "skab",
+    "metropt3",
+    "batadal",
+    "swat",
+    "wadi",
+    "damadics",
+)
 
 
 def main() -> None:

@@ -1,0 +1,36 @@
+name: metropt3
+domain: industrial compressor predictive maintenance
+role: public_industrial_sensor_stress_test
+path: data/raw/metropt3/
+access: "Public UCI Machine Learning Repository dataset; default workflow downloads the 208 MB archive only when requested."
+source: https://archive.ics.uci.edu/dataset/791/metropt%2B3%2B
+source_url: https://archive.ics.uci.edu/dataset/791/metropt%2B3%2B
+access_type: public_uci
+redistribution_allowed: true
+timestamp_column: timestamp
+prepared_outputs:
+  measurements: data/processed/metropt3_measurements.parquet
+  labels: data/processed/metropt3_labels.parquet
+  metadata: data/processed/metropt3_metadata.csv
+notes: "MetroPT-3 contains real compressor pressure, temperature, current, and digital signals. Use native event labels only when a defensible event annotation source is available; otherwise use false-alarm and synthetic-fault analyses."
+download_profiles:
+  minimal:
+    action: notes_only
+    expected_size_mb: 1
+    reason: "Document the source without downloading the 208 MB archive."
+  paper:
+    action: uci_zip_subset
+    expected_size_mb: 209
+    reason: "Download the public UCI archive and prepare a fixed row-limited subset."
+  full:
+    action: uci_zip_subset
+    expected_size_mb: 209
+    reason: "The UCI archive is manageable compared with TEP/WUR full archives."
+subset_protocol:
+  default_profile: paper
+  subset_files: "Use the UCI CSV and prepare the first 100000 rows unless a labeled event-window file is added locally."
+  selected_faults: "Native maintenance/failure events only when defensibly sourced; otherwise synthetic sensor faults."
+  max_runs: 1
+  max_rows: 100000
+  selection_rationale: "Adds a real industrial multivariate sensor dataset without very large process-control archives."
+  limitation: "MetroPT-3 is predictive-maintenance data and does not directly encode hydroponic actuation safety."

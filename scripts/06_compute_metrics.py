@@ -20,7 +20,19 @@ def main() -> None:
     parser.add_argument("--hydro-exp1", action="store_true", help="Compute metrics for hydroponic Experiment 1.")
     parser.add_argument(
         "--dataset",
-        choices=["hydro_exp1", "tep", "wur", "hai", "swat", "wadi", "damadics"],
+        choices=[
+            "hydro_exp1",
+            "tep",
+            "tep_csv",
+            "wur",
+            "hai",
+            "skab",
+            "metropt3",
+            "batadal",
+            "swat",
+            "wadi",
+            "damadics",
+        ],
         help="Compute metrics for a prepared real/external dataset.",
     )
     args = parser.parse_args()

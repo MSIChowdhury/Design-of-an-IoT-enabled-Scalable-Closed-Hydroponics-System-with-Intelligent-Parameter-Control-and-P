@@ -1,0 +1,37 @@
+name: tep_csv
+domain: chemical process simulation
+role: small_tep_csv_process_fault_subset
+path: data/raw/tep_csv/
+access: "Use a small converted TEP CSV/XLSX subset placed locally; avoids default 133 GB DTU archive download."
+source: Tennessee Eastman Process converted CSV subset
+source_url: https://data.dtu.dk/articles/dataset/Tennessee_Eastman_Reference_Data_for_Fault-Detection_and_Decision_Support_Systems/13385936
+access_type: public_manual_download
+redistribution_allowed: false
+timestamp_column: sample
+label_column: faultNumber
+prepared_outputs:
+  measurements: data/processed/tep_csv_measurements.parquet
+  labels: data/processed/tep_csv_labels.parquet
+  metadata: data/processed/tep_csv_metadata.csv
+notes: "Supported for locally placed small converted TEP files; full DTU HDF5 files remain explicit opt-in through the existing tep config."
+download_profiles:
+  minimal:
+    action: notes_only
+    expected_size_mb: 1
+    reason: "Document source and local subset requirement only."
+  paper:
+    action: local_subset_required
+    expected_size_mb: 50
+    reason: "Use a fixed small converted CSV/XLSX subset if available locally."
+  full:
+    action: local_subset_required
+    expected_size_mb: 50
+    reason: "Full TEP archive download is intentionally handled by configs/datasets/tep.yaml only."
+subset_protocol:
+  default_profile: paper
+  subset_files: "Use fault-free plus representative fault CSV/XLSX runs placed under data/raw/tep_csv/."
+  selected_faults: "faultNumber != 0, preferably abrupt, drift-like, disturbance, noise-like, and slow/hard-to-detect cases."
+  max_runs: 10
+  max_rows: 100000
+  selection_rationale: "Keeps TEP validation tractable while preserving chemical-process relevance."
+  limitation: "Subset TEP CSV results support robustness claims only; they are not exhaustive TEP benchmarking."
