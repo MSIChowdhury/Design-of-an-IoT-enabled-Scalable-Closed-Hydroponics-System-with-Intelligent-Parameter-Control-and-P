@@ -10,6 +10,8 @@
 | `figure/external_aasvr_threshold_sensitivity.png` | Generated from analysis pipeline | Raster PNG | Yes | External native-label aggregation-threshold sensitivity. |
 | `figure/cross_dataset_rank_plot.png` | Generated from analysis pipeline | Raster PNG | Yes | Used as an orientation figure, not a leaderboard claim. |
 | `figure/hydro_exp1_ph_trace.png` | Generated from analysis pipeline | Raster PNG | Yes | Representative trace only; not used as a ground-truth label. |
+| `figure/hydro_exp1_co2_trace.png` | Generated from analysis pipeline | Raster PNG | Yes | Second representative trace to make gas-actuation behavior visible. |
+| `figure/hydro_exp1_fault_type_heatmap.png` | Generated from analysis pipeline | Raster PNG | Yes | Fault-type comparison across methods; supports the more detailed results section. |
 | `figure/fullsystemactual.JPG` | Legacy manuscript asset | Raster JPG | Yes | Used as real-deployment evidence; not a standalone contribution. |
 | `figure/agronomic_parameters_violinplots_new.pdf` | Legacy manuscript asset | Vector PDF | Yes | Used only as secondary operation evidence with a non-causal caption. |
 | `figure/Full_System_Final.pdf` | Legacy manuscript asset | Vector PDF | No | Retained for possible expanded system-description section. |

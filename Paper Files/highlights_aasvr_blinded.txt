@@ -1,0 +1,7 @@
+Highlights
+
+- Hydroponic control is framed as actuation-aware sensor validation.
+- AASVR separates validation, rectification, and actuator authorization.
+- Synthetic faults test hydroponic sensor and control-safety behavior.
+- Sensor-wise and fault-type results expose strengths and limitations.
+- Public process datasets provide cross-domain stress tests.

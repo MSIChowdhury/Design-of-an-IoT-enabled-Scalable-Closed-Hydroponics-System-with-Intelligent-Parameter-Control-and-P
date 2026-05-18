@@ -8,6 +8,7 @@
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{multirow}
+\usepackage{placeins}
 \usepackage{tikz}
 \usepackage{url}
 \usetikzlibrary{arrows.meta,automata,positioning,calc,fit,backgrounds}
@@ -57,16 +58,16 @@ The contributions are as follows. First, we describe an integrated closed-loop h
 
 \section{Related Work}
 \subsection{Sensor faults in closed-loop systems}
-Sensor data-quality reviews distinguish missingness, outliers, drift, stuck values, saturation, and inconsistent rates as recurring faults in deployed systems \cite{teh2020sensorquality}. In closed-loop control, these faults have downstream consequences because an erroneous measurement can change the actuator command. This motivates treating validation, rectification, and actuation as separate decisions rather than as one smoothing step.
+Sensor data-quality reviews distinguish missingness, outliers, drift, stuck values, saturation, and inconsistent rates as recurring faults in deployed systems \cite{teh2020sensorquality}. Agricultural IoT systems face the same problem when sensor failure or miscalibration propagates into monitoring or control decisions \cite{zou2023agriiotfaults,lin2019sensortalk}. In closed-loop hydroponics, these faults have downstream consequences because an erroneous measurement can change the actuator command. This motivates treating validation, rectification, and actuation as separate decisions rather than as one smoothing step.
 
 \subsection{Filtering and monitoring baselines}
-The baseline family used in this paper covers common online filters and process-monitoring methods. Hampel-style robust outlier detection uses robust scale estimates to suppress isolated deviations \cite{hampel1974influence}. Kalman filtering gives a probabilistic recursive estimator for linear dynamical systems \cite{kalman1960new}. EWMA and CUSUM-style monitoring are standard approaches for persistent shifts, with CUSUM tracing to continuous inspection schemes \cite{page1954continuous}. Multivariate PCA process monitoring uses Hotelling's $T^2$ and residual statistics to capture coordinated changes across variables \cite{hotelling1947multivariate,jackson1979control}. AASVR is complementary to these methods because it adds a control-facing authorization decision.
+The baseline family used in this paper covers common online filters and process-monitoring methods. Hampel-style robust outlier detection uses robust scale estimates to suppress isolated deviations \cite{hampel1974influence}. Kalman filtering gives a probabilistic recursive estimator for linear dynamical systems \cite{kalman1960new}. EWMA and CUSUM-style monitoring are standard approaches for persistent shifts \cite{roberts1959control,page1954continuous}. Multivariate PCA process monitoring uses Hotelling's $T^2$ and residual statistics to capture coordinated changes across variables \cite{hotelling1947multivariate,jackson1979control}. AASVR is complementary to these methods because it adds a control-facing authorization decision.
 
 \subsection{External process datasets}
 Public process datasets provide independent stress tests for measurement validation. HAI 21.03 contains industrial-control attack data from a hardware-in-the-loop testbed \cite{shin2021haicon}. SKAB contains multivariate process-loop experiments with anomaly and changepoint labels \cite{skab2020}. SWaT, WaDi, and Tennessee Eastman are relevant larger benchmarks, but the current paper reports only the public benchmark paths that are already processed in this repository \cite{swatDataset,wadiDataset,tepDataset}.
 
 \section{Hydroponic System Design and Deployment}
-The target platform is a closed NFT hydroponic system for lettuce growth. It is organized into two physical modules. The Growth Module houses the plants, lighting, air-temperature and humidity sensing, CO2 sensing, visual monitoring, and environmental actuation. The Nutrient Solution Container Module stores and recirculates the nutrient solution and contains the water-quality sensors and nutrient-solution actuators.
+The target platform is a closed NFT hydroponic system for lettuce growth. NFT systems recirculate a shallow nutrient stream through sloped growth channels, allowing water and nutrient reuse when solution management is reliable \cite{niu2022hydroponics,asaduzzaman2022nutrients}. The deployed system is organized into two physical modules. The Growth Module houses the plants, lighting, air-temperature and humidity sensing, CO2 sensing, visual monitoring, and environmental actuation. The Nutrient Solution Container Module stores and recirculates the nutrient solution and contains the water-quality sensors and nutrient-solution actuators.
 
 \begin{figure*}[t]
 \centering
@@ -86,7 +87,7 @@ The Growth Module uses a DHT22 sensor for air temperature and humidity and an MH
 
 The Nutrient Solution Container Module uses an Atlas Scientific analog pH kit, an Atlas Scientific Mini Conductivity K 1.0 kit for EC, a water-temperature sensor, and a JSN-SR04T waterproof ultrasonic distance sensor for water level. pH correction is implemented through acid/base dosing, and EC correction through concentrated nutrient solution or distilled-water addition. After a pH or EC dosing action, the dosing subsystem is disabled for a 10-minute mixing interval before further dosing is allowed. A refrigerative water chiller regulates nutrient-solution temperature, an aerator runs throughout the growth cycle to support dissolved oxygen, and a water pump recirculates nutrient solution through the NFT channels.
 
-The control unit connects sensors to an Arduino Nano and actuators to an Arduino Mega. Both microcontrollers communicate with a Raspberry Pi 4 Model B, which serves as the central control computer. The Raspberry Pi receives median-filtered sensor readings from the Arduino Nano, logs the readings, updates the ThingSpeak-backed dashboard, applies the validation/control logic, and sends authorized actuation commands to the Arduino Mega. The dashboard and camera feed are retained as deployment infrastructure; they are not claimed as the research contribution of this paper.
+The control unit connects sensors to an Arduino Nano and actuators to an Arduino Mega. Both microcontrollers communicate with a Raspberry Pi 4 Model B, which serves as the central control computer. This sensor-microcontroller-edge-computer structure is consistent with prior hydroponic automation systems, but the present paper focuses on the measurement-to-actuation reliability layer rather than on dashboarding as a contribution \cite{tatas2022reliable,domingues2012automated}. The Raspberry Pi receives median-filtered sensor readings from the Arduino Nano, logs the readings, updates the ThingSpeak-backed dashboard, applies the validation/control logic, and sends authorized actuation commands to the Arduino Mega. The dashboard and camera feed are retained as deployment infrastructure; they are not claimed as the research contribution of this paper.
 
 \begin{table}[t]
 \centering
@@ -116,7 +117,31 @@ This architecture makes sensor validation a control-safety problem. A convention
 \section{Problem Formulation}
 For hydroponic sensor $s$ at time $t$, let $y_s(t)$ be the raw measurement and $\hat{x}_s(t)$ be the trusted value exposed to control. The method observes recent history $Y_s(t-w:t)$, broad physical limits $[P_{s,\min},P_{s,\max}]$, a control band $[L_s^a,U_s^a]$, a rate limit $r_s$, and any available actuator state $a(t)$. In this system, $s$ may correspond to pH, EC, humidity, air temperature, water temperature, or CO2, while $a(t)$ may represent dosing, cooling, circulation, or gas-release activity.
 
+\begin{table}[t]
+\centering
+\caption{Notation used in the AASVR formulation. Variables are defined for one sensor stream and then applied independently or jointly across the hydroponic sensor set.}
+\label{tab:notation}
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$y_s(t)$ & Raw value from sensor $s$ at sample $t$ \\
+$\hat{x}_s(t)$ & Trusted value exposed to the controller \\
+$Y_s(t-w:t)$ & Rolling window of recent raw values \\
+$[P_{s,\min},P_{s,\max}]$ & Broad physically plausible range \\
+$[L_s^a,U_s^a]$ & Actuation or control band \\
+$r_s$ & Maximum plausible rate of change \\
+$q_s(t)$ & Trust score in $[0,1]$ \\
+$z_s(t)$ & Sensor state in the AASVR state set \\
+$A_s(t)$ & Binary actuation authorization flag \\
+$\theta$ & Tunable AASVR parameter vector \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 We define a measurement as \emph{untrusted} when it is missing, physically implausible, rate-inconsistent, inconsistent with recent trusted state, or inconsistent with expected actuator effects. We define a \emph{false actuation} as an authorization caused by untrusted evidence. A \emph{missed actuation} is a failure to authorize action when the trusted state remains outside the control band.
+
+The validation decision is separated from the control decision. Let $g_s(t)\in\{0,1\}$ denote whether a raw sample passes all measurement gates, and let $z_s(t)$ denote one of five states: normal, suspect transient, persistent deviation, accepted regime shift, and fault alert. The controller receives $\hat{x}_s(t)$ and $A_s(t)$, not the raw value alone. This separation is necessary because a value can be physically possible but still too uncertain to authorize actuation.
 
 The evaluation follows a control-aware objective,
 \begin{equation}
@@ -149,10 +174,35 @@ The accepted deviation tolerance is
 \begin{equation}
 \xi_s(t)=\max(\xi_{s,\min},c_s\sigma_{\Delta,s}(t),r_s\Delta t,u_s).
 \end{equation}
-A reading must satisfy broad physical range, maximum rate, and trusted-state deviation gates. A separate trend guard rejects slow monotonic movement when no relevant actuator activity explains the direction of change. The broad physical range is deliberately different from the crop-control band: for example, a pH value can be undesirable for lettuce while still being physically possible and therefore not automatically a sensor fault.
+A reading must satisfy broad physical range, maximum rate, and trusted-state deviation gates. The three elementary gates are
+\begin{equation}
+\begin{aligned}
+G^{P}_s(t)&=\mathbf{1}\{P_{s,\min}\le y_s(t)\le P_{s,\max}\},\\
+G^{R}_s(t)&=\mathbf{1}\{|y_s(t)-y_s(t-1)|/\Delta t\le r_s\},\\
+G^{D}_s(t)&=\mathbf{1}\{|y_s(t)-\hat{x}_s(t-1)|\le \xi_s(t)\}.
+\end{aligned}
+\end{equation}
+A separate trend guard $G^{T}_s(t)$ rejects slow monotonic movement when no relevant actuator activity explains the direction of change. The overall gate is therefore
+\begin{equation}
+g_s(t)=G^{P}_s(t)G^{R}_s(t)G^{D}_s(t)G^{T}_s(t)G^{M}_s(t),
+\end{equation}
+where $G^{M}_s(t)$ is one only when the value is present and parseable. The broad physical range is deliberately different from the crop-control band: for example, a pH value can be undesirable for lettuce while still being physically possible and therefore not automatically a sensor fault.
+
+\subsection{Trust score}
+AASVR also computes a continuous trust score so that control can distinguish weakly plausible values from strongly confirmed values. The implementation uses a weighted additive score,
+\begin{equation}
+q_s(t)=\sum_{j\in\mathcal{Q}}w_jq_{j,s}(t), \quad \sum_{j\in\mathcal{Q}}w_j=1,
+\end{equation}
+where $\mathcal{Q}$ contains range, rate, persistence, actuator-consistency, missingness, and trend components. Each component is scaled to $[0,1]$. In the hydroponic controller, $q_s(t)$ is used together with persistence and cooldown logic rather than as a standalone anomaly score.
 
 \subsection{State-machine persistence logic}
 Figure~\ref{fig:state_machine} shows the five persistence states. A single failed gate moves a sensor into a suspect transient state. Repeated failures create a persistent-deviation state. Consistent evidence can be accepted as a new process regime, while missing, stuck, saturated, or contradictory readings escalate to fault alert. This matters for hydroponics because real mixing and thermal responses can take multiple samples after dosing or cooling, whereas isolated spikes should not immediately change the trusted state.
+
+The state update can be written as
+\begin{equation}
+z_s(t)=\mathcal{T}\left(z_s(t-1),g_s(t),q_s(t),h_s(t),a(t)\right),
+\end{equation}
+where $h_s(t)$ summarizes persistence-window evidence. This representation makes the state machine explicit without treating every transition as a separate hand-tuned rule in the manuscript. The transition function $\mathcal{T}$ is implemented by Algorithm~\ref{alg:aasvr}.
 
 \begin{figure}[t]
 \centering
@@ -162,7 +212,29 @@ Figure~\ref{fig:state_machine} shows the five persistence states. A single faile
 \end{figure}
 
 \subsection{Rectification and actuation authorization}
-When a reading is accepted, AASVR sets $\hat{x}_s(t)=y_s(t)$. When it is suspect, the method either holds $\hat{x}_s(t-1)$ or applies a bounded update limited by $r_s\Delta t$. Actuation is authorized only if the trusted value is outside the control band, the violation persists for the configured number of samples, the sensor state is normal or accepted-regime-shift, the trust score is sufficient, and the actuator is not in cooldown. For pH and EC, this rule complements the 10-minute dosing lockout already present in the deployed system; for CO2 and temperature, it prevents transient readings from becoming immediate gas-release or cooling commands.
+When a reading is accepted, AASVR sets $\hat{x}_s(t)=y_s(t)$. When it is suspect, the method either holds $\hat{x}_s(t-1)$ or applies a bounded update limited by $r_s\Delta t$:
+\begin{equation}
+\hat{x}_s(t)=
+\begin{cases}
+y_s(t), & z_s(t)\in\{\mathrm{normal},\mathrm{accepted}\},\\
+\hat{x}_s(t-1), & z_s(t)=\mathrm{suspect},\\
+\hat{x}_s(t-1)+\mathrm{clip}(\Delta y_s,-r_s\Delta t,r_s\Delta t), & \mathrm{bounded},\\
+\mathrm{alert}, & z_s(t)=\mathrm{fault}.
+\end{cases}
+\end{equation}
+Actuation is authorized only if the trusted value is outside the control band, the violation persists for the configured number of samples, the sensor state is normal or accepted-regime-shift, the trust score is sufficient, and the actuator is not in cooldown:
+\begin{equation}
+\begin{aligned}
+A_s(t)=&
+\mathbf{1}\{\hat{x}_s(t)\notin[L_s^a,U_s^a]\}
+\mathbf{1}\{p_s(t)\ge k_s\}
+\mathbf{1}\{q_s(t)\ge q_{\min}\}\\
+&\times
+\mathbf{1}\{z_s(t)\in\mathcal{Z}_{\mathrm{safe}}\}
+\mathbf{1}\{\ell_s(t)=0\}.
+\end{aligned}
+\end{equation}
+Here $p_s(t)$ is the number of consecutive trusted control-band violations, $k_s$ is the persistence requirement, $\mathcal{Z}_{\mathrm{safe}}=\{\mathrm{normal},\mathrm{accepted}\}$, and $\ell_s(t)$ is the actuator lockout indicator. For pH and EC, this rule complements the 10-minute dosing lockout already present in the deployed system; for CO2 and temperature, it prevents transient readings from becoming immediate gas-release or cooling commands.
 
 \begin{algorithm}[t]
 \caption{Streaming AASVR update for one sensor}
@@ -254,6 +326,54 @@ Original & 0.161 & 0.998 & 0.579 & 0.002 & 3.060 \\
 \label{fig:hydro_ci}
 \end{figure}
 
+\subsection{Sensor-wise and fault-type comparisons}
+Table~\ref{tab:sensorwise} breaks down AASVR performance by hydroponic sensor. CO2, air temperature, and water temperature faults are detected with balanced accuracy above 0.88. EC is the weakest stream, mainly because gradual concentration faults are harder to distinguish from plausible nutrient-solution changes without an independent reference.
+
+\begin{table}[t]
+\centering
+\caption{AASVR synthetic-fault performance by hydroponic sensor. False actuation is reported as mean events per injected-fault trial.}
+\label{tab:sensorwise}
+\begin{tabular}{lrrrr}
+\toprule
+Sensor & Recall & Specificity & Bal. acc. & False act. \\
+\midrule
+CO2 & 0.944 & 0.881 & 0.913 & 0.036 \\
+Air temperature & 0.912 & 0.877 & 0.895 & 0.060 \\
+Water temperature & 0.902 & 0.876 & 0.889 & 0.048 \\
+pH & 0.840 & 0.885 & 0.862 & 0.060 \\
+EC & 0.596 & 0.880 & 0.738 & 0.524 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:faulttype} and Figure~\ref{fig:fault_heatmap} show performance by injected fault class. AASVR performs best on dropout, step, spike, bias, multi-spike, and noise-burst faults. Drift remains the hardest case because it can stay inside physical range and rate limits for long periods.
+
+\begin{table}[t]
+\centering
+\caption{AASVR synthetic-fault performance by injected fault type. Drift is the most difficult condition because slow monotonic movement can resemble a real process change.}
+\label{tab:faulttype}
+\begin{tabular}{lrrrr}
+\toprule
+Fault type & Recall & Specificity & Bal. acc. & False act. \\
+\midrule
+Dropout & 1.000 & 0.886 & 0.943 & 0.000 \\
+Step & 0.890 & 0.881 & 0.886 & 0.167 \\
+Spike & 0.883 & 0.878 & 0.880 & 0.200 \\
+Bias & 0.876 & 0.877 & 0.876 & 0.200 \\
+Multi-spike & 0.874 & 0.878 & 0.876 & 0.000 \\
+Noise burst & 0.856 & 0.882 & 0.869 & 0.133 \\
+Drift & 0.494 & 0.877 & 0.686 & 0.317 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.88\linewidth]{figure/hydro_exp1_fault_type_heatmap.png}
+\caption{Hydroponic synthetic-fault heatmap by sensor and fault type. The figure summarizes where AASVR is strongest and where slow drift remains a limitation.}
+\label{fig:fault_heatmap}
+\end{figure}
+
 \subsection{Ablation and control effect}
 Table~\ref{tab:ablation} shows that several ablations preserve the same detection score but change control behavior. Removing actuation confirmation increases false actuation from 0.145 to 0.569 events per trial. This is the clearest evidence that AASVR is not only a detector: the actuation-aware layer changes downstream control outcomes.
 
@@ -275,14 +395,40 @@ Bounded prediction mode & 0.810 & 0.734 & 0.476 \\
 \end{tabular}
 \end{table}
 
+The parameter sweep in Table~\ref{tab:tuning} shows that the selected configuration is not an isolated optimum. Multiple trust-score and transient-limit settings produced the same headline objective when the robust scale multiplier was 5.0, while reducing the scale multiplier to 4.0 slightly lowered the control-aware objective.
+
+\begin{table}[t]
+\centering
+\caption{Top AASVR parameter settings from the hydroponic synthetic-fault sweep. The selected setting uses $c_s=5.0$, $q_{\min}=0.70$, and transient limit 2.}
+\label{tab:tuning}
+\begin{tabular}{rrrrr}
+\toprule
+$c_s$ & $q_{\min}$ & Transient limit & Bal. acc. & Objective \\
+\midrule
+5.0 & 0.70 & 2 & 0.859 & 0.783 \\
+5.0 & 0.70 & 1 & 0.859 & 0.783 \\
+5.0 & 0.50 & 3 & 0.859 & 0.783 \\
+5.0 & 0.85 & 2 & 0.859 & 0.783 \\
+4.0 & 0.70 & 3 & 0.859 & 0.782 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Representative hydroponic trace}
-Figure~\ref{fig:ph_trace} shows a pH replay segment. The trace is included to connect the aggregate benchmark to the actual deployment setting. It illustrates the measurement-to-state transformation that precedes any actuation decision.
+Figures~\ref{fig:ph_trace} and \ref{fig:co2_trace} show replay segments from the hydroponic deployment. The traces are included to connect the aggregate benchmark to the actual deployment setting. They illustrate the measurement-to-state transformation that precedes any actuation decision.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.9\linewidth]{figure/hydro_exp1_ph_trace.png}
 \caption{Representative pH replay from the hydroponic deployment data. The raw stream and AASVR trusted estimate are plotted over an early segment of the experiment. The figure is not used as a ground-truth fault label; it is included to show how the method exposes a trusted state rather than passing every raw measurement directly to the controller.}
 \label{fig:ph_trace}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{figure/hydro_exp1_co2_trace.png}
+\caption{Representative CO2 replay from the hydroponic deployment data. The trace shows the same trusted-state interface on an environmental-control stream, where transient raw readings should not directly authorize gas-release commands.}
+\label{fig:co2_trace}
 \end{figure}
 
 \subsection{External benchmark stress tests}
@@ -327,6 +473,7 @@ The lettuce growth trials are retained as deployment evidence, not as causal pro
 \caption{Agronomic measurements from the hydroponic deployment and comparison treatments. These data are included as secondary operation evidence for the closed-loop hydroponic platform. They are not interpreted as causal evidence that AASVR alone improved plant growth because multiple system-level factors differ between treatments.}
 \label{fig:agronomic}
 \end{figure}
+\FloatBarrier
 
 \section{Discussion}
 \subsection{Why actuation awareness matters}
@@ -349,6 +496,7 @@ The authors declare no competing interests for the current manuscript draft.
 
 \section*{Declaration of Generative AI and AI-Assisted Technologies}
 AI-assisted tools were used to help organize code, draft text, and check consistency. The authors remain responsible for the scientific content, claims, results, and final manuscript.
+\FloatBarrier
 
 \bibliographystyle{elsarticle-num}
 \bibliography{aasvr_references}

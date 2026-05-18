@@ -5,6 +5,7 @@
 - `main_aasvr.tex`: author-visible ISA Transactions draft for the AASVR method paper.
 - `main_aasvr_blinded.tex`: double-anonymized wrapper that compiles the same paper with author information removed.
 - `aasvr_references.bib`: focused bibliography for the AASVR manuscript.
+- `highlights_aasvr_blinded.txt`: ISA-style blinded highlights for the revised submission package.
 
 ## TikZ/vector sources
 
@@ -20,6 +21,8 @@
 - `figure/cross_dataset_rank_plot.png`: available-dataset method ranking figure.
 - `figure/external_aasvr_threshold_sensitivity.png`: native-label aggregation sensitivity figure.
 - `figure/hydro_exp1_ph_trace.png`: representative pH replay trace.
+- `figure/hydro_exp1_co2_trace.png`: representative CO2 replay trace.
+- `figure/hydro_exp1_fault_type_heatmap.png`: fault-type by method balanced-accuracy heatmap.
 - `figure/fullsystemactual.JPG`: real hydroponic deployment photograph used in the main manuscript.
 - `figure/agronomic_parameters_violinplots_new.pdf`: secondary agronomic operation-evidence figure.
 
@@ -39,3 +42,9 @@ docker compose run --rm project-shell make paper
 ```
 
 The build target compiles `main_aasvr.tex` and `main_aasvr_blinded.tex` with `latexmk`.
+
+## Current revision focus
+
+The current manuscript revision expands the mathematical formulation, adds notation and
+sensor/fault/tuning comparison tables, strengthens algorithm and hydroponics citations,
+and places main figures/tables before the reference list with float barriers.

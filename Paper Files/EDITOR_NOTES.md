@@ -1,6 +1,9 @@
 # Editor Notes
 
 - The current paper draft is hydroponic-system first while keeping AASVR as the research contribution. It intentionally demotes the web dashboard, XGBoost classifier, and crop-yield superiority claims.
+- The latest revision makes the method section more mathematical: it now separates gates, trust scores, state transitions, rectification, and actuation authorization with explicit notation.
+- The related-work and system sections now cite the main algorithms and hydroponic control context more directly; keep adding primary references as coauthors identify journal-specific gaps.
+- Main comparison plots and tables are kept before the references with float barriers, matching the requested ISA-style article flow.
 - The NFT platform, sensors, actuators, Raspberry Pi/Arduino control stack, and deployment photograph should remain visible before the abstract AASVR formulation.
 - Hydroponic water level is excluded from primary analysis because the raw values are not defensibly calibrated.
 - Hydroponic scoring relies on synthetic fault injection over real signal backgrounds because independent reference instruments are unavailable for every sensor at every time point.

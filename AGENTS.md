@@ -125,3 +125,4 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - 2026-05-18: Replaced the original `Paper Files/elsarticle-template-num.tex` entry point with a compatibility wrapper to the new `main_aasvr.tex` manuscript so the legacy filename opens the current AASVR paper.
 - 2026-05-18: Normalized `Paper Files/` ownership and permissions for easy viewing/editing after Docker-generated LaTeX outputs, and recorded the permission convention as a standing workflow rule.
 - 2026-05-18: Rebalanced the ISA manuscript so the closed-loop hydroponic NFT platform, hardware/control architecture, deployment photograph, and agronomic operation evidence remain visible while AASVR stays the central research contribution.
+- 2026-05-18: Expanded the ISA manuscript math formulation, references, hydroponic sensor/fault/tuning comparisons, highlights file, and float barriers to keep figures before references.
