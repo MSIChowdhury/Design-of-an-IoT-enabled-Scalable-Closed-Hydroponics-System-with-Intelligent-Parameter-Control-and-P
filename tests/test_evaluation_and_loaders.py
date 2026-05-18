@@ -38,6 +38,28 @@ def test_aasvr_gate_reject_prediction_mode_scores_suspect_rejections() -> None:
     assert gate_metrics.recall == 1.0
 
 
+def test_timestamp_level_labels_align_to_sensor_decisions() -> None:
+    decisions = pd.DataFrame(
+        {
+            "timestamp": ["2026-01-01", "2026-01-01", "2026-01-02"],
+            "sensor": ["A", "B", "A"],
+            "alert": [True, False, False],
+            "actuation_authorized": [False, False, False],
+            "unsafe_band": [False, False, False],
+        }
+    )
+    labels = pd.DataFrame(
+        {
+            "timestamp": ["2026-01-01", "2026-01-02"],
+            "sensor": ["", ""],
+            "fault": [True, False],
+        }
+    )
+    metrics = compute_metrics(decisions, labels)
+    assert metrics.recall == 0.5
+    assert metrics.false_positive_rate == 0.0
+
+
 def test_csv_loader_returns_canonical_frames(tmp_path: Path) -> None:
     path = tmp_path / "sample.csv"
     pd.DataFrame(

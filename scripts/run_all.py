@@ -80,7 +80,10 @@ def run_available_real(*, dataset_profile: str = "paper") -> None:
 
 def _has_raw_csv(dataset: str) -> bool:
     raw_dir = ROOT / "data/raw" / dataset
-    return raw_dir.exists() and any(path.is_file() for path in raw_dir.rglob("*.csv"))
+    return raw_dir.exists() and any(
+        path.is_file() and (path.name.endswith(".csv") or path.name.endswith(".csv.gz"))
+        for path in raw_dir.rglob("*")
+    )
 
 
 if __name__ == "__main__":

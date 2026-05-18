@@ -116,3 +116,4 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - 2026-05-17: Added an uncommanded-trend guard to AASVR for slow monotonic drift faults that stay inside physical range and per-sample rate gates, plus an ablation variant that disables the guard.
 - 2026-05-18: Added manual hydroponic event-label merging, AASVR-driven annotation template generation, generic CSV external-dataset preparation, availability-aware external replay/scoring, and cross-dataset table/figure hooks.
 - 2026-05-18: Added a defensible benchmark-subset protocol and safer download profiles so TEP/WUR/HAI/SWaT/WaDi/DAMADICS can be documented without requiring huge archive downloads by default.
+- 2026-05-18: Added a real HAI 21.03 paper-subset preparation path, timestamp-level label alignment, and corrected the cross-dataset benchmark table to use hydroponic synthetic-fault results rather than rule-label replay as the hydroponic headline.

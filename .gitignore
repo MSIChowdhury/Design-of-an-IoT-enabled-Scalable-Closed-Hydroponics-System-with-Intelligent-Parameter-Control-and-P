@@ -30,6 +30,11 @@ results/run_metadata/**/*
 !results/**/.gitkeep
 !results/README.md
 
+# Keep nested raw-data repositories out of the parent repository status.
+data/raw/*/*_repo/
+data/raw/**/hai_repo/
+data/raw/**/.git/
+
 # Logs and local environments
 *.log
 .env

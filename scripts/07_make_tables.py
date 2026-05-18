@@ -93,8 +93,13 @@ def make_all_available_tables() -> None:
     metrics_dir = ROOT / "results/metrics"
     processed_dir = ROOT / "data/processed"
     frames = []
+    hydro_synthetic = metrics_dir / "hydro_exp1_synthetic_summary.csv"
+    if hydro_synthetic.exists():
+        frame = pd.read_csv(hydro_synthetic).copy()
+        frame.insert(0, "dataset", "hydro_exp1_synthetic")
+        frames.append(frame)
     for path in sorted(metrics_dir.glob("*_summary.csv")):
-        if path.name in {"toy_summary.csv", "hydro_exp1_synthetic_summary.csv"}:
+        if path.name in {"toy_summary.csv", "hydro_exp1_summary.csv", "hydro_exp1_synthetic_summary.csv"}:
             continue
         dataset = path.name.removesuffix("_summary.csv")
         if not _dataset_available_for_tables(dataset):
@@ -131,10 +136,13 @@ def make_all_available_tables() -> None:
 
 
 def _dataset_available_for_tables(dataset: str) -> bool:
-    if dataset == "hydro_exp1":
+    if dataset in {"hydro_exp1", "hydro_exp1_synthetic"}:
         return True
     raw_dir = ROOT / "data/raw" / dataset
-    return raw_dir.exists() and any(path.is_file() for path in raw_dir.rglob("*.csv"))
+    return raw_dir.exists() and any(
+        path.is_file() and (path.name.endswith(".csv") or path.name.endswith(".csv.gz"))
+        for path in raw_dir.rglob("*")
+    )
 
 
 if __name__ == "__main__":

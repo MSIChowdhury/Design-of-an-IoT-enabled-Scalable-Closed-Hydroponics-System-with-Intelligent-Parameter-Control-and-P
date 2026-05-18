@@ -87,6 +87,9 @@ def _align_labels(decisions: pd.DataFrame, labels: pd.DataFrame) -> np.ndarray:
         keyed = labels.copy()
         keyed["timestamp"] = keyed["timestamp"].astype(str)
         keyed["sensor"] = keyed["sensor"].astype(str)
+        if keyed["sensor"].str.len().eq(0).all():
+            by_time = keyed.groupby("timestamp")["fault"].max().to_dict()
+            return decisions["timestamp"].astype(str).map(by_time).fillna(False).to_numpy(dtype=bool)
         fault_map = {
             (row.timestamp, row.sensor): bool(row.fault)
             for row in keyed[["timestamp", "sensor", "fault"]].itertuples(index=False)

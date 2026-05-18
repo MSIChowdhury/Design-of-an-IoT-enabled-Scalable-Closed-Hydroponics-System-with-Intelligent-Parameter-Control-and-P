@@ -98,6 +98,10 @@ def prepare_external_csv_dataset(
     if not config_path.exists():
         raise FileNotFoundError(f"Missing dataset config: {config_path}")
     config = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
+    if dataset == "hai":
+        prepared = prepare_hai_subset(root=root, config=config)
+        if prepared is not None:
+            return prepared
     raw_path = root / str(config["path"])
     raw_file = _first_csv(raw_path)
     if raw_file is None:
@@ -141,6 +145,93 @@ def prepare_external_csv_dataset(
         metadata_path=metadata_path,
         quality_path=quality_path,
     )
+
+
+def prepare_hai_subset(
+    *,
+    root: Path,
+    config: dict,
+    processed_dir: str | Path = "data/processed",
+    metadata_dir: str | Path = "results/run_metadata",
+) -> PreparedDataset | None:
+    raw_root = root / str(config["path"])
+    repo_root = raw_root / "hai_repo"
+    train_path = repo_root / "hai-21.03" / "train1.csv.gz"
+    test_path = repo_root / "hai-21.03" / "test1.csv.gz"
+    if not train_path.exists() or not test_path.exists():
+        return None
+    subset = config.get("subset_protocol", {})
+    max_rows = int(subset.get("max_rows", 100000))
+    train = pd.read_csv(train_path, nrows=max_rows)
+    test = pd.read_csv(test_path, nrows=max_rows)
+    label_columns = [col for col in test.columns if col.startswith("attack")]
+    feature_columns = [
+        col
+        for col in test.columns
+        if col != "time" and col not in label_columns and pd.api.types.is_numeric_dtype(test[col])
+    ]
+    measurements = test[["time", *feature_columns]].rename(columns={"time": "timestamp"}).copy()
+    measurements["timestamp"] = pd.to_datetime(measurements["timestamp"], errors="coerce", utc=True)
+    measurements.insert(1, "dataset", "hai")
+    measurements.insert(2, "split", "hai-21.03-test1-paper-subset")
+
+    labels = pd.DataFrame(
+        {
+            "timestamp": measurements["timestamp"],
+            "dataset": "hai",
+            "event_id": "",
+            "sensor": "",
+            "fault": test["attack"].astype(bool) if "attack" in test else False,
+            "fault_type": "native_attack",
+            "severity": "native",
+            "label_source": "native_hai_21_03_test1",
+            "confidence": 1.0,
+        }
+    )
+    metadata = make_hai_metadata(train, feature_columns)
+    quality = make_generic_quality_report("hai", measurements, metadata)
+
+    processed_dir = root / processed_dir
+    metadata_dir = root / metadata_dir
+    processed_dir.mkdir(parents=True, exist_ok=True)
+    metadata_dir.mkdir(parents=True, exist_ok=True)
+    measurements_path = processed_dir / "hai_measurements.parquet"
+    labels_path = processed_dir / "hai_labels.parquet"
+    metadata_path = processed_dir / "hai_metadata.csv"
+    quality_path = metadata_dir / "hai_data_quality.csv"
+    measurements.to_parquet(measurements_path, index=False)
+    labels.to_parquet(labels_path, index=False)
+    metadata.to_csv(metadata_path, index=False)
+    quality.to_csv(quality_path, index=False)
+    return PreparedDataset(measurements_path, labels_path, metadata_path, quality_path)
+
+
+def make_hai_metadata(train: pd.DataFrame, feature_columns: list[str]) -> pd.DataFrame:
+    rows = []
+    for column in feature_columns:
+        values = pd.to_numeric(train[column], errors="coerce")
+        finite = values.dropna()
+        if finite.empty:
+            continue
+        physical_min = float(finite.quantile(0.001))
+        physical_max = float(finite.quantile(0.999))
+        if physical_max <= physical_min:
+            physical_max = physical_min + 1.0
+        rows.append(
+            {
+                "dataset": "hai",
+                "variable": column,
+                "role": "sensor",
+                "unit": "",
+                "physical_min": physical_min,
+                "physical_max": physical_max,
+                "control_low": "",
+                "control_high": "",
+                "rate_limit": max(float(finite.diff().abs().quantile(0.999) or 0.0), 1e-6),
+                "expected_direction": "unknown",
+            }
+        )
+    return pd.DataFrame(rows)
 
 
 def make_rule_labels(measurements: pd.DataFrame) -> pd.DataFrame:
