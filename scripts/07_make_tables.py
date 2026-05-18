@@ -54,6 +54,11 @@ def make_hydro_exp1_tables() -> None:
         frame = pd.read_csv(by_fault)
         frame.to_csv(out_dir / "hydro_exp1_synthetic_by_fault_type.csv", index=False)
         print(f"Wrote {out_dir / 'hydro_exp1_synthetic_by_fault_type.csv'}")
+    tuning = ROOT / "results/metrics/hydro_exp1_aasvr_tuning.csv"
+    if tuning.exists():
+        frame = pd.read_csv(tuning).head(10)
+        frame.to_csv(out_dir / "hydro_exp1_aasvr_tuning_top.csv", index=False)
+        print(f"Wrote {out_dir / 'hydro_exp1_aasvr_tuning_top.csv'}")
 
 
 if __name__ == "__main__":

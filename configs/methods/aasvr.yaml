@@ -1,5 +1,5 @@
 q_min: 0.7
-scale_multiplier: 3.0
+scale_multiplier: 5.0
 transient_limit: 2
 persistent_limit: 5
 rectification_mode: hold
