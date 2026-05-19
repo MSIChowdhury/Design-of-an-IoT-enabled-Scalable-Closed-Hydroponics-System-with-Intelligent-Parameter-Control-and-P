@@ -86,6 +86,53 @@ def test_aasvr_flags_missing_actuator_response_after_window() -> None:
     decision = model.update({"timestamp": 3, "pH": 6.2})[0]
     assert "actuator_response_residual" in decision.reason_codes
     assert decision.gate_result == "reject"
+    assert decision.response_reliability < 1.0
+
+
+def test_aasvr_r_starts_response_window_after_authorization() -> None:
+    cfg = SensorConfig(
+        **{
+            **sensor().__dict__,
+            "actuators": ("acid_doser",),
+            "expected_direction": "bidirectional",
+            "response_window": 2,
+            "response_min_delta": 0.03,
+            "risk_level": "high",
+        }
+    )
+    model = AASVR(AASVRConfig(sensors=(cfg,), q_min=0.7, eta_decay=0.8))
+    decisions = [model.update({"timestamp": idx, "pH": 6.7})[0] for idx in range(3)]
+    assert any(decision.actuation_authorized for decision in decisions)
+    response = model.update({"timestamp": 3, "pH": 6.63})[0]
+    assert "actuator_response_residual" not in response.reason_codes
+    assert response.response_reliability == 1.0
+
+
+def test_aasvr_r_suppresses_high_risk_authorization_after_failed_response() -> None:
+    cfg = SensorConfig(
+        **{
+            **sensor().__dict__,
+            "actuators": ("acid_doser",),
+            "expected_direction": "bidirectional",
+            "response_window": 1,
+            "response_min_delta": 0.03,
+            "risk_level": "high",
+        }
+    )
+    model = AASVR(
+        AASVRConfig(
+            sensors=(cfg,),
+            q_min=0.7,
+            eta_decay=0.0,
+            eta_min_high=0.75,
+        )
+    )
+    first = [model.update({"timestamp": idx, "pH": 6.7})[0] for idx in range(3)]
+    assert any(decision.actuation_authorized for decision in first)
+    failed = first[-1]
+    assert "actuator_response_residual" in failed.reason_codes
+    later = [model.update({"timestamp": idx, "pH": 6.7})[0] for idx in range(4, 10)]
+    assert not any(decision.actuation_authorized for decision in later)
 
 
 def test_aasvr_rejects_slow_uncommanded_trend() -> None:

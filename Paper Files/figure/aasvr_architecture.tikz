@@ -18,6 +18,7 @@
 \node[module, left=of state] (rect) {Rectified state\\$\hat{x}_s(t)$};
 \node[output, left=of rect] (auth) {Actuation\\authorization};
 \node[output, below=of auth] (act) {Controller\\and actuator};
+\node[module, below=of rect] (response) {Response\\residual $G^{AR}_s$};
 \node[danger, below=of state] (reject) {Log, hold,\\or alert};
 
 \draw[flow] (raw) -- (gate);
@@ -26,7 +27,10 @@
 \draw[flow] (state) -- (rect);
 \draw[flow] (rect) -- (auth);
 \draw[flow] (auth) -- node[note, left] {$A_s(t)=1$} (act);
+\draw[flow] (act.east) -- node[note, below] {observed response} (response.west);
+\draw[flow] (response) -- node[note, right] {$\eta_s(t)$} (state);
 \draw[suppress] (gate.south) to[out=-75,in=125] node[note, pos=0.35, right] {reject} (reject.north);
 \draw[suppress] (state) -- node[note, right] {suspect/fault} (reject);
+\draw[suppress] (response) -- node[note, below] {failed response} (reject);
 \draw[suppress] (reject.west) -| node[note, pos=0.20, below] {$A_s(t)=0$} (auth.south);
 \end{tikzpicture}

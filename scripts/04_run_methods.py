@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import replace
 from pathlib import Path
 
 import pandas as pd
@@ -69,17 +70,36 @@ def run_hydro_exp1() -> None:
     frame = frame[["timestamp", *HYDRO_PRIMARY_SENSORS]].copy()
     config = load_aasvr_config(ROOT / "configs/methods/aasvr.yaml")
     sensors = tuple(sensor for sensor in config.sensors if sensor.name in HYDRO_PRIMARY_SENSORS)
-    config = AASVRConfig(
+    response_config = AASVRConfig(
         sensors=sensors,
         q_min=config.q_min,
         scale_multiplier=config.scale_multiplier,
         transient_limit=config.transient_limit,
         persistent_limit=config.persistent_limit,
         rectification_mode=config.rectification_mode,
+        eta_decay=config.eta_decay,
+        eta_min_low=config.eta_min_low,
+        eta_min_medium=config.eta_min_medium,
+        eta_min_high=config.eta_min_high,
+        enable_response_residual=config.enable_response_residual,
+    )
+    base_config = AASVRConfig(
+        sensors=tuple(replace(sensor, response_window=0) for sensor in sensors),
+        q_min=config.q_min,
+        scale_multiplier=config.scale_multiplier,
+        transient_limit=config.transient_limit,
+        persistent_limit=config.persistent_limit,
+        rectification_mode=config.rectification_mode,
+        eta_decay=config.eta_decay,
+        eta_min_low=0.0,
+        eta_min_medium=0.0,
+        eta_min_high=0.0,
+        enable_response_residual=False,
     )
     out_dir = ROOT / "results/metrics"
     out_dir.mkdir(parents=True, exist_ok=True)
-    run_aasvr_with_config(frame, config).to_csv(out_dir / "hydro_exp1_aasvr_decisions.csv", index=False)
+    run_aasvr_with_config(frame, response_config).to_csv(out_dir / "hydro_exp1_aasvr_r_decisions.csv", index=False)
+    run_aasvr_with_config(frame, base_config).to_csv(out_dir / "hydro_exp1_aasvr_decisions.csv", index=False)
     baseline_config = load_yaml(ROOT / "configs/methods/baselines.yaml")
     baselines = baseline_config.get("full_replay", baseline_config["required"])
     for method in baselines:

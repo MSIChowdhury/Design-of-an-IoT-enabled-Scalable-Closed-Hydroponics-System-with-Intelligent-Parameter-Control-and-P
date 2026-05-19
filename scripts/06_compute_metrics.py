@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import replace
 from pathlib import Path
 
 import pandas as pd
@@ -98,17 +99,35 @@ def compute_hydro_exp1_synthetic() -> None:
     sensors = tuple(sensor for sensor in config.sensors if sensor.name in HYDRO_PRIMARY_SENSORS)
     from aasvr.core import AASVRConfig
 
-    config = AASVRConfig(
+    response_config = AASVRConfig(
         sensors=sensors,
         q_min=config.q_min,
         scale_multiplier=config.scale_multiplier,
         transient_limit=config.transient_limit,
         persistent_limit=config.persistent_limit,
         rectification_mode=config.rectification_mode,
+        eta_decay=config.eta_decay,
+        eta_min_low=config.eta_min_low,
+        eta_min_medium=config.eta_min_medium,
+        eta_min_high=config.eta_min_high,
+        enable_response_residual=config.enable_response_residual,
+    )
+    base_config = AASVRConfig(
+        sensors=tuple(replace(sensor, response_window=0) for sensor in sensors),
+        q_min=config.q_min,
+        scale_multiplier=config.scale_multiplier,
+        transient_limit=config.transient_limit,
+        persistent_limit=config.persistent_limit,
+        rectification_mode=config.rectification_mode,
+        eta_decay=config.eta_decay,
+        eta_min_low=0.0,
+        eta_min_medium=0.0,
+        eta_min_high=0.0,
+        enable_response_residual=False,
     )
     baselines = load_yaml(ROOT / "configs/methods/baselines.yaml")["required"]
     baseline_configs = _load_tuned_baseline_configs()
-    methods = ["aasvr", *baselines]
+    methods = ["aasvr_r", "aasvr", *baselines]
     rows = []
     half_window_before = 90
     half_window_after = 120
@@ -131,8 +150,11 @@ def compute_hydro_exp1_synthetic() -> None:
         )
         faulted, labels = inject_fault(window, spec)
         for method in methods:
-            if method == "aasvr":
-                decisions = run_aasvr_with_config(faulted, config)
+            if method == "aasvr_r":
+                decisions = run_aasvr_with_config(faulted, response_config)
+                prediction_mode = "gate_reject"
+            elif method == "aasvr":
+                decisions = run_aasvr_with_config(faulted, base_config)
                 prediction_mode = "gate_reject"
             else:
                 decisions = run_baseline_on_frame(

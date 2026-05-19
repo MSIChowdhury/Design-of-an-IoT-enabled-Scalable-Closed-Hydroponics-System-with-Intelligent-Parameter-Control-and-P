@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 METHOD_LABELS = {
     "aasvr": "AASVR",
+    "aasvr_r": "AASVR-R",
     "raw_threshold": "Raw threshold",
     "original": "Original",
     "moving_average": "Moving average",
@@ -25,11 +26,11 @@ METHOD_LABELS = {
     "isolation_forest": "Isolation Forest",
     "one_class_svm": "One-Class SVM",
     "local_outlier_factor": "LOF",
-    "graph_aasvr": "Graph-AASVR",
 }
 
 PALETTE = {
     "AASVR": "#0072B2",
+    "AASVR-R": "#004488",
     "Kalman": "#009E73",
     "PCA": "#E69F00",
     "GLR": "#AA4499",
@@ -44,7 +45,6 @@ PALETTE = {
     "Isolation Forest": "#7B3294",
     "One-Class SVM": "#008837",
     "LOF": "#A6611A",
-    "Graph-AASVR": "#332288",
 }
 
 
@@ -226,6 +226,34 @@ def make_hydro_exp1_figures() -> None:
     audit_path = ROOT / "results/figures/hydro_exp1_aasvr_audit_trail.png"
     if audit_path.exists():
         print(f"Existing audit-trail figure available at {audit_path}")
+    response_path = ROOT / "results/metrics/hydro_exp1_response_replay_decisions.csv"
+    if response_path.exists():
+        response = pd.read_csv(response_path)
+        case = response[
+            response["method"].eq("aasvr_r")
+            & response["scenario_sensor"].eq("pH")
+            & response["side"].eq("high")
+            & response["fault_type"].eq("no_response")
+        ].copy()
+        if not case.empty:
+            out = out_dir / "hydro_exp1_response_residual_trace.png"
+            x = range(len(case))
+            plt.figure(figsize=(6.4, 3.4))
+            plt.plot(x, case["raw_value"], label="Raw pH", color="#666666", linewidth=1.0)
+            plt.plot(x, case["trusted_value"], label="Trusted pH", color=PALETTE["AASVR-R"], linewidth=1.4)
+            auth = case[case["actuation_authorized"].astype(bool)]
+            if not auth.empty:
+                plt.scatter(auth.index, auth["trusted_value"], marker="^", color="#009E73", s=38, label="Authorized")
+            residual = case[case["reason_codes"].astype(str).str.contains("actuator_response_residual", regex=False)]
+            if not residual.empty:
+                plt.scatter(residual.index, residual["raw_value"], marker="x", color="#D55E00", s=48, label="Response fault")
+            plt.xlabel("Replay sample")
+            plt.ylabel("pH")
+            plt.legend(frameon=False, ncols=2)
+            plt.tight_layout()
+            _save_current(out)
+            plt.close()
+            print(f"Wrote {out}")
 
 
 def make_all_available_figures() -> None:

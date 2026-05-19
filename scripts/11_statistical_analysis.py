@@ -22,6 +22,7 @@ METRICS = [
     "false_actuations",
     "alerts",
 ]
+REFERENCE_METHOD = "aasvr_r"
 
 
 def main() -> None:
@@ -141,7 +142,7 @@ def _group_summary(detail: pd.DataFrame, group_cols: list[str]) -> pd.DataFrame:
 
 
 def _aasvr_group_ci(detail: pd.DataFrame, group_cols: list[str], *, bootstrap: int) -> pd.DataFrame:
-    aasvr = detail[detail["method"].eq("aasvr")].copy()
+    aasvr = detail[detail["method"].eq(REFERENCE_METHOD)].copy()
     rows = []
     for keys, group in aasvr.groupby(group_cols):
         if not isinstance(keys, tuple):
@@ -165,23 +166,23 @@ def _paired_tests(detail: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for metric, alternative in metrics.items():
         pivot = detail.pivot_table(index="trial_id", columns="method", values=metric, aggfunc="mean")
-        if "aasvr" not in pivot:
+        if REFERENCE_METHOD not in pivot:
             continue
         for method in pivot.columns:
-            if method == "aasvr":
+            if method == REFERENCE_METHOD:
                 continue
-            paired = pivot[["aasvr", method]].dropna()
+            paired = pivot[[REFERENCE_METHOD, method]].dropna()
             if len(paired) < 3:
                 continue
             stat, p_value = _safe_wilcoxon(
-                paired["aasvr"].to_numpy(),
+                paired[REFERENCE_METHOD].to_numpy(),
                 paired[method].to_numpy(),
                 alternative=alternative,
             )
             rows.append(
                 {
                     "metric": metric,
-                    "comparison": f"aasvr_vs_{method}",
+                    "comparison": f"{REFERENCE_METHOD}_vs_{method}",
                     "alternative": alternative,
                     "n_pairs": len(paired),
                     "statistic": stat,
@@ -206,13 +207,13 @@ def _paired_effects(detail: pd.DataFrame, *, bootstrap: int) -> pd.DataFrame:
     pivot_ba = detail.pivot_table(index="trial_id", columns="method", values="balanced_accuracy", aggfunc="mean")
     pivot_fa = detail.pivot_table(index="trial_id", columns="method", values="false_actuations", aggfunc="mean")
     rows = []
-    for method in sorted(set(pivot_ba.columns).intersection(pivot_fa.columns) - {"aasvr"}):
-        paired_ba = pivot_ba[["aasvr", method]].dropna()
-        paired_fa = pivot_fa[["aasvr", method]].dropna()
+    for method in sorted(set(pivot_ba.columns).intersection(pivot_fa.columns) - {REFERENCE_METHOD}):
+        paired_ba = pivot_ba[[REFERENCE_METHOD, method]].dropna()
+        paired_fa = pivot_fa[[REFERENCE_METHOD, method]].dropna()
         if paired_ba.empty or paired_fa.empty:
             continue
-        delta_ba = paired_ba["aasvr"] - paired_ba[method]
-        delta_fa = paired_fa[method] - paired_fa["aasvr"]
+        delta_ba = paired_ba[REFERENCE_METHOD] - paired_ba[method]
+        delta_fa = paired_fa[method] - paired_fa[REFERENCE_METHOD]
         ci_low, ci_high = _bootstrap_mean_ci(delta_fa.to_numpy(), bootstrap=bootstrap)
         median_low, median_high = _bootstrap_median_ci(delta_fa.to_numpy(), bootstrap=bootstrap)
         nonzero_fa = delta_fa[~np.isclose(delta_fa, 0.0)]
@@ -251,7 +252,7 @@ def _paired_effects(detail: pd.DataFrame, *, bootstrap: int) -> pd.DataFrame:
 def _test_lookup(tests: pd.DataFrame, metric: str) -> dict[str, float]:
     subset = tests[tests["metric"].eq(metric)]
     out = {}
-    prefix = "aasvr_vs_"
+    prefix = f"{REFERENCE_METHOD}_vs_"
     for row in subset.to_dict(orient="records"):
         comparison = str(row["comparison"])
         if comparison.startswith(prefix):
@@ -311,16 +312,16 @@ def _fault_grid_tests(detail: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for (sensor, fault_type), group in detail.groupby(["sensor", "fault_type"]):
         pivot = group.pivot_table(index="trial_id", columns="method", values="balanced_accuracy", aggfunc="mean")
-        if "aasvr" not in pivot:
+        if REFERENCE_METHOD not in pivot:
             continue
         for method in pivot.columns:
-            if method == "aasvr":
+            if method == REFERENCE_METHOD:
                 continue
-            paired = pivot[["aasvr", method]].dropna()
+            paired = pivot[[REFERENCE_METHOD, method]].dropna()
             if len(paired) < 3:
                 continue
             stat, p_value = _safe_wilcoxon(
-                paired["aasvr"].to_numpy(),
+                paired[REFERENCE_METHOD].to_numpy(),
                 paired[method].to_numpy(),
                 alternative="greater",
             )
@@ -328,7 +329,7 @@ def _fault_grid_tests(detail: pd.DataFrame) -> pd.DataFrame:
                 {
                     "sensor": sensor,
                     "fault_type": fault_type,
-                    "comparison": f"aasvr_vs_{method}",
+                    "comparison": f"{REFERENCE_METHOD}_vs_{method}",
                     "n_pairs": len(paired),
                     "statistic": stat,
                     "p_value": p_value,

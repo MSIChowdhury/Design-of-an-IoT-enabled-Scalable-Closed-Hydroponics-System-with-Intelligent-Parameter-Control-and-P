@@ -31,6 +31,7 @@ class SensorConfig:
     stuck_min_unique: int = 1
     response_window: int = 0
     response_min_delta: float = 0.0
+    risk_level: str = "medium"
     actuators: tuple[str, ...] = ()
     expected_direction: str = "unknown"
 
@@ -43,6 +44,11 @@ class AASVRConfig:
     transient_limit: int = 2
     persistent_limit: int = 5
     rectification_mode: str = "hold"
+    eta_decay: float = 0.90
+    eta_min_low: float = 0.50
+    eta_min_medium: float = 0.65
+    eta_min_high: float = 0.75
+    enable_response_residual: bool = True
 
 
 @dataclass(frozen=True)
@@ -58,6 +64,7 @@ class AASVRDecision:
     actuation_authorized: bool
     alert: bool
     actuator_consistency: float = 1.0
+    response_reliability: float = 1.0
     unsafe_band: bool = False
     reason_codes: tuple[str, ...] = ()
     trust_components: tuple[str, ...] = ()
@@ -77,6 +84,9 @@ class _SensorRuntime:
     last_authorized_value: float | None = None
     response_countdown: int = 0
     response_reference: float | None = None
+    response_direction: int = 0
+    response_reliability: float = 1.0
+    response_fault_count: int = 0
 
 
 class AASVR:
@@ -211,6 +221,7 @@ class AASVR:
             actuation_authorized=authorized,
             alert=alert,
             actuator_consistency=actuator_consistency,
+            response_reliability=runtime.response_reliability,
             unsafe_band=unsafe_band,
             reason_codes=tuple(reasons),
             trust_components=components,
@@ -265,6 +276,8 @@ class AASVR:
         )
         if actuator_consistency < 0.5:
             weighted = min(weighted, 0.65)
+        if runtime.response_reliability < self._eta_min(runtime.config):
+            weighted = min(weighted, runtime.response_reliability)
         score = min(weighted, plausibility_score if not plausible else weighted)
         components = (
             f"range={range_score:.3f}",
@@ -274,6 +287,7 @@ class AASVR:
             f"response={response_score:.3f}",
             f"persistence={persistence_score:.3f}",
             f"actuator_consistency={actuator_consistency:.3f}",
+            f"response_reliability={runtime.response_reliability:.3f}",
             f"missingness={missing_score:.3f}",
         )
         return float(np.clip(score, 0.0, 1.0)), components
@@ -353,32 +367,41 @@ class AASVR:
         y: float,
     ) -> bool:
         cfg = runtime.config
-        if cfg.response_window <= 0 or not cfg.actuators or not np.isfinite(y):
+        if (
+            not self.config.enable_response_residual
+            or cfg.response_window <= 0
+            or not np.isfinite(y)
+        ):
             return False
         active = self._has_active_actuator(cfg, sample)
         if active and runtime.response_countdown <= 0:
             runtime.response_countdown = cfg.response_window
             runtime.response_reference = runtime.last_raw_value if runtime.last_raw_value is not None else y
+            runtime.response_direction = self._expected_response_direction(cfg, runtime.trusted_value)
             return False
         if runtime.response_countdown <= 0 or runtime.response_reference is None:
             return False
 
         delta = y - runtime.response_reference
         threshold = max(cfg.response_min_delta, cfg.uncertainty, cfg.xi_min)
-        if cfg.expected_direction == "decreasing":
+        if runtime.response_direction < 0:
             satisfied = delta <= -threshold
-        elif cfg.expected_direction == "increasing":
+        elif runtime.response_direction > 0:
             satisfied = delta >= threshold
         else:
             satisfied = abs(delta) >= threshold
         if satisfied:
             runtime.response_countdown = 0
             runtime.response_reference = None
+            runtime.response_direction = 0
+            self._update_response_reliability(runtime, confirmed=True)
             return False
 
         runtime.response_countdown -= 1
         if runtime.response_countdown <= 0:
             runtime.response_reference = None
+            runtime.response_direction = 0
+            self._update_response_reliability(runtime, confirmed=False)
             return True
         return False
 
@@ -396,13 +419,15 @@ class AASVR:
             return False
         violation = trusted < cfg.control_low or trusted > cfg.control_high
         state_ok = runtime.state in {SensorState.NORMAL, SensorState.ACCEPTED_REGIME_SHIFT}
-        if violation and state_ok and trust_score >= self.config.q_min:
+        eta_ok = runtime.response_reliability >= self._eta_min(cfg)
+        if violation and state_ok and trust_score >= self.config.q_min and eta_ok:
             runtime.band_violation_count += 1
         else:
             runtime.band_violation_count = 0
         if runtime.band_violation_count >= cfg.confirm_samples:
             runtime.cooldown_remaining = cfg.cooldown_samples
             runtime.band_violation_count = 0
+            self._start_authorized_response(runtime)
             return True
         return False
 
@@ -412,6 +437,52 @@ class AASVR:
             return False
         cfg = runtime.config
         return bool(trusted < cfg.control_low or trusted > cfg.control_high)
+
+    def _start_authorized_response(self, runtime: _SensorRuntime) -> None:
+        cfg = runtime.config
+        if not self.config.enable_response_residual or cfg.response_window <= 0:
+            return
+        trusted = runtime.trusted_value
+        if trusted is None or not np.isfinite(trusted):
+            return
+        runtime.response_countdown = cfg.response_window
+        runtime.response_reference = trusted
+        runtime.response_direction = self._expected_response_direction(cfg, trusted)
+
+    def _expected_response_direction(self, cfg: SensorConfig, trusted: float | None) -> int:
+        if cfg.expected_direction == "decreasing":
+            return -1
+        if cfg.expected_direction == "increasing":
+            return 1
+        if trusted is not None and np.isfinite(trusted):
+            if trusted > cfg.control_high:
+                return -1
+            if trusted < cfg.control_low:
+                return 1
+        return 0
+
+    def _update_response_reliability(self, runtime: _SensorRuntime, *, confirmed: bool) -> None:
+        observation = 1.0 if confirmed else 0.0
+        runtime.response_reliability = float(
+            np.clip(
+                self.config.eta_decay * runtime.response_reliability
+                + (1.0 - self.config.eta_decay) * observation,
+                0.0,
+                1.0,
+            )
+        )
+        if confirmed:
+            runtime.response_fault_count = 0
+        else:
+            runtime.response_fault_count += 1
+
+    def _eta_min(self, cfg: SensorConfig) -> float:
+        risk = cfg.risk_level.lower()
+        if risk == "high":
+            return self.config.eta_min_high
+        if risk == "low":
+            return self.config.eta_min_low
+        return self.config.eta_min_medium
 
 
 def _to_float(value: Any) -> float:
