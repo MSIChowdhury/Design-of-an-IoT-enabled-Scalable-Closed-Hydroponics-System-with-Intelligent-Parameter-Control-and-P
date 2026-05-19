@@ -15,6 +15,7 @@ results/metrics/**/*
 results/tables/**/*
 results/figures/**/*
 results/run_metadata/**/*
+results/run_logs/**/*
 
 # Keep placeholders and documentation
 !data/raw/**/

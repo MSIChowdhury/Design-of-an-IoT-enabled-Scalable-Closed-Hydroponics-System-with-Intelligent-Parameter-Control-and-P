@@ -92,6 +92,19 @@ docker compose run --rm project-shell python scripts/27_run_exhaustive_benchmark
 docker compose run --rm project-shell python scripts/29_aggregate_exhaustive_results.py --profile exhaustive --split test
 ```
 
+For long exhaustive runs in this Codex environment, keep the launcher attached
+to a persistent exec session rather than relying on detached `nohup` children.
+The detached children can be reaped when the tool call ends. Use:
+
+```bash
+env PROFILE=exhaustive SHARDS=128 PARALLEL=8 SPLITS='tune validation test' scripts/30_launch_exhaustive_benchmark.sh
+env PROFILE=exhaustive SPLIT=validation SETTING_SHARDS=512 TRIAL_SHARDS=16 PARALLEL=4 scripts/31_launch_exhaustive_sweep.sh
+```
+
+The worker scripts `scripts/32_exhaustive_benchmark_worker.sh` and
+`scripts/33_exhaustive_sweep_worker.sh` are available for ordinary terminal
+sessions where background processes persist normally.
+
 Run MATLAB-like scripts with Octave from inside the container when compatible:
 
 ```bash
@@ -167,3 +180,4 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - 2026-05-19: Added absence-safe optional-evidence support for remaining limitations: actuator-state log, independent reference measurement, and water-level calibration schemas; real actuator-response scoring and water-level calibration utilities; Docker Make targets, tests, README/data documentation, and manuscript text specifying how future deployments can convert current counterfactual limitations into measured evidence.
 - 2026-05-19: Addressed third-round AASVR-R reviewer concerns by reframing counterfactual response replay as a capability demonstration, adding missed authorization opportunity and authorization counts to agronomic linkage, labeling sign-test correction and BA-difference variance in paired statistics, relabeling ablations around AASVR-R, adding response-parameter and water-level calibration details, moving the audit trail near the headline benchmark, and rebuilding the author/blinded PDFs.
 - 2026-05-19: Added the exhaustive hydroponic benchmark protocol: expanded fault injection types, full-factorial/shardable trial-grid generation, AASVR-R sweep generation, shard aggregation with per-cell counts and bootstrap intervals, Make targets, tests, README documentation, and manuscript text reframing novelty around the supervisor interface while noting the exhaustive run as the final large-scale sensitivity protocol.
+- 2026-05-19: Added persistent-session launch scripts for the full exhaustive benchmark and AASVR-R sweep, worker variants for ordinary terminal sessions, a benchmark aggregation monitor, and ignored local run logs/PID files.
