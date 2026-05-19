@@ -46,8 +46,9 @@ The build target compiles `main_aasvr.tex` and `main_aasvr_blinded.tex` with `la
 ## Current revision focus
 
 The current manuscript revision is a final-submission tightening pass: AASVR now includes
-a conservative stuck-value guard, the main table reports detection delay and false-actuation
-standard deviation, paired effect sizes and Holm-corrected tests are reported in the paper,
-HAI/SKAB are demoted to supplementary stress-test limitations, a bounded-rectification
-boundedness remark is included for ISA readers, and LaTeX font/Unicode settings were added
-to avoid broken ligature extraction in the compiled PDF.
+a conservative stuck-value guard, the abstract avoids detailed numerical claims, the main
+table reports detection delay and false-actuation standard deviation, paired effect sizes
+and Holm-corrected tests are reported in the paper, HAI/SKAB are demoted to supplementary
+stress-test limitations, an informal bounded-rectification proposition is included for
+ISA readers, the tied validation settings are checked against the held-out test split, and
+LaTeX font/Unicode settings were added to avoid broken ligature extraction in the compiled PDF.

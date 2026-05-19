@@ -11,7 +11,7 @@
 | `figure/cross_dataset_rank_plot.pdf` | Generated from analysis pipeline | Vector PDF | No | Retained as a diagnostic only; removed from the main manuscript because rank averaging across label semantics is not defensible as a headline result. |
 | `figure/hydro_exp1_ph_trace.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Representative trace only; not used as a ground-truth label. |
 | `figure/hydro_exp1_co2_trace.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Second representative trace to make gas-actuation behavior visible. |
-| `figure/hydro_exp1_fault_type_heatmap.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Fault-type comparison across methods; supports the more detailed results section. |
+| `figure/hydro_exp1_fault_type_heatmap.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Fault-type comparison across methods; supports the drift and stuck-at limitation discussion. |
 | `figure/fullsystemactual.JPG` | Legacy manuscript asset | Raster JPG | Yes | Used as real-deployment evidence; not a standalone contribution. |
 | `figure/agronomic_parameters_violinplots_new.pdf` | Legacy manuscript asset | Vector PDF | No | Retained for supplementary use; the main paper now uses a short deployment note instead of the multi-panel crop figure. |
 | `figure/Full_System_Final.pdf` | Legacy manuscript asset | Vector PDF | No | Retained for possible expanded system-description section. |
