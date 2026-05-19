@@ -29,6 +29,8 @@ class SensorConfig:
     stuck_window: int = 0
     stuck_sigma_min: float = 1e-9
     stuck_min_unique: int = 1
+    response_window: int = 0
+    response_min_delta: float = 0.0
     actuators: tuple[str, ...] = ()
     expected_direction: str = "unknown"
 
@@ -73,6 +75,8 @@ class _SensorRuntime:
     band_violation_count: int = 0
     cooldown_remaining: int = 0
     last_authorized_value: float | None = None
+    response_countdown: int = 0
+    response_reference: float | None = None
 
 
 class AASVR:
@@ -147,6 +151,10 @@ class AASVR:
             plausible = False
 
         actuator_consistency = self._actuator_consistency(runtime, sample, y)
+        response_residual = self._actuator_response_residual(runtime, sample, y)
+        if plausible and response_residual:
+            reasons.append("actuator_response_residual")
+            plausible = False
 
         if plausible:
             runtime.failed_count = 0
@@ -236,6 +244,7 @@ class AASVR:
         delta_score = 0.0 if "trusted_delta" in reasons else 1.0
         trend_score = 0.0 if "uncommanded_trend" in reasons else 1.0
         stuck_score = 0.0 if "stuck_at" in reasons else 1.0
+        response_score = 0.0 if "actuator_response_residual" in reasons else 1.0
         missing_score = 0.0 if "missing" in reasons else 1.0
         persistence_score = float(np.clip(1.0 - 0.2 * runtime.failed_count, 0.0, 1.0))
         plausibility_score = 1.0 if plausible else 0.35 * min(
@@ -244,6 +253,7 @@ class AASVR:
             delta_score,
             trend_score,
             stuck_score,
+            response_score,
             missing_score,
         )
         weighted = (
@@ -261,6 +271,7 @@ class AASVR:
             f"rate={rate_score:.3f}",
             f"trend={trend_score:.3f}",
             f"stuck={stuck_score:.3f}",
+            f"response={response_score:.3f}",
             f"persistence={persistence_score:.3f}",
             f"actuator_consistency={actuator_consistency:.3f}",
             f"missingness={missing_score:.3f}",
@@ -334,6 +345,42 @@ class AASVR:
         if cfg.expected_direction == "increasing":
             return 1.0 if delta >= -max(cfg.uncertainty, cfg.xi_min) else 0.0
         return 1.0 if abs(delta) <= max(cfg.rate_limit * self.dt_seconds, cfg.xi_min) else 0.5
+
+    def _actuator_response_residual(
+        self,
+        runtime: _SensorRuntime,
+        sample: dict[str, Any],
+        y: float,
+    ) -> bool:
+        cfg = runtime.config
+        if cfg.response_window <= 0 or not cfg.actuators or not np.isfinite(y):
+            return False
+        active = self._has_active_actuator(cfg, sample)
+        if active and runtime.response_countdown <= 0:
+            runtime.response_countdown = cfg.response_window
+            runtime.response_reference = runtime.last_raw_value if runtime.last_raw_value is not None else y
+            return False
+        if runtime.response_countdown <= 0 or runtime.response_reference is None:
+            return False
+
+        delta = y - runtime.response_reference
+        threshold = max(cfg.response_min_delta, cfg.uncertainty, cfg.xi_min)
+        if cfg.expected_direction == "decreasing":
+            satisfied = delta <= -threshold
+        elif cfg.expected_direction == "increasing":
+            satisfied = delta >= threshold
+        else:
+            satisfied = abs(delta) >= threshold
+        if satisfied:
+            runtime.response_countdown = 0
+            runtime.response_reference = None
+            return False
+
+        runtime.response_countdown -= 1
+        if runtime.response_countdown <= 0:
+            runtime.response_reference = None
+            return True
+        return False
 
     def _has_active_actuator(self, cfg: SensorConfig, sample: dict[str, Any]) -> bool:
         return bool(cfg.actuators and any(_truthy(sample.get(actuator)) for actuator in cfg.actuators))

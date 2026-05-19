@@ -44,6 +44,11 @@ def inject_fault(frame: pd.DataFrame, spec: FaultSpec) -> tuple[pd.DataFrame, pd
         out.loc[idx, spec.sensor] = spec.magnitude
     elif spec.fault_type == "drift":
         out.loc[idx, spec.sensor] = original + np.linspace(0, spec.magnitude, len(idx))
+    elif spec.fault_type == "gain_drift":
+        out.loc[idx, spec.sensor] = original * (1.0 + np.linspace(0, spec.magnitude, len(idx)))
+    elif spec.fault_type == "nonlinear_drift":
+        ramp = np.linspace(0, 1.0, len(idx)) ** 2
+        out.loc[idx, spec.sensor] = original + spec.magnitude * ramp
     elif spec.fault_type == "bias":
         out.loc[idx, spec.sensor] = original + spec.magnitude
     elif spec.fault_type == "noise_burst":

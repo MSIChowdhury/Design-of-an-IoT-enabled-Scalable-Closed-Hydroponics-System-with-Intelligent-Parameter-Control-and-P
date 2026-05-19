@@ -69,6 +69,25 @@ def test_aasvr_penalizes_actuator_inconsistent_response() -> None:
     assert decision.trust_score < 0.7
 
 
+def test_aasvr_flags_missing_actuator_response_after_window() -> None:
+    cfg = SensorConfig(
+        **{
+            **sensor().__dict__,
+            "actuators": ("acid_doser",),
+            "expected_direction": "decreasing",
+            "response_window": 2,
+            "response_min_delta": 0.03,
+        }
+    )
+    model = AASVR(AASVRConfig(sensors=(cfg,), q_min=0.7))
+    model.update({"timestamp": 0, "pH": 6.2})
+    model.update({"timestamp": 1, "pH": 6.2, "acid_doser": 1})
+    model.update({"timestamp": 2, "pH": 6.2})
+    decision = model.update({"timestamp": 3, "pH": 6.2})[0]
+    assert "actuator_response_residual" in decision.reason_codes
+    assert decision.gate_result == "reject"
+
+
 def test_aasvr_rejects_slow_uncommanded_trend() -> None:
     cfg = SensorConfig(
         **{

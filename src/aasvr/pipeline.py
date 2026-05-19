@@ -95,9 +95,16 @@ def _run_one_class_baseline_on_frame(
         model = _fit_one_class_model(method, calibration_values, contamination, neighbors=neighbors)
         anomalies = _predict_one_class_anomalies(model, values, sensor)
         violations = 0
+        cooldown_remaining = 0
         for timestamp, y, anomaly in zip(timestamps, values, anomalies, strict=False):
             trusted = center if anomaly and np.isfinite(center) else y
-            authorized, violations = _authorize_from_trusted(sensor, trusted, violations)
+            authorized, violations, cooldown_remaining = _authorize_from_trusted(
+                sensor,
+                trusted,
+                violations,
+                cooldown_remaining,
+                anomaly_free=not bool(anomaly),
+            )
             decisions.append(
                 AASVRDecision(
                     timestamp=timestamp,
@@ -157,11 +164,16 @@ def _authorize_from_trusted(
     sensor: SensorConfig,
     trusted: float,
     violations: int,
-) -> tuple[bool, int]:
-    if not np.isfinite(trusted):
-        return False, 0
+    cooldown_remaining: int,
+    *,
+    anomaly_free: bool,
+) -> tuple[bool, int, int]:
+    if cooldown_remaining > 0:
+        return False, 0, cooldown_remaining - 1
+    if not anomaly_free or not np.isfinite(trusted):
+        return False, 0, cooldown_remaining
     violation = trusted < sensor.control_low or trusted > sensor.control_high
     violations = violations + 1 if violation else 0
     if violations >= sensor.confirm_samples:
-        return True, 0
-    return False, violations
+        return True, 0, sensor.cooldown_samples
+    return False, violations, cooldown_remaining

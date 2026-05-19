@@ -196,6 +196,31 @@ def make_hydro_exp1_figures() -> None:
             _save_current(out)
             plt.close()
             print(f"Wrote {out}")
+    transfer_path = ROOT / "results/metrics/hydro_exp1_tuning_transfer.csv"
+    if transfer_path.exists():
+        transfer = pd.read_csv(transfer_path)
+        if not transfer.empty:
+            out = out_dir / "hydro_exp1_tuning_transfer.png"
+            plt.figure(figsize=(4.8, 3.2))
+            plt.scatter(
+                transfer["validation_balanced_accuracy"],
+                transfer["test_balanced_accuracy"],
+                s=30,
+                color=PALETTE["AASVR"],
+                edgecolor="white",
+                linewidth=0.4,
+            )
+            lo = min(transfer["validation_balanced_accuracy"].min(), transfer["test_balanced_accuracy"].min()) - 0.01
+            hi = max(transfer["validation_balanced_accuracy"].max(), transfer["test_balanced_accuracy"].max()) + 0.01
+            plt.plot([lo, hi], [lo, hi], color="#666666", linewidth=0.8, linestyle="--")
+            plt.xlabel("Validation balanced accuracy")
+            plt.ylabel("Held-out balanced accuracy")
+            plt.xlim(lo, hi)
+            plt.ylim(lo, hi)
+            plt.tight_layout()
+            _save_current(out)
+            plt.close()
+            print(f"Wrote {out}")
 
 
 def make_all_available_figures() -> None:

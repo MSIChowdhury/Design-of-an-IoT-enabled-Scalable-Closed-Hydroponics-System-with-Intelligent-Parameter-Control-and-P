@@ -43,9 +43,9 @@ def tune_hydro_exp1() -> None:
     base_sensors = tuple(sensor for sensor in base.sensors if sensor.name in HYDRO_PRIMARY_SENSORS)
 
     rows = []
-    for scale_multiplier in (4.0, 5.0):
-        for q_min in (0.7, 0.85):
-            for transient_limit in (2, 3):
+    for scale_multiplier in (3.0, 4.0, 5.0, 6.0):
+        for q_min in (0.55, 0.7, 0.85):
+            for transient_limit in (1, 2, 3):
                 config = AASVRConfig(
                     sensors=base_sensors,
                     q_min=q_min,

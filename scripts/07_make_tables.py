@@ -116,6 +116,19 @@ def make_hydro_exp1_tables() -> None:
         frame = pd.read_csv(external_aasvr)
         frame.to_csv(out_dir / "external_aasvr_tuning_best.csv", index=False)
         print(f"Wrote {out_dir / 'external_aasvr_tuning_best.csv'}")
+    for name in [
+        "hydro_exp1_component_contribution",
+        "hydro_exp1_tuning_transfer",
+        "hydro_exp1_objective_sensitivity",
+        "hydro_exp1_drift_stress",
+        "hydro_exp1_aasvr_by_sensor_ci",
+        "hydro_exp1_aasvr_by_fault_type_ci",
+    ]:
+        path = ROOT / f"results/metrics/{name}.csv"
+        if path.exists():
+            frame = pd.read_csv(path)
+            frame.to_csv(out_dir / f"{name}.csv", index=False)
+            print(f"Wrote {out_dir / f'{name}.csv'}")
 
 
 def make_all_available_tables() -> None:
