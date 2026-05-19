@@ -55,6 +55,10 @@ def run() -> None:
         full_config,
         sensors=tuple(replace(sensor, confirm_samples=1, cooldown_samples=0) for sensor in sensors),
     )
+    state_no_supervisor_config = replace(
+        full_config,
+        sensors=tuple(replace(sensor, confirm_samples=1, cooldown_samples=0) for sensor in sensors),
+    )
     rows = []
     for trial in grid.itertuples(index=False):
         start = max(int(trial.start) - 90, 0)
@@ -67,7 +71,7 @@ def run() -> None:
             start=local_start,
             duration=int(trial.duration),
             magnitude=float(trial.magnitude),
-            seed=int(getattr(trial, "seed", 101)),
+            seed=101,
         )
         faulted, labels = inject_fault(window, spec)
         variants = {
@@ -90,6 +94,7 @@ def run() -> None:
                 require_trust=True,
                 q_min=full_config.q_min,
             ),
+            "gate_trust_state_no_supervisor": run_aasvr_with_config(faulted, state_no_supervisor_config),
             "aasvr_no_confirmation_or_cooldown": run_aasvr_with_config(faulted, no_confirm_config),
             "aasvr_no_cooldown": run_aasvr_with_config(faulted, no_cooldown_config),
             "full_aasvr": run_aasvr_with_config(faulted, full_config),

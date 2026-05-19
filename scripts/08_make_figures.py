@@ -25,6 +25,7 @@ METHOD_LABELS = {
     "isolation_forest": "Isolation Forest",
     "one_class_svm": "One-Class SVM",
     "local_outlier_factor": "LOF",
+    "graph_aasvr": "Graph-AASVR",
 }
 
 PALETTE = {
@@ -43,6 +44,7 @@ PALETTE = {
     "Isolation Forest": "#7B3294",
     "One-Class SVM": "#008837",
     "LOF": "#A6611A",
+    "Graph-AASVR": "#332288",
 }
 
 
@@ -221,6 +223,9 @@ def make_hydro_exp1_figures() -> None:
             _save_current(out)
             plt.close()
             print(f"Wrote {out}")
+    audit_path = ROOT / "results/figures/hydro_exp1_aasvr_audit_trail.png"
+    if audit_path.exists():
+        print(f"Existing audit-trail figure available at {audit_path}")
 
 
 def make_all_available_figures() -> None:
