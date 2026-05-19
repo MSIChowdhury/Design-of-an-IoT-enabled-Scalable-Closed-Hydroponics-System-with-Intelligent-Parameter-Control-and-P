@@ -8,12 +8,12 @@
 | `figure/hydro_exp1_synthetic_balanced_accuracy.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Main method-comparison plot; includes classical filters, process-monitoring baselines, and one-class ML baselines. |
 | `figure/hydro_exp1_balanced_accuracy_ci.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Bootstrap uncertainty plot. |
 | `figure/external_aasvr_threshold_sensitivity.pdf` | Generated from analysis pipeline | Vector PDF | Yes | External native-label aggregation-threshold sensitivity. |
-| `figure/cross_dataset_rank_plot.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Used as an orientation figure, not a leaderboard claim. |
+| `figure/cross_dataset_rank_plot.pdf` | Generated from analysis pipeline | Vector PDF | No | Retained as a diagnostic only; removed from the main manuscript because rank averaging across label semantics is not defensible as a headline result. |
 | `figure/hydro_exp1_ph_trace.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Representative trace only; not used as a ground-truth label. |
 | `figure/hydro_exp1_co2_trace.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Second representative trace to make gas-actuation behavior visible. |
 | `figure/hydro_exp1_fault_type_heatmap.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Fault-type comparison across methods; supports the more detailed results section. |
 | `figure/fullsystemactual.JPG` | Legacy manuscript asset | Raster JPG | Yes | Used as real-deployment evidence; not a standalone contribution. |
-| `figure/agronomic_parameters_violinplots_new.pdf` | Legacy manuscript asset | Vector PDF | Yes | Used only as secondary operation evidence with a non-causal caption. |
+| `figure/agronomic_parameters_violinplots_new.pdf` | Legacy manuscript asset | Vector PDF | No | Retained for supplementary use; the main paper now uses a short deployment note instead of the multi-panel crop figure. |
 | `figure/Full_System_Final.pdf` | Legacy manuscript asset | Vector PDF | No | Retained for possible expanded system-description section. |
 | `figure/agronomic_parameters_violinplots.pdf` | Legacy manuscript asset | Vector PDF | No | Older agronomic export retained for comparison; not used in the current draft. |
 

@@ -19,8 +19,15 @@ class BaselineConfig:
     alpha: float = 0.2
     cusum_drift: float = 0.5
     cusum_threshold: float = 5.0
+    glr_window: int = 12
+    glr_threshold: float = 3.0
+    recursive_pca_window: int = 24
+    recursive_pca_threshold: float = 4.0
     kalman_process_var: float = 0.01
     kalman_measurement_var: float = 1.0
+    ml_calibration_fraction: float = 0.2
+    ml_contamination: float = 0.05
+    ml_neighbors: int = 20
 
 
 @dataclass
@@ -30,6 +37,7 @@ class _BaselineRuntime:
     cusum_pos: float = 0.0
     cusum_neg: float = 0.0
     violations: int = 0
+    cooldown_remaining: int = 0
     history: deque[float] = field(default_factory=deque)
 
 
@@ -64,7 +72,7 @@ class StreamingBaseline:
             or not np.isfinite(y)
             or not (sensor.physical_min <= y <= sensor.physical_max)
         )
-        authorized = self._authorize(sensor, trusted, runtime)
+        authorized = self._authorize(sensor, trusted, runtime, anomaly_free=not anomaly)
         return AASVRDecision(
             timestamp=sample.get("timestamp"),
             sensor=sensor.name,
@@ -115,6 +123,10 @@ class StreamingBaseline:
         if self.config.method == "pca":
             # Streaming univariate proxy for PCA/SPE in the toy and per-sensor interface.
             return y, _robust_anomaly(y, values, self.config.threshold_multiplier)
+        if self.config.method == "glr":
+            return y, self._glr(values)
+        if self.config.method == "recursive_pca":
+            return y, self._recursive_pca_proxy(y, values)
         raise ValueError(f"Unknown baseline method: {self.config.method}")
 
     def _kalman(self, y: float, runtime: _BaselineRuntime) -> tuple[float, bool]:
@@ -140,7 +152,48 @@ class StreamingBaseline:
             runtime.cusum_neg = 0.0
         return y, bool(anomaly)
 
-    def _authorize(self, sensor: SensorConfig, trusted: float, runtime: _BaselineRuntime) -> bool:
+    def _glr(self, values: np.ndarray) -> bool:
+        finite = values[np.isfinite(values)]
+        window = min(self.config.glr_window, len(finite) // 2)
+        if window < 3:
+            return False
+        before = finite[-2 * window : -window]
+        after = finite[-window:]
+        scale = _mad_sigma(finite[-2 * window :])
+        if scale <= 0:
+            return False
+        statistic = abs(float(np.mean(after) - np.mean(before))) / (scale * np.sqrt(2.0 / window))
+        return bool(statistic > self.config.glr_threshold)
+
+    def _recursive_pca_proxy(self, y: float, values: np.ndarray) -> bool:
+        finite = values[np.isfinite(values)]
+        if len(finite) < max(5, min(self.config.recursive_pca_window, 5)):
+            return False
+        window = min(self.config.recursive_pca_window, len(finite))
+        recent = finite[-window:]
+        center = float(np.mean(recent[:-1])) if len(recent) > 1 else y
+        scale = float(np.std(recent[:-1], ddof=1)) if len(recent) > 2 else 0.0
+        if scale <= 0:
+            scale = _mad_sigma(recent)
+        if scale <= 0:
+            return False
+        residual = abs(y - center) / scale
+        return bool(residual > self.config.recursive_pca_threshold)
+
+    def _authorize(
+        self,
+        sensor: SensorConfig,
+        trusted: float,
+        runtime: _BaselineRuntime,
+        *,
+        anomaly_free: bool,
+    ) -> bool:
+        if runtime.cooldown_remaining > 0:
+            runtime.cooldown_remaining -= 1
+            return False
+        if not anomaly_free:
+            runtime.violations = 0
+            return False
         if not np.isfinite(trusted):
             runtime.violations = 0
             return False
@@ -148,6 +201,7 @@ class StreamingBaseline:
         runtime.violations = runtime.violations + 1 if violation else 0
         if runtime.violations >= sensor.confirm_samples:
             runtime.violations = 0
+            runtime.cooldown_remaining = sensor.cooldown_samples
             return True
         return False
 

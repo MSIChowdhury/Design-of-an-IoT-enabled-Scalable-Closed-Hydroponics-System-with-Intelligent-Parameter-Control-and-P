@@ -62,13 +62,27 @@ def inject_hydro_exp1() -> None:
         "Air_Temp": (2.0, 8.0),
         "Water_Temp": (1.0, 4.0),
     }
+    split_by_rep = {0: "tune", 1: "validation", 2: "test"}
+    protocol_id = 0
     for sensor, magnitudes in magnitudes_by_sensor.items():
         trial_id = 0
-        for fault_type in ("spike", "multi_spike", "dropout", "drift", "bias", "noise_burst", "step"):
+        for fault_type in (
+            "spike",
+            "multi_spike",
+            "dropout",
+            "drift",
+            "bias",
+            "noise_burst",
+            "step",
+            "stuck_at",
+            "saturation",
+        ):
             for magnitude in magnitudes:
                 for duration in (1, 5, 30):
-                    for rep in range(2):
+                    protocol_id += 1
+                    for rep in range(3):
                         trial_id += 1
+                        split = split_by_rep[rep]
                         spec = FaultSpec(
                             sensor=sensor,
                             fault_type=fault_type,
@@ -82,11 +96,15 @@ def inject_hydro_exp1() -> None:
                             {
                                 "dataset": "hydro_exp1",
                                 "trial_id": f"{sensor}_{trial_id}",
+                                "fault_protocol_id": f"{sensor}_{fault_type}_{magnitude:g}_{duration}",
+                                "split": split,
+                                "replicate": rep,
                                 "sensor": spec.sensor,
                                 "fault_type": spec.fault_type,
                                 "start": spec.start,
                                 "duration": spec.duration,
                                 "magnitude": spec.magnitude,
+                                "seed": spec.seed,
                                 "fault_samples": int(labels["fault"].sum()),
                             }
                         )

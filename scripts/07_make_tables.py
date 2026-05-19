@@ -86,6 +86,21 @@ def make_hydro_exp1_tables() -> None:
         frame = pd.read_csv(tuning).head(10)
         frame.to_csv(out_dir / "hydro_exp1_aasvr_tuning_top.csv", index=False)
         print(f"Wrote {out_dir / 'hydro_exp1_aasvr_tuning_top.csv'}")
+    baseline_tuning = ROOT / "results/metrics/hydro_exp1_baseline_tuning_best.csv"
+    if baseline_tuning.exists():
+        frame = pd.read_csv(baseline_tuning)
+        frame.to_csv(out_dir / "hydro_exp1_baseline_tuning_best.csv", index=False)
+        print(f"Wrote {out_dir / 'hydro_exp1_baseline_tuning_best.csv'}")
+    paired = ROOT / "results/metrics/hydro_exp1_paired_tests.csv"
+    if paired.exists():
+        frame = pd.read_csv(paired)
+        frame.to_csv(out_dir / "hydro_exp1_paired_tests.csv", index=False)
+        print(f"Wrote {out_dir / 'hydro_exp1_paired_tests.csv'}")
+    grid_tests = ROOT / "results/metrics/hydro_exp1_fault_grid_tests.csv"
+    if grid_tests.exists():
+        frame = pd.read_csv(grid_tests)
+        frame.to_csv(out_dir / "hydro_exp1_fault_grid_tests.csv", index=False)
+        print(f"Wrote {out_dir / 'hydro_exp1_fault_grid_tests.csv'}")
     external_thresholds = ROOT / "results/metrics/external_native_threshold_best.csv"
     if external_thresholds.exists():
         frame = pd.read_csv(external_thresholds)

@@ -35,13 +35,17 @@ def tune_hydro_exp1() -> None:
 
     frame = pd.read_parquet(frame_path)[["timestamp", *HYDRO_PRIMARY_SENSORS]].copy()
     grid = pd.read_csv(grid_path)
+    if "split" in grid.columns:
+        grid = grid[grid["split"].eq("validation")].reset_index(drop=True)
+    if len(grid) > 90:
+        grid = grid.sample(n=90, random_state=20260518).reset_index(drop=True)
     base = load_aasvr_config(ROOT / "configs/methods/aasvr.yaml")
     base_sensors = tuple(sensor for sensor in base.sensors if sensor.name in HYDRO_PRIMARY_SENSORS)
 
     rows = []
-    for scale_multiplier in (2.0, 3.0, 4.0, 5.0):
-        for q_min in (0.5, 0.7, 0.85):
-            for transient_limit in (1, 2, 3):
+    for scale_multiplier in (4.0, 5.0):
+        for q_min in (0.7, 0.85):
+            for transient_limit in (2, 3):
                 config = AASVRConfig(
                     sensors=base_sensors,
                     q_min=q_min,
@@ -62,6 +66,7 @@ def tune_hydro_exp1() -> None:
                     row["balanced_accuracy"]
                     - 0.01 * row["false_actuations"]
                     - 0.0005 * row["false_alarm_events"]
+                    - 0.001 * row["mean_detection_delay_samples"]
                 )
                 rows.append(row)
 
@@ -109,6 +114,7 @@ def run_trials(frame: pd.DataFrame, grid: pd.DataFrame, config: AASVRConfig) -> 
         "false_positive_rate": float(frame_metrics["false_positive_rate"].mean()),
         "false_negative_rate": float(frame_metrics["false_negative_rate"].mean()),
         "event_recall": float(frame_metrics["event_recall"].mean()),
+        "mean_detection_delay_samples": float(frame_metrics["mean_detection_delay_samples"].mean()),
         "false_alarm_events": float(frame_metrics["false_alarm_events"].mean()),
         "false_actuations": float(frame_metrics["false_actuations"].mean()),
         "alerts": float(frame_metrics["alerts"].mean()),

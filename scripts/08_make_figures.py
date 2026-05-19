@@ -20,6 +20,8 @@ METHOD_LABELS = {
     "ewma": "EWMA",
     "cusum": "CUSUM",
     "pca": "PCA",
+    "glr": "GLR",
+    "recursive_pca": "Recursive PCA",
     "isolation_forest": "Isolation Forest",
     "one_class_svm": "One-Class SVM",
     "local_outlier_factor": "LOF",
@@ -29,6 +31,8 @@ PALETTE = {
     "AASVR": "#0072B2",
     "Kalman": "#009E73",
     "PCA": "#E69F00",
+    "GLR": "#AA4499",
+    "Recursive PCA": "#44AA99",
     "Hampel": "#CC79A7",
     "CUSUM": "#D55E00",
     "EWMA": "#56B4E9",
@@ -229,6 +233,8 @@ def make_all_available_figures() -> None:
     threshold_path = ROOT / "results/metrics/external_native_threshold_sensitivity.csv"
     if threshold_path.exists():
         threshold = pd.read_csv(threshold_path)
+        if "split" in threshold.columns:
+            threshold = threshold[threshold["split"].eq("test")].copy()
         aasvr = threshold[threshold["method"].eq("aasvr")].copy()
         if not aasvr.empty:
             out = out_dir / "external_aasvr_threshold_sensitivity.png"

@@ -17,21 +17,21 @@
 
 - `figure/hydro_exp1_synthetic_balanced_accuracy.png` and `.pdf`: hydroponic synthetic-fault method comparison.
 - `figure/hydro_exp1_balanced_accuracy_ci.png` and `.pdf`: bootstrap confidence interval figure.
-- `figure/hydro_exp1_ablation_balanced_accuracy.png`: ablation bar chart, retained for optional use.
-- `figure/cross_dataset_rank_plot.png` and `.pdf`: available-dataset method ranking figure.
+- `figure/hydro_exp1_ablation_balanced_accuracy.png`: ablation bar chart, retained for optional supplementary use.
+- `figure/cross_dataset_rank_plot.png` and `.pdf`: retained as a generated diagnostic only; removed from the main manuscript because cross-domain rank averaging is not used as evidence.
 - `figure/external_aasvr_threshold_sensitivity.png` and `.pdf`: native-label aggregation sensitivity figure.
 - `figure/hydro_exp1_ph_trace.png` and `.pdf`: representative pH replay trace.
 - `figure/hydro_exp1_co2_trace.png` and `.pdf`: representative CO2 replay trace.
 - `figure/hydro_exp1_fault_type_heatmap.png` and `.pdf`: fault-type by method balanced-accuracy heatmap.
 - `figure/fullsystemactual.JPG`: real hydroponic deployment photograph used in the main manuscript.
-- `figure/agronomic_parameters_violinplots_new.pdf`: secondary agronomic operation-evidence figure.
+- `figure/agronomic_parameters_violinplots_new.pdf`: secondary agronomic operation-evidence figure retained for supplementary use only.
 
 ## Legacy figures retained from the earlier manuscript package
 
 - `figure/Full_System_Final.pdf`: original system wiring diagram.
 - `figure/fullsystemactual.JPG`: photograph of the physical system, now used in the main hydroponic-system section.
 - `figure/tripartiate_data_collection.drawio.pdf`: original data-collection diagram.
-- `figure/agronomic_parameters_violinplots.pdf` and `figure/agronomic_parameters_violinplots_new.pdf`: agronomic visualizations retained as secondary context only; the `_new` version is used in the main manuscript with a non-causal caption.
+- `figure/agronomic_parameters_violinplots.pdf` and `figure/agronomic_parameters_violinplots_new.pdf`: agronomic visualizations retained as secondary context only; the current main manuscript uses a short non-causal deployment note instead of the multi-panel agronomic figure.
 
 ## Build command
 
@@ -45,8 +45,9 @@ The build target compiles `main_aasvr.tex` and `main_aasvr_blinded.tex` with `la
 
 ## Current revision focus
 
-The current manuscript revision expands the mathematical formulation, adds notation and
-sensor/fault/tuning comparison tables, strengthens algorithm and hydroponics citations,
-adds one-class ML baselines to the hydroponic synthetic-fault benchmark, bolds best
-table metrics, uses cleaner vector plot exports in the main paper, and places main
-figures/tables before the reference list with float barriers.
+The current manuscript revision addresses the reviewer-methodology critique by documenting
+the synthetic fault-injection protocol, using deterministic tune/validation/test splits,
+tuning AASVR and baselines on validation only, applying the same persistence/cooldown
+actuation supervisor to all baselines, adding GLR and recursive PCA-style residual
+monitoring baselines, reporting paired Wilcoxon/Holm and sensor-fault Benjamini-Hochberg
+tests, and moving cross-domain rank and agronomic violin plots out of the main argument.

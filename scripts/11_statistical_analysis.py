@@ -5,6 +5,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from scipy.stats import wilcoxon
 
 ROOT = Path(__file__).resolve().parents[1]
 METRICS = [
@@ -46,6 +47,8 @@ def analyze_hydro_exp1(*, bootstrap: int) -> None:
         out_dir / "hydro_exp1_bootstrap_ci.csv", index=False
     )
     _method_ranks(detail).to_csv(out_dir / "hydro_exp1_method_ranks.csv", index=False)
+    _paired_tests(detail).to_csv(out_dir / "hydro_exp1_paired_tests.csv", index=False)
+    _fault_grid_tests(detail).to_csv(out_dir / "hydro_exp1_fault_grid_tests.csv", index=False)
     _group_summary(detail, ["method", "sensor"]).to_csv(
         out_dir / "hydro_exp1_synthetic_by_sensor.csv", index=False
     )
@@ -54,6 +57,8 @@ def analyze_hydro_exp1(*, bootstrap: int) -> None:
     )
     print(f"Wrote {out_dir / 'hydro_exp1_bootstrap_ci.csv'}")
     print(f"Wrote {out_dir / 'hydro_exp1_method_ranks.csv'}")
+    print(f"Wrote {out_dir / 'hydro_exp1_paired_tests.csv'}")
+    print(f"Wrote {out_dir / 'hydro_exp1_fault_grid_tests.csv'}")
     print(f"Wrote {out_dir / 'hydro_exp1_synthetic_by_sensor.csv'}")
     print(f"Wrote {out_dir / 'hydro_exp1_synthetic_by_sensor_fault_type.csv'}")
 
@@ -118,6 +123,110 @@ def _group_summary(detail: pd.DataFrame, group_cols: list[str]) -> pd.DataFrame:
         .mean()
         .sort_values([*group_cols[:-1], "balanced_accuracy"], ascending=[*[True] * (len(group_cols) - 1), False])
     )
+
+
+def _paired_tests(detail: pd.DataFrame) -> pd.DataFrame:
+    metrics = {
+        "balanced_accuracy": "greater",
+        "false_actuations": "less",
+    }
+    rows = []
+    for metric, alternative in metrics.items():
+        pivot = detail.pivot_table(index="trial_id", columns="method", values=metric, aggfunc="mean")
+        if "aasvr" not in pivot:
+            continue
+        for method in pivot.columns:
+            if method == "aasvr":
+                continue
+            paired = pivot[["aasvr", method]].dropna()
+            if len(paired) < 3:
+                continue
+            stat, p_value = _safe_wilcoxon(
+                paired["aasvr"].to_numpy(),
+                paired[method].to_numpy(),
+                alternative=alternative,
+            )
+            rows.append(
+                {
+                    "metric": metric,
+                    "comparison": f"aasvr_vs_{method}",
+                    "alternative": alternative,
+                    "n_pairs": len(paired),
+                    "statistic": stat,
+                    "p_value": p_value,
+                }
+            )
+    out = pd.DataFrame(rows)
+    if out.empty:
+        return out
+    out["p_holm"] = _holm(out["p_value"].to_numpy())
+    return out.sort_values(["metric", "p_holm"])
+
+
+def _fault_grid_tests(detail: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for (sensor, fault_type), group in detail.groupby(["sensor", "fault_type"]):
+        pivot = group.pivot_table(index="trial_id", columns="method", values="balanced_accuracy", aggfunc="mean")
+        if "aasvr" not in pivot:
+            continue
+        for method in pivot.columns:
+            if method == "aasvr":
+                continue
+            paired = pivot[["aasvr", method]].dropna()
+            if len(paired) < 3:
+                continue
+            stat, p_value = _safe_wilcoxon(
+                paired["aasvr"].to_numpy(),
+                paired[method].to_numpy(),
+                alternative="greater",
+            )
+            rows.append(
+                {
+                    "sensor": sensor,
+                    "fault_type": fault_type,
+                    "comparison": f"aasvr_vs_{method}",
+                    "n_pairs": len(paired),
+                    "statistic": stat,
+                    "p_value": p_value,
+                }
+            )
+    out = pd.DataFrame(rows)
+    if out.empty:
+        return out
+    out["p_bh"] = _benjamini_hochberg(out["p_value"].to_numpy())
+    return out.sort_values(["sensor", "fault_type", "p_bh"])
+
+
+def _safe_wilcoxon(x: np.ndarray, y: np.ndarray, *, alternative: str) -> tuple[float, float]:
+    diff = x - y
+    if np.allclose(diff, 0):
+        return 0.0, 1.0
+    result = wilcoxon(x, y, alternative=alternative, zero_method="wilcox")
+    return float(result.statistic), float(result.pvalue)
+
+
+def _holm(p_values: np.ndarray) -> np.ndarray:
+    order = np.argsort(p_values)
+    adjusted = np.empty_like(p_values, dtype=float)
+    running = 0.0
+    m = len(p_values)
+    for rank, idx in enumerate(order):
+        value = min(1.0, (m - rank) * p_values[idx])
+        running = max(running, value)
+        adjusted[idx] = running
+    return adjusted
+
+
+def _benjamini_hochberg(p_values: np.ndarray) -> np.ndarray:
+    order = np.argsort(p_values)[::-1]
+    adjusted = np.empty_like(p_values, dtype=float)
+    running = 1.0
+    m = len(p_values)
+    for rank, idx in enumerate(order, start=1):
+        value = min(running, p_values[idx] * m / (m - rank + 1))
+        running = value
+        adjusted[idx] = value
+    return adjusted
 
 
 if __name__ == "__main__":

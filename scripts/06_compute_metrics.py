@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from aasvr.baselines import BaselineConfig
 from aasvr.config import load_aasvr_config, load_yaml
 from aasvr.evaluation import compute_metrics
 from aasvr.fault_injection import FaultSpec, inject_fault
@@ -106,11 +107,15 @@ def compute_hydro_exp1_synthetic() -> None:
         rectification_mode=config.rectification_mode,
     )
     baselines = load_yaml(ROOT / "configs/methods/baselines.yaml")["required"]
+    baseline_configs = _load_tuned_baseline_configs()
     methods = ["aasvr", *baselines]
     rows = []
     half_window_before = 90
     half_window_after = 120
     for trial in grid.itertuples(index=False):
+        split = getattr(trial, "split", "test")
+        if split != "test":
+            continue
         global_start = int(trial.start)
         start = max(global_start - half_window_before, 0)
         end = min(global_start + int(trial.duration) + half_window_after, len(frame))
@@ -130,12 +135,19 @@ def compute_hydro_exp1_synthetic() -> None:
                 decisions = run_aasvr_with_config(faulted, config)
                 prediction_mode = "gate_reject"
             else:
-                decisions = run_baseline_on_frame(faulted, sensors, method)
+                decisions = run_baseline_on_frame(
+                    faulted,
+                    sensors,
+                    method,
+                    config=baseline_configs.get(method),
+                )
                 prediction_mode = "auto"
             metrics = compute_metrics(decisions, labels, prediction_mode=prediction_mode)
             row = {
                 "dataset": "hydro_exp1",
                 "trial_id": trial.trial_id,
+                "split": split,
+                "fault_protocol_id": getattr(trial, "fault_protocol_id", ""),
                 "sensor": trial.sensor,
                 "fault_type": trial.fault_type,
                 "duration": int(trial.duration),
@@ -164,7 +176,13 @@ def compute_hydro_exp1_synthetic() -> None:
         "false_actuations",
         "alerts",
     ]
-    detail.groupby("method", as_index=False)[metric_cols].mean().sort_values(
+    summary = detail.groupby("method", as_index=False)[metric_cols].mean()
+    false_actuation_sd = (
+        detail.groupby("method", as_index=False)["false_actuations"]
+        .std(ddof=1)
+        .rename(columns={"false_actuations": "false_actuations_sd"})
+    )
+    summary.merge(false_actuation_sd, on="method", how="left").sort_values(
         "balanced_accuracy", ascending=False
     ).to_csv(summary_path, index=False)
     detail.groupby(["method", "fault_type"], as_index=False)[metric_cols].mean().sort_values(
@@ -173,6 +191,24 @@ def compute_hydro_exp1_synthetic() -> None:
     print(f"Wrote {detail_path}")
     print(f"Wrote {summary_path}")
     print(f"Wrote {fault_type_path}")
+
+
+def _load_tuned_baseline_configs() -> dict[str, BaselineConfig]:
+    path = ROOT / "results/metrics/hydro_exp1_baseline_tuning_best.csv"
+    if not path.exists():
+        return {}
+    frame = pd.read_csv(path)
+    configs = {}
+    valid = BaselineConfig.__dataclass_fields__.keys()
+    for row in frame.to_dict(orient="records"):
+        kwargs = {
+            key: value
+            for key, value in row.items()
+            if key in valid and pd.notna(value)
+        }
+        if "method" in kwargs:
+            configs[str(kwargs["method"])] = BaselineConfig(**kwargs)
+    return configs
 
 
 def compute_prepared_dataset(dataset: str) -> None:

@@ -36,6 +36,10 @@ def run_hydro_exp1_ablation() -> None:
 
     frame = pd.read_parquet(frame_path)[["timestamp", *HYDRO_PRIMARY_SENSORS]].copy()
     grid = pd.read_csv(grid_path)
+    if "split" in grid.columns:
+        grid = grid[grid["split"].eq("test")].reset_index(drop=True)
+    if len(grid) > 120:
+        grid = grid.sample(n=120, random_state=20260518).reset_index(drop=True)
     full_config = _primary_sensor_config(load_aasvr_config(ROOT / "configs/methods/aasvr.yaml"))
     variants = _ablation_variants(full_config)
 
@@ -64,6 +68,8 @@ def run_hydro_exp1_ablation() -> None:
                 "dataset": "hydro_exp1",
                 "variant": variant_name,
                 "trial_id": trial.trial_id,
+                "split": getattr(trial, "split", "test"),
+                "fault_protocol_id": getattr(trial, "fault_protocol_id", ""),
                 "sensor": trial.sensor,
                 "fault_type": trial.fault_type,
                 "duration": int(trial.duration),

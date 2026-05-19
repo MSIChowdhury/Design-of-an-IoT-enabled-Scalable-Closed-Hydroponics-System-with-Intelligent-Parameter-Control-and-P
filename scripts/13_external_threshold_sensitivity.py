@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,11 +35,16 @@ def main() -> None:
     detail_path = out_dir / "external_native_threshold_sensitivity.csv"
     best_path = out_dir / "external_native_threshold_best.csv"
     frame.to_csv(detail_path, index=False)
-    best = (
-        frame.sort_values(["dataset", "method", "balanced_accuracy"], ascending=[True, True, False])
+    validation_best = (
+        frame[frame["split"].eq("validation")]
+        .sort_values(["dataset", "method", "balanced_accuracy"], ascending=[True, True, False])
         .groupby(["dataset", "method"], as_index=False)
-        .head(1)
-        .sort_values(["dataset", "balanced_accuracy"], ascending=[True, False])
+        .head(1)[["dataset", "method", "threshold"]]
+        .rename(columns={"threshold": "selected_threshold"})
+    )
+    best = frame[frame["split"].eq("test")].merge(validation_best, on=["dataset", "method"], how="inner")
+    best = best[best["threshold"].eq(best["selected_threshold"])].sort_values(
+        ["dataset", "balanced_accuracy"], ascending=[True, False]
     )
     best.to_csv(best_path, index=False)
     print(f"Wrote {detail_path}")
@@ -92,20 +98,35 @@ def _scan_dataset(dataset: str) -> list[dict[str, object]]:
             .reindex(actual.index)
             .fillna(False)
         )
+        split_mask = _validation_test_mask(actual.index)
         for threshold in THRESHOLDS:
-            row = _classification_row(actual, scores >= threshold)
-            row.update(
-                {
-                    "dataset": dataset,
-                    "method": method,
-                    "threshold": threshold,
-                    "evaluation_unit": "timestamp",
-                    "aggregation": "sensor_fraction",
-                    "youden_j": row["recall"] + row["specificity"] - 1.0,
-                }
-            )
-            rows.append(row)
+            predicted = scores >= threshold
+            for split_name, mask in split_mask.items():
+                row = _classification_row(actual[mask], predicted[mask])
+                row.update(
+                    {
+                        "dataset": dataset,
+                        "method": method,
+                        "threshold": threshold,
+                        "split": split_name,
+                        "evaluation_unit": "timestamp",
+                        "aggregation": "sensor_fraction",
+                        "youden_j": row["recall"] + row["specificity"] - 1.0,
+                    }
+                )
+                rows.append(row)
     return rows
+
+
+def _validation_test_mask(index: pd.Index) -> dict[str, np.ndarray]:
+    n = len(index)
+    midpoint = max(1, n // 2)
+    validation = np.zeros(n, dtype=bool)
+    validation[:midpoint] = True
+    test = ~validation
+    if not test.any():
+        test = validation.copy()
+    return {"validation": validation, "test": test}
 
 
 def _classification_row(actual: pd.Series, predicted: pd.Series) -> dict[str, float]:

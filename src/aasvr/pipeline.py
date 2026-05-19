@@ -36,10 +36,19 @@ def run_baseline_on_frame(
     frame: pd.DataFrame,
     sensors: tuple[SensorConfig, ...],
     method: str,
+    config: BaselineConfig | None = None,
 ) -> pd.DataFrame:
+    config = config or BaselineConfig(method=method)
     if method in ML_BASELINES:
-        return _run_one_class_baseline_on_frame(frame, sensors, method)
-    model = StreamingBaseline(sensors, BaselineConfig(method=method))
+        return _run_one_class_baseline_on_frame(
+            frame,
+            sensors,
+            method,
+            calibration_fraction=getattr(config, "ml_calibration_fraction", 0.2),
+            contamination=getattr(config, "ml_contamination", 0.05),
+            neighbors=getattr(config, "ml_neighbors", 20),
+        )
+    model = StreamingBaseline(sensors, config)
     decisions: list[AASVRDecision] = []
     for sample in frame.to_dict(orient="records"):
         decisions.extend(model.update(sample))
@@ -59,6 +68,7 @@ def _run_one_class_baseline_on_frame(
     *,
     calibration_fraction: float = 0.2,
     contamination: float = 0.05,
+    neighbors: int = 20,
     max_calibration_samples: int = 1000,
 ) -> pd.DataFrame:
     """Run lightweight one-class ML baselines with a fixed calibration segment.
@@ -82,7 +92,7 @@ def _run_one_class_baseline_on_frame(
             idx = np.linspace(0, len(calibration_values) - 1, max_calibration_samples).astype(int)
             calibration_values = calibration_values[idx]
         center = float(np.nanmedian(calibration_values)) if len(calibration_values) else float("nan")
-        model = _fit_one_class_model(method, calibration_values, contamination)
+        model = _fit_one_class_model(method, calibration_values, contamination, neighbors=neighbors)
         anomalies = _predict_one_class_anomalies(model, values, sensor)
         violations = 0
         for timestamp, y, anomaly in zip(timestamps, values, anomalies, strict=False):
@@ -106,7 +116,7 @@ def _run_one_class_baseline_on_frame(
     return decisions_to_frame(decisions)
 
 
-def _fit_one_class_model(method: str, values: np.ndarray, contamination: float):
+def _fit_one_class_model(method: str, values: np.ndarray, contamination: float, *, neighbors: int):
     if len(values) < 10:
         return None
     x = values.reshape(-1, 1)
@@ -118,7 +128,7 @@ def _fit_one_class_model(method: str, values: np.ndarray, contamination: float):
     if method == "one_class_svm":
         return make_pipeline(StandardScaler(), OneClassSVM(nu=contamination, gamma="scale")).fit(x)
     if method == "local_outlier_factor":
-        neighbors = min(20, max(2, len(values) - 1))
+        neighbors = min(neighbors, max(2, len(values) - 1))
         return make_pipeline(
             StandardScaler(),
             LocalOutlierFactor(
