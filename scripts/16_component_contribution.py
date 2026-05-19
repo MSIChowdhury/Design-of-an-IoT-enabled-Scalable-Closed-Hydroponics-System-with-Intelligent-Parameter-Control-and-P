@@ -39,13 +39,37 @@ def run() -> None:
     grid = grid[grid["split"].eq("test")].reset_index(drop=True)
     config = load_aasvr_config(ROOT / "configs/methods/aasvr.yaml")
     sensors = tuple(sensor for sensor in config.sensors if sensor.name in HYDRO_PRIMARY_SENSORS)
-    full_config = AASVRConfig(
+    response_config = AASVRConfig(
         sensors=sensors,
         q_min=config.q_min,
         scale_multiplier=config.scale_multiplier,
         transient_limit=config.transient_limit,
         persistent_limit=config.persistent_limit,
         rectification_mode=config.rectification_mode,
+        eta_decay=config.eta_decay,
+        eta_min_low=config.eta_min_low,
+        eta_min_medium=config.eta_min_medium,
+        eta_min_high=config.eta_min_high,
+        enable_response_residual=config.enable_response_residual,
+        response_mode=config.response_mode,
+        reliability_mode=config.reliability_mode,
+        beta_prior_success=config.beta_prior_success,
+        beta_prior_failure=config.beta_prior_failure,
+        beta_lcb_z=config.beta_lcb_z,
+        compact_diagnostics=config.compact_diagnostics,
+    )
+    full_config = AASVRConfig(
+        sensors=tuple(replace(sensor, response_window=0) for sensor in sensors),
+        q_min=config.q_min,
+        scale_multiplier=config.scale_multiplier,
+        transient_limit=config.transient_limit,
+        persistent_limit=config.persistent_limit,
+        rectification_mode=config.rectification_mode,
+        eta_decay=config.eta_decay,
+        eta_min_low=0.0,
+        eta_min_medium=0.0,
+        eta_min_high=0.0,
+        enable_response_residual=False,
     )
     no_cooldown_config = replace(
         full_config,
@@ -98,6 +122,7 @@ def run() -> None:
             "aasvr_no_confirmation_or_cooldown": run_aasvr_with_config(faulted, no_confirm_config),
             "aasvr_no_cooldown": run_aasvr_with_config(faulted, no_cooldown_config),
             "full_aasvr": run_aasvr_with_config(faulted, full_config),
+            "full_aasvr_r": run_aasvr_with_config(faulted, response_config),
         }
         for variant, decisions in variants.items():
             prediction_mode = "gate_reject" if "aasvr" in variant or "robust_gate" in variant else "auto"

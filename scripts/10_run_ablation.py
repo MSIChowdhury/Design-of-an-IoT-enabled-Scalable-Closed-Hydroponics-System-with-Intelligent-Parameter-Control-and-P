@@ -122,8 +122,17 @@ def _ablation_variants(config: AASVRConfig) -> list[tuple[str, AASVRConfig, str]
     no_trend_guard = replace(config, sensors=_replace_sensors(config.sensors, trend_window=0))
     no_stuck_detector = replace(config, sensors=_replace_sensors(config.sensors, stuck_window=0))
     slow_escalation = replace(config, transient_limit=999, persistent_limit=1000)
+    no_response_reliability = replace(
+        config,
+        sensors=tuple(replace(sensor, response_window=0) for sensor in config.sensors),
+        eta_min_low=0.0,
+        eta_min_medium=0.0,
+        eta_min_high=0.0,
+        enable_response_residual=False,
+    )
     return [
-        ("full_aasvr", config, "gate_reject"),
+        ("full_aasvr_r", config, "gate_reject"),
+        ("no_response_reliability", no_response_reliability, "gate_reject"),
         ("alert_only_scoring", config, "alert"),
         ("no_robust_mad_scale", replace(config, scale_multiplier=0.0), "gate_reject"),
         ("no_uncommanded_trend_guard", no_trend_guard, "gate_reject"),

@@ -229,6 +229,7 @@ def _paired_effects(detail: pd.DataFrame, *, bootstrap: int) -> pd.DataFrame:
                 "n_pairs": int(min(len(paired_ba), len(paired_fa))),
                 "delta_balanced_accuracy_aasvr_minus_method": float(delta_ba.mean()),
                 "median_delta_balanced_accuracy": float(delta_ba.median()),
+                "sd_delta_balanced_accuracy": float(delta_ba.std(ddof=1)),
                 "rank_biserial_balanced_accuracy": _rank_biserial(delta_ba.to_numpy()),
                 "cohen_dz_balanced_accuracy": _cohen_dz(delta_ba.to_numpy()),
                 "p_holm_balanced_accuracy": ba_tests.get(method, float("nan")),
@@ -244,9 +245,14 @@ def _paired_effects(detail: pd.DataFrame, *, bootstrap: int) -> pd.DataFrame:
                 "p_holm_false_actuations": fa_tests.get(method, float("nan")),
             }
         )
-    return pd.DataFrame(rows).sort_values(
+    out = pd.DataFrame(rows).sort_values(
         "delta_false_actuations_method_minus_aasvr", ascending=False
     )
+    if not out.empty:
+        out["sign_test_p_holm_false_actuations"] = _holm(
+            out["sign_test_p_false_actuations"].to_numpy(dtype=float)
+        )
+    return out
 
 
 def _test_lookup(tests: pd.DataFrame, metric: str) -> dict[str, float]:

@@ -310,7 +310,11 @@ def compute_linkage_table(
                     "unsafe_band_rate": exposure.get("unsafe_band_rate", np.nan),
                     "untrusted_rate": exposure.get("untrusted_rate", np.nan),
                     "alert_rate": exposure.get("alert_rate", np.nan),
+                    "authorization_count": exposure.get("authorization_count", np.nan),
                     "authorization_rate": exposure.get("authorization_rate", np.nan),
+                    "missed_authorization_opportunity_rate": exposure.get(
+                        "missed_authorization_opportunity_rate", np.nan
+                    ),
                     "response_residual_rate": exposure.get("response_residual_rate", np.nan),
                     "instability_index": exposure.get("instability_index", np.nan),
                     "causal_interpretation": "mechanistic_link_only",
@@ -337,13 +341,17 @@ def _exposure_row(method: str, frame: pd.DataFrame) -> dict[str, float | str | i
     reason = frame.get("reason_codes", pd.Series("", index=frame.index)).astype(str)
     raw = pd.to_numeric(frame.get("raw_value", pd.Series(np.nan, index=frame.index)), errors="coerce")
     trusted = pd.to_numeric(frame.get("trusted_value", pd.Series(np.nan, index=frame.index)), errors="coerce")
+    unsafe = _bool_series(frame.get("unsafe_band", False), frame.index)
+    authorized = _bool_series(frame.get("actuation_authorized", False), frame.index)
     return {
         "method": method,
         "samples": int(len(frame)),
-        "unsafe_band_rate": _mean_bool(frame.get("unsafe_band", False), n),
+        "unsafe_band_rate": float(unsafe.sum() / n),
         "untrusted_rate": float((gate.eq("reject") | state.isin(["suspect", "persistent", "fault"])).mean()),
         "alert_rate": _mean_bool(frame.get("alert", False), n),
-        "authorization_rate": _mean_bool(frame.get("actuation_authorized", False), n),
+        "authorization_count": int(authorized.sum()),
+        "authorization_rate": float(authorized.sum() / n),
+        "missed_authorization_opportunity_rate": float((unsafe & ~authorized).sum() / n),
         "response_residual_rate": float(reason.str.contains("actuator_response_residual", regex=False).mean()),
         "instability_index": float((raw - trusted).abs().mean(skipna=True)),
     }
@@ -361,10 +369,15 @@ def bootstrap_mean_ci(values: np.ndarray, *, seed: int, resamples: int = 1000) -
 def _mean_bool(values: pd.Series | bool, n: int) -> float:
     if isinstance(values, bool):
         return float(values)
+    return float(_bool_series(values, values.index).sum() / n)
+
+
+def _bool_series(values: pd.Series | bool, index: pd.Index) -> pd.Series:
+    if isinstance(values, bool):
+        return pd.Series(values, index=index)
     if values.dtype == object:
-        normalized = values.astype(str).str.lower().isin(["true", "1", "yes"])
-        return float(normalized.sum() / n)
-    return float(values.astype(bool).sum() / n)
+        return values.astype(str).str.lower().isin(["true", "1", "yes"])
+    return values.astype(bool)
 
 
 def _unit_for_outcome(outcome: str) -> str:

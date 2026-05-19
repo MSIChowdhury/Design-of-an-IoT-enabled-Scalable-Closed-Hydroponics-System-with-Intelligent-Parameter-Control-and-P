@@ -123,3 +123,5 @@ def test_agronomic_summary_and_linkage_are_mechanistic_only(tmp_path: Path) -> N
     assert set(linkage["treatment"]) == {"P1"}
     assert linkage["causal_interpretation"].eq("mechanistic_link_only").all()
     assert linkage["untrusted_rate"].iloc[0] > 0
+    assert linkage["authorization_count"].iloc[0] == 1
+    assert linkage["missed_authorization_opportunity_rate"].iloc[0] == pytest.approx(1 / 3)
