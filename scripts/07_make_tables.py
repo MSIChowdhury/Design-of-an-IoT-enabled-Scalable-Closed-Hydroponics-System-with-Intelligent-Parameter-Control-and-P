@@ -96,6 +96,11 @@ def make_hydro_exp1_tables() -> None:
         frame = pd.read_csv(paired)
         frame.to_csv(out_dir / "hydro_exp1_paired_tests.csv", index=False)
         print(f"Wrote {out_dir / 'hydro_exp1_paired_tests.csv'}")
+    paired_effects = ROOT / "results/metrics/hydro_exp1_paired_effects.csv"
+    if paired_effects.exists():
+        frame = pd.read_csv(paired_effects)
+        frame.to_csv(out_dir / "hydro_exp1_paired_effects.csv", index=False)
+        print(f"Wrote {out_dir / 'hydro_exp1_paired_effects.csv'}")
     grid_tests = ROOT / "results/metrics/hydro_exp1_fault_grid_tests.csv"
     if grid_tests.exists():
         frame = pd.read_csv(grid_tests)
@@ -106,6 +111,11 @@ def make_hydro_exp1_tables() -> None:
         frame = pd.read_csv(external_thresholds)
         frame.to_csv(out_dir / "external_native_threshold_best.csv", index=False)
         print(f"Wrote {out_dir / 'external_native_threshold_best.csv'}")
+    external_aasvr = ROOT / "results/metrics/external_aasvr_tuning_best.csv"
+    if external_aasvr.exists():
+        frame = pd.read_csv(external_aasvr)
+        frame.to_csv(out_dir / "external_aasvr_tuning_best.csv", index=False)
+        print(f"Wrote {out_dir / 'external_aasvr_tuning_best.csv'}")
 
 
 def make_all_available_tables() -> None:

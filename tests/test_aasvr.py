@@ -82,3 +82,38 @@ def test_aasvr_rejects_slow_uncommanded_trend() -> None:
     decisions = [model.update({"timestamp": idx, "pH": value})[0] for idx, value in enumerate([6.0, 6.03, 6.06, 6.09])]
     assert decisions[-1].gate_result == "reject"
     assert "uncommanded_trend" in decisions[-1].reason_codes
+
+
+def test_aasvr_rejects_plausible_stuck_at_fault() -> None:
+    cfg = SensorConfig(
+        **{
+            **sensor().__dict__,
+            "stuck_window": 4,
+            "stuck_sigma_min": 1e-9,
+            "stuck_min_unique": 1,
+        }
+    )
+    model = AASVR(AASVRConfig(sensors=(cfg,), q_min=0.7))
+    model.update({"timestamp": 0, "pH": 6.0})
+    decisions = [model.update({"timestamp": idx, "pH": 6.1})[0] for idx in range(1, 6)]
+    stuck_decisions = [decision for decision in decisions if "stuck_at" in decision.reason_codes]
+    assert stuck_decisions
+    assert stuck_decisions[0].gate_result == "reject"
+    assert not stuck_decisions[0].actuation_authorized
+
+
+def test_aasvr_does_not_flag_stable_noisy_signal_as_stuck() -> None:
+    cfg = SensorConfig(
+        **{
+            **sensor().__dict__,
+            "stuck_window": 4,
+            "stuck_sigma_min": 1e-9,
+            "stuck_min_unique": 1,
+        }
+    )
+    model = AASVR(AASVRConfig(sensors=(cfg,), q_min=0.7))
+    decisions = [
+        model.update({"timestamp": idx, "pH": value})[0]
+        for idx, value in enumerate([6.10, 6.11, 6.10, 6.12, 6.11])
+    ]
+    assert "stuck_at" not in decisions[-1].reason_codes

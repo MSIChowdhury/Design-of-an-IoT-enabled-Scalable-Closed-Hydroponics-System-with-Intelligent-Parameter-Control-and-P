@@ -87,6 +87,8 @@ def run_available_real(*, dataset_profile: str = "paper") -> None:
         subprocess.run([sys.executable, "scripts/04_run_methods.py", "--dataset", dataset], check=True)
         subprocess.run([sys.executable, "scripts/06_compute_metrics.py", "--dataset", dataset], check=True)
     subprocess.run([sys.executable, "scripts/07_make_tables.py", "--all-available"], check=True)
+    subprocess.run([sys.executable, "scripts/15_tune_external_aasvr.py"], check=True)
+    subprocess.run([sys.executable, "scripts/07_make_tables.py", "--all-available"], check=True)
     print("Available real-data pipeline completed.")
 
 

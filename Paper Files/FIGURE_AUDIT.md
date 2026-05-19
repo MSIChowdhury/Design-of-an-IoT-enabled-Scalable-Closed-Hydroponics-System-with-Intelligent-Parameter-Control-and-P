@@ -7,7 +7,7 @@
 | `figure/hydroponic_system_architecture.tikz` | New TikZ source | Vector | Yes | Restores the hydroponic system as the primary engineered platform while showing where AASVR sits in the control loop; routing was adjusted to reduce arrow/text overlap. |
 | `figure/hydro_exp1_synthetic_balanced_accuracy.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Main method-comparison plot; includes classical filters, process-monitoring baselines, and one-class ML baselines. |
 | `figure/hydro_exp1_balanced_accuracy_ci.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Bootstrap uncertainty plot. |
-| `figure/external_aasvr_threshold_sensitivity.pdf` | Generated from analysis pipeline | Vector PDF | Yes | External native-label aggregation-threshold sensitivity. |
+| `figure/external_aasvr_threshold_sensitivity.pdf` | Generated from analysis pipeline | Vector PDF | No | Retained for supplementary stress-test discussion; removed from the main manuscript because HAI/SKAB direct transfer is weak. |
 | `figure/cross_dataset_rank_plot.pdf` | Generated from analysis pipeline | Vector PDF | No | Retained as a diagnostic only; removed from the main manuscript because rank averaging across label semantics is not defensible as a headline result. |
 | `figure/hydro_exp1_ph_trace.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Representative trace only; not used as a ground-truth label. |
 | `figure/hydro_exp1_co2_trace.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Second representative trace to make gas-actuation behavior visible. |

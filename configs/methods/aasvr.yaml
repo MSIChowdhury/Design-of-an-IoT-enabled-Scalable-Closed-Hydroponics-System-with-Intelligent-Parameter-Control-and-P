@@ -15,6 +15,9 @@ sensors:
     window: 9
     confirm_samples: 3
     cooldown_samples: 4
+    stuck_window: 15
+    stuck_sigma_min: 1.0e-9
+    stuck_min_unique: 1
     actuators: ["acid_doser", "base_doser"]
     expected_direction: bidirectional
   - name: EC
@@ -28,6 +31,9 @@ sensors:
     window: 9
     confirm_samples: 3
     cooldown_samples: 4
+    stuck_window: 15
+    stuck_sigma_min: 1.0e-9
+    stuck_min_unique: 1
     actuators: ["nutrient_pump", "water_pump"]
     expected_direction: bidirectional
   - name: Air_Temp
@@ -41,6 +47,9 @@ sensors:
     window: 9
     confirm_samples: 3
     cooldown_samples: 4
+    stuck_window: 15
+    stuck_sigma_min: 1.0e-9
+    stuck_min_unique: 1
     actuators: ["fan", "cooler"]
     expected_direction: decreasing
   - name: Humidity
@@ -54,6 +63,9 @@ sensors:
     window: 9
     confirm_samples: 3
     cooldown_samples: 4
+    stuck_window: 15
+    stuck_sigma_min: 1.0e-9
+    stuck_min_unique: 1
     actuators: ["humidifier", "dehumidifier"]
     expected_direction: bidirectional
   - name: Water_Temp
@@ -67,6 +79,9 @@ sensors:
     window: 9
     confirm_samples: 3
     cooldown_samples: 4
+    stuck_window: 15
+    stuck_sigma_min: 1.0e-9
+    stuck_min_unique: 1
     actuators: ["water_chiller"]
     expected_direction: decreasing
   - name: Water_Level
@@ -80,6 +95,9 @@ sensors:
     window: 9
     confirm_samples: 3
     cooldown_samples: 4
+    stuck_window: 15
+    stuck_sigma_min: 1.0e-9
+    stuck_min_unique: 1
     actuators: ["reservoir_pump"]
     expected_direction: increasing
   - name: CO2
@@ -93,5 +111,8 @@ sensors:
     window: 9
     confirm_samples: 3
     cooldown_samples: 4
+    stuck_window: 15
+    stuck_sigma_min: 1.0e-9
+    stuck_min_unique: 1
     actuators: ["co2_valve", "ventilation_fan"]
     expected_direction: bidirectional

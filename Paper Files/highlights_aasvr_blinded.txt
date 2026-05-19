@@ -4,4 +4,4 @@ Highlights
 - AASVR separates validation, rectification, and actuator authorization.
 - Held-out synthetic faults test hydroponic reliability behavior.
 - Sensor-wise and fault-type results expose strengths and limitations.
-- Public process datasets provide cross-domain stress tests.
+- Stuck-at and drift results identify remaining reliability limits.

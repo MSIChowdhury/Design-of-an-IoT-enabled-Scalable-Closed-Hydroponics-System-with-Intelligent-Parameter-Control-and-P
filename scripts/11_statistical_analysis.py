@@ -48,6 +48,9 @@ def analyze_hydro_exp1(*, bootstrap: int) -> None:
     )
     _method_ranks(detail).to_csv(out_dir / "hydro_exp1_method_ranks.csv", index=False)
     _paired_tests(detail).to_csv(out_dir / "hydro_exp1_paired_tests.csv", index=False)
+    _paired_effects(detail, bootstrap=bootstrap).to_csv(
+        out_dir / "hydro_exp1_paired_effects.csv", index=False
+    )
     _fault_grid_tests(detail).to_csv(out_dir / "hydro_exp1_fault_grid_tests.csv", index=False)
     _group_summary(detail, ["method", "sensor"]).to_csv(
         out_dir / "hydro_exp1_synthetic_by_sensor.csv", index=False
@@ -58,6 +61,7 @@ def analyze_hydro_exp1(*, bootstrap: int) -> None:
     print(f"Wrote {out_dir / 'hydro_exp1_bootstrap_ci.csv'}")
     print(f"Wrote {out_dir / 'hydro_exp1_method_ranks.csv'}")
     print(f"Wrote {out_dir / 'hydro_exp1_paired_tests.csv'}")
+    print(f"Wrote {out_dir / 'hydro_exp1_paired_effects.csv'}")
     print(f"Wrote {out_dir / 'hydro_exp1_fault_grid_tests.csv'}")
     print(f"Wrote {out_dir / 'hydro_exp1_synthetic_by_sensor.csv'}")
     print(f"Wrote {out_dir / 'hydro_exp1_synthetic_by_sensor_fault_type.csv'}")
@@ -161,6 +165,66 @@ def _paired_tests(detail: pd.DataFrame) -> pd.DataFrame:
         return out
     out["p_holm"] = _holm(out["p_value"].to_numpy())
     return out.sort_values(["metric", "p_holm"])
+
+
+def _paired_effects(detail: pd.DataFrame, *, bootstrap: int) -> pd.DataFrame:
+    tests = _paired_tests(detail)
+    if tests.empty:
+        return tests
+    ba_tests = _test_lookup(tests, "balanced_accuracy")
+    fa_tests = _test_lookup(tests, "false_actuations")
+    pivot_ba = detail.pivot_table(index="trial_id", columns="method", values="balanced_accuracy", aggfunc="mean")
+    pivot_fa = detail.pivot_table(index="trial_id", columns="method", values="false_actuations", aggfunc="mean")
+    rows = []
+    for method in sorted(set(pivot_ba.columns).intersection(pivot_fa.columns) - {"aasvr"}):
+        paired_ba = pivot_ba[["aasvr", method]].dropna()
+        paired_fa = pivot_fa[["aasvr", method]].dropna()
+        if paired_ba.empty or paired_fa.empty:
+            continue
+        delta_ba = paired_ba["aasvr"] - paired_ba[method]
+        delta_fa = paired_fa[method] - paired_fa["aasvr"]
+        ci_low, ci_high = _bootstrap_mean_ci(delta_fa.to_numpy(), bootstrap=bootstrap)
+        rows.append(
+            {
+                "method": method,
+                "n_pairs": int(min(len(paired_ba), len(paired_fa))),
+                "delta_balanced_accuracy_aasvr_minus_method": float(delta_ba.mean()),
+                "median_delta_balanced_accuracy": float(delta_ba.median()),
+                "p_holm_balanced_accuracy": ba_tests.get(method, float("nan")),
+                "delta_false_actuations_method_minus_aasvr": float(delta_fa.mean()),
+                "median_delta_false_actuations": float(delta_fa.median()),
+                "delta_false_actuations_ci_low": ci_low,
+                "delta_false_actuations_ci_high": ci_high,
+                "p_holm_false_actuations": fa_tests.get(method, float("nan")),
+            }
+        )
+    return pd.DataFrame(rows).sort_values(
+        "delta_false_actuations_method_minus_aasvr", ascending=False
+    )
+
+
+def _test_lookup(tests: pd.DataFrame, metric: str) -> dict[str, float]:
+    subset = tests[tests["metric"].eq(metric)]
+    out = {}
+    prefix = "aasvr_vs_"
+    for row in subset.to_dict(orient="records"):
+        comparison = str(row["comparison"])
+        if comparison.startswith(prefix):
+            out[comparison.removeprefix(prefix)] = float(row["p_holm"])
+    return out
+
+
+def _bootstrap_mean_ci(values: np.ndarray, *, bootstrap: int) -> tuple[float, float]:
+    finite = values[np.isfinite(values)]
+    if len(finite) == 0:
+        return float("nan"), float("nan")
+    rng = np.random.default_rng(20260518)
+    estimates = []
+    for _ in range(bootstrap):
+        sample = rng.choice(finite, size=len(finite), replace=True)
+        estimates.append(float(np.mean(sample)))
+    arr = np.asarray(estimates, dtype=float)
+    return float(np.quantile(arr, 0.025)), float(np.quantile(arr, 0.975))
 
 
 def _fault_grid_tests(detail: pd.DataFrame) -> pd.DataFrame:

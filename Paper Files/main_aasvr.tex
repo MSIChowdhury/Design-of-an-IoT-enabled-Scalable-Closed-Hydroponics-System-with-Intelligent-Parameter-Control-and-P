@@ -4,6 +4,9 @@
 \documentclass[preprint,12pt]{elsarticle}
 \fi
 
+\input{glyphtounicode}
+\pdfgentounicode=1
+\usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{algorithm}
@@ -15,6 +18,7 @@
 \usepackage{placeins}
 \usepackage{tikz}
 \usepackage{url}
+\usepackage[protrusion=true,expansion=false]{microtype}
 \usetikzlibrary{arrows.meta,automata,positioning,calc,fit,backgrounds}
 \setlength{\emergencystretch}{2em}
 \newcommand{\best}[1]{\textbf{#1}}
@@ -39,7 +43,7 @@
 \fi
 
 \begin{abstract}
-Closed-loop hydroponic systems can convert transient sensor faults into unnecessary dosing, cooling, pumping, or carbon dioxide actuation. This paper presents AASVR, an actuation-aware sensor validation and rectification layer for fault-resilient hydroponic control. AASVR combines robust range/rate gates, uncommanded-trend checks, persistence states, bounded rectification, and actuation authorization. On held-out hydroponic replay with synthetic faults, AASVR achieved 0.826 balanced accuracy and 0.267 false actuations per trial, matching the strongest detector while reducing false actuation by an order of magnitude. Public HAI and SKAB process datasets are used as external stress tests. The results support actuation-aware validation as a practical reliability layer for low-cost closed-loop automation.
+Closed-loop hydroponic systems can convert transient sensor faults into unnecessary dosing, cooling, pumping, or carbon dioxide actuation. This paper presents AASVR, an actuation-aware sensor validation and rectification layer for fault-resilient hydroponic control. AASVR combines robust range/rate gates, uncommanded-trend and stuck-value checks, persistence states, bounded rectification, and actuation authorization. On held-out hydroponic replay with synthetic faults, AASVR achieved 0.824 balanced accuracy and 0.259 false actuations per trial, nearly matching the strongest detector while reducing false actuation by an order of magnitude. The results support actuation-aware validation as a practical reliability layer for low-cost closed-loop automation.
 \end{abstract}
 
 \begin{keyword}
@@ -55,9 +59,9 @@ This coupling is especially important in low-cost hydroponic deployments because
 
 Conventional filtering methods are useful, but they usually ask whether a measurement looks noisy or anomalous in the signal domain. They do not directly ask whether the value is trustworthy enough to update the control state or authorize an actuator. We therefore introduce \emph{actuation-aware sensor validation and rectification} as the central problem for fault-resilient hydroponic control. The key observation is that a value may be worth logging for diagnosis while still being too untrusted to drive a pump, valve, or cooler.
 
-We present a closed-loop NFT hydroponic system as the primary engineered platform and propose AASVR as its central fault-resilience method. AASVR combines robust plausibility gates, persistence states, bounded rectification, and explicit actuation authorization. Public HAI and SKAB process datasets are used as external stress tests for the same validation interface, but they are not used to make agronomic claims.
+We present a closed-loop NFT hydroponic system as the primary engineered platform and propose AASVR as its central fault-resilience method. AASVR combines robust plausibility gates, persistence states, bounded rectification, and explicit actuation authorization. Public HAI and SKAB process datasets are retained as supplementary stress tests for the same validation interface, but they are not used to support the main hydroponic claim.
 
-The contributions are as follows. First, we describe an integrated closed-loop hydroponic sensing and control platform with separate growth and nutrient-solution modules. Second, we formulate sensor-fault handling in that platform as an actuation-aware validation and rectification problem. Third, we implement AASVR as a streaming state-machine method with bounded updates and explicit actuation authorization. Fourth, we evaluate the method on real hydroponic time series with synthetic faults, ablations, and public external benchmarks. Fifth, we provide a reproducible Docker and LaTeX workflow with dataset descriptors and paper-generation artifacts.
+The contributions are as follows. First, we describe an integrated closed-loop hydroponic sensing and control platform with separate growth and nutrient-solution modules. Second, we formulate sensor-fault handling in that platform as an actuation-aware validation and rectification problem. Third, we implement AASVR as a streaming state-machine method with bounded updates and explicit actuation authorization. Fourth, we evaluate the method on real hydroponic time series with held-out synthetic faults, ablations, and paired statistical comparisons. Fifth, we provide a reproducible Docker and LaTeX workflow with dataset descriptors and paper-generation artifacts.
 
 \section{Related Work}
 \subsection{Sensor faults in closed-loop systems}
@@ -67,7 +71,7 @@ Sensor data-quality reviews distinguish missingness, outliers, drift, stuck valu
 The baseline family used in this paper covers common online filters, process-monitoring methods, model-based statistical tests, and lightweight one-class anomaly detectors. Hampel-style robust outlier detection uses robust scale estimates to suppress isolated deviations \cite{hampel1974influence}. Kalman filtering gives a probabilistic recursive estimator for linear dynamical systems \cite{kalman1960new}. EWMA and CUSUM-style monitoring are standard approaches for persistent shifts \cite{roberts1959control,page1954continuous}. Generalized likelihood ratio (GLR) tests provide a classical statistical framework for abrupt change detection \cite{basseville1993detection}. PCA and recursive PCA-style residual monitoring use residual statistics to capture coordinated changes or adaptive operating regimes \cite{hotelling1947multivariate,jackson1979control,li2000recursive}. Isolation Forest, One-Class SVM, and local outlier factor add common one-class machine-learning comparisons for anomaly detection \cite{liu2008isolation,scholkopf2001estimating,breunig2000lof}. AASVR is complementary to these methods because it adds a control-facing authorization decision.
 
 \subsection{External process datasets}
-Public process datasets provide independent stress tests for measurement validation. HAI 21.03 contains industrial-control attack data from a hardware-in-the-loop testbed \cite{shin2021haicon}. SKAB contains multivariate process-loop experiments with anomaly and changepoint labels \cite{skab2020}. SWaT, WaDi, and Tennessee Eastman are relevant larger benchmarks, but the current paper reports only the public benchmark paths that are already processed in this repository \cite{swatDataset,wadiDataset,tepDataset}.
+Public process datasets provide independent stress tests for measurement validation. HAI 21.03 contains industrial-control attack data from a hardware-in-the-loop testbed \cite{shin2021haicon}. SKAB contains multivariate process-loop experiments with anomaly and changepoint labels \cite{skab2020}. SWaT, WaDi, and Tennessee Eastman are relevant larger benchmarks for future validation, subject to access and redistribution constraints \cite{swatDataset,wadiDataset,tepDataset}.
 
 \section{Hydroponic System Design and Deployment}
 The target platform is a closed NFT hydroponic system for lettuce growth. NFT systems recirculate a shallow nutrient stream through sloped growth channels, allowing water and nutrient reuse when solution management is reliable \cite{niu2022hydroponics,asaduzzaman2022nutrients}. The deployed system is organized into two physical modules. The Growth Module houses the plants, lighting, air-temperature and humidity sensing, CO2 sensing, visual monitoring, and environmental actuation. The Nutrient Solution Container Module stores and recirculates the nutrient solution and contains the water-quality sensors and nutrient-solution actuators.
@@ -190,9 +194,9 @@ G^{R}_s(t)&=\mathbf{1}\{|y_s(t)-y_s(t-1)|/\Delta t\le r_s\},\\
 G^{D}_s(t)&=\mathbf{1}\{|y_s(t)-\hat{x}_s(t-1)|\le \xi_s(t)\}.
 \end{aligned}
 \end{equation}
-A separate trend guard $G^{T}_s(t)$ rejects slow monotonic movement when no relevant actuator activity explains the direction of change. The overall gate is therefore
+A separate trend guard $G^{T}_s(t)$ rejects slow monotonic movement when no relevant actuator activity explains the direction of change. A stuck-value guard $G^{S}_s(t)$ rejects sustained exact repetition after a preceding change, which targets frozen plausible readings without treating ordinary low-variance noise as a fault. The overall gate is therefore
 \begin{equation}
-g_s(t)=G^{P}_s(t)G^{R}_s(t)G^{D}_s(t)G^{T}_s(t)G^{M}_s(t),
+g_s(t)=G^{P}_s(t)G^{R}_s(t)G^{D}_s(t)G^{T}_s(t)G^{S}_s(t)G^{M}_s(t),
 \end{equation}
 where $G^{M}_s(t)$ is one only when the value is present and parseable. The broad physical range is deliberately different from the crop-control band: for example, a pH value can be undesirable for lettuce while still being physically possible and therefore not automatically a sensor fault.
 
@@ -244,13 +248,15 @@ A_s(t)=&
 \end{equation}
 Here $p_s(t)$ is the number of consecutive trusted control-band violations, $k_s$ is the persistence requirement, $\mathcal{Z}_{\mathrm{safe}}=\{\mathrm{normal},\mathrm{accepted}\}$, and $\ell_s(t)$ is the actuator lockout indicator. For pH and EC, this rule complements the 10-minute dosing lockout already present in the deployed system; for CO2 and temperature, it prevents transient readings from becoming immediate gas-release or cooling commands.
 
+The bounded branch above also gives a simple boundedness guarantee for the value exposed to control. If the true process state has sample-to-sample change bounded by $r_s\Delta t$ and the previous trusted estimate has finite error, then the bounded rectification update cannot move faster than the same physical-rate envelope. Thus a rejected raw value cannot drive $\hat{x}_s(t)$ outside a rate-limited reachable set in one step. This is not a full closed-loop stability proof, but it prevents estimator divergence caused by a single large measurement excursion and gives the controller a bounded input while the sensor remains suspect.
+
 \begin{algorithm}[t]
 \caption{Streaming AASVR update for one sensor}
 \label{alg:aasvr}
 \begin{algorithmic}[1]
 \REQUIRE Raw value $y_s(t)$, previous trusted state $\hat{x}_s(t-1)$, recent history, limits, actuator state.
 \STATE Estimate robust local scale $\sigma_{\Delta,s}(t)$ and tolerance $\xi_s(t)$.
-\STATE Apply physical-range, rate, trusted-deviation, missingness, and trend gates.
+\STATE Apply physical-range, rate, trusted-deviation, missingness, trend, and stuck-value gates.
 \STATE Update the persistence state from the gate outcome.
 \IF{the reading is accepted}
   \STATE Set $\hat{x}_s(t)\leftarrow y_s(t)$.
@@ -269,8 +275,8 @@ Here $p_s(t)$ is the number of consecutive trusted control-band violations, $k_s
 \subsection{Hydroponic deployment data}
 The hydroponic data contain 121244 raw rows collected from 2024-02-27 to 2024-03-28 at a median cadence of approximately 16 seconds. The primary analysis uses EC, pH, humidity, air temperature, water temperature, and CO2. Water level is part of the deployed system but is excluded from the primary analysis because the available raw values are not defensibly calibrated.
 
-\subsection{External benchmarks}
-HAI 21.03 and SKAB are used as public external stress tests. HAI labels are timestamp-level attack indicators over an industrial-control testbed. SKAB labels are timestamp-level anomaly indicators over process-loop experiments. For these datasets, a timestamp is predicted abnormal when the fraction of rejecting sensor streams exceeds an aggregation threshold. Thresholds are selected on the first half of each native-label series and reported on the second half; fixed-threshold sensitivity from 10\% to 90\% is also retained as diagnostic evidence.
+\subsection{Supplementary external stress tests}
+HAI 21.03 and SKAB are retained as supplementary stress tests rather than as main evidence. Their labels describe cyber-physical attacks and process-loop anomalies, not hydroponic sensor faults. For these datasets, a timestamp is predicted abnormal when the fraction of rejecting sensor streams exceeds an aggregation threshold selected on the first half of each native-label series and reported on the second half. The results are used only to characterize limits of direct transfer.
 
 \subsection{Fault injection protocol}
 Synthetic faults are injected into windows sampled from the real hydroponic background. For each sensor, fault type, magnitude, and duration, three deterministic replicates are generated and assigned to tune, validation, and test splits. The reported hydroponic benchmark uses only the held-out test split; AASVR and baseline hyperparameters are selected on validation trials. Fault windows include 90 pre-fault samples and 120 post-fault samples so that detection delay and false alarms are evaluated around the injected event rather than in isolation.
@@ -300,7 +306,7 @@ Saturation & $y'_s(t)=m$ & Sensor rail or implausible fixed value \\
 \end{table}
 
 \subsection{Baselines and metrics}
-The baselines are raw thresholding, the original manuscript rule, moving average, moving median, Hampel, Kalman, EWMA, CUSUM, PCA-style monitoring, GLR, recursive PCA, Isolation Forest, One-Class SVM, and local outlier factor. Every baseline is tuned on the validation split using the same control-aware objective family as AASVR and then wrapped in the same persistence/cooldown authorization supervisor for false-actuation scoring. This separates detector quality from downstream authorization. The hydroponic synthetic-fault benchmark reports precision, recall, specificity, balanced accuracy, event recall, detection delay, false alarm events, false actuation mean, and false actuation standard deviation. Native-label external benchmarks report timestamp-level precision, recall, specificity, and balanced accuracy.
+The baselines are raw thresholding, moving average, moving median, Hampel, Kalman, EWMA, CUSUM, PCA-style monitoring, GLR, recursive PCA, Isolation Forest, One-Class SVM, and local outlier factor. The earlier manuscript rule is retained in the reproducibility outputs but omitted from the main comparison because it duplicates the raw physical-threshold decision in the current replay protocol. Every displayed baseline is tuned on the validation split using the same control-aware objective family as AASVR and then wrapped in the same persistence/cooldown authorization supervisor for false-actuation scoring. This separates detector quality from downstream authorization. The hydroponic synthetic-fault benchmark reports precision, recall, specificity, balanced accuracy, detection delay, false alarm events, false actuation mean, and false actuation standard deviation.
 
 Bootstrap confidence intervals use 1000 resamples of injected-fault trials, not individual samples. Paired Wilcoxon signed-rank tests compare AASVR against each baseline on per-trial balanced accuracy and false actuation, with Holm correction for the primary method comparisons. Sensor--fault grids use Benjamini--Hochberg correction.
 
@@ -313,7 +319,7 @@ Bootstrap confidence intervals use 1000 resamples of injected-fault trials, not 
 \toprule
 Family & Methods & Primary role & Act.-aware \\
 \midrule
-Rule & Raw threshold, original method & Existing hydroponic control logic & No \\
+Rule & Raw threshold & Existing physical-limit control logic & No \\
 Filters & Moving average, moving median, Hampel, Kalman & Noise and spike suppression & No \\
 Process monitoring & EWMA, CUSUM, PCA, GLR, recursive PCA & Shift or process-deviation detection & No \\
 One-class ML & Isolation Forest, One-Class SVM, LOF & Data-driven anomaly boundary & No \\
@@ -355,21 +361,43 @@ Table~\ref{tab:hydro_synth} summarizes the primary target-domain result on held-
 \centering
 \caption{Held-out hydroponic synthetic-fault benchmark. Baselines are validation-tuned and evaluated on the same test split with a shared persistence/cooldown supervisor. Bold entries mark the best value in each metric column among the displayed methods; lower is better for false actuation.}
 \label{tab:hydro_synth}
-\begin{tabular}{lrrrrr}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrrr}
 \toprule
-Method & Recall & Specificity & Bal. acc. & FPR & False act. \\
+Method & Recall & Specificity & Bal. acc. & FPR & Delay & False act. & False act. SD \\
 \midrule
-LOF & 0.853 & 0.798 & \best{0.826} & 0.202 & 2.811 \\
-AASVR & 0.771 & 0.880 & \best{0.826} & 0.120 & \best{0.267} \\
-Kalman & 0.613 & 0.803 & 0.708 & 0.197 & 0.515 \\
-Isolation Forest & 0.581 & 0.826 & 0.703 & 0.174 & 2.907 \\
-Hampel & 0.411 & 0.984 & 0.698 & 0.016 & 1.041 \\
-Moving median & 0.411 & 0.984 & 0.698 & 0.016 & 0.993 \\
-Recursive PCA & 0.317 & 0.988 & 0.652 & 0.012 & 1.319 \\
-One-Class SVM & \best{0.912} & 0.333 & 0.623 & 0.667 & 2.796 \\
-GLR & 0.129 & \best{0.999} & 0.564 & \best{0.001} & 1.330 \\
+LOF & 0.853 & 0.798 & \best{0.826} & 0.202 & 0.270 & 2.811 & 4.240 \\
+AASVR & 0.777 & 0.871 & 0.824 & 0.129 & \best{0.000} & \best{0.259} & \best{0.853} \\
+Kalman & 0.613 & 0.803 & 0.708 & 0.197 & \best{0.000} & 0.515 & 1.175 \\
+Isolation Forest & 0.581 & 0.826 & 0.703 & 0.174 & 0.126 & 2.907 & 4.253 \\
+Hampel & 0.411 & 0.984 & 0.698 & 0.016 & \best{0.000} & 1.041 & 1.502 \\
+Moving median & 0.411 & 0.984 & 0.698 & 0.016 & \best{0.000} & 0.993 & 1.496 \\
+Recursive PCA & 0.317 & 0.988 & 0.652 & 0.012 & \best{0.000} & 1.319 & 1.653 \\
+One-Class SVM & \best{0.912} & 0.333 & 0.623 & 0.667 & 0.089 & 2.796 & 4.227 \\
+GLR & 0.129 & \best{0.999} & 0.564 & \best{0.001} & \best{0.000} & 1.330 & 1.638 \\
 \bottomrule
 \end{tabular}
+}
+\end{table}
+
+\begin{table}[!htbp]
+\centering
+\caption{Paired held-out effects for AASVR against representative baselines. Positive $\Delta$BA means AASVR has higher per-trial balanced accuracy; positive $\Delta$false actuation means the baseline has more false actuations than AASVR. P-values are Holm-corrected paired Wilcoxon tests.}
+\label{tab:paired_effects}
+\footnotesize
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Baseline & $\Delta$BA & $p_{\mathrm{BA}}$ & $\Delta$False act. & 95\% CI & $p_{\mathrm{FA}}$ \\
+\midrule
+LOF & -0.002 & 0.0025 & 2.552 & [2.077, 3.026] & $6.23{\times}10^{-22}$ \\
+Isolation Forest & 0.121 & $1.85{\times}10^{-13}$ & 2.648 & [2.192, 3.107] & $6.66{\times}10^{-23}$ \\
+Kalman & 0.116 & $4.34{\times}10^{-19}$ & 0.256 & [0.107, 0.393] & $5.92{\times}10^{-4}$ \\
+Hampel & 0.126 & $1.51{\times}10^{-8}$ & 0.781 & [0.630, 0.937] & $3.31{\times}10^{-15}$ \\
+CUSUM & 0.184 & $8.19{\times}10^{-19}$ & 1.015 & [0.844, 1.185] & $2.34{\times}10^{-20}$ \\
+\bottomrule
+\end{tabular}
+}
 \end{table}
 
 \begin{figure}[!htbp]
@@ -398,34 +426,34 @@ Table~\ref{tab:sensorwise} breaks down AASVR performance by hydroponic sensor. C
 \toprule
 Sensor & Recall & Specificity & Bal. acc. & False act. \\
 \midrule
-CO2 & \best{0.843} & \best{0.892} & \best{0.868} & 0.259 \\
-Water temperature & 0.809 & 0.882 & 0.846 & 0.241 \\
-Air temperature & 0.818 & 0.872 & 0.845 & 0.241 \\
-pH & 0.778 & 0.877 & 0.827 & \best{0.019} \\
-EC & 0.606 & 0.879 & 0.742 & 0.574 \\
+CO2 & \best{0.849} & \best{0.884} & \best{0.867} & 0.259 \\
+Water temperature & 0.820 & 0.873 & 0.847 & 0.222 \\
+Air temperature & 0.822 & 0.863 & 0.842 & 0.222 \\
+pH & 0.785 & 0.870 & 0.828 & \best{0.019} \\
+EC & 0.609 & 0.865 & 0.737 & 0.574 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:faulttype} and Figure~\ref{fig:fault_heatmap} show performance by injected fault class. AASVR performs best on saturation, dropout, bias, spike, noise burst, step, and multi-spike faults. Drift and stuck-at faults remain difficult because they can resemble slow process movement or repeated steady values without an independent reference.
+Table~\ref{tab:faulttype} and Figure~\ref{fig:fault_heatmap} show performance by injected fault class. AASVR performs best on saturation, dropout, bias, spike, noise burst, step, and multi-spike faults. Drift and stuck-at faults remain difficult because they can resemble slow process movement or repeated steady values without an independent reference. The added stuck-value guard improves stuck-at balanced accuracy only modestly, from 0.465 without the guard to 0.474 with the guard, so it should be read as a mitigation rather than a solved failure mode.
 
 \begin{table}[!htbp]
 \centering
-\caption{AASVR synthetic-fault performance by injected fault type. Drift is the most difficult condition because slow monotonic movement can resemble a real process change.}
+\caption{AASVR synthetic-fault performance by injected fault type. Stuck-at and drift are the most difficult conditions because frozen plausible values and slow monotonic movement can resemble real process behavior.}
 \label{tab:faulttype}
 \begin{tabular}{lrrrr}
 \toprule
 Fault type & Recall & Specificity & Bal. acc. & False act. \\
 \midrule
-Saturation & \best{1.000} & 0.874 & \best{0.937} & \best{0.000} \\
-Dropout & \best{1.000} & 0.870 & 0.935 & \best{0.000} \\
-Bias & 0.910 & 0.879 & 0.895 & 0.233 \\
-Spike & 0.896 & \best{0.890} & 0.893 & 0.167 \\
-Noise burst & 0.893 & 0.885 & 0.889 & 0.133 \\
-Step & 0.874 & 0.889 & 0.882 & 0.233 \\
-Multi-spike & 0.852 & 0.877 & 0.865 & \best{0.000} \\
-Drift & 0.463 & 0.876 & 0.670 & 0.300 \\
-Stuck-at & 0.049 & 0.882 & 0.465 & 1.333 \\
+Saturation & \best{1.000} & 0.866 & \best{0.933} & \best{0.000} \\
+Dropout & \best{1.000} & 0.859 & 0.930 & \best{0.000} \\
+Bias & 0.910 & 0.871 & 0.890 & 0.233 \\
+Spike & 0.896 & \best{0.880} & 0.888 & 0.167 \\
+Noise burst & 0.893 & 0.878 & 0.886 & 0.133 \\
+Step & 0.876 & 0.879 & 0.877 & 0.233 \\
+Multi-spike & 0.879 & 0.871 & 0.875 & \best{0.000} \\
+Drift & 0.468 & 0.861 & 0.665 & 0.233 \\
+Stuck-at & 0.072 & 0.875 & 0.474 & 1.333 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -439,7 +467,7 @@ Stuck-at & 0.049 & 0.882 & 0.465 & 1.333 \\
 \FloatBarrier
 
 \subsection{Ablation and control effect}
-Table~\ref{tab:ablation} shows that several ablations preserve similar detection scores but change control behavior. Removing actuation confirmation increases false actuation from 0.233 to 0.650 events per trial in the sampled held-out ablation set. This supports the central interpretation: point-wise detection is only part of the result, while actuation authorization determines the operational false-actuation reduction.
+Table~\ref{tab:ablation} shows that several ablations preserve similar detection scores but change control behavior. Removing actuation confirmation increases false actuation from 0.233 to 0.583 events per trial in the sampled held-out ablation set. The ablation uses a deterministic 120-trial subset of the held-out test split for tractability, which explains the small difference from the full-test result in Table~\ref{tab:hydro_synth}. The robust-MAD and stuck-detector variants differ only slightly from the full model on this subset, so those rows should be interpreted as sensitivity checks rather than evidence of a large component effect.
 
 \begin{table}[t]
 \centering
@@ -449,12 +477,13 @@ Table~\ref{tab:ablation} shows that several ablations preserve similar detection
 \toprule
 Variant & Bal. acc. & Recall & False act. \\
 \midrule
-No robust MAD scale & \best{0.820} & \best{0.790} & \best{0.192} \\
-No actuation confirmation & 0.819 & 0.757 & 0.650 \\
-No cooldown & 0.819 & 0.757 & 0.467 \\
-Full AASVR & 0.819 & 0.757 & 0.233 \\
-No trend guard & 0.804 & 0.720 & 0.325 \\
-Bounded prediction mode & 0.774 & 0.662 & 0.583 \\
+Full AASVR & \best{0.820} & 0.765 & 0.233 \\
+No stuck detector & 0.819 & 0.757 & 0.233 \\
+No robust MAD scale & 0.819 & \best{0.794} & \best{0.192} \\
+No actuation confirmation & \best{0.820} & 0.765 & 0.583 \\
+No cooldown & \best{0.820} & 0.765 & 0.475 \\
+No trend guard & 0.804 & 0.728 & 0.325 \\
+Bounded prediction mode & 0.774 & 0.669 & 0.575 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -479,50 +508,25 @@ $c_s$ & $q_{\min}$ & Transient limit & Bal. acc. & Objective \\
 \end{table}
 
 \subsection{Representative hydroponic trace}
-Figures~\ref{fig:ph_trace} and \ref{fig:co2_trace} show replay segments from the hydroponic deployment. The traces are included to connect the aggregate benchmark to the actual deployment setting. They illustrate the measurement-to-state transformation that precedes any actuation decision.
+Figure~\ref{fig:replay_traces} shows replay segments from the hydroponic deployment. The traces are included to connect the aggregate benchmark to the actual deployment setting. They illustrate the measurement-to-state transformation that precedes any actuation decision.
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.66\linewidth]{figure/hydro_exp1_ph_trace.pdf}
-\caption{Representative pH replay from the hydroponic deployment data. The raw stream and AASVR trusted estimate are plotted over an early segment of the experiment. The figure is not used as a ground-truth fault label; it is included to show how the method exposes a trusted state rather than passing every raw measurement directly to the controller.}
-\label{fig:ph_trace}
-\end{figure}
-
-\begin{figure}[!htbp]
+\begin{minipage}{0.48\linewidth}
 \centering
-\includegraphics[width=0.66\linewidth]{figure/hydro_exp1_co2_trace.pdf}
-\caption{Representative CO2 replay from the hydroponic deployment data. The trace shows the same trusted-state interface on an environmental-control stream, where transient raw readings should not directly authorize gas-release commands.}
-\label{fig:co2_trace}
+\includegraphics[width=\linewidth]{figure/hydro_exp1_ph_trace.pdf}\\
+(a) pH replay
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{figure/hydro_exp1_co2_trace.pdf}\\
+(b) CO2 replay
+\end{minipage}
+\caption{Representative hydroponic replay traces. The raw streams and AASVR trusted estimates are plotted over early deployment segments. These traces are not used as ground-truth fault labels; they show how the method exposes a trusted state rather than passing every raw measurement directly to the controller.}
+\label{fig:replay_traces}
 \end{figure}
 \FloatBarrier
-
-\subsection{External benchmark stress tests}
-Table~\ref{tab:external} reports native-label external stress tests using thresholds selected on validation timestamps and evaluated on held-out test timestamps. These datasets are included after the hydroponic results because they are supporting stress tests, not replacements for the target system. The results are intentionally reported conservatively: HAI and SKAB expose the difficulty of transferring a hydroponic-oriented validation layer to cyber-physical attack labels and process-loop anomaly labels without dataset-specific modeling.
-
-\begin{table}[!htbp]
-\centering
-\caption{External native-label test results with aggregation thresholds selected on validation timestamps. These values are cross-domain stress tests rather than direct hydroponic fault evidence. HAI contains cyber-physical attack labels, while SKAB contains process-loop anomaly labels.}
-\label{tab:external}
-\begin{tabular}{llrrrr}
-\toprule
-Dataset & Method & Precision & Recall & Specificity & Bal. acc. \\
-\midrule
-HAI & Raw threshold & 0.000 & 0.000 & \best{0.994} & \best{0.497} \\
-HAI & CUSUM & \best{0.004} & \best{0.528} & 0.439 & 0.484 \\
-HAI & AASVR & 0.003 & 0.360 & 0.485 & 0.422 \\
-HAI & Kalman & 0.002 & 0.146 & 0.630 & 0.388 \\
-SKAB & AASVR & \best{0.356} & \best{1.000} & 0.000 & \best{0.500} \\
-SKAB & Kalman & \best{0.356} & \best{1.000} & 0.000 & \best{0.500} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{figure}[!htbp]
-\centering
-\includegraphics[width=0.72\linewidth]{figure/external_aasvr_threshold_sensitivity.pdf}
-\caption{Threshold sensitivity for timestamp-level external labels on held-out test timestamps. The plot shows how AASVR changes when the required fraction of rejecting streams is varied. The weak held-out HAI/SKAB behavior is treated as a limitation rather than as a leaderboard claim.}
-\label{fig:threshold}
-\end{figure}
 
 \subsection{Agronomic operation evidence}
 The lettuce growth trials are retained as deployment evidence, not as causal proof that AASVR improved crop yield. The automated treatment differed from the soil and manual DWC controls in enclosure, lighting, cooling, nutrient delivery, CO2 regulation, and automation. The agronomic data therefore show that the closed-loop apparatus operated through complete growth cycles while supporting the method evaluation; detailed plant-growth plots are moved to supplementary material.
@@ -533,13 +537,13 @@ The lettuce growth trials are retained as deployment evidence, not as causal pro
 The ablation and baseline results show why actuation-aware validation should be evaluated with control metrics. The detection component is competitive with tuned baselines on held-out synthetic faults, but the authorization layer is what produces the operationally important false-actuation reduction. For hydroponic systems, this distinction is practical because unnecessary acid/base dosing, nutrient dosing, CO2 release, or cooling can disturb the process even if the signal-level anomaly score appears acceptable.
 
 \subsection{Cross-domain generalization}
-The external benchmark results support only a cautious generalization claim. AASVR can run on independent industrial-control and process-loop datasets with the same streaming interface, but validation-selected threshold results on HAI and SKAB are weak and should not be interpreted as dominance over process-specific methods. HAI attacks and SKAB process anomalies are not identical to low-cost hydroponic sensor faults. The external results therefore test transferability of the interface and reveal limits of direct parameter transfer, not agronomic performance.
+Supplementary HAI and SKAB stress tests show that AASVR can run on independent industrial-control and process-loop datasets with the same streaming interface, but direct transfer is weak even after validation-selected aggregation thresholds. HAI attacks and SKAB process anomalies are not identical to low-cost hydroponic sensor faults. These results therefore reveal limits of direct parameter transfer and support treating AASVR primarily as a hydroponic measurement-to-actuation reliability layer unless process-specific external models are added.
 
 \subsection{Limitations}
-The hydroponic experiment does not provide independent reference instruments for every sensor at every time point. Synthetic fault injection is therefore necessary for controlled scoring, but injected faults cannot cover every real failure mode. Slow drift, stuck-at behavior, and EC-bias cases remain the principal weaknesses because they can resemble real nutrient-solution dynamics without cross-sensor or model-based residual evidence. Addressing these cases likely requires a stronger process model, observer residual, or cross-sensor consistency check. The external datasets use timestamp-level labels, so the multivariate aggregation threshold affects the result. Water level is excluded from primary analysis because the available raw values are not defensibly calibrated. Crop outcomes are treated only as deployment context because enclosure, lighting, cooling, nutrient delivery, carbon dioxide regulation, and automation are confounded.
+The hydroponic experiment does not provide independent reference instruments for every sensor at every time point. Synthetic fault injection is therefore necessary for controlled scoring, but injected faults cannot cover every real failure mode. Slow drift, stuck-at behavior, and EC-bias cases remain the principal weaknesses because they can resemble real nutrient-solution dynamics without cross-sensor or model-based residual evidence. The added stuck-value guard catches only sustained exact freezes after a preceding change; it does not solve plausible frozen values that begin during an already steady process. A stronger deployment version should add actuator-response residuals, for example requiring pH or EC to move in the expected direction after dosing, but the current processed feed does not contain actuator-state columns sufficient to score that extension. Water level is excluded from primary analysis because the available raw values are not defensibly calibrated. Crop outcomes are treated only as deployment context because enclosure, lighting, cooling, nutrient delivery, carbon dioxide regulation, and automation are confounded.
 
 \section{Conclusion}
-We presented a closed-loop hydroponic control system and proposed AASVR as its actuation-aware sensor validation and rectification layer. The method separates validation, state update, rectification, and actuation authorization so that untrusted measurements can be logged without directly driving physical commands. On held-out hydroponic synthetic faults, AASVR was competitive with the strongest tuned detector while producing much lower false actuation. Public SKAB and HAI benchmarks show that the same interface can be applied to external process data, but also expose threshold-dependent and domain-transfer limitations that should be reported rather than hidden.
+We presented a closed-loop hydroponic control system and proposed AASVR as its actuation-aware sensor validation and rectification layer. The method separates validation, state update, rectification, and actuation authorization so that untrusted measurements can be logged without directly driving physical commands. On held-out hydroponic synthetic faults, AASVR was competitive with the strongest tuned detector while producing much lower false actuation. The remaining failures on stuck-at and drift faults show where future work should add actuator-response and cross-sensor residual checks rather than relying only on single-stream plausibility gates.
 
 \section*{Data Availability}
 The repository contains code, configuration files, processed-data descriptors, Docker workflow files, and paper-generation assets. Raw hydroponic and external benchmark files are not committed to the repository. Public datasets can be obtained from their original providers, and request-access datasets should be obtained under the providers' terms.

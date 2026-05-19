@@ -26,6 +26,9 @@ class SensorConfig:
     trend_window: int = 9
     trend_threshold_multiplier: float = 1.0
     trend_min_monotonic_fraction: float = 0.75
+    stuck_window: int = 0
+    stuck_sigma_min: float = 1e-9
+    stuck_min_unique: int = 1
     actuators: tuple[str, ...] = ()
     expected_direction: str = "unknown"
 
@@ -85,7 +88,7 @@ class AASVR:
         self._sensors = {
             sensor.name: _SensorRuntime(
                 config=sensor,
-                history=deque(maxlen=max(sensor.window, 3)),
+                history=deque(maxlen=max(sensor.window, sensor.trend_window, sensor.stuck_window, 3)),
             )
             for sensor in config.sensors
         }
@@ -137,6 +140,10 @@ class AASVR:
 
         if plausible and self._uncommanded_trend(runtime, sample, y, xi):
             reasons.append("uncommanded_trend")
+            plausible = False
+
+        if plausible and self._stuck_at(runtime, y):
+            reasons.append("stuck_at")
             plausible = False
 
         actuator_consistency = self._actuator_consistency(runtime, sample, y)
@@ -228,6 +235,7 @@ class AASVR:
         rate_score = 0.0 if "rate_limit" in reasons else 1.0
         delta_score = 0.0 if "trusted_delta" in reasons else 1.0
         trend_score = 0.0 if "uncommanded_trend" in reasons else 1.0
+        stuck_score = 0.0 if "stuck_at" in reasons else 1.0
         missing_score = 0.0 if "missing" in reasons else 1.0
         persistence_score = float(np.clip(1.0 - 0.2 * runtime.failed_count, 0.0, 1.0))
         plausibility_score = 1.0 if plausible else 0.35 * min(
@@ -235,6 +243,7 @@ class AASVR:
             rate_score,
             delta_score,
             trend_score,
+            stuck_score,
             missing_score,
         )
         weighted = (
@@ -251,11 +260,34 @@ class AASVR:
             f"range={range_score:.3f}",
             f"rate={rate_score:.3f}",
             f"trend={trend_score:.3f}",
+            f"stuck={stuck_score:.3f}",
             f"persistence={persistence_score:.3f}",
             f"actuator_consistency={actuator_consistency:.3f}",
             f"missingness={missing_score:.3f}",
         )
         return float(np.clip(score, 0.0, 1.0)), components
+
+    def _stuck_at(self, runtime: _SensorRuntime, y: float) -> bool:
+        cfg = runtime.config
+        if cfg.stuck_window <= 1 or not np.isfinite(y):
+            return False
+        values = [value for value in list(runtime.history)[-(cfg.stuck_window - 1) :] if np.isfinite(value)]
+        values.append(y)
+        if len(values) < cfg.stuck_window:
+            return False
+        arr = np.asarray(values, dtype=float)
+        rounded = np.round(arr, decimals=9)
+        unique_count = len(np.unique(rounded))
+        if unique_count > cfg.stuck_min_unique:
+            return False
+        if float(np.std(arr)) > cfg.stuck_sigma_min:
+            return False
+        history = [value for value in runtime.history if np.isfinite(value)]
+        if len(history) < cfg.stuck_window:
+            return True
+        previous = history[-cfg.stuck_window]
+        change_threshold = max(cfg.uncertainty, cfg.xi_min) * 0.1
+        return bool(abs(previous - arr[0]) > change_threshold)
 
     def _uncommanded_trend(
         self,
