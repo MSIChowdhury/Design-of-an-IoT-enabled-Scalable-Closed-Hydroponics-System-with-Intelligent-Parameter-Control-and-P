@@ -32,6 +32,9 @@ class SensorConfig:
     response_window: int = 0
     response_min_delta: float = 0.0
     calibrated_xi: float | None = None
+    scale_multiplier: float | None = None
+    cusum_drift_multiplier: float = 0.0
+    cusum_threshold_multiplier: float = 0.0
     risk_level: str = "medium"
     actuators: tuple[str, ...] = ()
     expected_direction: str = "unknown"
@@ -98,6 +101,8 @@ class _SensorRuntime:
     beta_success: float = 2.0
     beta_failure: float = 1.0
     response_observations: int = 0
+    cusum_positive: float = 0.0
+    cusum_negative: float = 0.0
 
 
 class AASVR:
@@ -146,10 +151,15 @@ class AASVR:
             plausible = False
 
         trusted_reference = runtime.trusted_value if runtime.trusted_value is not None else y
+        scale_multiplier = (
+            cfg.scale_multiplier
+            if cfg.scale_multiplier is not None and np.isfinite(cfg.scale_multiplier)
+            else self.config.scale_multiplier
+        )
         xi = tolerance(
             list(runtime.history) + ([y] if np.isfinite(y) else []),
             xi_min=cfg.xi_min,
-            scale_multiplier=self.config.scale_multiplier,
+            scale_multiplier=scale_multiplier,
             rate_limit=cfg.rate_limit,
             dt_seconds=self.dt_seconds,
             uncertainty=cfg.uncertainty,
@@ -176,6 +186,10 @@ class AASVR:
             reasons.append("stuck_at")
             plausible = False
 
+        if plausible and self._cusum_residual_shift(runtime, y, xi):
+            reasons.append("cusum_residual")
+            plausible = False
+
         actuator_consistency = self._actuator_consistency(runtime, sample, y)
         response_residual = self._actuator_response_residual(runtime, sample, y)
         if plausible and response_residual:
@@ -183,6 +197,8 @@ class AASVR:
             plausible = False
 
         if plausible:
+            runtime.cusum_positive *= 0.95
+            runtime.cusum_negative *= 0.95
             runtime.failed_count = 0
             runtime.accepted_count += 1
             runtime.trusted_value = y
@@ -195,6 +211,8 @@ class AASVR:
             rectification_action = "accept"
             gate_result = "accept"
         else:
+            runtime.cusum_positive = 0.0
+            runtime.cusum_negative = 0.0
             runtime.failed_count += 1
             runtime.accepted_count = 0
             runtime.state = self._next_failed_state(runtime)
@@ -272,6 +290,7 @@ class AASVR:
         trend_score = 0.0 if "uncommanded_trend" in reasons else 1.0
         stuck_score = 0.0 if "stuck_at" in reasons else 1.0
         response_score = 0.0 if "actuator_response_residual" in reasons else 1.0
+        cusum_score = 0.0 if "cusum_residual" in reasons else 1.0
         missing_score = 0.0 if "missing" in reasons else 1.0
         persistence_score = float(np.clip(1.0 - 0.2 * runtime.failed_count, 0.0, 1.0))
         plausibility_score = 1.0 if plausible else 0.35 * min(
@@ -281,6 +300,7 @@ class AASVR:
             trend_score,
             stuck_score,
             response_score,
+            cusum_score,
             missing_score,
         )
         weighted = (
@@ -302,6 +322,7 @@ class AASVR:
                 f"rate={rate_score:.3f}",
                 f"trend={trend_score:.3f}",
                 f"stuck={stuck_score:.3f}",
+                f"cusum={cusum_score:.3f}",
                 f"response={response_score:.3f}",
                 f"persistence={persistence_score:.3f}",
                 f"actuator_consistency={actuator_consistency:.3f}",
@@ -359,6 +380,23 @@ class AASVR:
         same_direction = np.sum(np.sign(diffs) == direction)
         monotonic_fraction = same_direction / max(len(diffs), 1)
         return bool(monotonic_fraction >= cfg.trend_min_monotonic_fraction)
+
+    def _cusum_residual_shift(self, runtime: _SensorRuntime, y: float, xi: float) -> bool:
+        cfg = runtime.config
+        if (
+            cfg.cusum_drift_multiplier <= 0
+            or cfg.cusum_threshold_multiplier <= 0
+            or runtime.trusted_value is None
+            or not np.isfinite(y)
+        ):
+            return False
+        reference = float(runtime.trusted_value)
+        residual = y - reference
+        allowance = max(cfg.uncertainty, cfg.xi_min, cfg.cusum_drift_multiplier * xi)
+        threshold = max(allowance, cfg.cusum_threshold_multiplier * xi)
+        runtime.cusum_positive = max(0.0, runtime.cusum_positive + residual - allowance)
+        runtime.cusum_negative = max(0.0, runtime.cusum_negative - residual - allowance)
+        return bool(runtime.cusum_positive > threshold or runtime.cusum_negative > threshold)
 
     def _actuator_consistency(
         self,

@@ -261,3 +261,38 @@ def test_aasvr_compact_diagnostics_omits_component_strings() -> None:
     model = AASVR(AASVRConfig(sensors=(sensor(),), q_min=0.7, compact_diagnostics=True))
     decision = model.update({"timestamp": 0, "pH": 6.1})[0]
     assert decision.trust_components == ()
+
+
+def test_sensor_specific_scale_multiplier_is_accepted_by_config() -> None:
+    cfg = SensorConfig(
+        **{
+            **sensor().__dict__,
+            "scale_multiplier": 0.5,
+            "rate_limit": 0.05,
+        }
+    )
+    model = AASVR(AASVRConfig(sensors=(cfg,), q_min=0.7, scale_multiplier=100.0))
+    model.update({"timestamp": 0, "pH": 6.0})
+    model.update({"timestamp": 1, "pH": 6.01})
+    decision = model.update({"timestamp": 2, "pH": 6.25})[0]
+    assert math.isfinite(decision.trust_score)
+
+
+def test_aasvr_cusum_residual_detects_persistent_shift() -> None:
+    cfg = SensorConfig(
+        **{
+            **sensor().__dict__,
+            "cusum_drift_multiplier": 0.1,
+            "cusum_threshold_multiplier": 0.4,
+            "rate_limit": 0.003,
+            "xi_min": 0.001,
+            "uncertainty": 0.001,
+        }
+    )
+    model = AASVR(AASVRConfig(sensors=(cfg,), q_min=0.7, scale_multiplier=1.0))
+    model.update({"timestamp": 0, "pH": 6.0})
+    decisions = [
+        model.update({"timestamp": idx, "pH": value})[0]
+        for idx, value in enumerate([6.03, 6.06, 6.09, 6.12, 6.15, 6.18], start=1)
+    ]
+    assert any("cusum_residual" in decision.reason_codes for decision in decisions)

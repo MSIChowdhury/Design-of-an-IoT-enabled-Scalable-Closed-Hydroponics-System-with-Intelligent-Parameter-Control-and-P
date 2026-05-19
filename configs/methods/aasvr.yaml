@@ -31,6 +31,8 @@ sensors:
     stuck_min_unique: 1
     response_window: 6
     response_min_delta: 0.04
+    cusum_drift_multiplier: 0.10
+    cusum_threshold_multiplier: 0.60
     risk_level: high
     actuators: ["acid_doser", "base_doser"]
     expected_direction: bidirectional
@@ -50,6 +52,8 @@ sensors:
     stuck_min_unique: 1
     response_window: 6
     response_min_delta: 30.0
+    cusum_drift_multiplier: 0.10
+    cusum_threshold_multiplier: 0.60
     risk_level: high
     actuators: ["nutrient_pump", "water_pump"]
     expected_direction: bidirectional
@@ -69,6 +73,8 @@ sensors:
     stuck_min_unique: 1
     response_window: 8
     response_min_delta: 0.3
+    cusum_drift_multiplier: 0.10
+    cusum_threshold_multiplier: 0.60
     risk_level: medium
     actuators: ["fan", "cooler"]
     expected_direction: decreasing
@@ -88,6 +94,8 @@ sensors:
     stuck_min_unique: 1
     response_window: 8
     response_min_delta: 2.0
+    cusum_drift_multiplier: 0.10
+    cusum_threshold_multiplier: 0.60
     risk_level: medium
     actuators: ["humidifier", "dehumidifier"]
     expected_direction: bidirectional
@@ -107,6 +115,8 @@ sensors:
     stuck_min_unique: 1
     response_window: 8
     response_min_delta: 0.25
+    cusum_drift_multiplier: 0.10
+    cusum_threshold_multiplier: 0.60
     risk_level: medium
     actuators: ["water_chiller"]
     expected_direction: decreasing
@@ -126,6 +136,8 @@ sensors:
     stuck_min_unique: 1
     response_window: 8
     response_min_delta: 0.5
+    cusum_drift_multiplier: 0.10
+    cusum_threshold_multiplier: 0.60
     risk_level: low
     actuators: ["reservoir_pump"]
     expected_direction: increasing
@@ -145,6 +157,8 @@ sensors:
     stuck_min_unique: 1
     response_window: 6
     response_min_delta: 80.0
+    cusum_drift_multiplier: 0.10
+    cusum_threshold_multiplier: 0.60
     risk_level: medium
     actuators: ["co2_valve", "ventilation_fan"]
     expected_direction: bidirectional
