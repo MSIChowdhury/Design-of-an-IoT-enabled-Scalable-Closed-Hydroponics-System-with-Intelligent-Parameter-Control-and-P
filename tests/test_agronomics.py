@@ -8,6 +8,7 @@ from aasvr.agronomics import (
     compute_linkage_table,
     method_exposure_from_decisions,
     prepare_agronomic_harvest,
+    read_agronomic_raw,
     summarize_agronomic_harvest,
     write_agronomic_template,
 )
@@ -62,6 +63,42 @@ def test_prepare_agronomic_harvest_writes_outputs(tmp_path: Path) -> None:
     assert outputs.processed_path.exists()
     assert outputs.quality_path.exists()
     assert pd.read_parquet(outputs.processed_path).shape[0] == 4
+
+
+def test_read_agronomic_raw_parses_wide_two_experiment_export(tmp_path: Path) -> None:
+    raw = tmp_path / "Agronomic Data.csv"
+    raw.write_text(
+        "\n".join(
+            [
+                "First Experiment,,,,,,,,,,,,,,,,,,,,,,,,,,",
+                "P1,,,,,,,,,P2,,,,,,,,,P3,,,,,,,,",
+                "Lettuce Plant,FMAP,DMAP,DRM,TPL,RL,SL,TNL,NL10,"
+                "Lettuce Plant,FMAP,DMAP,DRM,TPL,RL,SL,TNL,NL10,"
+                "Lettuce Plant,FMAP,DMAP,DRM,TPL,RL,SL,TNL,NL10",
+                "1,217.82,41.07,2.2,80.48,28.73,51.75,20,8,"
+                "1,147.3,14.81,0.87,38.04,23.97,14.07,16,12,"
+                "1,98.3,12.77,0.65,20.08,6.9,13.18,14,9",
+                ",,,,,,,,,,,,,,,,,,,,,,,,,,",
+                "Mean,252.87,34.82,1.6,81.01,35.68,45.33,20.29,10.21,"
+                "Mean,141.98,16.56,0.99,57.27,27.13,30.14,14.21,9.5,"
+                "Mean,94.09,12.38,0.76,20.67,6.09,14.58,11.93,7.07",
+                "Second Experiment,,,,,,,,,,,,,,,,,,,,,,,,,,",
+                "P1,,,,,,,,,P2,,,,,,,,,P3,,,,,,,,",
+                "Lettuce Plant,FMAP,DMAP,DRM,TPL,RL,SL,TNL,NL10,"
+                "Lettuce Plant,FMAP,DMAP,DRM,TPL,RL,SL,TNL,NL10,"
+                "Lettuce Plant,FMAP,DMAP,DRM,TPL,RL,SL,TNL,NL10",
+                "1,230.15,25.46,1.78,78.86,16.21,62.65,24,16,"
+                "1,68.4,7.57,1.58,22.97,10.78,12.19,9,2,"
+                "1,121.3,12.9,2.16,19.24,10.66,8.58,11,7",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    harvest = canonicalize_agronomic_frame(read_agronomic_raw(raw))
+    assert harvest.shape[0] == 6
+    assert set(harvest["experiment"]) == {1, 2}
+    assert set(harvest["treatment"]) == {"P1", "P2", "P3"}
+    assert "DRM_g" in harvest.columns
 
 
 def test_agronomic_summary_and_linkage_are_mechanistic_only(tmp_path: Path) -> None:

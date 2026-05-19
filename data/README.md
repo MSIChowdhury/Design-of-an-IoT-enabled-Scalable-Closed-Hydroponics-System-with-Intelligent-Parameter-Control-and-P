@@ -9,7 +9,7 @@ data/
   raw/
     hydroponic/
       Hydroponics Data First Trial.csv
-      agronomic_harvest.csv
+      Agronomic Data.csv
       experiment_1_events.csv
       experiment_2.csv
       experiment_2_events.csv
@@ -31,10 +31,12 @@ Use `python scripts/run_all.py --available-real` to run locally available real d
 For the current first-trial hydroponic feed, `Water_Level` is retained only in raw data
 and excluded from primary analysis until calibration is available.
 
-The optional agronomic linkage pipeline expects per-plant harvest data at
-`data/raw/hydroponic/agronomic_harvest.csv`. Generate the required schema with
-`python scripts/22_prepare_agronomic.py --write-template`, or copy the tracked
-template at `configs/templates/agronomic_harvest_template.csv`, then fill one row per plant.
+The optional agronomic linkage pipeline uses per-plant harvest data at
+`data/raw/hydroponic/Agronomic Data.csv`. It supports the current wide two-experiment
+export, the compact ANOVA export, and the normalized template schema. Generate the
+normalized schema with `python scripts/22_prepare_agronomic.py --write-template`, or
+copy the tracked template at `configs/templates/agronomic_harvest_template.csv`, then
+fill one row per plant.
 TNL and NL10 must be recorded as counts, not centimeters. The linkage analysis is
 mechanistic deployment context only; it must not be interpreted as causal evidence
 that AASVR-R alone caused yield differences among P1, P2, and P3.

@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 
-AGRONOMIC_RAW = Path("data/raw/hydroponic/agronomic_harvest.csv")
+AGRONOMIC_RAW = Path("data/raw/hydroponic/Agronomic Data.csv")
 AGRONOMIC_TEMPLATE = Path("data/raw/hydroponic/agronomic_harvest_template.csv")
 AGRONOMIC_PROCESSED = Path("data/processed/hydro_agronomic_harvest.parquet")
 AGRONOMIC_QUALITY = Path("results/run_metadata/hydro_agronomic_data_quality.csv")
@@ -26,6 +26,7 @@ REQUIRED_COLUMNS = (
 )
 
 OPTIONAL_COLUMNS = (
+    "DRM_g",
     "protein_g_100g",
     "fat_g_100g",
     "tdf_g_100g",
@@ -81,7 +82,7 @@ def prepare_agronomic_harvest(
             f"Missing agronomic harvest sheet: {raw_path}. "
             f"Run scripts/22_prepare_agronomic.py --write-template and fill the per-plant values."
         )
-    frame = pd.read_csv(raw_path)
+    frame = read_agronomic_raw(raw_path)
     harvest = canonicalize_agronomic_frame(frame)
     quality = agronomic_quality_report(harvest, raw_path=raw_path)
 
@@ -92,6 +93,102 @@ def prepare_agronomic_harvest(
     harvest.to_parquet(processed_path, index=False)
     quality.to_csv(quality_path, index=False)
     return AgronomicOutputs(processed_path=processed_path, quality_path=quality_path)
+
+
+def read_agronomic_raw(raw_path: str | Path) -> pd.DataFrame:
+    raw_path = Path(raw_path)
+    frame = pd.read_csv(raw_path)
+    if set(REQUIRED_COLUMNS).issubset(frame.columns):
+        return frame
+    if {"Treatment", "FMAP", "DMAP", "TPL", "RL", "SL", "TNL", "NL10"}.issubset(frame.columns):
+        return _parse_compact_anova_frame(frame, experiment=1)
+    wide = pd.read_csv(raw_path, header=None)
+    if _looks_like_wide_agronomic_frame(wide):
+        return _parse_wide_agronomic_frame(wide)
+    raise ValueError(
+        "Unsupported agronomic harvest format. Expected the tracked template schema, "
+        "the compact ANOVA export, or the wide two-experiment agronomic export."
+    )
+
+
+def _looks_like_wide_agronomic_frame(frame: pd.DataFrame) -> bool:
+    first_col = frame.iloc[:, 0].astype(str).str.lower()
+    return first_col.str.contains("first experiment", na=False).any() or first_col.str.contains(
+        "second experiment", na=False
+    ).any()
+
+
+def _parse_wide_agronomic_frame(frame: pd.DataFrame) -> pd.DataFrame:
+    rows: list[dict[str, object]] = []
+    first_col = frame.iloc[:, 0].astype(str).str.strip().str.lower()
+    starts = [
+        (idx, 1 if "first experiment" in value else 2)
+        for idx, value in first_col.items()
+        if "first experiment" in value or "second experiment" in value
+    ]
+    block_width = 9
+    for section_start, experiment in starts:
+        treatment_row = frame.iloc[section_start + 1]
+        header_row = frame.iloc[section_start + 2]
+        for block_start in range(0, min(len(frame.columns), 27), block_width):
+            treatment = str(treatment_row.iloc[block_start]).strip().upper()
+            if treatment not in {"P1", "P2", "P3"}:
+                continue
+            headers = [str(value).strip() for value in header_row.iloc[block_start : block_start + block_width]]
+            for row_idx in range(section_start + 3, len(frame)):
+                values = frame.iloc[row_idx, block_start : block_start + block_width].tolist()
+                plant_token = values[0] if values else None
+                if pd.isna(plant_token):
+                    break
+                plant_text = str(plant_token).strip()
+                if not plant_text or plant_text.lower() in {"mean", "standard deviation", "median"}:
+                    break
+                record = dict(zip(headers, values, strict=False))
+                rows.append(_wide_record_to_canonical(record, experiment=experiment, treatment=treatment))
+    if not rows:
+        raise ValueError("No per-plant records found in wide agronomic export.")
+    return pd.DataFrame(rows)
+
+
+def _wide_record_to_canonical(record: dict[str, object], *, experiment: int, treatment: str) -> dict[str, object]:
+    plant = str(record.get("Lettuce Plant", "")).strip()
+    return {
+        "experiment": experiment,
+        "treatment": treatment,
+        "plant_id": f"E{experiment}_{treatment}_{plant.zfill(3)}",
+        "FMAP_g": record.get("FMAP"),
+        "DMAP_g": record.get("DMAP"),
+        "DRM_g": record.get("DRM"),
+        "TPL_cm": record.get("TPL"),
+        "RL_cm": record.get("RL"),
+        "SL_cm": record.get("SL"),
+        "TNL_count": record.get("TNL"),
+        "NL10_count": record.get("NL10"),
+    }
+
+
+def _parse_compact_anova_frame(frame: pd.DataFrame, *, experiment: int) -> pd.DataFrame:
+    rows = []
+    counters: dict[str, int] = {}
+    for row in frame.to_dict("records"):
+        treatment = str(row["Treatment"]).strip().upper()
+        counters[treatment] = counters.get(treatment, 0) + 1
+        rows.append(
+            {
+                "experiment": experiment,
+                "treatment": treatment,
+                "plant_id": f"E{experiment}_{treatment}_{counters[treatment]:03d}",
+                "FMAP_g": row.get("FMAP"),
+                "DMAP_g": row.get("DMAP"),
+                "DRM_g": row.get("DRM"),
+                "TPL_cm": row.get("TPL"),
+                "RL_cm": row.get("RL"),
+                "SL_cm": row.get("SL"),
+                "TNL_count": row.get("TNL"),
+                "NL10_count": row.get("NL10"),
+            }
+        )
+    return pd.DataFrame(rows)
 
 
 def canonicalize_agronomic_frame(frame: pd.DataFrame) -> pd.DataFrame:

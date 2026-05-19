@@ -57,8 +57,8 @@ uses AASVR-R as the main method and reports the held-out benchmark in
 
 These results are synthetic-fault benchmark results, not agronomic causality
 claims. Crop-yield and dashboard material are retained only as deployment context.
-The optional agronomic linkage pipeline expects a per-plant harvest sheet at
-`data/raw/hydroponic/agronomic_harvest.csv`; generate the template with
+The optional agronomic linkage pipeline uses the per-plant harvest sheet at
+`data/raw/hydroponic/Agronomic Data.csv`; for a normalized replacement, generate the template with
 `python scripts/22_prepare_agronomic.py --write-template` or copy
 `configs/templates/agronomic_harvest_template.csv`.
 

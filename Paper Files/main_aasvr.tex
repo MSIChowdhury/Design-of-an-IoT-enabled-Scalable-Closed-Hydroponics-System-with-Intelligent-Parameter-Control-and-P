@@ -317,7 +317,7 @@ where $c_s(t)=1$ after a confirmed response and $c_s(t)=0$ after a failed respon
 The hydroponic data contain 121244 raw rows collected from 2024-02-27 to 2024-03-28 at a median cadence of approximately 16 seconds. The primary analysis uses EC, pH, humidity, air temperature, water temperature, and CO2. Water level is part of the deployed system but is excluded from the primary analysis because the available raw values are not defensibly calibrated.
 
 \subsection{Agronomic linkage protocol}
-Agronomic measurements are treated as deployment-context outcomes rather than as causal evidence for the algorithm. When per-plant harvest records are available, the analysis uses experiment, treatment, plant identifier, fresh and dry mass of aerial part, total plant length, root length, shoot length, total leaf count, and leaves longer than 10 cm. Total leaf count and leaves longer than 10 cm are counts, not length measurements. The linkage analysis connects P1 harvest outcomes to measurement-to-actuation exposure metrics from the hydroponic replay: unsafe-band residence, untrusted-sample rate, alert rate, authorization rate, response-residual rate, and raw-to-trusted instability. P2 and P3 remain agronomic comparators only because they did not generate AASVR-R decision streams. This design supports the mechanistic claim that AASVR-R reduces unreliable control exposure during a complete growth cycle; it does not isolate AASVR-R from enclosure, lighting, cooling, CO2 regulation, nutrient delivery, or automation.
+Agronomic measurements are treated as deployment-context outcomes rather than as causal evidence for the algorithm. The per-plant harvest file contains 63 records across two experiments and three treatments. The analysis uses experiment, treatment, plant identifier, fresh and dry mass of aerial part, total plant length, root length, shoot length, total leaf count, and leaves longer than 10 cm. Total leaf count and leaves longer than 10 cm are counts, not length measurements. The linkage analysis connects P1 harvest outcomes to measurement-to-actuation exposure metrics from the hydroponic replay: unsafe-band residence, untrusted-sample rate, alert rate, authorization rate, response-residual rate, and raw-to-trusted instability. P2 and P3 remain agronomic comparators only because they did not generate AASVR-R decision streams. This design supports the mechanistic claim that AASVR-R reduces unreliable control exposure during a complete growth cycle; it does not isolate AASVR-R from enclosure, lighting, cooling, CO2 regulation, nutrient delivery, or automation.
 
 \subsection{Supplementary external stress tests}
 HAI 21.03 and SKAB are retained in the reproducibility outputs as supplementary stress tests rather than as main evidence. Their labels describe cyber-physical attacks and process-loop anomalies, not hydroponic sensor faults. The direct-transfer results are therefore reported only as a limitation check.
@@ -377,7 +377,7 @@ Proposed method & AASVR-R & Validation, rectification, authorization, and respon
 \FloatBarrier
 
 \section{Results}
-The results are organized as follows. Section 7.1 characterizes the hydroponic streams. Section 7.2 reports the held-out synthetic-fault benchmark and paired tests. Section 7.3 breaks performance down by sensor and fault class. Section 7.4 separates the contribution of gating, rectification, and authorization. Section 7.5 reports ablations and tuning sensitivity, and Section 7.6 connects the aggregate benchmark to representative deployment traces.
+The results are organized as follows. Section 7.1 characterizes the hydroponic streams. Section 7.2 reports the held-out synthetic-fault benchmark and paired tests. Section 7.3 breaks performance down by sensor and fault class. Section 7.4 separates the contribution of gating, rectification, and authorization. Section 7.5 reports ablations and tuning sensitivity. Section 7.6 links per-plant agronomic outcomes to replay-derived exposure metrics, and Section 7.7 connects the aggregate benchmark to representative deployment traces.
 
 \subsection{Hydroponic deployment characterization}
 The deployment data are first used to characterize the real measurement background on which AASVR operates. The 121244-row feed covers a continuous 30-day lettuce growth period, with approximately 16-second median sampling. The key point for this paper is not that the dashboard collected data, but that the closed-loop system generated the kind of sensor-to-actuator stream in which a bad reading can trigger a physical correction.
@@ -579,6 +579,48 @@ $c_s$ & $q_{\min}$ & Transient limit & Bal. acc. & Objective \\
 6.0 & 0.55 & 1 & \best{0.824} & \best{0.744} \\
 \bottomrule
 \end{tabular}
+\end{table}
+
+\subsection{Agronomic deployment linkage}
+Table~\ref{tab:agronomic_summary} reports the per-plant harvest summary from the two lettuce experiments. P1 has the largest fresh aerial mass and NL10 count in both experiments, but this comparison is not interpreted causally because P1 differs from P2 and P3 in enclosure, lighting, cooling, CO2 regulation, nutrient delivery, and automation. Instead, the agronomic data are used to verify that the measurement-to-actuation pipeline operated through a complete crop cycle and to attach plant-level context to replay-derived control-risk exposure.
+
+\begin{table}[!htbp]
+\centering
+\caption{Agronomic deployment context from the per-plant harvest file. Values are mean with bootstrap 95\% confidence intervals. TNL and NL10 are counts.}
+\label{tab:agronomic_summary}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrr}
+\toprule
+Experiment & Treatment & FMAP (g) & TPL (cm) & NL10 (count) \\
+\midrule
+1 & P1 & 252.87 [236.74, 270.13] & 81.01 [79.85, 82.02] & 10.21 [8.57, 12.00] \\
+1 & P2 & 141.98 [133.22, 150.98] & 57.27 [49.80, 64.06] & 9.50 [7.71, 11.29] \\
+1 & P3 & 94.09 [88.75, 99.42] & 20.67 [19.67, 21.67] & 7.07 [6.00, 8.29] \\
+2 & P1 & 264.81 [243.49, 291.51] & 72.52 [64.92, 80.14] & 13.00 [11.71, 14.43] \\
+2 & P2 & 68.24 [54.94, 81.33] & 19.46 [17.19, 21.90] & 3.00 [2.29, 3.86] \\
+2 & P3 & 109.49 [95.33, 126.83] & 20.12 [18.77, 21.59] & 7.57 [6.57, 8.57] \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+The exposure linkage in Table~\ref{tab:agronomic_linkage} is restricted to P1 because only P1 produced the sensor-to-actuator decision stream used by AASVR-R. On the full deployment replay, AASVR-R retains the same trusted-state instability profile as AASVR but reduces the replay authorization rate from 0.0835 to 0.000015. Relative to raw thresholding, the authorization rate drops from 0.2646 to 0.000015. This is reported as reduction in authorization exposure during the crop cycle, not as measured physical dosing reduction.
+
+\begin{table}[!htbp]
+\centering
+\caption{P1 agronomic linkage to replay-derived measurement-to-actuation exposure. Rates are fractions of sensor-sample decisions over the hydroponic feed.}
+\label{tab:agronomic_linkage}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrr}
+\toprule
+Method & Untrusted rate & Alert rate & Authorization rate & Response-residual rate \\
+\midrule
+Raw threshold & 0.001765 & 0.001765 & 0.264626 & 0.000000 \\
+AASVR & 0.217791 & 0.147743 & 0.083472 & 0.000000 \\
+AASVR-R & 0.217796 & 0.147743 & \best{0.000015} & 0.000005 \\
+\bottomrule
+\end{tabular}
+}
 \end{table}
 
 \subsection{Counterfactual response replay}

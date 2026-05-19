@@ -69,7 +69,7 @@ def run_available_real(*, dataset_profile: str = "paper") -> None:
     ]
     for command in commands:
         subprocess.run([sys.executable, *command], check=True)
-    agronomic_raw = ROOT / "data/raw/hydroponic/agronomic_harvest.csv"
+    agronomic_raw = ROOT / "data/raw/hydroponic/Agronomic Data.csv"
     if agronomic_raw.exists():
         subprocess.run([sys.executable, "scripts/22_prepare_agronomic.py"], check=True)
         subprocess.run([sys.executable, "scripts/23_agronomic_linkage.py"], check=True)
