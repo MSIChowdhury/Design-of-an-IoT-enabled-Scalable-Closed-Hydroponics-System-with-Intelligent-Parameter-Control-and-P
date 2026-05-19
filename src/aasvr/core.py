@@ -29,6 +29,7 @@ class SensorConfig:
     stuck_window: int = 0
     stuck_sigma_min: float = 1e-9
     stuck_min_unique: int = 1
+    stuck_latch_samples: int = 0
     response_window: int = 0
     response_min_delta: float = 0.0
     calibrated_xi: float | None = None
@@ -103,6 +104,9 @@ class _SensorRuntime:
     response_observations: int = 0
     cusum_positive: float = 0.0
     cusum_negative: float = 0.0
+    stuck_active_value: float | None = None
+    stuck_latch_remaining: int = 0
+    stuck_exhausted_value: float | None = None
 
 
 class AASVR:
@@ -334,7 +338,24 @@ class AASVR:
     def _stuck_at(self, runtime: _SensorRuntime, y: float) -> bool:
         cfg = runtime.config
         if cfg.stuck_window <= 1 or not np.isfinite(y):
+            runtime.stuck_active_value = None
+            runtime.stuck_latch_remaining = 0
+            runtime.stuck_exhausted_value = None
             return False
+        if runtime.stuck_exhausted_value is not None:
+            same_exhausted_value = abs(y - runtime.stuck_exhausted_value) <= max(cfg.uncertainty, cfg.xi_min) * 1e-6
+            if same_exhausted_value:
+                return False
+            runtime.stuck_exhausted_value = None
+        if runtime.stuck_active_value is not None:
+            same_latched_value = abs(y - runtime.stuck_active_value) <= max(cfg.uncertainty, cfg.xi_min) * 1e-6
+            if same_latched_value and runtime.stuck_latch_remaining > 0:
+                runtime.stuck_latch_remaining -= 1
+                return True
+            if same_latched_value:
+                runtime.stuck_exhausted_value = runtime.stuck_active_value
+            runtime.stuck_active_value = None
+            runtime.stuck_latch_remaining = 0
         values = [value for value in list(runtime.history)[-(cfg.stuck_window - 1) :] if np.isfinite(value)]
         values.append(y)
         if len(values) < cfg.stuck_window:
@@ -348,10 +369,16 @@ class AASVR:
             return False
         history = [value for value in runtime.history if np.isfinite(value)]
         if len(history) < cfg.stuck_window:
+            runtime.stuck_active_value = float(arr[-1])
+            runtime.stuck_latch_remaining = max(0, cfg.stuck_latch_samples)
             return True
         previous = history[-cfg.stuck_window]
         change_threshold = max(cfg.uncertainty, cfg.xi_min) * 0.1
-        return bool(abs(previous - arr[0]) > change_threshold)
+        detected = bool(abs(previous - arr[0]) > change_threshold)
+        if detected:
+            runtime.stuck_active_value = float(arr[-1])
+            runtime.stuck_latch_remaining = max(0, cfg.stuck_latch_samples)
+        return detected
 
     def _uncommanded_trend(
         self,

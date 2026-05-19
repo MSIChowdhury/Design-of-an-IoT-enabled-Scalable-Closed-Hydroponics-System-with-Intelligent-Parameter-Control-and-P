@@ -168,6 +168,41 @@ def test_aasvr_rejects_plausible_stuck_at_fault() -> None:
     assert not stuck_decisions[0].actuation_authorized
 
 
+def test_aasvr_latches_stuck_at_until_value_changes() -> None:
+    cfg = SensorConfig(
+        **{
+            **sensor().__dict__,
+            "stuck_window": 3,
+            "stuck_sigma_min": 1e-9,
+            "stuck_min_unique": 1,
+            "stuck_latch_samples": 2,
+        }
+    )
+    model = AASVR(AASVRConfig(sensors=(cfg,), q_min=0.7))
+    values = [6.00, 6.05, 6.05, 6.05, 6.05, 6.05, 6.10]
+    decisions = [model.update({"timestamp": idx, "pH": value})[0] for idx, value in enumerate(values)]
+    stuck_indices = [idx for idx, decision in enumerate(decisions) if "stuck_at" in decision.reason_codes]
+    assert stuck_indices == [3, 4, 5]
+    assert decisions[-1].gate_result == "accept"
+
+
+def test_aasvr_stuck_latch_expires_for_persistently_flat_signal() -> None:
+    cfg = SensorConfig(
+        **{
+            **sensor().__dict__,
+            "stuck_window": 3,
+            "stuck_sigma_min": 1e-9,
+            "stuck_min_unique": 1,
+            "stuck_latch_samples": 1,
+        }
+    )
+    model = AASVR(AASVRConfig(sensors=(cfg,), q_min=0.7))
+    values = [6.00, 6.05, 6.05, 6.05, 6.05, 6.05, 6.05]
+    decisions = [model.update({"timestamp": idx, "pH": value})[0] for idx, value in enumerate(values)]
+    stuck_indices = [idx for idx, decision in enumerate(decisions) if "stuck_at" in decision.reason_codes]
+    assert stuck_indices == [3, 4]
+
+
 def test_aasvr_does_not_flag_stable_noisy_signal_as_stuck() -> None:
     cfg = SensorConfig(
         **{
