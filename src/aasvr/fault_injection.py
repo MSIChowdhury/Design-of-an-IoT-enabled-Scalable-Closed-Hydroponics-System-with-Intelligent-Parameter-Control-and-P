@@ -14,6 +14,8 @@ class FaultSpec:
     duration: int
     magnitude: float
     seed: int = 17
+    physical_min: float | None = None
+    physical_max: float | None = None
 
 
 def inject_fault(frame: pd.DataFrame, spec: FaultSpec) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -38,10 +40,22 @@ def inject_fault(frame: pd.DataFrame, spec: FaultSpec) -> tuple[pd.DataFrame, pd
         out.loc[idx, spec.sensor] = original + signs * spec.magnitude
     elif spec.fault_type == "stuck_at":
         out.loc[idx, spec.sensor] = float(original.iloc[0])
+    elif spec.fault_type == "stuck_plausible":
+        out.loc[idx, spec.sensor] = _plausible_stuck_value(original, spec)
+    elif spec.fault_type == "stuck_implausible":
+        out.loc[idx, spec.sensor] = _implausible_stuck_value(original, spec)
     elif spec.fault_type == "dropout":
         out.loc[idx, spec.sensor] = np.nan
     elif spec.fault_type == "saturation":
         out.loc[idx, spec.sensor] = spec.magnitude
+    elif spec.fault_type == "saturation_high":
+        out.loc[idx, spec.sensor] = (
+            spec.physical_max if spec.physical_max is not None else float(np.nanmax(original))
+        )
+    elif spec.fault_type == "saturation_low":
+        out.loc[idx, spec.sensor] = (
+            spec.physical_min if spec.physical_min is not None else float(np.nanmin(original))
+        )
     elif spec.fault_type == "drift":
         out.loc[idx, spec.sensor] = original + np.linspace(0, spec.magnitude, len(idx))
     elif spec.fault_type == "gain_drift":
@@ -54,6 +68,13 @@ def inject_fault(frame: pd.DataFrame, spec: FaultSpec) -> tuple[pd.DataFrame, pd
     elif spec.fault_type == "noise_burst":
         rng = np.random.default_rng(spec.seed)
         out.loc[idx, spec.sensor] = original + rng.normal(0, abs(spec.magnitude), len(idx))
+    elif spec.fault_type == "intermittent_burst":
+        rng = np.random.default_rng(spec.seed)
+        mask = rng.random(len(idx)) < 0.35
+        signs = rng.choice([-1.0, 1.0], size=len(idx))
+        values = original.to_numpy(dtype=float).copy()
+        values[mask] = values[mask] + signs[mask] * spec.magnitude
+        out.loc[idx, spec.sensor] = values
     elif spec.fault_type == "step":
         out.loc[idx, spec.sensor] = original + spec.magnitude
     else:
@@ -61,6 +82,21 @@ def inject_fault(frame: pd.DataFrame, spec: FaultSpec) -> tuple[pd.DataFrame, pd
     labels.loc[idx, "fault"] = True
     labels.loc[idx, "fault_type"] = spec.fault_type
     return out, labels
+
+
+def _plausible_stuck_value(original: pd.Series, spec: FaultSpec) -> float:
+    value = float(original.iloc[0])
+    if spec.physical_min is not None and spec.physical_max is not None:
+        return float(np.clip(value, spec.physical_min, spec.physical_max))
+    return value
+
+
+def _implausible_stuck_value(original: pd.Series, spec: FaultSpec) -> float:
+    if spec.physical_max is not None:
+        return float(spec.physical_max + abs(spec.magnitude))
+    if spec.physical_min is not None:
+        return float(spec.physical_min - abs(spec.magnitude))
+    return float(original.iloc[0] + abs(spec.magnitude))
 
 
 def make_fault_grid(

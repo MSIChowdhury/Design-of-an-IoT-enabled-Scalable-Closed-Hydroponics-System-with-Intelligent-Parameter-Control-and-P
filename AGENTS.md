@@ -24,6 +24,7 @@ The research compares the proposed automated treatment against soil-based and ma
 - `configs/methods/baselines.yaml`: baseline comparison manifest. The hydroponic synthetic-fault benchmark now includes raw thresholding, the original manuscript method, moving average/median, Hampel, Kalman, EWMA, CUSUM, PCA-style residual monitoring, Isolation Forest, One-Class SVM, and LOF. Full-feed hydroponic replay is intentionally limited by `full_replay` so large baseline-decision CSVs are not regenerated unless explicitly requested.
 - `scripts/14_tune_baselines.py`: validation-split baseline tuner. It tunes baseline hyperparameters with the same control-aware objective family used for AASVR before held-out test scoring.
 - `scripts/10_run_ablation.py` and `scripts/11_statistical_analysis.py`: hydroponic Experiment 1 robustness layer for AASVR component ablations, bootstrap confidence intervals, method ranks, sensor-wise summaries, and fault-type summaries.
+- `configs/experiments/exhaustive_hydro.yaml` and `scripts/26_build_exhaustive_fault_grid.py`--`scripts/29_aggregate_exhaustive_results.py`: exhaustive hydroponic stress-test protocol, shardable benchmark runner, AASVR-R sweep runner, and aggregation utilities. The `mini` profile is a smoke test; the `exhaustive` profile defines 403200 tune/validation/test trial descriptors before method expansion.
 - External dataset scripts are availability-aware: place local CSV files under the configured `data/raw/<dataset>/` directory, then run `make real` to prepare, replay methods, score native labels, and include them in cross-dataset tables. Public easy-access routes currently include HAI and SKAB, with supported paths for MetroPT-3, BATADAL, and a small TEP CSV subset.
 - External benchmark acquisition defaults to the `paper` subset profile, which writes notes and subset-protocol tables without downloading very large public archives. Use `--profile full --download` only as an explicit opt-in.
 - `manuscript/`: ISA Transactions scaffold including anonymized manuscript, title page, highlights, cover letter, data statement, and rewrite notes.
@@ -72,6 +73,25 @@ Run the locally available real-data pipeline:
 docker compose run --rm project-shell make real
 ```
 
+Run the exhaustive hydroponic benchmark smoke test:
+
+```bash
+docker compose run --rm project-shell make exhaustive-mini
+```
+
+Build the full exhaustive trial descriptor grid without executing method replays:
+
+```bash
+docker compose run --rm project-shell make exhaustive-grid
+```
+
+Run the full exhaustive benchmark in shards, then aggregate completed shards:
+
+```bash
+docker compose run --rm project-shell python scripts/27_run_exhaustive_benchmark.py --profile exhaustive --split test --shard-index 0 --shard-count 32
+docker compose run --rm project-shell python scripts/29_aggregate_exhaustive_results.py --profile exhaustive --split test
+```
+
 Run MATLAB-like scripts with Octave from inside the container when compatible:
 
 ```bash
@@ -89,6 +109,7 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - Do not commit new secrets. The existing Google service-account JSON appears sensitive; avoid copying it into derived files, logs, screenshots, or documentation.
 - Do not assume missing datasets are available. The notebooks reference CSV files that are not currently present in the repository.
 - Do not commit raw external benchmark datasets, request-access SWaT/WaDi files, or generated large outputs. Use local `data/raw/` placement and scripts/configs to reproduce.
+- Do not commit exhaustive benchmark generated grids, shards, or aggregate CSVs under `data/synthetic/` or `results/`; they are reproducible outputs and can become very large.
 - Treat `data/raw/hydroponic/Hydroponics Data First Trial.csv` as local raw Experiment 1 data if present. It is ignored by git and should not be committed.
 - Treat `data/raw/hydroponic/Agronomic Data.csv` as the authoritative per-plant harvest sheet for agronomic linkage when present. The parser supports the current wide two-experiment export plus normalized template/ANOVA exports. Keep TNL/NL10 as counts, and interpret linkage outputs as mechanistic deployment context rather than causal yield evidence.
 - Optional limitation-closing hydroponic files are supported but not required: `data/raw/hydroponic/actuator_state_log.csv`, `data/raw/hydroponic/reference_measurements.csv`, and `data/raw/hydroponic/water_level_calibration.csv`. Generate schemas with `make optional-evidence` and `make water-calibration`; missing files should produce explicit absence-status outputs rather than breaking the benchmark.
@@ -145,3 +166,4 @@ The current MATLAB script uses absolute Windows file paths and may require edits
 - 2026-05-19: Updated the agronomic pipeline to parse the locally provided `Agronomic Data.csv` wide two-experiment harvest export directly, generated the 63-record agronomic processed/linkage outputs, and added actual harvest/linkage tables to the ISA manuscript without causal yield claims.
 - 2026-05-19: Added absence-safe optional-evidence support for remaining limitations: actuator-state log, independent reference measurement, and water-level calibration schemas; real actuator-response scoring and water-level calibration utilities; Docker Make targets, tests, README/data documentation, and manuscript text specifying how future deployments can convert current counterfactual limitations into measured evidence.
 - 2026-05-19: Addressed third-round AASVR-R reviewer concerns by reframing counterfactual response replay as a capability demonstration, adding missed authorization opportunity and authorization counts to agronomic linkage, labeling sign-test correction and BA-difference variance in paired statistics, relabeling ablations around AASVR-R, adding response-parameter and water-level calibration details, moving the audit trail near the headline benchmark, and rebuilding the author/blinded PDFs.
+- 2026-05-19: Added the exhaustive hydroponic benchmark protocol: expanded fault injection types, full-factorial/shardable trial-grid generation, AASVR-R sweep generation, shard aggregation with per-cell counts and bootstrap intervals, Make targets, tests, README documentation, and manuscript text reframing novelty around the supervisor interface while noting the exhaustive run as the final large-scale sensitivity protocol.

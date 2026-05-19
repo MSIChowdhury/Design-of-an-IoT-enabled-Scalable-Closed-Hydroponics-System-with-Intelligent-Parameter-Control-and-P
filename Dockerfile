@@ -12,6 +12,7 @@ RUN apt-get update \
         build-essential \
         git \
         latexmk \
+        lmodern \
         octave \
         octave-io \
         octave-statistics \

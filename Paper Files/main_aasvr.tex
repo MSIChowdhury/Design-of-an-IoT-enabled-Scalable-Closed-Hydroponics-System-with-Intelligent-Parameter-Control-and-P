@@ -7,6 +7,7 @@
 \input{glyphtounicode}
 \pdfgentounicode=1
 \usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{algorithm}
@@ -43,7 +44,7 @@
 \fi
 
 \begin{abstract}
-Unlike a conventional detector, AASVR-R can record a suspect measurement while withholding its authority to drive an actuator. This paper proposes AASVR-R, a streaming measurement-to-actuation reliability layer for closed-loop hydroponic control. The method combines robust plausibility gates, a standard Page/CUSUM residual test for small persistent shifts, persistence states, bounded rectification, actuator-response residuals, sensor reliability memory, and risk-aware authorization. Held-out replay on a real NFT hydroponic deployment shows competitive detection against tuned filtering, process-monitoring, model-based, and one-class baselines while preserving low false-authorized actuation and an auditable decision trail. Counterfactual response and diagnostic-excitation replays are used as capability demonstrations showing how actuator-response evidence can identify no-response, weak-response, and stuck-after-command behavior that single-stream plausibility gates miss. The results identify actuator-state logging and reference sensing as the principal requirements for resolving plausible stuck values in future deployments.
+This paper proposes AASVR-R, a streaming measurement-to-actuation reliability layer for closed-loop hydroponic control. Unlike a conventional detector, AASVR-R can record a suspect measurement while withholding its authority to drive an actuator. The novelty is the auditable supervisor interface: validation, trusted-state update, rectification, authorization, and response verification are separate decisions, while standard robust gates and Page/CUSUM residual tests provide the signal-domain evidence. Held-out replay on a real NFT hydroponic deployment shows competitive detection against tuned filtering, process-monitoring, model-based, and one-class baselines while preserving low false-authorized actuation and a traceable decision log. Counterfactual response and diagnostic-excitation replays are treated as capability demonstrations, not measured closed-loop evidence. The results identify actuator-state logging and reference sensing as the principal requirements for resolving plausible stuck values in future deployments.
 \end{abstract}
 
 \begin{keyword}
@@ -60,7 +61,7 @@ Standard filtering and anomaly-detection methods usually score the signal. Close
 We present a closed-loop NFT hydroponic platform and propose AASVR-R, an actuation- and response-aware sensor-validation layer, as its fault-resilience mechanism. The contribution is structural: AASVR-R formalizes a supervisory measurement-to-actuation interface in which robust gates decide whether a sample is plausible, a state machine decides whether it can update the trusted state, a rectifier decides what value is exposed to control, an authorization rule decides whether actuation is allowed, and a response residual checks whether the measured process reacts as expected after an authorized command. The contributions are:
 \begin{enumerate}
 \item an integrated hydroponic deployment dataset and sensor-to-actuator formulation for NFT control;
-\item AASVR-R, a streaming validation, standard sequential residual testing, rectification, authorization, and actuator-response verification method with explicit trust scoring and bounded updates;
+\item AASVR-R, a streaming supervisory interface that couples standard validation evidence, bounded rectification, risk-aware authorization, and actuator-response reliability memory;
 \item a held-out synthetic-fault protocol with validation-only tuning, tuned baselines, ablations, component analysis, and paired statistical tests;
 \item a reproducible Docker and LaTeX workflow that regenerates the tables, figures, and diagnostic outputs.
 \end{enumerate}
@@ -70,7 +71,7 @@ We present a closed-loop NFT hydroponic platform and propose AASVR-R, an actuati
 Sensor data-quality reviews distinguish missingness, outliers, drift, stuck values, saturation, and inconsistent rates as recurring faults in deployed systems \cite{teh2020sensorquality}. Agricultural IoT systems face the same problem when sensor failure or miscalibration propagates into monitoring or control decisions \cite{zou2023agriiotfaults,lin2019sensortalk}. In closed-loop hydroponics, these faults have downstream consequences because an erroneous measurement can change the actuator command. This motivates treating validation, rectification, and actuation as separate decisions rather than as one smoothing step.
 
 \subsection{Filtering and monitoring baselines}
-The baseline family used in this paper covers common online filters, process-monitoring methods, model-based statistical tests, and lightweight one-class anomaly detectors. Hampel-style robust outlier detection uses robust scale estimates to suppress isolated deviations \cite{hampel1974influence}. Kalman filtering gives a probabilistic recursive estimator for linear dynamical systems \cite{kalman1960new}. EWMA and CUSUM-style monitoring are standard approaches for persistent shifts \cite{roberts1959control,page1954continuous}. Generalized likelihood ratio (GLR) tests provide a classical statistical framework for abrupt change detection \cite{basseville1993detection}. PCA and recursive PCA-style residual monitoring use residual statistics to capture coordinated changes or adaptive operating regimes \cite{hotelling1947multivariate,jackson1979control,li2000recursive}. Isolation Forest, One-Class SVM, and local outlier factor add common one-class machine-learning comparisons for anomaly detection \cite{liu2008isolation,scholkopf2001estimating,breunig2000lof}. Existing hydroponic automation studies have demonstrated reliable pH/EC regulation and IoT monitoring, but they generally treat validation as part of measurement filtering or rule execution rather than as a separate authorization decision \cite{tatas2022reliable,domingues2012automated}. AASVR-R is complementary to these methods because it adds a control-facing authorization interface.
+The baseline family used in this paper covers common online filters, process-monitoring methods, model-based statistical tests, and lightweight one-class anomaly detectors. Hampel-style robust outlier detection uses robust scale estimates to suppress isolated deviations \cite{hampel1974influence}. Kalman filtering gives a probabilistic recursive estimator for linear dynamical systems \cite{kalman1960new}. EWMA and CUSUM-style monitoring are standard approaches for persistent shifts \cite{roberts1959control,page1954continuous}. Generalized likelihood ratio (GLR) tests provide a classical statistical framework for abrupt change detection \cite{basseville1993detection}. Analytical redundancy, parity/observer residuals, and reconfiguration logic are central themes in fault-detection and isolation (FDI) for control systems \cite{patton1989fault,isermann2005fault,hwang2010survey}; AASVR-R does not replace these model-based methods, but supplies the controller-facing supervisor that decides whether a measurement or residual may drive actuation. PCA and recursive PCA-style residual monitoring use residual statistics to capture coordinated changes or adaptive operating regimes \cite{hotelling1947multivariate,jackson1979control,li2000recursive}. Isolation Forest, One-Class SVM, and local outlier factor add common one-class machine-learning comparisons for anomaly detection \cite{liu2008isolation,scholkopf2001estimating,breunig2000lof}. Existing hydroponic automation studies have demonstrated reliable pH/EC regulation and IoT monitoring, but they generally treat validation as part of measurement filtering or rule execution rather than as a separate authorization decision \cite{tatas2022reliable,domingues2012automated}. AASVR-R is complementary to these methods because it adds a control-facing authorization interface.
 
 \subsection{External process datasets}
 Public process datasets are useful stress tests for measurement validation, but their labels do not necessarily represent hydroponic sensor faults. HAI 21.03 contains industrial-control attack data from a hardware-in-the-loop testbed \cite{shin2021haicon}, and SKAB contains multivariate process-loop experiments with anomaly and changepoint labels \cite{skab2020}. These datasets are retained in the reproducibility artifacts as supplementary transfer checks, not as headline evidence. SWaT, WaDi, and Tennessee Eastman remain relevant larger benchmarks for future validation under their respective access and redistribution constraints \cite{swatDataset,wadiDataset,tepDataset}.
@@ -228,7 +229,32 @@ AASVR-R also computes a continuous trust score so that control can distinguish w
 q_s(t)=0.25q^P_s(t)+0.20q^R_s(t)+0.20q^H_s(t)+0.20q^A_s(t)+0.15q^M_s(t),
 \label{eq:trust_score}
 \end{equation}
-where $q^P_s$ is the physical-range score, $q^R_s$ is the rate score, $q^H_s=\max(0,1-0.2n_s^{\mathrm{fail}})$ is the persistence score, $q^A_s$ is actuator-consistency evidence, and $q^M_s$ is the missingness score. Each component lies in $[0,1]$. Trusted-deviation, uncommanded-trend, stuck-value, CUSUM-residual, and actuator-response-residual failures cap the score through the gate outcome rather than adding another free weight. The deployed hydroponic configuration uses $q_{\min}=0.70$, $c_s=6.0$, transient limit 2, persistent limit 5, $k_s=3$ confirming samples, and a four-sample replay cooldown for all primary sensors. The response-memory update uses $\lambda=0.50$, with reliability thresholds 0.75 for high-risk dosing, 0.65 for medium-risk environmental actions, and 0.50 for low-risk actions. The physical pH/EC dosing code also contains a 10-minute mixing lockout.
+where $q^P_s$ is the physical-range score, $q^R_s$ is the rate score, $q^H_s=\max(0,1-0.2n_s^{\mathrm{fail}})$ is the persistence score, $q^A_s$ is actuator-consistency evidence, and $q^M_s$ is the missingness score. Each component lies in $[0,1]$. Trusted-deviation, uncommanded-trend, stuck-value, CUSUM-residual, and actuator-response-residual failures cap the score through the gate outcome rather than adding another free weight. The physical pH/EC dosing code also contains a 10-minute mixing lockout. Numerical settings are separated from the method definition and selected through the validation protocol in Section~\ref{sec:fault_protocol}.
+
+\begin{table}[!htbp]
+\centering
+\caption{Manuscript AASVR-R configuration and exhaustive sensitivity ranges. The exhaustive profile is implemented as a shardable reproducibility protocol; the manuscript tables use the held-out benchmark unless explicitly marked as exhaustive sensitivity.}
+\label{tab:aasvr_config}
+\footnotesize
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lll}
+\toprule
+Parameter family & Manuscript setting & Exhaustive sensitivity range \\
+\midrule
+Robust scale $c_s$ & 6.0 & 2, 3, 4, 5, 6, 8, 10, 12 \\
+Trust threshold $q_{\min}$ & 0.70 & 0.50, 0.60, 0.70, 0.80, 0.90 \\
+Transient / persistent limits & 2 / 5 samples & transient 1, 2, 3, 5; persistent 3, 5, 8, 12 \\
+Authorization persistence $k_s$ & 3 samples & 1, 2, 3, 5, 8 \\
+Replay cooldown & 4 samples & 0, 1, 2, 4, 8, 16, 40 \\
+Rectification branch & hold & hold, bounded prediction \\
+CUSUM $(\alpha_c,h_c)$ & (0.10, 0.60) & $\alpha_c\in[0,0.80]$, $h_c\in[0.20,5.00]$ \\
+Response memory $\lambda$ & 0.50 & 0.50, 0.70, 0.80, 0.90, 0.95 \\
+Risk thresholds & 0.75 / 0.65 / 0.50 & high 0.60--0.90, medium 0.50--0.80, low 0.30--0.60 \\
+Response window & sensor-specific 6--8 & 4, 6, 8, 12, 20 samples \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
 
 \subsection{State-machine persistence logic}
 Figure~\ref{fig:state_machine} shows the five persistence states. A single failed gate moves a sensor into a suspect transient state. Repeated failures create a persistent-deviation state. Consistent evidence can be accepted as a new process regime, while missing, stuck, saturated, or contradictory readings escalate to fault alert. This matters for hydroponics because real mixing and thermal responses can take multiple samples after dosing or cooling, whereas isolated spikes should not immediately change the trusted state.
@@ -309,7 +335,7 @@ CO2 & CO2 valve/ventilation fan & 6 & 80 ppm & Medium \\
 }
 \end{table}
 
-\noindent\textbf{Informal proposition 1.} Assume the true process state satisfies $|x_s(t)-x_s(t-1)|\le r_s\Delta t$ and the previous trusted estimate has error $|\hat{x}_s(t-1)-x_s(t-1)|\le e_{t-1}$. Under the bounded rectification branch in Eq.~\eqref{eq:rectification}, $|\hat{x}_s(t)-x_s(t)|\le e_{t-1}+2r_s\Delta t$ for any raw value $y_s(t)$, including arbitrarily large excursions. The result follows from applying a clipped update of magnitude at most $r_s\Delta t$ while the true state also moves by at most $r_s\Delta t$. Under a sustained suspect state, this per-sample bound can accumulate linearly, which is the formal counterpart of the empirical drift weakness. This is therefore a bounded-input statement for the controller-facing estimate, not a full closed-loop stability proof.
+\noindent\textbf{Bounded-update observation.} Assume the true process state satisfies $|x_s(t)-x_s(t-1)|\le r_s\Delta t$ and the previous trusted estimate has error $|\hat{x}_s(t-1)-x_s(t-1)|\le e_{t-1}$. Under the bounded rectification branch in Eq.~\eqref{eq:rectification}, $|\hat{x}_s(t)-x_s(t)|\le e_{t-1}+2r_s\Delta t$ for any raw value $y_s(t)$, including arbitrarily large excursions. The result follows from applying a clipped update of magnitude at most $r_s\Delta t$ while the true state also moves by at most $r_s\Delta t$. Under a sustained suspect state, this per-sample bound can accumulate linearly, which is the formal counterpart of the empirical drift weakness. This is therefore a bounded-input statement for the controller-facing estimate, not a full closed-loop stability proof.
 
 \begin{algorithm}[t]
 \caption{Streaming AASVR-R update for one sensor}
@@ -344,11 +370,14 @@ Agronomic measurements are treated as deployment-context outcomes rather than as
 HAI 21.03 and SKAB are retained in the reproducibility outputs as supplementary stress tests rather than as main evidence. Their labels describe cyber-physical attacks and process-loop anomalies, not hydroponic sensor faults. The direct-transfer results are therefore reported only as a limitation check.
 
 \subsection{Fault injection protocol}
+\label{sec:fault_protocol}
 Synthetic faults are injected into windows sampled from the real hydroponic background. For each sensor, fault type, magnitude, and duration, three deterministic replicates are generated and assigned to tune, validation, and test splits. The reported hydroponic benchmark uses only the held-out test split; AASVR-R and baseline hyperparameters are selected on validation trials. Fault windows include 90 pre-fault samples and 120 post-fault samples so that detection delay and false alarms are evaluated around the injected event rather than in isolation.
+
+To address sensitivity to fault-design choices, the repository now implements a full factorial exhaustive profile with six primary sensors, fourteen fault classes, four robust-scale magnitude levels, eight durations, and 50 disjoint insertion windows per cell for each of tune, validation, and test splits. This produces 403200 protocol-defined trials before method expansion. The additional fault classes include plausible and implausible stuck values, high/low saturation, nonlinear drift, multiplicative gain drift, and intermittent bursts. The exhaustive profile is shardable and resumable; it is intended to replace the compact manuscript benchmark when the full run is executed for final resubmission, while the compact held-out benchmark remains the currently reported result set.
 
 \begin{table}[!htbp]
 \centering
-\caption{Synthetic fault-injection protocol for the hydroponic replay benchmark. For each protocol row, durations are 1, 5, and 30 samples with one replicate assigned to each split. Magnitudes are in sensor units: pH uses 0.5/2.0, CO2 500/2000 ppm, EC 100/400, air temperature 2/8 $^\circ$C, and water temperature 1/4 $^\circ$C.}
+\caption{Compact synthetic fault-injection protocol for the current hydroponic replay benchmark. The exhaustive reproducibility profile extends this table with plausible/implausible stuck values, high/low saturation, nonlinear drift, multiplicative gain drift, intermittent bursts, more durations, more magnitudes, and 50 disjoint insertion windows per cell.}
 \label{tab:fault_protocol}
 \footnotesize
 \resizebox{\linewidth}{!}{%

@@ -1,0 +1,72 @@
+name: hydro_exp1_exhaustive
+
+defaults:
+  sensors: [pH, EC, Air_Temp, Humidity, Water_Temp, CO2]
+  fault_types:
+    - spike
+    - multi_spike
+    - dropout
+    - stuck_plausible
+    - stuck_implausible
+    - saturation_high
+    - saturation_low
+    - bias
+    - step
+    - drift
+    - nonlinear_drift
+    - gain_drift
+    - noise_burst
+    - intermittent_burst
+  sigma_multipliers: [1.0, 2.0, 4.0, 8.0]
+  durations: [1, 3, 5, 10, 30, 60, 120, 300]
+  windows_per_cell: 50
+  pre_fault_samples: 90
+  post_fault_samples: 120
+  splits: [tune, validation, test]
+  split_seed_offset:
+    tune: 0
+    validation: 100000
+    test: 200000
+  max_trials_per_split:
+  sweep:
+    scale_multiplier: [2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 12.0]
+    q_min: [0.50, 0.60, 0.70, 0.80, 0.90]
+    transient_limit: [1, 2, 3, 5]
+    persistent_limit: [3, 5, 8, 12]
+    confirm_samples: [1, 2, 3, 5, 8]
+    cooldown_samples: [0, 1, 2, 4, 8, 16, 40]
+    rectification_mode: [hold, bounded_prediction]
+    cusum_drift_multiplier: [0.0, 0.02, 0.05, 0.10, 0.20, 0.40, 0.80]
+    cusum_threshold_multiplier: [0.20, 0.40, 0.60, 1.00, 1.50, 2.00, 3.00, 5.00]
+    response_eta_decay: [0.50, 0.70, 0.80, 0.90, 0.95]
+    eta_min_high: [0.60, 0.70, 0.75, 0.80, 0.90]
+    eta_min_medium: [0.50, 0.60, 0.65, 0.70, 0.80]
+    eta_min_low: [0.30, 0.40, 0.50, 0.60]
+    response_window: [4, 6, 8, 12, 20]
+
+profiles:
+  mini:
+    fault_types: [spike, stuck_plausible, drift, gain_drift]
+    sigma_multipliers: [2.0, 4.0]
+    durations: [3, 30]
+    windows_per_cell: 2
+    max_trials_per_split: 48
+    sweep:
+      scale_multiplier: [4.0, 6.0]
+      q_min: [0.60, 0.70]
+      transient_limit: [1, 2]
+      persistent_limit: [5]
+      confirm_samples: [2, 3]
+      cooldown_samples: [0, 4]
+      rectification_mode: [hold]
+      cusum_drift_multiplier: [0.05, 0.10]
+      cusum_threshold_multiplier: [0.60, 1.00]
+      response_eta_decay: [0.50, 0.80]
+      eta_min_high: [0.75]
+      eta_min_medium: [0.65]
+      eta_min_low: [0.50]
+      response_window: [6]
+  paper:
+    windows_per_cell: 10
+    max_trials_per_split: 12000
+  exhaustive: {}

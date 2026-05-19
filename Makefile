@@ -1,4 +1,4 @@
-.PHONY: test smoke prepare evaluate figures manuscript-check paper real all stats subset-protocol agronomic optional-evidence water-calibration
+.PHONY: test smoke prepare evaluate figures manuscript-check paper real all stats subset-protocol agronomic optional-evidence water-calibration exhaustive-mini exhaustive-grid exhaustive-test exhaustive-aggregate exhaustive-sweep-mini
 
 PYTHON ?= python
 
@@ -40,6 +40,23 @@ optional-evidence:
 
 water-calibration:
 	$(PYTHON) scripts/25_calibrate_water_level.py
+
+exhaustive-mini:
+	$(PYTHON) scripts/26_build_exhaustive_fault_grid.py --profile mini
+	$(PYTHON) scripts/27_run_exhaustive_benchmark.py --profile mini --split test --methods aasvr_r,aasvr_no_response,no_cusum,lockout_only,cusum_only
+	$(PYTHON) scripts/29_aggregate_exhaustive_results.py --profile mini --split test --bootstrap 100
+
+exhaustive-grid:
+	$(PYTHON) scripts/26_build_exhaustive_fault_grid.py --profile exhaustive
+
+exhaustive-test:
+	$(PYTHON) scripts/27_run_exhaustive_benchmark.py --profile exhaustive --split test
+
+exhaustive-aggregate:
+	$(PYTHON) scripts/29_aggregate_exhaustive_results.py --profile exhaustive --split test
+
+exhaustive-sweep-mini:
+	$(PYTHON) scripts/28_sweep_aasvr_exhaustive.py --profile mini --split validation --max-settings 16
 
 manuscript-check:
 	$(PYTHON) scripts/check_manuscript.py

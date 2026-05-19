@@ -63,6 +63,25 @@ Optional local evidence files can be added next to the feed as
 
 Raw and generated data are ignored by git. External benchmark raw files should be placed under their configured `data/raw/<dataset>/` directories and regenerated locally.
 
+Run the exhaustive hydroponic stress-test protocol in shards. The `mini` profile
+is a smoke test; the `exhaustive` profile defines the full factorial protocol
+used for final resubmission runs:
+
+```bash
+docker compose run --rm project-shell make exhaustive-mini
+docker compose run --rm project-shell make exhaustive-grid
+docker compose run --rm project-shell python scripts/27_run_exhaustive_benchmark.py \
+  --profile exhaustive --split test --shard-index 0 --shard-count 32
+docker compose run --rm project-shell python scripts/29_aggregate_exhaustive_results.py \
+  --profile exhaustive --split test
+```
+
+The exhaustive profile spans the six primary hydroponic sensors, fourteen fault
+classes, four magnitude levels, eight durations, and 50 disjoint insertion
+windows per cell for each tune/validation/test split. It produces 403,200
+trial descriptors before method expansion and is intentionally shardable so it
+can run on a workstation or cluster without changing the protocol.
+
 Large public archives are not downloaded by default. The paper workflow uses the `paper` profile, which documents fixed subset rules for defensible cross-domain validation. SKAB is compact enough to clone directly; MetroPT-3 is manageable but still downloaded only when requested. Full TEP/WUR archive download remains an explicit opt-in through `scripts/download_datasets.py --profile full --download`.
 
 ## Current Hydroponic Synthetic-Fault Result

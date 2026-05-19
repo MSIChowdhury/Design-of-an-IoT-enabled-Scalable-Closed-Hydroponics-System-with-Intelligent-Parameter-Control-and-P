@@ -132,6 +132,21 @@ def make_hydro_exp1_tables() -> None:
         "hydro_agronomic_exposure",
         "hydro_agronomic_summary",
         "hydro_agronomic_linkage",
+        "hydro_exp1_exhaustive_mini_test_summary",
+        "hydro_exp1_exhaustive_mini_test_by_fault_type",
+        "hydro_exp1_exhaustive_mini_test_by_sensor",
+        "hydro_exp1_exhaustive_mini_test_by_sensor_fault_type",
+        "hydro_exp1_exhaustive_mini_test_bootstrap_ci",
+        "hydro_exp1_exhaustive_paper_test_summary",
+        "hydro_exp1_exhaustive_paper_test_by_fault_type",
+        "hydro_exp1_exhaustive_paper_test_by_sensor",
+        "hydro_exp1_exhaustive_paper_test_by_sensor_fault_type",
+        "hydro_exp1_exhaustive_paper_test_bootstrap_ci",
+        "hydro_exp1_exhaustive_exhaustive_test_summary",
+        "hydro_exp1_exhaustive_exhaustive_test_by_fault_type",
+        "hydro_exp1_exhaustive_exhaustive_test_by_sensor",
+        "hydro_exp1_exhaustive_exhaustive_test_by_sensor_fault_type",
+        "hydro_exp1_exhaustive_exhaustive_test_bootstrap_ci",
     ]:
         path = ROOT / f"results/metrics/{name}.csv"
         if path.exists():
