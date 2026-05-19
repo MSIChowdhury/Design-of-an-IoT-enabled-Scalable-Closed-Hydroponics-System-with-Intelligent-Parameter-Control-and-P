@@ -8,6 +8,12 @@ eta_min_low: 0.50
 eta_min_medium: 0.65
 eta_min_high: 0.75
 enable_response_residual: true
+response_mode: window
+reliability_mode: ema
+beta_prior_success: 2.0
+beta_prior_failure: 1.0
+beta_lcb_z: 1.64
+compact_diagnostics: false
 sensors:
   - name: pH
     physical_min: 0.0

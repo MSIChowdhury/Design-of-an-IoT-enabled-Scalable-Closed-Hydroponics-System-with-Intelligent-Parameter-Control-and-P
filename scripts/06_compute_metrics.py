@@ -72,7 +72,7 @@ def compute_hydro_exp1() -> None:
     for path in sorted(out_dir.glob("hydro_exp1_*_decisions.csv")):
         method = path.name.removeprefix("hydro_exp1_").removesuffix("_decisions.csv")
         decisions = pd.read_csv(path)
-        prediction_mode = "gate_reject" if method == "aasvr" else "auto"
+        prediction_mode = "gate_reject" if method in {"aasvr", "aasvr_r", "aasvr_r2"} else "auto"
         metrics = compute_metrics(decisions, labels, prediction_mode=prediction_mode)
         row = {"dataset": "hydro_exp1", "method": method}
         row.update(metrics.__dict__)
@@ -99,6 +99,26 @@ def compute_hydro_exp1_synthetic() -> None:
     sensors = tuple(sensor for sensor in config.sensors if sensor.name in HYDRO_PRIMARY_SENSORS)
     from aasvr.core import AASVRConfig
 
+    r2_sensors = _calibrated_sensors(frame, sensors)
+    r2_config = AASVRConfig(
+        sensors=r2_sensors,
+        q_min=config.q_min,
+        scale_multiplier=config.scale_multiplier,
+        transient_limit=config.transient_limit,
+        persistent_limit=config.persistent_limit,
+        rectification_mode=config.rectification_mode,
+        eta_decay=config.eta_decay,
+        eta_min_low=config.eta_min_low,
+        eta_min_medium=config.eta_min_medium,
+        eta_min_high=config.eta_min_high,
+        enable_response_residual=True,
+        response_mode="sequential",
+        reliability_mode="beta",
+        beta_prior_success=config.beta_prior_success,
+        beta_prior_failure=config.beta_prior_failure,
+        beta_lcb_z=config.beta_lcb_z,
+        compact_diagnostics=True,
+    )
     response_config = AASVRConfig(
         sensors=sensors,
         q_min=config.q_min,
@@ -111,6 +131,12 @@ def compute_hydro_exp1_synthetic() -> None:
         eta_min_medium=config.eta_min_medium,
         eta_min_high=config.eta_min_high,
         enable_response_residual=config.enable_response_residual,
+        response_mode=config.response_mode,
+        reliability_mode=config.reliability_mode,
+        beta_prior_success=config.beta_prior_success,
+        beta_prior_failure=config.beta_prior_failure,
+        beta_lcb_z=config.beta_lcb_z,
+        compact_diagnostics=config.compact_diagnostics,
     )
     base_config = AASVRConfig(
         sensors=tuple(replace(sensor, response_window=0) for sensor in sensors),
@@ -127,7 +153,7 @@ def compute_hydro_exp1_synthetic() -> None:
     )
     baselines = load_yaml(ROOT / "configs/methods/baselines.yaml")["required"]
     baseline_configs = _load_tuned_baseline_configs()
-    methods = ["aasvr_r", "aasvr", *baselines]
+    methods = ["aasvr_r2", "aasvr_r", "aasvr", *baselines]
     rows = []
     half_window_before = 90
     half_window_after = 120
@@ -150,7 +176,10 @@ def compute_hydro_exp1_synthetic() -> None:
         )
         faulted, labels = inject_fault(window, spec)
         for method in methods:
-            if method == "aasvr_r":
+            if method == "aasvr_r2":
+                decisions = run_aasvr_with_config(faulted, r2_config)
+                prediction_mode = "gate_reject"
+            elif method == "aasvr_r":
                 decisions = run_aasvr_with_config(faulted, response_config)
                 prediction_mode = "gate_reject"
             elif method == "aasvr":
@@ -233,6 +262,19 @@ def _load_tuned_baseline_configs() -> dict[str, BaselineConfig]:
     return configs
 
 
+def _calibrated_sensors(frame: pd.DataFrame, sensors: tuple) -> tuple:
+    calibration = frame.iloc[: max(200, int(len(frame) * 0.20))]
+    out = []
+    for sensor in sensors:
+        values = pd.to_numeric(calibration[sensor.name], errors="coerce")
+        deltas = values.diff().abs().dropna()
+        calibrated = None
+        if not deltas.empty:
+            calibrated = float(max(sensor.xi_min, sensor.uncertainty, deltas.quantile(0.995)))
+        out.append(replace(sensor, calibrated_xi=calibrated))
+    return tuple(out)
+
+
 def compute_prepared_dataset(dataset: str) -> None:
     labels_path = ROOT / f"data/processed/{dataset}_labels.parquet"
     if not labels_path.exists():
@@ -244,7 +286,7 @@ def compute_prepared_dataset(dataset: str) -> None:
     for path in sorted(out_dir.glob(f"{dataset}_*_decisions.csv")):
         method = path.name.removeprefix(f"{dataset}_").removesuffix("_decisions.csv")
         decisions = pd.read_csv(path)
-        prediction_mode = "gate_reject" if method == "aasvr" else "auto"
+        prediction_mode = "gate_reject" if method in {"aasvr", "aasvr_r", "aasvr_r2"} else "auto"
         metrics = compute_metrics(decisions, labels, prediction_mode=prediction_mode)
         row = {"dataset": dataset, "method": method}
         row.update(metrics.__dict__)
@@ -282,7 +324,7 @@ def _compute_timestamp_fraction_summary(
     for path in sorted(out_dir.glob(f"{dataset}_*_decisions.csv")):
         method = path.name.removeprefix(f"{dataset}_").removesuffix("_decisions.csv")
         decisions = pd.read_csv(path)
-        if method == "aasvr":
+        if method in {"aasvr", "aasvr_r", "aasvr_r2"}:
             flag = decisions.get("gate_result", pd.Series("", index=decisions.index)).eq("reject")
         else:
             flag = decisions.get("alert", pd.Series(False, index=decisions.index)).astype(bool)

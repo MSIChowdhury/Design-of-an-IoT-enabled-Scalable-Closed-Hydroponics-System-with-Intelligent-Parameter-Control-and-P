@@ -183,3 +183,81 @@ def test_aasvr_does_not_flag_stable_noisy_signal_as_stuck() -> None:
         for idx, value in enumerate([6.10, 6.11, 6.10, 6.12, 6.11])
     ]
     assert "stuck_at" not in decisions[-1].reason_codes
+
+
+def test_aasvr_uses_calibrated_xi_when_larger_than_rolling_scale() -> None:
+    cfg = SensorConfig(
+        **{
+            **sensor().__dict__,
+            "calibrated_xi": 0.5,
+            "rate_limit": 0.05,
+        }
+    )
+    model = AASVR(AASVRConfig(sensors=(cfg,), q_min=0.7, scale_multiplier=1.0))
+    model.update({"timestamp": 0, "pH": 6.0})
+    decision = model.update({"timestamp": 1, "pH": 6.3})[0]
+    assert decision.gate_result == "accept"
+    assert decision.trusted_value == 6.3
+
+
+def test_aasvr_r2_sequential_response_accumulates_directional_evidence() -> None:
+    cfg = SensorConfig(
+        **{
+            **sensor().__dict__,
+            "actuators": ("acid_doser",),
+            "expected_direction": "bidirectional",
+            "response_window": 3,
+            "response_min_delta": 0.06,
+            "risk_level": "high",
+        }
+    )
+    model = AASVR(
+        AASVRConfig(
+            sensors=(cfg,),
+            q_min=0.7,
+            response_mode="sequential",
+            reliability_mode="beta",
+            beta_prior_success=2.0,
+            beta_prior_failure=1.0,
+        )
+    )
+    decisions = [model.update({"timestamp": idx, "pH": 6.7})[0] for idx in range(3)]
+    assert any(decision.actuation_authorized for decision in decisions)
+    response = model.update({"timestamp": 3, "pH": 6.63})[0]
+    assert "actuator_response_residual" not in response.reason_codes
+    assert response.response_reliability > 0.6
+
+
+def test_aasvr_r2_beta_reliability_blocks_high_risk_after_failure() -> None:
+    cfg = SensorConfig(
+        **{
+            **sensor().__dict__,
+            "actuators": ("acid_doser",),
+            "expected_direction": "bidirectional",
+            "response_window": 1,
+            "response_min_delta": 0.03,
+            "risk_level": "high",
+        }
+    )
+    model = AASVR(
+        AASVRConfig(
+            sensors=(cfg,),
+            q_min=0.7,
+            response_mode="sequential",
+            reliability_mode="beta",
+            beta_prior_success=1.0,
+            beta_prior_failure=1.0,
+            eta_min_high=0.75,
+        )
+    )
+    first = [model.update({"timestamp": idx, "pH": 6.7})[0] for idx in range(3)]
+    assert any(decision.actuation_authorized for decision in first)
+    assert "actuator_response_residual" in first[-1].reason_codes
+    later = [model.update({"timestamp": idx, "pH": 6.7})[0] for idx in range(4, 10)]
+    assert not any(decision.actuation_authorized for decision in later)
+
+
+def test_aasvr_compact_diagnostics_omits_component_strings() -> None:
+    model = AASVR(AASVRConfig(sensors=(sensor(),), q_min=0.7, compact_diagnostics=True))
+    decision = model.update({"timestamp": 0, "pH": 6.1})[0]
+    assert decision.trust_components == ()

@@ -34,6 +34,8 @@ def run() -> None:
     ].copy()
     base_config = load_aasvr_config(ROOT / "configs/methods/aasvr.yaml")
     sensors = tuple(sensor for sensor in base_config.sensors if sensor.name in HYDRO_PRIMARY_SENSORS)
+    sensors_r2 = _calibrated_sensors(frame, sensors)
+    aasvr_r2 = _primary_config(base_config, sensors=sensors_r2, enable_response=True, r2=True)
     aasvr_r = _primary_config(base_config, sensors=sensors, enable_response=True)
     aasvr_base = _primary_config(base_config, sensors=sensors, enable_response=False)
     baseline_sample = _baseline_sample(frame)
@@ -50,7 +52,7 @@ def run() -> None:
                 continue
             for fault_type in FAULT_TYPES:
                 scenario = _make_scenario(sensor, side, fault_type, baseline_sample)
-                for method, config in (("aasvr", aasvr_base), ("aasvr_r", aasvr_r)):
+                for method, config in (("aasvr", aasvr_base), ("aasvr_r", aasvr_r), ("aasvr_r2", aasvr_r2)):
                     decisions = run_aasvr_with_config(scenario, config)
                     subset = decisions[decisions["sensor"].eq(sensor.name)].reset_index(drop=True)
                     metrics = _response_metrics(subset, fault_type=fault_type)
@@ -118,6 +120,7 @@ def _primary_config(
     *,
     sensors: tuple[SensorConfig, ...],
     enable_response: bool,
+    r2: bool = False,
 ) -> AASVRConfig:
     if enable_response:
         return AASVRConfig(
@@ -132,6 +135,12 @@ def _primary_config(
             eta_min_medium=config.eta_min_medium,
             eta_min_high=config.eta_min_high,
             enable_response_residual=True,
+            response_mode="sequential" if r2 else config.response_mode,
+            reliability_mode="beta" if r2 else config.reliability_mode,
+            beta_prior_success=config.beta_prior_success,
+            beta_prior_failure=config.beta_prior_failure,
+            beta_lcb_z=config.beta_lcb_z,
+            compact_diagnostics=r2,
         )
     disabled = tuple(replace(sensor, response_window=0) for sensor in sensors)
     return AASVRConfig(
@@ -147,6 +156,19 @@ def _primary_config(
         eta_min_high=0.0,
         enable_response_residual=False,
     )
+
+
+def _calibrated_sensors(frame: pd.DataFrame, sensors: tuple[SensorConfig, ...]) -> tuple[SensorConfig, ...]:
+    calibration = frame.iloc[: max(200, int(len(frame) * 0.20))]
+    out = []
+    for sensor in sensors:
+        values = pd.to_numeric(calibration[sensor.name], errors="coerce")
+        deltas = values.diff().abs().dropna()
+        calibrated = None
+        if not deltas.empty:
+            calibrated = float(max(sensor.xi_min, sensor.uncertainty, deltas.quantile(0.995)))
+        out.append(replace(sensor, calibrated_xi=calibrated))
+    return tuple(out)
 
 
 def _baseline_sample(frame: pd.DataFrame) -> dict[str, float]:

@@ -7,7 +7,7 @@ from pathlib import Path
 import pandas as pd
 
 from aasvr.config import load_aasvr_config, load_yaml
-from aasvr.core import AASVRConfig
+from aasvr.core import AASVRConfig, SensorConfig
 from aasvr.pipeline import run_aasvr_on_frame, run_aasvr_with_config, run_baseline_on_frame
 from aasvr.prepare import HYDRO_PRIMARY_SENSORS
 from aasvr.registry import sensors_from_metadata
@@ -70,6 +70,26 @@ def run_hydro_exp1() -> None:
     frame = frame[["timestamp", *HYDRO_PRIMARY_SENSORS]].copy()
     config = load_aasvr_config(ROOT / "configs/methods/aasvr.yaml")
     sensors = tuple(sensor for sensor in config.sensors if sensor.name in HYDRO_PRIMARY_SENSORS)
+    r2_sensors = _calibrated_sensors(frame, sensors)
+    r2_config = AASVRConfig(
+        sensors=r2_sensors,
+        q_min=config.q_min,
+        scale_multiplier=config.scale_multiplier,
+        transient_limit=config.transient_limit,
+        persistent_limit=config.persistent_limit,
+        rectification_mode=config.rectification_mode,
+        eta_decay=config.eta_decay,
+        eta_min_low=config.eta_min_low,
+        eta_min_medium=config.eta_min_medium,
+        eta_min_high=config.eta_min_high,
+        enable_response_residual=True,
+        response_mode="sequential",
+        reliability_mode="beta",
+        beta_prior_success=config.beta_prior_success,
+        beta_prior_failure=config.beta_prior_failure,
+        beta_lcb_z=config.beta_lcb_z,
+        compact_diagnostics=True,
+    )
     response_config = AASVRConfig(
         sensors=sensors,
         q_min=config.q_min,
@@ -82,6 +102,12 @@ def run_hydro_exp1() -> None:
         eta_min_medium=config.eta_min_medium,
         eta_min_high=config.eta_min_high,
         enable_response_residual=config.enable_response_residual,
+        response_mode=config.response_mode,
+        reliability_mode=config.reliability_mode,
+        beta_prior_success=config.beta_prior_success,
+        beta_prior_failure=config.beta_prior_failure,
+        beta_lcb_z=config.beta_lcb_z,
+        compact_diagnostics=config.compact_diagnostics,
     )
     base_config = AASVRConfig(
         sensors=tuple(replace(sensor, response_window=0) for sensor in sensors),
@@ -98,6 +124,7 @@ def run_hydro_exp1() -> None:
     )
     out_dir = ROOT / "results/metrics"
     out_dir.mkdir(parents=True, exist_ok=True)
+    run_aasvr_with_config(frame, r2_config).to_csv(out_dir / "hydro_exp1_aasvr_r2_decisions.csv", index=False)
     run_aasvr_with_config(frame, response_config).to_csv(out_dir / "hydro_exp1_aasvr_r_decisions.csv", index=False)
     run_aasvr_with_config(frame, base_config).to_csv(out_dir / "hydro_exp1_aasvr_decisions.csv", index=False)
     baseline_config = load_yaml(ROOT / "configs/methods/baselines.yaml")
@@ -106,6 +133,19 @@ def run_hydro_exp1() -> None:
         baseline_out = run_baseline_on_frame(frame, sensors, method)
         baseline_out.to_csv(out_dir / f"hydro_exp1_{method}_decisions.csv", index=False)
     print(f"Wrote hydro_exp1 decisions to {out_dir}")
+
+
+def _calibrated_sensors(frame: pd.DataFrame, sensors: tuple[SensorConfig, ...]) -> tuple[SensorConfig, ...]:
+    calibration = frame.iloc[: max(200, int(len(frame) * 0.20))]
+    out = []
+    for sensor in sensors:
+        values = pd.to_numeric(calibration[sensor.name], errors="coerce")
+        deltas = values.diff().abs().dropna()
+        calibrated = None
+        if not deltas.empty:
+            calibrated = float(max(sensor.xi_min, sensor.uncertainty, deltas.quantile(0.995)))
+        out.append(replace(sensor, calibrated_xi=calibrated))
+    return tuple(out)
 
 
 def run_prepared_dataset(dataset: str) -> None:

@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 METHOD_LABELS = {
     "aasvr": "AASVR",
     "aasvr_r": "AASVR-R",
+    "aasvr_r2": "AASVR-R2",
     "raw_threshold": "Raw threshold",
     "original": "Original",
     "moving_average": "Moving average",
@@ -31,6 +32,7 @@ METHOD_LABELS = {
 PALETTE = {
     "AASVR": "#0072B2",
     "AASVR-R": "#004488",
+    "AASVR-R2": "#882255",
     "Kalman": "#009E73",
     "PCA": "#E69F00",
     "GLR": "#AA4499",
@@ -124,7 +126,7 @@ def make_hydro_exp1_figures() -> None:
         print(f"Wrote {out}")
     summary_path = ROOT / "results/metrics/hydro_exp1_synthetic_summary.csv"
     if summary_path.exists():
-        summary = _with_labels(pd.read_csv(summary_path)).sort_values("balanced_accuracy", ascending=True)
+        summary = _with_labels(_main_methods(pd.read_csv(summary_path))).sort_values("balanced_accuracy", ascending=True)
         out = out_dir / "hydro_exp1_synthetic_balanced_accuracy.png"
         plt.figure(figsize=(6.3, 3.8))
         colors = [PALETTE.get(method, "#777777") for method in summary["method_label"]]
@@ -150,7 +152,7 @@ def make_hydro_exp1_figures() -> None:
     ci_path = ROOT / "results/metrics/hydro_exp1_bootstrap_ci.csv"
     if ci_path.exists():
         ci = pd.read_csv(ci_path)
-        metric = _with_labels(ci[ci["metric"] == "balanced_accuracy"]).sort_values("mean", ascending=True)
+        metric = _with_labels(_main_methods(ci[ci["metric"] == "balanced_accuracy"])).sort_values("mean", ascending=True)
         if not metric.empty:
             out = out_dir / "hydro_exp1_balanced_accuracy_ci.png"
             lower = metric["mean"] - metric["ci_low"]
@@ -172,7 +174,7 @@ def make_hydro_exp1_figures() -> None:
             print(f"Wrote {out}")
     fault_path = ROOT / "results/metrics/hydro_exp1_synthetic_by_fault_type.csv"
     if fault_path.exists():
-        fault = pd.read_csv(fault_path)
+        fault = _main_methods(pd.read_csv(fault_path))
         fault = _with_labels(fault)
         pivot = fault.pivot(index="fault_type", columns="method_label", values="balanced_accuracy")
         if not pivot.empty:
@@ -326,6 +328,10 @@ def _with_labels(frame: pd.DataFrame) -> pd.DataFrame:
     frame = frame.copy()
     frame["method_label"] = frame["method"].map(METHOD_LABELS).fillna(frame["method"])
     return frame
+
+
+def _main_methods(frame: pd.DataFrame) -> pd.DataFrame:
+    return frame[~frame["method"].eq("aasvr_r2")].copy() if "method" in frame else frame
 
 
 def _save_current(path: Path) -> None:
