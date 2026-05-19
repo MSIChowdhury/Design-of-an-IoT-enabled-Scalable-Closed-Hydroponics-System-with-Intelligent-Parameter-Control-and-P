@@ -1,0 +1,1 @@
+timestamp,actuator_id,actuator_type,commanded_state,measured_state,command_source,target_sensor,expected_direction,dose_or_runtime,lockout_active,manual_override

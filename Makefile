@@ -1,4 +1,4 @@
-.PHONY: test smoke prepare evaluate figures manuscript-check paper real all stats subset-protocol agronomic
+.PHONY: test smoke prepare evaluate figures manuscript-check paper real all stats subset-protocol agronomic optional-evidence water-calibration
 
 PYTHON ?= python
 
@@ -34,6 +34,12 @@ agronomic:
 	$(PYTHON) scripts/23_agronomic_linkage.py
 	$(PYTHON) scripts/07_make_tables.py --hydro-exp1
 	$(PYTHON) scripts/08_make_figures.py --hydro-exp1
+
+optional-evidence:
+	$(PYTHON) scripts/24_prepare_optional_evidence.py --write-templates --hydro-exp1
+
+water-calibration:
+	$(PYTHON) scripts/25_calibrate_water_level.py
 
 manuscript-check:
 	$(PYTHON) scripts/check_manuscript.py

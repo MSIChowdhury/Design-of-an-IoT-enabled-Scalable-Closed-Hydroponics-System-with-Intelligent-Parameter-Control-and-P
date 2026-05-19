@@ -32,6 +32,19 @@ Run all project work through Docker:
 docker compose run --rm project-shell make real
 ```
 
+Prepare absence-safe templates and status tables for the remaining deployment
+evidence limitations:
+
+```bash
+docker compose run --rm project-shell make optional-evidence
+docker compose run --rm project-shell make water-calibration
+```
+
+These commands define the future actuator-state log, independent reference
+measurement, and water-level calibration schemas. If the optional local CSV files
+are absent, they write explicit status outputs and leave the current benchmark
+unchanged.
+
 Generate the external benchmark acquisition notes and subset protocol without downloading large archives:
 
 ```bash
@@ -43,6 +56,10 @@ The locally available hydroponic feed is expected at:
 ```text
 data/raw/hydroponic/Hydroponics Data First Trial.csv
 ```
+
+Optional local evidence files can be added next to the feed as
+`actuator_state_log.csv`, `reference_measurements.csv`, and
+`water_level_calibration.csv`.
 
 Raw and generated data are ignored by git. External benchmark raw files should be placed under their configured `data/raw/<dataset>/` directories and regenerated locally.
 

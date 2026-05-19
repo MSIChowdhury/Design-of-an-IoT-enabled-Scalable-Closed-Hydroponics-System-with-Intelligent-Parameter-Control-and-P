@@ -10,6 +10,9 @@ data/
     hydroponic/
       Hydroponics Data First Trial.csv
       Agronomic Data.csv
+      actuator_state_log.csv
+      reference_measurements.csv
+      water_level_calibration.csv
       experiment_1_events.csv
       experiment_2.csv
       experiment_2_events.csv
@@ -30,6 +33,26 @@ Use `python scripts/run_all.py --available-real` to run locally available real d
 
 For the current first-trial hydroponic feed, `Water_Level` is retained only in raw data
 and excluded from primary analysis until calibration is available.
+
+Optional limitation-closing files can be placed in `data/raw/hydroponic/`:
+
+- `actuator_state_log.csv` records real actuator commands and measured actuator
+  states so AASVR-R response residuals can be scored as measured deployment
+  evidence rather than counterfactual replay.
+- `reference_measurements.csv` records paired raw/reference sensor readings from
+  a calibrated handheld or benchtop instrument.
+- `water_level_calibration.csv` records raw water-level readings paired with a
+  physical level in centimeters.
+
+Generate empty schemas with:
+
+```bash
+python scripts/24_prepare_optional_evidence.py --write-templates
+python scripts/25_calibrate_water_level.py --write-template
+```
+
+The optional parsers are absence-safe. Missing files produce status tables under
+`results/run_metadata/` and do not change the primary AASVR-R benchmark.
 
 The optional agronomic linkage pipeline uses per-plant harvest data at
 `data/raw/hydroponic/Agronomic Data.csv`. It supports the current wide two-experiment
