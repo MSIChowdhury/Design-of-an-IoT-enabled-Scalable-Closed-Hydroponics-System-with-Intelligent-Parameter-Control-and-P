@@ -124,6 +124,8 @@ def make_hydro_exp1_tables() -> None:
         "hydro_exp1_response_replay_summary",
         "hydro_exp1_response_replay_by_fault_type",
         "hydro_exp1_response_replay_detail",
+        "hydro_exp1_diagnostic_excitation_summary",
+        "hydro_exp1_diagnostic_excitation_detail",
         "hydro_exp1_aasvr_audit_trail",
         "hydro_exp1_aasvr_by_sensor_ci",
         "hydro_exp1_aasvr_by_fault_type_ci",

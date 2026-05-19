@@ -112,7 +112,15 @@ def run() -> None:
         out_dir / "hydro_exp1_response_replay_decisions.csv",
         index=False,
     )
+    diagnostic_detail, diagnostic_summary = _diagnostic_excitation_replay(
+        sensors=sensors,
+        config=aasvr_r,
+        baseline_sample=baseline_sample,
+    )
+    diagnostic_detail.to_csv(out_dir / "hydro_exp1_diagnostic_excitation_detail.csv", index=False)
+    diagnostic_summary.to_csv(out_dir / "hydro_exp1_diagnostic_excitation_summary.csv", index=False)
     print(f"Wrote {out_dir / 'hydro_exp1_response_replay_summary.csv'}")
+    print(f"Wrote {out_dir / 'hydro_exp1_diagnostic_excitation_summary.csv'}")
 
 
 def _primary_config(
@@ -212,6 +220,127 @@ def _make_scenario(
         )
         samples.append(row)
     return pd.DataFrame(samples)
+
+
+def _diagnostic_excitation_replay(
+    *,
+    sensors: tuple[SensorConfig, ...],
+    config: AASVRConfig,
+    baseline_sample: dict[str, float],
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    rows: list[dict[str, object]] = []
+    decisions_rows: list[pd.DataFrame] = []
+    for sensor in sensors:
+        if sensor.response_window <= 0 or not sensor.actuators:
+            continue
+        for fault_type in ("healthy", "stuck_during_diagnostic", "weak_diagnostic_response"):
+            scenario = _make_diagnostic_scenario(sensor, fault_type, baseline_sample)
+            decisions = run_aasvr_with_config(scenario, config)
+            subset = decisions[decisions["sensor"].eq(sensor.name)].reset_index(drop=True)
+            metrics = _response_metrics(subset, fault_type=fault_type)
+            rows.append(
+                {
+                    "method": "aasvr_r",
+                    "sensor": sensor.name,
+                    "fault_type": fault_type,
+                    "diagnostic_actuator": sensor.actuators[0],
+                    **metrics,
+                }
+            )
+            tagged = subset.copy()
+            tagged.insert(0, "method", "aasvr_r")
+            tagged.insert(1, "scenario_sensor", sensor.name)
+            tagged.insert(2, "side", "diagnostic")
+            tagged.insert(3, "fault_type", fault_type)
+            decisions_rows.append(tagged)
+    detail = pd.DataFrame(rows)
+    summary = (
+        detail.groupby("method", as_index=False)[
+            [
+                "response_fault_detected",
+                "response_fault_alert",
+                "response_correct",
+                "response_fault_delay",
+                "authorizations",
+                "repeated_authorizations_after_fault",
+                "final_response_reliability",
+            ]
+        ]
+        .mean()
+        .sort_values("response_correct", ascending=False)
+    )
+    if decisions_rows:
+        pd.concat(decisions_rows, ignore_index=True).to_csv(
+            ROOT / "results/metrics/hydro_exp1_diagnostic_excitation_decisions.csv",
+            index=False,
+        )
+    return detail, summary
+
+
+def _make_diagnostic_scenario(
+    sensor: SensorConfig,
+    fault_type: str,
+    baseline_sample: dict[str, float],
+    *,
+    rows: int = 36,
+    command_index: int = 5,
+) -> pd.DataFrame:
+    samples = []
+    start_value = _inside_band_value(sensor, baseline_sample)
+    direction = _diagnostic_direction(sensor)
+    response_delta = max(sensor.response_min_delta, sensor.uncertainty, sensor.xi_min) * 1.5
+    actuator = sensor.actuators[0]
+    for idx in range(rows):
+        row = {"timestamp": pd.Timestamp("2026-02-01") + pd.Timedelta(seconds=15 * idx)}
+        row.update(baseline_sample)
+        row[actuator] = 1 if idx == command_index else 0
+        row[sensor.name] = _diagnostic_value(
+            start_value=start_value,
+            direction=direction,
+            response_delta=response_delta,
+            fault_type=fault_type,
+            idx=idx,
+            command_index=command_index,
+            response_window=sensor.response_window,
+        )
+        samples.append(row)
+    return pd.DataFrame(samples)
+
+
+def _inside_band_value(sensor: SensorConfig, baseline_sample: dict[str, float]) -> float:
+    baseline = float(baseline_sample.get(sensor.name, (sensor.control_low + sensor.control_high) / 2.0))
+    if sensor.control_low <= baseline <= sensor.control_high:
+        return baseline
+    return (sensor.control_low + sensor.control_high) / 2.0
+
+
+def _diagnostic_direction(sensor: SensorConfig) -> int:
+    if sensor.expected_direction == "decreasing":
+        return -1
+    if sensor.expected_direction == "increasing":
+        return 1
+    return 1
+
+
+def _diagnostic_value(
+    *,
+    start_value: float,
+    direction: int,
+    response_delta: float,
+    fault_type: str,
+    idx: int,
+    command_index: int,
+    response_window: int,
+) -> float:
+    if idx <= command_index:
+        return start_value
+    elapsed = idx - command_index
+    if fault_type == "stuck_during_diagnostic":
+        return start_value
+    if fault_type == "weak_diagnostic_response":
+        final_delta = response_delta * 0.30
+        return start_value + direction * min(final_delta, final_delta * elapsed / max(response_window, 1))
+    return start_value + direction * min(response_delta, response_delta * elapsed / max(response_window, 1))
 
 
 def _outside_band_value(sensor: SensorConfig, side: str) -> float:
