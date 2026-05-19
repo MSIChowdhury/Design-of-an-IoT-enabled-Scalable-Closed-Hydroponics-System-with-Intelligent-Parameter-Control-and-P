@@ -69,6 +69,14 @@ def run_available_real(*, dataset_profile: str = "paper") -> None:
     ]
     for command in commands:
         subprocess.run([sys.executable, *command], check=True)
+    agronomic_raw = ROOT / "data/raw/hydroponic/agronomic_harvest.csv"
+    if agronomic_raw.exists():
+        subprocess.run([sys.executable, "scripts/22_prepare_agronomic.py"], check=True)
+        subprocess.run([sys.executable, "scripts/23_agronomic_linkage.py"], check=True)
+        subprocess.run([sys.executable, "scripts/07_make_tables.py", "--hydro-exp1"], check=True)
+        subprocess.run([sys.executable, "scripts/08_make_figures.py", "--hydro-exp1"], check=True)
+    else:
+        print(f"Skipping agronomic linkage; missing {agronomic_raw}")
     subprocess.run(
         [sys.executable, "scripts/download_datasets.py", "--all", "--profile", dataset_profile],
         check=True,

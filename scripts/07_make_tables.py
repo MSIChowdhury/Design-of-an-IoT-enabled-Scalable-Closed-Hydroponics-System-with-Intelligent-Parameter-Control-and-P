@@ -129,6 +129,9 @@ def make_hydro_exp1_tables() -> None:
         "hydro_exp1_aasvr_audit_trail",
         "hydro_exp1_aasvr_by_sensor_ci",
         "hydro_exp1_aasvr_by_fault_type_ci",
+        "hydro_agronomic_exposure",
+        "hydro_agronomic_summary",
+        "hydro_agronomic_linkage",
     ]:
         path = ROOT / f"results/metrics/{name}.csv"
         if path.exists():

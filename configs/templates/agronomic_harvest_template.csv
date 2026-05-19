@@ -1,0 +1,7 @@
+experiment,treatment,plant_id,FMAP_g,DMAP_g,TPL_cm,RL_cm,SL_cm,TNL_count,NL10_count,protein_g_100g,fat_g_100g,tdf_g_100g,carb_g_100g
+1,P1,E1_P1_001,,,,,,,,,,,
+1,P2,E1_P2_001,,,,,,,,,,,
+1,P3,E1_P3_001,,,,,,,,,,,
+2,P1,E2_P1_001,,,,,,,,,,,
+2,P2,E2_P2_001,,,,,,,,,,,
+2,P3,E2_P3_001,,,,,,,,,,,

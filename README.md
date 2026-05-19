@@ -50,15 +50,17 @@ Large public archives are not downloaded by default. The paper workflow uses the
 
 ## Current Hydroponic Synthetic-Fault Result
 
-Current AASVR performance on the hydroponic Experiment 1 synthetic-fault benchmark:
+Current manuscript-facing results are generated from the hydroponic Experiment 1
+synthetic-fault benchmark and are written to `results/tables/`. The current paper
+uses AASVR-R as the main method and reports the held-out benchmark in
+`Paper Files/main_aasvr.tex`.
 
-- Balanced accuracy: 0.859
-- Recall: 0.839
-- Specificity: 0.880
-- Mean false actuations per trial: 0.145
-- Bootstrap 95% CI for balanced accuracy: 0.844 to 0.874
-
-These results are synthetic-fault benchmark results, not agronomic causality claims. Crop-yield and dashboard material are retained only as deployment context.
+These results are synthetic-fault benchmark results, not agronomic causality
+claims. Crop-yield and dashboard material are retained only as deployment context.
+The optional agronomic linkage pipeline expects a per-plant harvest sheet at
+`data/raw/hydroponic/agronomic_harvest.csv`; generate the template with
+`python scripts/22_prepare_agronomic.py --write-template` or copy
+`configs/templates/agronomic_harvest_template.csv`.
 
 The current public external benchmark path also supports the HAI `21.03/test1` paper subset. Native HAI attack labels are timestamp-level, so the headline HAI table uses a timestamp-level multivariate score: a timestamp is flagged when at least 30% of sensor streams reject/alert. In the latest local run, AASVR had the highest HAI balanced accuracy among implemented methods, but the result should be framed as cross-domain stress testing rather than a dominance claim.
 

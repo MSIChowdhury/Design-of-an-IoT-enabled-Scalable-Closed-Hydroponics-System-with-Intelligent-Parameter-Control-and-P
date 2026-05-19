@@ -256,6 +256,50 @@ def make_hydro_exp1_figures() -> None:
             _save_current(out)
             plt.close()
             print(f"Wrote {out}")
+    agronomic_path = ROOT / "results/metrics/hydro_agronomic_summary.csv"
+    linkage_path = ROOT / "results/metrics/hydro_agronomic_linkage.csv"
+    if agronomic_path.exists() and linkage_path.exists():
+        agronomic = pd.read_csv(agronomic_path)
+        linkage = pd.read_csv(linkage_path)
+        outcomes = ["FMAP_g", "TPL_cm", "NL10_count"]
+        plot = agronomic[agronomic["outcome"].isin(outcomes)].copy()
+        if not plot.empty:
+            out = out_dir / "hydro_agronomic_outcomes.png"
+            grid = sns.catplot(
+                data=plot,
+                x="treatment",
+                y="mean",
+                hue="treatment",
+                col="outcome",
+                row="experiment",
+                kind="bar",
+                sharey=False,
+                height=2.4,
+                aspect=1.0,
+                palette="Set2",
+                legend=False,
+            )
+            grid.set_axis_labels("Treatment", "Mean")
+            grid.set_titles("Experiment {row_name} | {col_name}")
+            grid.figure.tight_layout()
+            grid.figure.savefig(out, dpi=220)
+            grid.figure.savefig(out.with_suffix(".pdf"))
+            plt.close(grid.figure)
+            print(f"Wrote {out}")
+        p1 = linkage[linkage["outcome"].eq("FMAP_g")].copy()
+        if not p1.empty:
+            out = out_dir / "hydro_agronomic_linkage.png"
+            p1["method_label"] = p1["method"].map(METHOD_LABELS).fillna(p1["method"])
+            plt.figure(figsize=(5.6, 3.2))
+            colors = [PALETTE.get(method, "#777777") for method in p1["method_label"]]
+            plt.bar(p1["method_label"], p1["untrusted_rate"], color=colors)
+            plt.ylabel("Untrusted sample rate")
+            plt.xlabel("Replay method")
+            plt.xticks(rotation=20, ha="right")
+            plt.tight_layout()
+            _save_current(out)
+            plt.close()
+            print(f"Wrote {out}")
 
 
 def make_all_available_figures() -> None:
