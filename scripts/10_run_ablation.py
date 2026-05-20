@@ -38,8 +38,6 @@ def run_hydro_exp1_ablation() -> None:
     grid = pd.read_csv(grid_path)
     if "split" in grid.columns:
         grid = grid[grid["split"].eq("test")].reset_index(drop=True)
-    if len(grid) > 120:
-        grid = grid.sample(n=120, random_state=20260518).reset_index(drop=True)
     full_config = _primary_sensor_config(load_aasvr_config(ROOT / "configs/methods/aasvr.yaml"))
     variants = _ablation_variants(full_config)
 
@@ -62,7 +60,11 @@ def run_hydro_exp1_ablation() -> None:
         )
         faulted, labels = inject_fault(window, spec)
         for variant_name, config, prediction_mode in variants:
-            decisions = run_aasvr_with_config(faulted, config)
+            decisions = (
+                _run_lockout_only(faulted, config.sensors)
+                if variant_name == "lockout_only"
+                else run_aasvr_with_config(faulted, config)
+            )
             metrics = compute_metrics(decisions, labels, prediction_mode=prediction_mode)
             row = {
                 "dataset": "hydro_exp1",
@@ -132,6 +134,7 @@ def _ablation_variants(config: AASVRConfig) -> list[tuple[str, AASVRConfig, str]
     )
     return [
         ("full_aasvr_r", config, "gate_reject"),
+        ("lockout_only", config, "gate_reject"),
         ("no_response_reliability", no_response_reliability, "gate_reject"),
         ("alert_only_scoring", config, "alert"),
         ("no_robust_mad_scale", replace(config, scale_multiplier=0.0), "gate_reject"),
@@ -146,6 +149,43 @@ def _ablation_variants(config: AASVRConfig) -> list[tuple[str, AASVRConfig, str]
 
 def _replace_sensors(sensors: tuple[SensorConfig, ...], **kwargs: int) -> tuple[SensorConfig, ...]:
     return tuple(replace(sensor, **kwargs) for sensor in sensors)
+
+
+def _run_lockout_only(frame: pd.DataFrame, sensors: tuple[SensorConfig, ...]) -> pd.DataFrame:
+    rows = []
+    state = {sensor.name: {"violations": 0, "cooldown": 0} for sensor in sensors}
+    for sample in frame.to_dict(orient="records"):
+        for sensor in sensors:
+            y = float(sample.get(sensor.name, float("nan")))
+            s = state[sensor.name]
+            authorized = False
+            if s["cooldown"] > 0:
+                s["cooldown"] -= 1
+                s["violations"] = 0
+            elif pd.notna(y):
+                violation = y < sensor.control_low or y > sensor.control_high
+                s["violations"] = s["violations"] + 1 if violation else 0
+                if s["violations"] >= sensor.confirm_samples:
+                    authorized = True
+                    s["violations"] = 0
+                    s["cooldown"] = sensor.cooldown_samples
+            rows.append(
+                {
+                    "timestamp": sample.get("timestamp"),
+                    "sensor": sensor.name,
+                    "raw_value": y,
+                    "trusted_value": y,
+                    "state": "Normal",
+                    "trust_score": 1.0,
+                    "gate_result": "accept",
+                    "rectification_action": "lockout_only",
+                    "actuation_authorized": authorized,
+                    "alert": False,
+                    "unsafe_band": bool(pd.notna(y) and (y < sensor.control_low or y > sensor.control_high)),
+                    "reason_codes": (),
+                }
+            )
+    return pd.DataFrame(rows)
 
 
 if __name__ == "__main__":

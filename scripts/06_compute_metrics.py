@@ -228,15 +228,29 @@ def compute_hydro_exp1_synthetic() -> None:
         "alerts",
     ]
     summary = detail.groupby("method", as_index=False)[metric_cols].mean()
+    counts = (
+        detail.groupby("method", as_index=False)["trial_id"]
+        .nunique()
+        .rename(columns={"trial_id": "n_trials"})
+    )
     false_actuation_sd = (
         detail.groupby("method", as_index=False)["false_actuations"]
         .std(ddof=1)
         .rename(columns={"false_actuations": "false_actuations_sd"})
     )
-    summary.merge(false_actuation_sd, on="method", how="left").sort_values(
-        "balanced_accuracy", ascending=False
-    ).to_csv(summary_path, index=False)
-    detail.groupby(["method", "fault_type"], as_index=False)[metric_cols].mean().sort_values(
+    (
+        summary.merge(counts, on="method", how="left")
+        .merge(false_actuation_sd, on="method", how="left")
+        .sort_values("balanced_accuracy", ascending=False)
+        .to_csv(summary_path, index=False)
+    )
+    by_fault = detail.groupby(["method", "fault_type"], as_index=False)[metric_cols].mean()
+    fault_counts = (
+        detail.groupby(["method", "fault_type"], as_index=False)["trial_id"]
+        .nunique()
+        .rename(columns={"trial_id": "n_trials"})
+    )
+    by_fault.merge(fault_counts, on=["method", "fault_type"], how="left").sort_values(
         ["fault_type", "balanced_accuracy"], ascending=[True, False]
     ).to_csv(fault_type_path, index=False)
     print(f"Wrote {detail_path}")

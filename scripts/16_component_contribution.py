@@ -105,6 +105,7 @@ def run() -> None:
                 "raw_threshold",
                 config=BaselineConfig(method="raw_threshold"),
             ),
+            "lockout_only": _run_lockout_only(faulted, sensors),
             "robust_gate_hold": _run_robust_gate_variant(
                 faulted,
                 sensors,
@@ -258,6 +259,43 @@ def _supervisor_authorize(sensor: SensorConfig, state: dict[str, Any], *, anomal
 
 def _unsafe(sensor: SensorConfig, trusted: float | None) -> bool:
     return bool(trusted is not None and np.isfinite(trusted) and (trusted < sensor.control_low or trusted > sensor.control_high))
+
+
+def _run_lockout_only(frame: pd.DataFrame, sensors: tuple[SensorConfig, ...]) -> pd.DataFrame:
+    rows = []
+    state = {sensor.name: {"violations": 0, "cooldown": 0} for sensor in sensors}
+    for sample in frame.to_dict(orient="records"):
+        for sensor in sensors:
+            y = _to_float(sample.get(sensor.name))
+            s = state[sensor.name]
+            authorized = False
+            if s["cooldown"] > 0:
+                s["cooldown"] -= 1
+                s["violations"] = 0
+            elif np.isfinite(y):
+                violation = y < sensor.control_low or y > sensor.control_high
+                s["violations"] = s["violations"] + 1 if violation else 0
+                if s["violations"] >= sensor.confirm_samples:
+                    authorized = True
+                    s["violations"] = 0
+                    s["cooldown"] = sensor.cooldown_samples
+            rows.append(
+                {
+                    "timestamp": sample.get("timestamp"),
+                    "sensor": sensor.name,
+                    "raw_value": y,
+                    "trusted_value": y,
+                    "state": "Normal",
+                    "trust_score": 1.0,
+                    "gate_result": "accept",
+                    "rectification_action": "lockout_only",
+                    "actuation_authorized": authorized,
+                    "alert": False,
+                    "unsafe_band": _unsafe(sensor, y),
+                    "reason_codes": (),
+                }
+            )
+    return pd.DataFrame(rows)
 
 
 def _to_float(value: Any) -> float:

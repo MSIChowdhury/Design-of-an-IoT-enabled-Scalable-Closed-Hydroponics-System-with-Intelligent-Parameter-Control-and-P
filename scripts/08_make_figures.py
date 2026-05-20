@@ -27,6 +27,7 @@ METHOD_LABELS = {
     "isolation_forest": "Isolation Forest",
     "one_class_svm": "One-Class SVM",
     "local_outlier_factor": "LOF",
+    "lockout_only": "Lockout only",
 }
 
 PALETTE = {
@@ -47,6 +48,7 @@ PALETTE = {
     "Isolation Forest": "#7B3294",
     "One-Class SVM": "#008837",
     "LOF": "#A6611A",
+    "Lockout only": "#444444",
 }
 
 
@@ -221,6 +223,49 @@ def make_hydro_exp1_figures() -> None:
             plt.ylabel("Held-out balanced accuracy")
             plt.xlim(lo, hi)
             plt.ylim(lo, hi)
+            plt.tight_layout()
+            _save_current(out)
+            plt.close()
+            print(f"Wrote {out}")
+    cusum_path = ROOT / "results/metrics/hydro_exp1_cusum_sensitivity.csv"
+    if cusum_path.exists():
+        cusum = pd.read_csv(cusum_path)
+        validation = cusum[cusum["split"].eq("validation")].copy()
+        if not validation.empty:
+            pivot = validation.pivot(
+                index="cusum_drift_multiplier",
+                columns="cusum_threshold_multiplier",
+                values="balanced_accuracy",
+            )
+            out = out_dir / "hydro_exp1_cusum_sensitivity.png"
+            plt.figure(figsize=(6.4, 3.8))
+            sns.heatmap(
+                pivot,
+                cmap="YlGnBu",
+                annot=True,
+                fmt=".2f",
+                linewidths=0.3,
+                linecolor="white",
+                cbar_kws={"label": "Validation balanced accuracy"},
+            )
+            plt.xlabel("CUSUM threshold multiplier")
+            plt.ylabel("CUSUM drift multiplier")
+            plt.tight_layout()
+            _save_current(out)
+            plt.close()
+            print(f"Wrote {out}")
+    memory_path = ROOT / "results/metrics/hydro_exp1_response_memory_sensitivity.csv"
+    if memory_path.exists():
+        memory = pd.read_csv(memory_path)
+        if not memory.empty:
+            out = out_dir / "hydro_exp1_response_memory_sensitivity.png"
+            plt.figure(figsize=(5.4, 3.2))
+            for split, frame in memory.groupby("split"):
+                frame = frame.sort_values("eta_decay")
+                plt.plot(frame["eta_decay"], frame["false_actuations"], marker="o", label=split)
+            plt.xlabel("Response memory decay")
+            plt.ylabel("False-authorized actuation")
+            plt.legend(frameon=False)
             plt.tight_layout()
             _save_current(out)
             plt.close()

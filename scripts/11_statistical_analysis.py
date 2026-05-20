@@ -136,9 +136,12 @@ def _group_summary(detail: pd.DataFrame, group_cols: list[str]) -> pd.DataFrame:
         .mean()
         .sort_values([*group_cols[:-1], "balanced_accuracy"], ascending=[*[True] * (len(group_cols) - 1), False])
     )
-    if "method" in group_cols:
-        return summary
-    return summary
+    counts = (
+        detail.groupby(group_cols, as_index=False)["trial_id"]
+        .nunique()
+        .rename(columns={"trial_id": "n_trials"})
+    )
+    return summary.merge(counts, on=group_cols, how="left")
 
 
 def _aasvr_group_ci(detail: pd.DataFrame, group_cols: list[str], *, bootstrap: int) -> pd.DataFrame:

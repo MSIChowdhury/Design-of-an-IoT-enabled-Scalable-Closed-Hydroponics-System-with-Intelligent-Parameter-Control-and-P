@@ -120,6 +120,8 @@ def make_hydro_exp1_tables() -> None:
         "hydro_exp1_component_contribution",
         "hydro_exp1_tuning_transfer",
         "hydro_exp1_objective_sensitivity",
+        "hydro_exp1_cusum_sensitivity",
+        "hydro_exp1_response_memory_sensitivity",
         "hydro_exp1_drift_stress",
         "hydro_exp1_response_replay_summary",
         "hydro_exp1_response_replay_by_fault_type",

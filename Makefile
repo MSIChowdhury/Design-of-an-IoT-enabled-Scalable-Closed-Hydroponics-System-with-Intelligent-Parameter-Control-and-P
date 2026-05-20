@@ -1,4 +1,4 @@
-.PHONY: test smoke prepare evaluate figures manuscript-check paper real all stats subset-protocol agronomic optional-evidence water-calibration exhaustive-mini exhaustive-grid exhaustive-test exhaustive-aggregate exhaustive-sweep-mini
+.PHONY: test smoke prepare evaluate figures manuscript-check paper real all stats paper-sensitivity paper-revision-stats subset-protocol agronomic optional-evidence water-calibration exhaustive-mini exhaustive-grid exhaustive-test exhaustive-aggregate exhaustive-sweep-mini
 
 PYTHON ?= python
 
@@ -24,6 +24,20 @@ figures:
 stats:
 	$(PYTHON) scripts/10_run_ablation.py --hydro-exp1
 	$(PYTHON) scripts/11_statistical_analysis.py --hydro-exp1
+
+paper-sensitivity:
+	$(PYTHON) scripts/17_tuning_sensitivity.py --hydro-exp1
+	$(PYTHON) scripts/07_make_tables.py --hydro-exp1
+	$(PYTHON) scripts/08_make_figures.py --hydro-exp1
+
+paper-revision-stats:
+	$(PYTHON) scripts/06_compute_metrics.py --hydro-exp1
+	$(PYTHON) scripts/10_run_ablation.py --hydro-exp1
+	$(PYTHON) scripts/11_statistical_analysis.py --hydro-exp1
+	$(PYTHON) scripts/16_component_contribution.py --hydro-exp1
+	$(PYTHON) scripts/17_tuning_sensitivity.py --hydro-exp1
+	$(PYTHON) scripts/07_make_tables.py --hydro-exp1
+	$(PYTHON) scripts/08_make_figures.py --hydro-exp1
 
 subset-protocol:
 	$(PYTHON) scripts/download_datasets.py --all --profile paper

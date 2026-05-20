@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import replace
 from pathlib import Path
 
 import pandas as pd
@@ -46,7 +47,7 @@ WEIGHT_PROFILES = {
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--hydro-exp1", action="store_true")
-    parser.add_argument("--top-n", type=int, default=20)
+    parser.add_argument("--top-n", type=int, default=10)
     args = parser.parse_args()
     if not args.hydro_exp1:
         print("Use --hydro-exp1.")
@@ -66,19 +67,16 @@ def run(*, top_n: int) -> None:
     ].copy()
     grid = pd.read_csv(ROOT / "data/synthetic/hydro_exp1_fault_grid.csv")
     test_grid = grid[grid["split"].eq("test")].reset_index(drop=True)
-    if len(test_grid) > 90:
-        test_grid = test_grid.sample(n=90, random_state=20260519).reset_index(drop=True)
     base = load_aasvr_config(ROOT / "configs/methods/aasvr.yaml")
     sensors = tuple(sensor for sensor in base.sensors if sensor.name in HYDRO_PRIMARY_SENSORS)
     rows = []
     for idx, row in top.iterrows():
-        config = AASVRConfig(
+        config = replace(
+            base,
             sensors=sensors,
             q_min=float(row["q_min"]),
             scale_multiplier=float(row["scale_multiplier"]),
             transient_limit=int(row["transient_limit"]),
-            persistent_limit=base.persistent_limit,
-            rectification_mode=base.rectification_mode,
         )
         test_metrics = _run_trials(frame, test_grid, config)
         out = {
@@ -126,8 +124,18 @@ def run(*, top_n: int) -> None:
         out_dir / "hydro_exp1_objective_sensitivity.csv",
         index=False,
     )
-    print(f"Wrote {out_dir / 'hydro_exp1_tuning_transfer.csv'}")
-    print(f"Wrote {out_dir / 'hydro_exp1_objective_sensitivity.csv'}")
+    print(f"Wrote {out_dir / 'hydro_exp1_tuning_transfer.csv'}", flush=True)
+    print(f"Wrote {out_dir / 'hydro_exp1_objective_sensitivity.csv'}", flush=True)
+    _cusum_sensitivity(frame, grid, base, sensors).to_csv(
+        out_dir / "hydro_exp1_cusum_sensitivity.csv",
+        index=False,
+    )
+    print(f"Wrote {out_dir / 'hydro_exp1_cusum_sensitivity.csv'}", flush=True)
+    _response_memory_sensitivity(frame, grid, base, sensors).to_csv(
+        out_dir / "hydro_exp1_response_memory_sensitivity.csv",
+        index=False,
+    )
+    print(f"Wrote {out_dir / 'hydro_exp1_response_memory_sensitivity.csv'}", flush=True)
 
 
 def _run_trials(frame: pd.DataFrame, grid: pd.DataFrame, config: AASVRConfig) -> dict[str, float]:
@@ -143,7 +151,7 @@ def _run_trials(frame: pd.DataFrame, grid: pd.DataFrame, config: AASVRConfig) ->
             start=local_start,
             duration=int(trial.duration),
             magnitude=float(trial.magnitude),
-            seed=int(getattr(trial, "seed", 101)),
+            seed=101,
         )
         faulted, labels = inject_fault(window, spec)
         decisions = run_aasvr_with_config(faulted, config)
@@ -155,6 +163,106 @@ def _run_trials(frame: pd.DataFrame, grid: pd.DataFrame, config: AASVRConfig) ->
         "false_alarm_events": float(metrics["false_alarm_events"].mean()),
         "mean_detection_delay_samples": float(metrics["mean_detection_delay_samples"].mean()),
     }
+
+
+def _cusum_sensitivity(
+    frame: pd.DataFrame,
+    grid: pd.DataFrame,
+    base: AASVRConfig,
+    sensors: tuple,
+) -> pd.DataFrame:
+    rows = []
+    validation_grid = grid[grid["split"].eq("validation")].reset_index(drop=True)
+    test_grid = grid[grid["split"].eq("test")].reset_index(drop=True)
+    for drift in (0.0, 0.05, 0.10, 0.20, 0.40):
+        for threshold in (0.40, 0.60, 1.00, 2.00, 5.00):
+            metrics = _run_trials(
+                frame,
+                validation_grid,
+                _config_with_cusum(base, sensors, drift, threshold),
+            )
+            rows.append(
+                {
+                    "split": "validation",
+                    "cusum_drift_multiplier": drift,
+                    "cusum_threshold_multiplier": threshold,
+                    **metrics,
+                    "control_objective": _control_objective(metrics),
+                }
+            )
+    validation = pd.DataFrame(rows).sort_values("control_objective", ascending=False)
+    selected_pairs = {
+        (float(base.sensors[0].cusum_drift_multiplier), float(base.sensors[0].cusum_threshold_multiplier)),
+        *[
+            (float(row.cusum_drift_multiplier), float(row.cusum_threshold_multiplier))
+            for row in validation.head(3).itertuples(index=False)
+        ],
+    }
+    for drift, threshold in sorted(selected_pairs):
+        metrics = _run_trials(
+            frame,
+            test_grid,
+            _config_with_cusum(base, sensors, drift, threshold),
+        )
+        rows.append(
+            {
+                "split": "test_selected",
+                "cusum_drift_multiplier": drift,
+                "cusum_threshold_multiplier": threshold,
+                **metrics,
+                "control_objective": _control_objective(metrics),
+            }
+        )
+    return pd.DataFrame(rows).sort_values(["split", "control_objective"], ascending=[True, False])
+
+
+def _config_with_cusum(
+    base: AASVRConfig,
+    sensors: tuple,
+    drift: float,
+    threshold: float,
+) -> AASVRConfig:
+    tuned_sensors = tuple(
+        replace(
+            sensor,
+            cusum_drift_multiplier=drift,
+            cusum_threshold_multiplier=threshold,
+        )
+        for sensor in sensors
+    )
+    return replace(base, sensors=tuned_sensors)
+
+
+def _response_memory_sensitivity(
+    frame: pd.DataFrame,
+    grid: pd.DataFrame,
+    base: AASVRConfig,
+    sensors: tuple,
+) -> pd.DataFrame:
+    rows = []
+    for split in ("validation", "test"):
+        split_grid = grid[grid["split"].eq(split)].reset_index(drop=True)
+        for eta_decay in (0.50, 0.70, 0.80, 0.90, 0.95):
+            config = replace(base, sensors=sensors, eta_decay=eta_decay)
+            metrics = _run_trials(frame, split_grid, config)
+            rows.append(
+                {
+                    "split": split,
+                    "eta_decay": eta_decay,
+                    **metrics,
+                    "control_objective": _control_objective(metrics),
+                }
+            )
+    return pd.DataFrame(rows).sort_values(["split", "control_objective"], ascending=[True, False])
+
+
+def _control_objective(metrics: dict[str, float]) -> float:
+    return float(
+        metrics["balanced_accuracy"]
+        - 0.01 * metrics["false_actuations"]
+        - 0.0005 * metrics["false_alarm_events"]
+        - 0.001 * metrics["mean_detection_delay_samples"]
+    )
 
 
 def _objective(frame: pd.DataFrame, weights: dict[str, float]) -> pd.Series:
