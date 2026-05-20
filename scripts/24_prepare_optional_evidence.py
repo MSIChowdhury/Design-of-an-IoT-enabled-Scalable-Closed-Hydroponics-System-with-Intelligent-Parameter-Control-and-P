@@ -9,6 +9,7 @@ from aasvr.deployment_evidence import (
     load_optional_actuator_log,
     load_optional_reference_measurements,
     score_actuator_response_log,
+    summarize_actuator_response,
     write_templates,
 )
 
@@ -54,6 +55,11 @@ def run_hydro_exp1() -> None:
     else:
         response = score_actuator_response_log(pd.DataFrame(), pd.DataFrame())
     response.to_csv(ROOT / "results/metrics/hydro_exp1_real_actuator_response.csv", index=False)
+    response_summary = summarize_actuator_response(response)
+    response_summary.to_csv(
+        ROOT / "results/metrics/hydro_exp1_real_actuator_response_summary.csv",
+        index=False,
+    )
 
     if not references.empty:
         reference_summary = (

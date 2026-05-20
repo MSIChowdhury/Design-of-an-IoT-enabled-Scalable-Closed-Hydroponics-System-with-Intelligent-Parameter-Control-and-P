@@ -3,6 +3,11 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
+from aasvr.deployment_evidence import (
+    reconstruct_actuator_log,
+    score_actuator_response_log,
+    summarize_actuator_response,
+)
 from aasvr.prepare import HYDRO_PRIMARY_SENSORS, prepare_hydro_exp1
 
 
@@ -79,3 +84,55 @@ def test_prepare_hydro_exp1_merges_manual_events(tmp_path: Path) -> None:
     labels = pd.read_parquet(prepared.labels_path)
     assert set(labels["label_source"]) == {"manual_event"}
     assert labels["fault"].sum() == 2
+
+
+def test_reconstruct_actuator_log_requires_independent_measured_state() -> None:
+    source = pd.DataFrame(
+        {
+            "time": ["2024-02-27T20:01:23+00:00"],
+            "relay": ["acid_doser"],
+            "command": [1],
+            "sensor": ["pH"],
+            "direction": ["decrease"],
+        }
+    )
+    with pytest.raises(ValueError, match="measured_state"):
+        reconstruct_actuator_log(source)
+
+
+def test_reconstruct_actuator_log_normalizes_controller_export_and_scores_response() -> None:
+    source = pd.DataFrame(
+        {
+            "time": ["2024-02-27T20:01:23+00:00"],
+            "relay": ["acid_doser"],
+            "type": ["doser"],
+            "command": [1],
+            "feedback_state": [1],
+            "source": ["raspberry_pi"],
+            "sensor": ["pH"],
+            "direction": ["decrease"],
+            "duration": [2.5],
+            "lockout": [False],
+            "manual": [False],
+        }
+    )
+    actuator_log, reconstruction_summary = reconstruct_actuator_log(source, source_name="controller.csv")
+    assert list(actuator_log["actuator_id"]) == ["acid_doser"]
+    assert int(actuator_log.loc[0, "expected_direction"]) == -1
+    assert float(reconstruction_summary.loc[0, "command_state_agreement"]) == 1.0
+
+    measurements = pd.DataFrame(
+        {
+            "timestamp": [
+                "2024-02-27T20:01:07+00:00",
+                "2024-02-27T20:01:38+00:00",
+                "2024-02-27T20:01:54+00:00",
+            ],
+            "pH": [6.7, 6.65, 6.60],
+        }
+    )
+    response = score_actuator_response_log(measurements, actuator_log, response_window_samples=2, min_delta=0.05)
+    summary = summarize_actuator_response(response)
+    assert bool(response.loc[0, "response_confirmed"])
+    assert summary.loc[0, "commands_scored"] == 1
+    assert summary.loc[0, "response_confirmed_fraction"] == 1.0

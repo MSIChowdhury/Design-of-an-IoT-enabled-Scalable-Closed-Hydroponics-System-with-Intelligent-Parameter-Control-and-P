@@ -21,6 +21,28 @@ ACTUATOR_LOG_COLUMNS = (
     "manual_override",
 )
 
+ACTUATOR_RECONSTRUCTION_REQUIRED = (
+    "timestamp",
+    "actuator_id",
+    "commanded_state",
+    "target_sensor",
+    "expected_direction",
+)
+
+ACTUATOR_SOURCE_ALIASES = {
+    "timestamp": ("timestamp", "time", "datetime", "created_at", "command_time"),
+    "actuator_id": ("actuator_id", "actuator", "relay", "relay_id", "device", "device_id"),
+    "actuator_type": ("actuator_type", "type", "device_type", "relay_type"),
+    "commanded_state": ("commanded_state", "command", "state", "relay_state", "setpoint_state"),
+    "measured_state": ("measured_state", "feedback_state", "observed_state", "relay_feedback"),
+    "command_source": ("command_source", "source", "controller", "origin"),
+    "target_sensor": ("target_sensor", "sensor", "controlled_sensor", "variable"),
+    "expected_direction": ("expected_direction", "direction", "response_direction", "expected_response"),
+    "dose_or_runtime": ("dose_or_runtime", "runtime", "duration", "dose", "runtime_seconds"),
+    "lockout_active": ("lockout_active", "lockout", "cooldown_active"),
+    "manual_override": ("manual_override", "override", "manual"),
+}
+
 REFERENCE_MEASUREMENT_COLUMNS = (
     "timestamp",
     "sensor",
@@ -92,12 +114,7 @@ def load_optional_actuator_log(path: str | Path) -> tuple[pd.DataFrame, Optional
         )
     frame = pd.read_csv(path)
     _require_columns(frame, ACTUATOR_LOG_COLUMNS, "actuator-state log")
-    frame = frame.copy()
-    frame["timestamp"] = pd.to_datetime(frame["timestamp"], errors="coerce", utc=True)
-    if frame["timestamp"].isna().any():
-        raise ValueError("Actuator-state log contains unparsable timestamps.")
-    frame["target_sensor"] = frame["target_sensor"].astype(str)
-    frame["expected_direction"] = frame["expected_direction"].map(_direction_sign)
+    frame = normalize_actuator_log(frame)
     return (
         frame.sort_values("timestamp").reset_index(drop=True),
         OptionalEvidenceStatus(
@@ -107,6 +124,112 @@ def load_optional_actuator_log(path: str | Path) -> tuple[pd.DataFrame, Optional
             rows=len(frame),
             message="Optional actuator-state log loaded.",
         ),
+    )
+
+
+def reconstruct_actuator_log(
+    source: pd.DataFrame,
+    *,
+    source_name: str = "",
+    allow_commanded_as_measured: bool = False,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Normalize an independent controller/dashboard export to the actuator schema.
+
+    The function intentionally requires command timing, actuator identity, target
+    sensor, and expected process direction. It does not infer commands from
+    measurement threshold crossings.
+    """
+
+    source = source.copy()
+    rename: dict[str, str] = {}
+    lower_to_original = {column.strip().lower(): column for column in source.columns}
+    for canonical, aliases in ACTUATOR_SOURCE_ALIASES.items():
+        if canonical in source.columns:
+            continue
+        for alias in aliases:
+            original = lower_to_original.get(alias)
+            if original is not None:
+                rename[original] = canonical
+                break
+    frame = source.rename(columns=rename)
+    missing = sorted(set(ACTUATOR_RECONSTRUCTION_REQUIRED) - set(frame.columns))
+    if missing:
+        raise ValueError(f"Actuator reconstruction source is missing required columns: {missing}")
+    if "measured_state" not in frame.columns:
+        if not allow_commanded_as_measured:
+            raise ValueError(
+                "Actuator reconstruction source is missing measured_state. "
+                "Use --allow-commanded-as-measured only when relay state is the measured state."
+            )
+        frame["measured_state"] = frame["commanded_state"]
+    for column in ACTUATOR_LOG_COLUMNS:
+        if column not in frame.columns:
+            frame[column] = ""
+    normalized = normalize_actuator_log(frame.loc[:, ACTUATOR_LOG_COLUMNS])
+    summary = summarize_reconstructed_actuator_log(
+        normalized,
+        source_name=source_name,
+        measured_state_source="commanded_state" if allow_commanded_as_measured else "source_column",
+    )
+    return normalized, summary
+
+
+def normalize_actuator_log(frame: pd.DataFrame) -> pd.DataFrame:
+    frame = frame.copy()
+    _require_columns(frame, ACTUATOR_LOG_COLUMNS, "actuator-state log")
+    frame["timestamp"] = pd.to_datetime(frame["timestamp"], errors="coerce", utc=True)
+    if frame["timestamp"].isna().any():
+        raise ValueError("Actuator-state log contains unparsable timestamps.")
+    frame["actuator_id"] = frame["actuator_id"].astype(str)
+    frame["actuator_type"] = frame["actuator_type"].astype(str)
+    frame["command_source"] = frame["command_source"].astype(str)
+    frame["target_sensor"] = frame["target_sensor"].astype(str)
+    frame["expected_direction"] = frame["expected_direction"].map(_direction_sign)
+    if frame["expected_direction"].eq(0).any():
+        bad = int(frame["expected_direction"].eq(0).sum())
+        raise ValueError(f"Actuator-state log contains {bad} rows with unknown expected_direction.")
+    for column in ("commanded_state", "measured_state", "dose_or_runtime"):
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    if frame[["commanded_state", "measured_state"]].isna().any().any():
+        raise ValueError("Actuator-state log contains unparsable commanded_state or measured_state values.")
+    for column in ("lockout_active", "manual_override"):
+        frame[column] = frame[column].map(_boolish).fillna(False).astype(bool)
+    return frame.sort_values("timestamp").reset_index(drop=True)
+
+
+def summarize_reconstructed_actuator_log(
+    frame: pd.DataFrame,
+    *,
+    source_name: str = "",
+    measured_state_source: str = "source_column",
+) -> pd.DataFrame:
+    if frame.empty:
+        return pd.DataFrame(
+            columns=[
+                "source",
+                "measured_state_source",
+                "commands",
+                "actuators",
+                "target_sensors",
+                "command_state_agreement",
+                "manual_override_rate",
+                "lockout_rate",
+            ]
+        )
+    command_matches = np.isclose(frame["commanded_state"], frame["measured_state"], equal_nan=False)
+    return pd.DataFrame(
+        [
+            {
+                "source": source_name,
+                "measured_state_source": measured_state_source,
+                "commands": int(len(frame)),
+                "actuators": int(frame["actuator_id"].nunique()),
+                "target_sensors": int(frame["target_sensor"].nunique()),
+                "command_state_agreement": float(command_matches.mean()),
+                "manual_override_rate": float(frame["manual_override"].mean()),
+                "lockout_rate": float(frame["lockout_active"].mean()),
+            }
+        ]
     )
 
 
@@ -173,6 +296,8 @@ def score_actuator_response_log(
         if sensor not in measurements:
             continue
         direction = _direction_sign(event["expected_direction"])
+        if direction == 0:
+            continue
         before = measurements[measurements[timestamp_column].le(event["timestamp"])]
         after = measurements[measurements[timestamp_column].gt(event["timestamp"])].head(response_window_samples)
         if before.empty or after.empty:
@@ -197,6 +322,33 @@ def score_actuator_response_log(
             }
         )
     return pd.DataFrame(rows)
+
+
+def summarize_actuator_response(response: pd.DataFrame) -> pd.DataFrame:
+    columns = [
+        "commands_scored",
+        "actuators",
+        "target_sensors",
+        "response_confirmed_fraction",
+        "median_directional_delta",
+        "min_directional_delta",
+        "max_directional_delta",
+    ]
+    if response.empty:
+        return pd.DataFrame(columns=columns)
+    return pd.DataFrame(
+        [
+            {
+                "commands_scored": int(len(response)),
+                "actuators": int(response["actuator_id"].nunique()),
+                "target_sensors": int(response["target_sensor"].nunique()),
+                "response_confirmed_fraction": float(response["response_confirmed"].mean()),
+                "median_directional_delta": float(response["directional_delta"].median()),
+                "min_directional_delta": float(response["directional_delta"].min()),
+                "max_directional_delta": float(response["directional_delta"].max()),
+            }
+        ]
+    )
 
 
 def fit_water_level_calibration(calibration_frame: pd.DataFrame) -> WaterLevelCalibration:
@@ -244,3 +396,16 @@ def _direction_sign(value: object) -> int:
     if text in {"-1", "decrease", "decreasing", "down", "negative"}:
         return -1
     return 0
+
+
+def _boolish(value: object) -> bool | None:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)) and np.isfinite(value):
+        return bool(value)
+    text = str(value).strip().lower()
+    if text in {"1", "true", "yes", "y", "on", "active"}:
+        return True
+    if text in {"", "0", "false", "no", "n", "off", "inactive", "nan", "none"}:
+        return False
+    return None

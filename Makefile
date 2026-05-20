@@ -1,4 +1,4 @@
-.PHONY: test smoke prepare evaluate figures manuscript-check paper real all stats paper-sensitivity paper-revision-stats subset-protocol agronomic optional-evidence water-calibration exhaustive-mini exhaustive-grid exhaustive-test exhaustive-aggregate exhaustive-sweep-mini
+.PHONY: test smoke prepare evaluate figures manuscript-check paper real all stats paper-sensitivity paper-revision-stats subset-protocol agronomic optional-evidence reconstruct-actuator-log water-calibration exhaustive-mini exhaustive-grid exhaustive-test exhaustive-aggregate exhaustive-sweep-mini
 
 PYTHON ?= python
 
@@ -51,6 +51,10 @@ agronomic:
 
 optional-evidence:
 	$(PYTHON) scripts/24_prepare_optional_evidence.py --write-templates --hydro-exp1
+
+reconstruct-actuator-log:
+	@test -n "$(SOURCE)" || (echo "Set SOURCE=/path/to/controller_export.csv"; exit 1)
+	$(PYTHON) scripts/34_reconstruct_actuator_log.py --source "$(SOURCE)" $(if $(ALLOW_COMMANDED_AS_MEASURED),--allow-commanded-as-measured)
 
 water-calibration:
 	$(PYTHON) scripts/25_calibrate_water_level.py

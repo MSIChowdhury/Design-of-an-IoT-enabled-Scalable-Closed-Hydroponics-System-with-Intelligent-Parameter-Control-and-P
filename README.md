@@ -45,6 +45,19 @@ measurement, and water-level calibration schemas. If the optional local CSV file
 are absent, they write explicit status outputs and leave the current benchmark
 unchanged.
 
+If controller, relay, dashboard, or ThingSpeak exports contain real actuator
+command/state records, normalize them before running optional-evidence:
+
+```bash
+docker compose run --rm project-shell make reconstruct-actuator-log SOURCE=/path/to/controller_export.csv
+docker compose run --rm project-shell make optional-evidence
+```
+
+The reconstruction utility requires timestamp, actuator identity, commanded
+state, measured or relay-observed state, target sensor, and expected process
+direction. It is intentionally not a threshold-crossing detector; commands
+should not be inferred from the hydroponic sensor values being evaluated.
+
 Generate the external benchmark acquisition notes and subset protocol without downloading large archives:
 
 ```bash

@@ -51,6 +51,19 @@ python scripts/24_prepare_optional_evidence.py --write-templates
 python scripts/25_calibrate_water_level.py --write-template
 ```
 
+If actuator records exist in a controller, relay, dashboard, or ThingSpeak export,
+normalize them with:
+
+```bash
+python scripts/34_reconstruct_actuator_log.py --source /path/to/controller_export.csv
+python scripts/24_prepare_optional_evidence.py --hydro-exp1
+```
+
+The reconstruction source must be independent of the sensor replay being scored.
+Do not create actuator commands from pH/EC/temperature/CO2 threshold crossings in
+the same feed; that would reproduce the counterfactual replay rather than measured
+deployment evidence.
+
 The optional parsers are absence-safe. Missing files produce status tables under
 `results/run_metadata/` and do not change the primary AASVR-R benchmark.
 
