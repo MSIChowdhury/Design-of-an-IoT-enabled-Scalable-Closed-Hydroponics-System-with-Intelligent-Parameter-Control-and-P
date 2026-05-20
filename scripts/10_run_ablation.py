@@ -96,6 +96,9 @@ def run_hydro_exp1_ablation() -> None:
         "false_actuations",
         "missed_actuations",
         "unsafe_samples",
+        "decision_count",
+        "unsafe_rate",
+        "missed_authorization_rate",
         "alerts",
     ]
     summary = (

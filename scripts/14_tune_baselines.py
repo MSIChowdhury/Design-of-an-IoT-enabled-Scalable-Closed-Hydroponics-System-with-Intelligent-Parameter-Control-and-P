@@ -38,8 +38,6 @@ def tune_hydro_exp1_baselines() -> None:
     grid = pd.read_csv(grid_path)
     if "split" in grid.columns:
         grid = grid[grid["split"].eq("validation")].reset_index(drop=True)
-    if len(grid) > 90:
-        grid = grid.sample(n=90, random_state=20260518).reset_index(drop=True)
     aasvr = load_aasvr_config(ROOT / "configs/methods/aasvr.yaml")
     sensors = tuple(sensor for sensor in aasvr.sensors if sensor.name in HYDRO_PRIMARY_SENSORS)
     base = load_yaml(ROOT / "configs/methods/baselines.yaml")
@@ -169,6 +167,11 @@ def _run_trials(
         "balanced_accuracy": float(metrics["balanced_accuracy"].mean()),
         "false_alarm_events": float(metrics["false_alarm_events"].mean()),
         "false_actuations": float(metrics["false_actuations"].mean()),
+        "missed_actuations": float(metrics["missed_actuations"].mean()),
+        "unsafe_samples": float(metrics["unsafe_samples"].mean()),
+        "decision_count": float(metrics["decision_count"].mean()),
+        "unsafe_rate": float(metrics["unsafe_rate"].mean()),
+        "missed_authorization_rate": float(metrics["missed_authorization_rate"].mean()),
         "mean_detection_delay_samples": float(metrics["mean_detection_delay_samples"].mean()),
     }
 
@@ -193,6 +196,8 @@ def _objective(row: dict, weights: dict) -> float:
         weights = {
             "balanced_accuracy": 1.0,
             "false_actuations": -0.01,
+            "missed_authorization_rate": -0.05,
+            "unsafe_rate": -0.02,
             "false_alarm_events": -0.0005,
             "mean_detection_delay_samples": -0.001,
         }

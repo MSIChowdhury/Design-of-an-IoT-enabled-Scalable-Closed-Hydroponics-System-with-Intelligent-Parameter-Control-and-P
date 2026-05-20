@@ -225,6 +225,11 @@ def compute_hydro_exp1_synthetic() -> None:
         "mean_detection_delay_samples",
         "false_alarm_events",
         "false_actuations",
+        "missed_actuations",
+        "unsafe_samples",
+        "decision_count",
+        "unsafe_rate",
+        "missed_authorization_rate",
         "alerts",
     ]
     summary = detail.groupby("method", as_index=False)[metric_cols].mean()

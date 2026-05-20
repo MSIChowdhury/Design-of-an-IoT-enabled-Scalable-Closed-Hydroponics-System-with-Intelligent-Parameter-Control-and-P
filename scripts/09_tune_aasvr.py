@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import replace
 from pathlib import Path
 
 import pandas as pd
 
 from aasvr.config import load_aasvr_config
-from aasvr.core import AASVRConfig
 from aasvr.evaluation import compute_metrics
 from aasvr.fault_injection import FaultSpec, inject_fault
 from aasvr.pipeline import run_aasvr_with_config
@@ -37,8 +37,6 @@ def tune_hydro_exp1() -> None:
     grid = pd.read_csv(grid_path)
     if "split" in grid.columns:
         grid = grid[grid["split"].eq("validation")].reset_index(drop=True)
-    if len(grid) > 90:
-        grid = grid.sample(n=90, random_state=20260518).reset_index(drop=True)
     base = load_aasvr_config(ROOT / "configs/methods/aasvr.yaml")
     base_sensors = tuple(sensor for sensor in base.sensors if sensor.name in HYDRO_PRIMARY_SENSORS)
 
@@ -46,13 +44,12 @@ def tune_hydro_exp1() -> None:
     for scale_multiplier in (3.0, 4.0, 5.0, 6.0):
         for q_min in (0.55, 0.7, 0.85):
             for transient_limit in (1, 2, 3):
-                config = AASVRConfig(
+                config = replace(
+                    base,
                     sensors=base_sensors,
                     q_min=q_min,
                     scale_multiplier=scale_multiplier,
                     transient_limit=transient_limit,
-                    persistent_limit=base.persistent_limit,
-                    rectification_mode=base.rectification_mode,
                 )
                 metrics = run_trials(frame, grid, config)
                 row = {
@@ -62,12 +59,7 @@ def tune_hydro_exp1() -> None:
                     "transient_limit": transient_limit,
                 }
                 row.update(metrics)
-                row["control_objective"] = (
-                    row["balanced_accuracy"]
-                    - 0.01 * row["false_actuations"]
-                    - 0.0005 * row["false_alarm_events"]
-                    - 0.001 * row["mean_detection_delay_samples"]
-                )
+                row["control_objective"] = _control_objective(row)
                 rows.append(row)
 
     results = pd.DataFrame(rows).sort_values("control_objective", ascending=False)
@@ -117,8 +109,24 @@ def run_trials(frame: pd.DataFrame, grid: pd.DataFrame, config: AASVRConfig) -> 
         "mean_detection_delay_samples": float(frame_metrics["mean_detection_delay_samples"].mean()),
         "false_alarm_events": float(frame_metrics["false_alarm_events"].mean()),
         "false_actuations": float(frame_metrics["false_actuations"].mean()),
+        "missed_actuations": float(frame_metrics["missed_actuations"].mean()),
+        "unsafe_samples": float(frame_metrics["unsafe_samples"].mean()),
+        "decision_count": float(frame_metrics["decision_count"].mean()),
+        "unsafe_rate": float(frame_metrics["unsafe_rate"].mean()),
+        "missed_authorization_rate": float(frame_metrics["missed_authorization_rate"].mean()),
         "alerts": float(frame_metrics["alerts"].mean()),
     }
+
+
+def _control_objective(row: dict[str, float]) -> float:
+    return float(
+        row["balanced_accuracy"]
+        - 0.01 * row["false_actuations"]
+        - 0.05 * row["missed_authorization_rate"]
+        - 0.02 * row["unsafe_rate"]
+        - 0.0005 * row["false_alarm_events"]
+        - 0.001 * row["mean_detection_delay_samples"]
+    )
 
 
 if __name__ == "__main__":

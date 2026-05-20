@@ -20,24 +20,40 @@ WEIGHT_PROFILES = {
     "ba_only": {
         "balanced_accuracy": 1.0,
         "false_actuations": 0.0,
+        "missed_authorization_rate": 0.0,
+        "unsafe_rate": 0.0,
         "false_alarm_events": 0.0,
         "mean_detection_delay_samples": 0.0,
     },
     "reported": {
         "balanced_accuracy": 1.0,
         "false_actuations": -0.01,
+        "missed_authorization_rate": -0.05,
+        "unsafe_rate": -0.02,
         "false_alarm_events": -0.0005,
         "mean_detection_delay_samples": -0.001,
     },
     "actuation_medium": {
         "balanced_accuracy": 1.0,
         "false_actuations": -0.05,
+        "missed_authorization_rate": -0.05,
+        "unsafe_rate": -0.02,
         "false_alarm_events": -0.0005,
         "mean_detection_delay_samples": -0.001,
     },
     "actuation_high": {
         "balanced_accuracy": 1.0,
         "false_actuations": -0.10,
+        "missed_authorization_rate": -0.05,
+        "unsafe_rate": -0.02,
+        "false_alarm_events": -0.0005,
+        "mean_detection_delay_samples": -0.001,
+    },
+    "missed_authorization_high": {
+        "balanced_accuracy": 1.0,
+        "false_actuations": -0.01,
+        "missed_authorization_rate": -0.20,
+        "unsafe_rate": -0.05,
         "false_alarm_events": -0.0005,
         "mean_detection_delay_samples": -0.001,
     },
@@ -86,6 +102,8 @@ def run(*, top_n: int) -> None:
             "transient_limit": int(row["transient_limit"]),
             "validation_balanced_accuracy": float(row["balanced_accuracy"]),
             "validation_false_actuations": float(row["false_actuations"]),
+            "validation_missed_authorization_rate": float(row["missed_authorization_rate"]),
+            "validation_unsafe_rate": float(row["unsafe_rate"]),
             "validation_false_alarm_events": float(row["false_alarm_events"]),
             "validation_mean_detection_delay_samples": float(row["mean_detection_delay_samples"]),
         }
@@ -112,8 +130,15 @@ def run(*, top_n: int) -> None:
                 "validation_objective": float(selected[f"objective_{profile}"]),
                 "validation_balanced_accuracy": float(selected["balanced_accuracy"]),
                 "validation_false_actuations": float(selected["false_actuations"]),
+                "validation_missed_authorization_rate": float(selected["missed_authorization_rate"]),
+                "validation_unsafe_rate": float(selected["unsafe_rate"]),
                 "test_balanced_accuracy": source.get("test_balanced_accuracy", float("nan")),
                 "test_false_actuations": source.get("test_false_actuations", float("nan")),
+                "test_missed_authorization_rate": source.get(
+                    "test_missed_authorization_rate",
+                    float("nan"),
+                ),
+                "test_unsafe_rate": source.get("test_unsafe_rate", float("nan")),
                 "test_false_alarm_events": source.get("test_false_alarm_events", float("nan")),
             }
         )
@@ -160,6 +185,11 @@ def _run_trials(frame: pd.DataFrame, grid: pd.DataFrame, config: AASVRConfig) ->
     return {
         "balanced_accuracy": float(metrics["balanced_accuracy"].mean()),
         "false_actuations": float(metrics["false_actuations"].mean()),
+        "missed_actuations": float(metrics["missed_actuations"].mean()),
+        "unsafe_samples": float(metrics["unsafe_samples"].mean()),
+        "decision_count": float(metrics["decision_count"].mean()),
+        "missed_authorization_rate": float(metrics["missed_authorization_rate"].mean()),
+        "unsafe_rate": float(metrics["unsafe_rate"].mean()),
         "false_alarm_events": float(metrics["false_alarm_events"].mean()),
         "mean_detection_delay_samples": float(metrics["mean_detection_delay_samples"].mean()),
     }
@@ -260,6 +290,8 @@ def _control_objective(metrics: dict[str, float]) -> float:
     return float(
         metrics["balanced_accuracy"]
         - 0.01 * metrics["false_actuations"]
+        - 0.05 * metrics["missed_authorization_rate"]
+        - 0.02 * metrics["unsafe_rate"]
         - 0.0005 * metrics["false_alarm_events"]
         - 0.001 * metrics["mean_detection_delay_samples"]
     )

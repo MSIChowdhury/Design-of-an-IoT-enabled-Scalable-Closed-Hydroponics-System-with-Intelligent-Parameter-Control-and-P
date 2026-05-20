@@ -98,11 +98,19 @@ def run(args: argparse.Namespace) -> None:
                 "false_alarm_events": float(metric_frame["false_alarm_events"].mean()),
                 "false_actuations": float(metric_frame["false_actuations"].mean()),
                 "missed_actuations": float(metric_frame["missed_actuations"].mean()),
+                "unsafe_samples": float(metric_frame["unsafe_samples"].mean()),
+                "decision_count": float(metric_frame["decision_count"].mean()),
+                "unsafe_rate": float(metric_frame["unsafe_rate"].mean()),
+                "missed_authorization_rate": float(
+                    metric_frame["missed_authorization_rate"].mean()
+                ),
             }
         )
         row["control_objective"] = (
             row["balanced_accuracy"]
             - 0.01 * row["false_actuations"]
+            - 0.05 * row["missed_authorization_rate"]
+            - 0.02 * row["unsafe_rate"]
             - 0.0005 * row["false_alarm_events"]
             - 0.001 * row["mean_detection_delay_samples"]
         )

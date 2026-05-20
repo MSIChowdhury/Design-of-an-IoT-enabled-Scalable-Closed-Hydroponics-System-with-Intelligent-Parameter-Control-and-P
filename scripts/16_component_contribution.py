@@ -146,6 +146,11 @@ def run() -> None:
         "mean_detection_delay_samples",
         "false_alarm_events",
         "false_actuations",
+        "missed_actuations",
+        "unsafe_samples",
+        "decision_count",
+        "unsafe_rate",
+        "missed_authorization_rate",
         "alerts",
     ]
     summary = detail.groupby("variant", as_index=False)[metric_cols].agg(["mean", "median"])

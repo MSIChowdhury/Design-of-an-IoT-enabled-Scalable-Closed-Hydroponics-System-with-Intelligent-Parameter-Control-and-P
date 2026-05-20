@@ -18,6 +18,9 @@ class Metrics:
     false_actuations: int
     missed_actuations: int
     unsafe_samples: int
+    decision_count: int
+    unsafe_rate: float
+    missed_authorization_rate: float
     event_recall: float
     mean_detection_delay_samples: float
     false_alarm_events: int
@@ -46,6 +49,8 @@ def compute_metrics(
     event_recall, mean_delay, false_alarm_events = _event_metrics(predicted, actual)
     false_actuations = _false_actuations(decisions, actual)
     missed_actuations = _missed_actuations(decisions, actual)
+    decision_count = int(len(actual))
+    unsafe_samples = _unsafe_samples(decisions, decision_count)
     return Metrics(
         precision=precision,
         recall=recall,
@@ -56,7 +61,10 @@ def compute_metrics(
         false_negative_rate=_safe_div(fn, fn + tp),
         false_actuations=false_actuations,
         missed_actuations=missed_actuations,
-        unsafe_samples=int(decisions.get("unsafe_band", pd.Series(False, index=decisions.index)).sum()),
+        unsafe_samples=unsafe_samples,
+        decision_count=decision_count,
+        unsafe_rate=_safe_div(unsafe_samples, decision_count),
+        missed_authorization_rate=_safe_div(missed_actuations, max(unsafe_samples, 1)),
         event_recall=event_recall,
         mean_detection_delay_samples=mean_delay,
         false_alarm_events=false_alarm_events,
@@ -162,3 +170,9 @@ def _missed_actuations(decisions: pd.DataFrame, actual: np.ndarray) -> int:
     unsafe = decisions["unsafe_band"].astype(bool).to_numpy()[: len(actual)]
     auth = decisions["actuation_authorized"].astype(bool).to_numpy()[: len(actual)]
     return int(np.sum(unsafe & ~actual & ~auth))
+
+
+def _unsafe_samples(decisions: pd.DataFrame, length: int) -> int:
+    if "unsafe_band" not in decisions:
+        return 0
+    return int(decisions["unsafe_band"].astype(bool).to_numpy()[:length].sum())

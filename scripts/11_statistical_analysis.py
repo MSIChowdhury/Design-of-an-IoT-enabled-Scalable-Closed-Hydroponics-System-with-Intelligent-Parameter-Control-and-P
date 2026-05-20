@@ -20,6 +20,11 @@ METRICS = [
     "mean_detection_delay_samples",
     "false_alarm_events",
     "false_actuations",
+    "missed_actuations",
+    "unsafe_samples",
+    "decision_count",
+    "unsafe_rate",
+    "missed_authorization_rate",
     "alerts",
 ]
 REFERENCE_METHOD = "aasvr_r"
@@ -109,6 +114,8 @@ def _method_ranks(detail: pd.DataFrame) -> pd.DataFrame:
         "recall": False,
         "specificity": False,
         "false_actuations": True,
+        "missed_authorization_rate": True,
+        "unsafe_rate": True,
         "false_alarm_events": True,
         "alerts": True,
     }
