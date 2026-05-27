@@ -23,6 +23,7 @@
 - `figure/hydro_exp1_ph_trace.png` and `.pdf`: representative pH replay trace.
 - `figure/hydro_exp1_co2_trace.png` and `.pdf`: representative CO2 replay trace.
 - `figure/hydro_exp1_fault_type_heatmap.png` and `.pdf`: fault-type by method balanced-accuracy heatmap.
+- `figure/hydro_exp1_operating_tradeoff.png` and `.pdf`: replay false-authorized-actuation versus missed-authorization operating-point sweep.
 - `figure/fullsystemactual.JPG`: real hydroponic deployment photograph used in the main manuscript.
 - `figure/agronomic_parameters_violinplots_new.pdf`: secondary agronomic operation-evidence figure retained for supplementary use only.
 
@@ -47,8 +48,8 @@ The build target compiles `main_aasvr.tex` and `main_aasvr_blinded.tex` with `la
 
 The current manuscript revision is a final-submission tightening pass: AASVR now includes
 a conservative stuck-value guard, the abstract avoids detailed numerical claims, the main
-table reports detection delay and false-actuation standard deviation, paired effect sizes
-and Holm-corrected tests are reported in the paper, HAI/SKAB are demoted to supplementary
-stress-test limitations, an informal bounded-rectification proposition is included for
-ISA readers, the tied validation settings are checked against the held-out test split, and
-LaTeX font/Unicode settings were added to avoid broken ligature extraction in the compiled PDF.
+table reports detection delay and replay false-authorized-actuation variation, paired
+effect sizes and Holm-corrected tests are reported in the paper, HAI/SKAB are demoted to
+supplementary stress-test limitations, evidence-status and operating-tradeoff artifacts
+make the actuator-log boundary explicit, and LaTeX font/Unicode settings were added to
+avoid broken ligature extraction in the compiled PDF.

@@ -1,6 +1,10 @@
-.PHONY: test smoke prepare evaluate figures manuscript-check paper real all stats paper-sensitivity paper-revision-stats subset-protocol agronomic optional-evidence reconstruct-actuator-log water-calibration exhaustive-mini exhaustive-grid exhaustive-test exhaustive-aggregate exhaustive-sweep-mini
+.PHONY: test smoke prepare evaluate figures manuscript-check paper real all stats paper-sensitivity paper-revision-stats revision-artifacts subset-protocol agronomic optional-evidence reconstruct-actuator-log water-calibration exhaustive-mini exhaustive-grid exhaustive-test exhaustive-aggregate exhaustive-sweep-mini exhaustive-full-attached
 
 PYTHON ?= python
+JOBS ?= 1
+EXHAUSTIVE_SHARDS ?= 4096
+EXHAUSTIVE_PARALLEL ?= 8
+EXHAUSTIVE_SPLITS ?= tune validation test
 
 test:
 	$(PYTHON) -m pytest -q
@@ -36,8 +40,12 @@ paper-revision-stats:
 	$(PYTHON) scripts/11_statistical_analysis.py --hydro-exp1
 	$(PYTHON) scripts/16_component_contribution.py --hydro-exp1
 	$(PYTHON) scripts/17_tuning_sensitivity.py --hydro-exp1
+	$(PYTHON) scripts/35_revision_artifacts.py --hydro-exp1 --jobs $(JOBS)
 	$(PYTHON) scripts/07_make_tables.py --hydro-exp1
 	$(PYTHON) scripts/08_make_figures.py --hydro-exp1
+
+revision-artifacts:
+	$(PYTHON) scripts/35_revision_artifacts.py --hydro-exp1 --jobs $(JOBS)
 
 subset-protocol:
 	$(PYTHON) scripts/download_datasets.py --all --profile paper
@@ -75,6 +83,9 @@ exhaustive-aggregate:
 
 exhaustive-sweep-mini:
 	$(PYTHON) scripts/28_sweep_aasvr_exhaustive.py --profile mini --split validation --max-settings 16
+
+exhaustive-full-attached:
+	env PROFILE=exhaustive SHARDS=$(EXHAUSTIVE_SHARDS) PARALLEL=$(EXHAUSTIVE_PARALLEL) SPLITS="$(EXHAUSTIVE_SPLITS)" scripts/30_launch_exhaustive_benchmark.sh
 
 manuscript-check:
 	$(PYTHON) scripts/check_manuscript.py

@@ -16,5 +16,7 @@
 - HAI and SKAB are supplementary external stress tests, not main evidence. Validation-selected aggregation thresholds remain weak, so the main paper should not present them as cross-domain success.
 - The agronomic trial is confounded by treatment differences. It should be presented only as full-cycle deployment context unless a stronger experimental design is added.
 - The cross-dataset mean-rank plot and agronomic violin plots are generated artifacts only; they are intentionally not part of the main manuscript argument.
+- The current actuator-command/state logs are unavailable. Keep all actuator wording tied to replay false-authorized actuation, and do not infer command evidence from sensor threshold crossings.
+- The operating-tradeoff figure should remain close to the headline benchmark so the conservative authorization cost is visible before the limitations section.
 - The Round 3 polish keeps exact performance values out of the abstract and reserves them for the Results tables. The final abstract should remain qualitative and submission-style.
 - The current draft is closer to a final submission: it includes paired effect-size reporting, an informal bounded-rectification proposition, a tied-validation-setting consistency note, explicit stuck-at false-actuation-tail language, and ligature-safe PDF font setup. Coauthor scientific review should still check whether the stuck-at limitation language is acceptable.

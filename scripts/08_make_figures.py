@@ -270,6 +270,67 @@ def make_hydro_exp1_figures() -> None:
             _save_current(out)
             plt.close()
             print(f"Wrote {out}")
+    tradeoff_path = ROOT / "results/metrics/hydro_exp1_operating_tradeoff.csv"
+    if tradeoff_path.exists():
+        tradeoff = pd.read_csv(tradeoff_path)
+        required = {
+            "missed_authorization_rate",
+            "replay_false_authorized_actuations",
+            "balanced_accuracy",
+        }
+        if not tradeoff.empty and required.issubset(tradeoff.columns):
+            out = out_dir / "hydro_exp1_operating_tradeoff.png"
+            plt.figure(figsize=(5.8, 3.7))
+            scatter = plt.scatter(
+                tradeoff["missed_authorization_rate"],
+                tradeoff["replay_false_authorized_actuations"],
+                c=tradeoff["balanced_accuracy"],
+                cmap="viridis",
+                s=26,
+                alpha=0.72,
+                linewidth=0,
+            )
+            manuscript = (
+                tradeoff[tradeoff["is_manuscript_setting"].astype(bool)]
+                if "is_manuscript_setting" in tradeoff
+                else tradeoff.iloc[0:0]
+            )
+            if not manuscript.empty:
+                row = manuscript.iloc[0]
+                plt.scatter(
+                    [row["missed_authorization_rate"]],
+                    [row["replay_false_authorized_actuations"]],
+                    marker="*",
+                    s=180,
+                    color="#D55E00",
+                    edgecolor="white",
+                    linewidth=0.7,
+                    label="Manuscript setting",
+                )
+            pareto = (
+                tradeoff[tradeoff["pareto_efficient"].astype(bool)]
+                if "pareto_efficient" in tradeoff
+                else tradeoff.iloc[0:0]
+            )
+            if not pareto.empty:
+                plt.scatter(
+                    pareto["missed_authorization_rate"],
+                    pareto["replay_false_authorized_actuations"],
+                    facecolors="none",
+                    edgecolors="#111111",
+                    s=42,
+                    linewidth=0.7,
+                    label="Pareto-efficient",
+                )
+            plt.xlabel("Missed authorization rate")
+            plt.ylabel("Replay false-authorized actuation")
+            plt.colorbar(scatter, label="Balanced accuracy")
+            if not manuscript.empty or not pareto.empty:
+                plt.legend(frameon=False, loc="best")
+            plt.tight_layout()
+            _save_current(out)
+            plt.close()
+            print(f"Wrote {out}")
     audit_path = ROOT / "results/figures/hydro_exp1_aasvr_audit_trail.png"
     if audit_path.exists():
         print(f"Existing audit-trail figure available at {audit_path}")

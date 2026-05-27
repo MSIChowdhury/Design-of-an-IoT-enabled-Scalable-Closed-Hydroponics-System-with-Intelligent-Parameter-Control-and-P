@@ -121,7 +121,7 @@ The evaluation below treats this system as a deployed measurement-to-actuation s
 \section{Problem Formulation}
 For hydroponic sensor $s$ at time $t$, let $y_s(t)$ be the raw measurement and $\hat{x}_s(t)$ be the trusted value exposed to control. The method observes recent history $Y_s(t-w:t)$, broad physical limits $[P_{s,\min},P_{s,\max}]$, a control band $[L_s^a,U_s^a]$, a rate limit $r_s$, and any available actuator state $a(t)$. In this system, $s$ may correspond to pH, EC, humidity, air temperature, water temperature, or CO2, while $a(t)$ may represent dosing, cooling, circulation, or gas-release activity.
 
-We define a measurement as \emph{untrusted} when it is missing, physically implausible, rate-inconsistent, inconsistent with recent trusted state, or inconsistent with expected actuator effects. We define a \emph{false actuation} as an authorization caused by untrusted evidence. A \emph{missed actuation} is a failure to authorize action when the trusted state remains outside the control band.
+We define a measurement as \emph{untrusted} when it is missing, physically implausible, rate-inconsistent, inconsistent with recent trusted state, or inconsistent with expected actuator effects. In replay, we define a \emph{false-authorized actuation} as an authorization caused by untrusted evidence. A \emph{missed authorization} is a failure to authorize action when the trusted state remains outside the control band.
 
 The validation decision is separated from the control decision. Let $g_s(t)\in\{0,1\}$ denote whether a raw sample passes all measurement gates, and let $z_s(t)$ denote one of five states: normal, suspect transient, persistent deviation, accepted regime shift, and fault alert. The controller receives $\hat{x}_s(t)$ and $A_s(t)$, not the raw value alone. This separation is necessary because a value can be physically possible but still too uncertain to authorize actuation.
 
@@ -134,7 +134,7 @@ w_1E_{\mathrm{pass}}+w_2E_{\mathrm{reject}}+w_3A_{\mathrm{false}}
 &+w_5D_{\mathrm{delay}}+w_6T_{\mathrm{unsafe}}+w_7C_{\mathrm{compute}},
 \end{aligned}
 \end{equation}
-where the terms respectively measure anomalous pass-through, false rejection, false actuation, missed actuation, detection delay, residence outside safe bands, and computational cost. The validation sweep uses the operative scalar
+where the terms respectively measure anomalous pass-through, false rejection, false-authorized actuation, missed authorization, detection delay, residence outside safe bands, and computational cost. The validation sweep uses the operative scalar
 \begin{equation}
 \begin{aligned}
 J_{\mathrm{val}}(\theta)=&
@@ -338,15 +338,35 @@ Saturation & $y'_s(t)=m$ & Sensor rail or implausible fixed value \\
 \end{table}
 
 \subsection{Counterfactual response replay}
-A second replay evaluates the actuator-response residual. Replay-derived controller authorizations are treated as pseudo-actuator commands because the available feed does not contain real actuator-state columns. Healthy and response-fault trials are implementation checks for the response mechanism, not measured physical closed-loop disturbances.
+A second replay evaluates the actuator-response residual. Replay-derived controller authorizations are treated as pseudo-actuator commands because the available feed does not contain real actuator-state columns. Healthy and response-fault trials are implementation checks for the response mechanism, not measured physical closed-loop disturbances. We do not infer actuator commands from the same sensor thresholds used for validation, because doing so would make the actuator evidence circular.
 
 \subsection{Prospective limitation-closing evidence}
 The reproducibility package now treats three missing evidence sources as explicit optional schemas rather than informal future work. First, a real or reconstructed-from-controller actuator-state log should record timestamped actuator identity, commanded and measured relay state, command source, target sensor, expected response direction, dose or runtime, lockout status, and manual override status. The reconstruction utility accepts independent controller, relay, dashboard, or ThingSpeak command exports, but it does not infer commands from sensor threshold crossings. When such records are supplied, the pipeline reports measured command-state agreement and directional post-command response, converting the response residual from counterfactual replay into deployment evidence for those episodes. Second, an independent reference-measurement file should pair raw sensor values with a calibrated handheld or benchtop reference instrument, including device identity and operator notes. This supports direct scoring of plausible bias, drift, and stuck-at readings. Third, water-level reintegration requires paired raw ultrasonic readings and physical reference levels in centimeters. The current reproducibility utility fits a linear calibration, $\ell_{\mathrm{cm}}=a y_{\mathrm{raw}}+b$, and reports slope, intercept, RMSE, and $R^2$; water level should remain excluded until those diagnostics are acceptable for the physical tank geometry. Missing optional files are allowed in the current pipeline and produce absence-status tables; they do not change the held-out hydroponic benchmark.
 
-\subsection{Baselines and metrics}
-The baselines are raw thresholding, moving average, moving median, Hampel, Kalman, EWMA, CUSUM, PCA-style monitoring, GLR, recursive PCA, Isolation Forest, One-Class SVM, and local outlier factor. A duplicated physical-threshold rule remains in the reproducibility outputs but is not interpreted as a separate scientific baseline. Every displayed baseline is tuned on the validation split using Eq.~\eqref{eq:validation_objective} and then wrapped in the same persistence/cooldown authorization supervisor for false-actuation scoring. The hydroponic synthetic-fault benchmark reports precision, recall, specificity, balanced accuracy, detection delay, false alarm events, false actuation mean, and false actuation standard deviation.
+\begin{table}[!htbp]
+\centering
+\caption{Evidence status for the current revision. The table separates available deployment evidence from prospective evidence needed to convert replay checks into measured closed-loop actuator-response claims.}
+\label{tab:evidence_status}
+\footnotesize
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llll}
+\toprule
+Evidence source & Current status & Current use & Claim boundary \\
+\midrule
+Hydroponic sensor feed & Available & Replay and synthetic-fault background & No independent metrology truth \\
+Synthetic fault labels & Available & Controlled held-out scoring & Injected faults are not all hardware faults \\
+Actuator command/state log & Not retained & Not used as measured evidence & No physical actuator-response claim \\
+Independent reference measurements & Not continuous & Not used for full scoring & Plausible bias/drift truth unavailable \\
+Water-level calibration & Not available & Water level excluded & No water-level fault claim \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
 
-Bootstrap confidence intervals use 1000 resamples of injected-fault trials, not individual samples. Paired Wilcoxon signed-rank tests compare AASVR-R against each baseline on per-trial balanced accuracy and false actuation, with Holm correction applied separately across the 13-baseline balanced-accuracy family and the 13-baseline false-actuation family. Rank-biserial correlation and paired $d_z$ are reported in the reproducibility tables, and a sign test is also reported for false-actuation differences because that distribution is zero-inflated and skewed. Sensor--fault grids use Benjamini--Hochberg correction.
+\subsection{Baselines and metrics}
+The baselines are raw thresholding, moving average, moving median, Hampel, Kalman, EWMA, CUSUM, PCA-style monitoring, GLR, recursive PCA, Isolation Forest, One-Class SVM, and local outlier factor. A duplicated physical-threshold rule remains in the reproducibility outputs but is not interpreted as a separate scientific baseline. Every displayed baseline is tuned on the validation split using Eq.~\eqref{eq:validation_objective} and then wrapped in the same persistence/cooldown authorization supervisor for replay false-authorized-actuation scoring. The hydroponic synthetic-fault benchmark reports precision, recall, specificity, balanced accuracy, detection delay, false alarm events, replay false-authorized-actuation mean, and replay false-authorized-actuation standard deviation.
+
+Bootstrap confidence intervals use 1000 resamples of injected-fault trials, not individual samples. Paired Wilcoxon signed-rank tests compare AASVR-R against each baseline on per-trial balanced accuracy and replay false-authorized actuation, with Holm correction applied separately across the 13-baseline balanced-accuracy family and the 13-baseline replay-authorization family. Rank-biserial correlation and paired $d_z$ are reported in the reproducibility tables, and a sign test is also reported for replay false-authorized-actuation differences because that distribution is zero-inflated and skewed. Sensor--fault grids use Benjamini--Hochberg correction.
 
 \FloatBarrier
 
@@ -378,16 +398,16 @@ Water level & Solution & No & Warning channel; calibration unresolved \\
 \end{table}
 
 \subsection{Hydroponic synthetic-fault benchmark}
-Table~\ref{tab:hydro_synth} summarizes the primary target-domain result on 270 held-out synthetic-fault trials. With the validation-selected Page/CUSUM residual gate, AASVR-R remains close to the base AASVR detector on balanced accuracy while lowering replay false-authorized actuation from 0.196 to 0.041 events per trial. The same table shows the cost: AASVR-R's missed-authorization rate is 0.970, compared with 0.874 for base AASVR. AASVR-R matches LOF within bootstrap uncertainty while preserving higher specificity and fewer alerts. One-Class SVM is statistically similar to AASVR-R on false actuation, but it obtains this by rejecting aggressively, with a false-positive rate of 0.667 and nearly 890 alert samples per trial. The result is therefore a replay tradeoff, not a closed-loop control-performance claim.
+Table~\ref{tab:hydro_synth} summarizes the primary target-domain result on 270 held-out synthetic-fault trials. With the validation-selected Page/CUSUM residual gate, AASVR-R remains close to the base AASVR detector on balanced accuracy while lowering replay false-authorized actuation from 0.196 to 0.041 events per trial. The same table shows the cost: AASVR-R's missed-authorization rate is 0.970, compared with 0.874 for base AASVR. AASVR-R matches LOF within bootstrap uncertainty while preserving higher specificity and fewer alerts. One-Class SVM is statistically similar to AASVR-R on replay false-authorized actuation, but it obtains this by rejecting aggressively, with a false-positive rate of 0.667 and nearly 890 alert samples per trial. The result is therefore a replay tradeoff, not a closed-loop control-performance claim.
 
 \begin{table}[!htbp]
 \centering
-\caption{Held-out hydroponic synthetic-fault benchmark. Baselines are validation-tuned under the corrected objective in Eq.~\eqref{eq:validation_objective} and evaluated on the same test split, so values may differ from earlier internal reports. Missed authorization is reported only for AASVR variants because it depends on their trusted-state unsafe-band trace; lower is better for false actuation and missed authorization.}
+\caption{Held-out hydroponic synthetic-fault benchmark. Baselines are validation-tuned under the corrected objective in Eq.~\eqref{eq:validation_objective} and evaluated on the same test split, so values may differ from earlier internal reports. Missed authorization is reported only for AASVR variants because it depends on their trusted-state unsafe-band trace; lower is better for replay false-authorized actuation and missed authorization.}
 \label{tab:hydro_synth}
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{lrrrrrrr}
 \toprule
-Method & Recall & Specificity & Bal. acc. & Alerts & False act. & False act. SD & Missed auth. \\
+Method & Recall & Specificity & Bal. acc. & Alerts & Replay false auth. & SD & Missed auth. \\
 \midrule
 AASVR & 0.821 & 0.870 & \best{0.845} & 79.4 & 0.196 & 0.738 & 0.874 \\
 AASVR-R & 0.821 & 0.867 & 0.844 & 79.4 & \best{0.041} & \best{0.290} & 0.970 \\
@@ -406,13 +426,13 @@ GLR & 0.129 & \best{0.999} & 0.564 & 3.3 & 1.330 & 1.638 & -- \\
 
 \begin{table}[!htbp]
 \centering
-\caption{Paired held-out effects for AASVR-R against representative methods. Positive $\Delta$BA means AASVR-R has higher per-trial balanced accuracy; positive $\Delta$false actuation means the comparison method has more false actuations than AASVR-R. $d_z$ is the paired standardized BA effect size; $p_{\mathrm{FA,sign}}$ is Holm-corrected for the sign-test false-actuation family.}
+\caption{Paired held-out effects for AASVR-R against representative methods. Positive $\Delta$BA means AASVR-R has higher per-trial balanced accuracy; positive $\Delta$replay false authorization means the comparison method has more replay false-authorized actuations than AASVR-R. $d_z$ is the paired standardized BA effect size; $p_{\mathrm{FA,sign}}$ is Holm-corrected for the sign-test replay-authorization family.}
 \label{tab:paired_effects}
 \footnotesize
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{lrrrrrr}
 \toprule
-Baseline & $\Delta$BA & $d_z$ & $p_{\mathrm{BA}}$ & $\Delta$False act. & 95\% CI & $p_{\mathrm{FA,sign}}$ \\
+Baseline & $\Delta$BA & $d_z$ & $p_{\mathrm{BA}}$ & $\Delta$Replay false auth. & 95\% CI & $p_{\mathrm{FA,sign}}$ \\
 \midrule
 Base AASVR & -0.001 & -0.719 & 1.000 & 0.156 & [0.081, 0.241] & $<0.001$ \\
 LOF & 0.018 & 0.113 & $<0.001$ & 0.089 & [0.030, 0.152] & 0.021 \\
@@ -425,7 +445,16 @@ CUSUM & 0.204 & 0.946 & $<0.001$ & 1.233 & [1.044, 1.426] & $<0.001$ \\
 }
 \end{table}
 
-The base-AASVR comparison is a three-way replay tradeoff. AASVR-R has a small but highly consistent balanced-accuracy decrement relative to base AASVR ($\Delta$BA $=-0.001$, standard deviation about 0.0018), a higher missed-authorization rate, and a lower false-authorized-actuation count. The negative detection sign is therefore stated explicitly rather than treated as an advantage; the operational contrast is whether the false-authorized-actuation reduction is worth the additional authorization suppression. The LOF balanced-accuracy difference is statistically detectable but operationally small ($d_z=0.113$). Its practical contrast is the control profile: AASVR-R has higher specificity, fewer alerts, and lower false-authorized actuation. For One-Class SVM, the false-actuation contrast is not distinguishable; the separation is instead its aggressive rejection and low specificity.
+The base-AASVR comparison is a three-way replay tradeoff. AASVR-R has a small but highly consistent balanced-accuracy decrement relative to base AASVR ($\Delta$BA $=-0.001$, standard deviation about 0.0018), a higher missed-authorization rate, and a lower replay false-authorized-actuation count. The negative detection sign is therefore stated explicitly rather than treated as an advantage; the operational contrast is whether the replay false-authorized-actuation reduction is worth the additional authorization suppression. The LOF balanced-accuracy difference is statistically detectable but operationally small ($d_z=0.113$). Its practical contrast is the control profile: AASVR-R has higher specificity, fewer alerts, and lower replay false-authorized actuation. For One-Class SVM, the replay-authorization contrast is not distinguishable; the separation is instead its aggressive rejection and low specificity.
+
+Figure~\ref{fig:operating_tradeoff} expands this point across authorization operating settings. The grid varies trust threshold, authorization persistence, replay cooldown, and response-reliability risk thresholds while keeping the held-out fault windows fixed. The manuscript setting is intentionally conservative: it sits near the low replay-false-authorized-actuation region, but it does so by accepting a high missed-authorization rate. This figure is included to make the operating tradeoff explicit rather than optimizing only for one favorable error direction.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.72\linewidth]{figure/hydro_exp1_operating_tradeoff.pdf}
+\caption{Replay authorization operating tradeoff across AASVR-R settings on the held-out hydroponic synthetic-fault split. Each point is one authorization setting; color shows balanced accuracy. The starred point is the manuscript setting.}
+\label{fig:operating_tradeoff}
+\end{figure}
 
 The reproducibility artifact also writes a sample audit trail for a held-out pH replay. In that replay, a pH jump above 8.0 is logged as a trusted-deviation failure, the trusted pH remains near 6.09, the state moves through suspect and persistent-deviation states, and no actuation is authorized from the untrusted value.
 
@@ -442,11 +471,11 @@ Table~\ref{tab:sensorwise} breaks down AASVR-R performance by hydroponic sensor.
 
 \begin{table}[t]
 \centering
-\caption{AASVR-R synthetic-fault performance by hydroponic sensor. Each sensor row contains 54 held-out trials; false actuation is reported as mean events per injected-fault trial.}
+\caption{AASVR-R synthetic-fault performance by hydroponic sensor. Each sensor row contains 54 held-out trials; replay false authorization is reported as mean events per injected-fault trial.}
 \label{tab:sensorwise}
 \begin{tabular}{lrrrr}
 \toprule
-Sensor & Recall & Specificity & Bal. acc. & False act. \\
+Sensor & Recall & Specificity & Bal. acc. & Replay false auth. \\
 \midrule
 CO2 & \best{0.854} & \best{0.878} & \best{0.866} & 0.056 \\
 Water temperature & 0.821 & 0.870 & 0.846 & 0.037 \\
@@ -465,7 +494,7 @@ Table~\ref{tab:faulttype} shows performance by injected fault class. AASVR-R per
 \label{tab:faulttype}
 \begin{tabular}{lrrrr}
 \toprule
-Fault type & Recall & Specificity & Bal. acc. & False act. \\
+Fault type & Recall & Specificity & Bal. acc. & Replay false auth. \\
 \midrule
 Spike & 0.996 & \best{0.875} & \best{0.935} & \best{0.000} \\
 Saturation & \best{1.000} & 0.862 & 0.931 & \best{0.000} \\
@@ -483,7 +512,7 @@ Stuck-at & 0.074 & 0.869 & 0.472 & 0.267 \\
 \FloatBarrier
 
 \subsection{Component contribution and ablation}
-Table~\ref{tab:component} separates the contribution of the supervisory components on the same 270 held-out test trials as Table~\ref{tab:hydro_synth}. Lockout-only control has no fault detection and still produces 1.356 false-authorized actuations per trial, so the low AASVR-R false-actuation rate is not explained by the existing confirmation/cooldown rule alone. The table also shows the central tradeoff: reducing replay false actuation by adding response reliability increases the missed-authorization rate relative to base AASVR. The trust score is retained as an audit and authorization diagnostic, not as an independent detector contribution; in the selected configuration, hard gates and persistence dominate until the score is coupled to the full authorization logic.
+Table~\ref{tab:component} separates the contribution of the supervisory components on the same 270 held-out test trials as Table~\ref{tab:hydro_synth}. Lockout-only control has no fault detection and still produces 1.356 replay false-authorized actuations per trial, so the low AASVR-R replay-authorization rate is not explained by the existing confirmation/cooldown rule alone. The table also shows the central tradeoff: reducing replay false-authorized actuation by adding response reliability increases the missed-authorization rate relative to base AASVR. The trust score is retained as an audit and authorization diagnostic, not as an independent detector contribution; in the selected configuration, hard gates and persistence dominate until the score is coupled to the full authorization logic.
 
 \begin{table}[!htbp]
 \centering
@@ -492,7 +521,7 @@ Table~\ref{tab:component} separates the contribution of the supervisory componen
 \resizebox{\linewidth}{!}{%
 \begin{tabular}{lrrrrr}
 \toprule
-Variant & Recall & Specificity & Bal. acc. & False act. & Missed auth. \\
+Variant & Recall & Specificity & Bal. acc. & Replay false auth. & Missed auth. \\
 \midrule
 Lockout only & 0.000 & 1.000 & 0.500 & 1.356 & 0.850 \\
 Raw threshold + supervisor & 0.129 & \best{0.999} & 0.564 & 1.330 & -- \\
@@ -506,7 +535,7 @@ AASVR without confirmation/cooldown & 0.821 & 0.869 & \best{0.845} & 1.730 & 0.1
 }
 \end{table}
 
-Internal ablations and sensitivity sweeps are retained in the reproducibility tables rather than expanded in the main text. They show that removing response reliability restores the base-AASVR false-actuation rate (0.196), removing cooldown raises false actuation to 0.411, and removing actuation confirmation plus cooldown raises it to 1.730. The corrected validation objective selects the same reported setting, $c_s=6.0$, $q_{\min}=0.70$, and transient limit 2, under balanced-accuracy-only, reported, high false-actuation, and high missed-authorization profiles. Focused sweeps over $(\alpha_c,h_c)$ and response-memory decay show neighboring CUSUM settings within 0.001 balanced accuracy of the manuscript setting and confirm that $\lambda=0.50$ gives the lowest replay false-actuation rate among the tested response-memory settings.
+Internal ablations and sensitivity sweeps are retained in the reproducibility tables rather than expanded in the main text. They show that removing response reliability restores the base-AASVR replay false-authorized-actuation rate (0.196), removing cooldown raises replay false-authorized actuation to 0.411, and removing actuation confirmation plus cooldown raises it to 1.730. The corrected validation objective selects the same reported setting, $c_s=6.0$, $q_{\min}=0.70$, and transient limit 2, under balanced-accuracy-only, reported, high replay-authorization, and high missed-authorization profiles. Focused sweeps over $(\alpha_c,h_c)$ and response-memory decay show neighboring CUSUM settings within 0.001 balanced accuracy of the manuscript setting and confirm that $\lambda=0.50$ gives the lowest replay false-authorized-actuation rate among the tested response-memory settings.
 
 \subsection{Deployment-context checks}
 The full-feed deployment replay and agronomic records are retained as context rather than evidence of closed-loop superiority. The P1 hydroponic crop cycle produced the sensor-to-actuator decision stream; P2 and P3 did not, and treatment differences are confounded with enclosure, lighting, cooling, CO2 regulation, nutrient delivery, and automation. On the full P1 replay, AASVR-R authorizes only 11 sensor-sample decisions, compared with 60723 for base AASVR and 192506 for raw thresholding, while the missed-authorization opportunity rate is 0.788. This is replay silence, not measured agronomic or dosing improvement. Counterfactual response and diagnostic-excitation outputs are likewise retained as implementation checks unless independent actuator-command/state records are supplied. The repository now includes the reconstruction and scoring path for those records, so a controller export can add measured command-state agreement and post-command directional-response results without changing the synthetic-fault benchmark.
@@ -515,13 +544,13 @@ The full-feed deployment replay and agronomic records are retained as context ra
 
 \section{Discussion}
 \subsection{Why actuation awareness matters}
-The component, ablation, and audit outputs show why actuation-aware validation should be evaluated with both error directions and decision transparency. After adding the validation-selected Page/CUSUM residual gate, AASVR-R matches the strongest non-AASVR detector within bootstrap uncertainty while keeping fewer alerts than LOF and lower replay false-authorized actuation than base AASVR. The detector gain comes from a standard sequential residual test rather than from a learned one-class boundary, so the novelty is not the CUSUM detector itself but its placement inside an auditable measurement-to-actuation supervisor. The missed-authorization rates show the cost of conservative authorization and prevent the false-actuation result from being read as a one-sided win. For hydroponic systems, these distinctions are practical because a logged anomaly, a held trusted state, a pump command, a diagnostic pulse, and a failed post-command response are different engineering decisions.
+The component, ablation, and audit outputs show why actuation-aware validation should be evaluated with both error directions and decision transparency. After adding the validation-selected Page/CUSUM residual gate, AASVR-R matches the strongest non-AASVR detector within bootstrap uncertainty while keeping fewer alerts than LOF and lower replay false-authorized actuation than base AASVR. The detector gain comes from a standard sequential residual test rather than from a learned one-class boundary, so the novelty is not the CUSUM detector itself but its placement inside an auditable measurement-to-actuation supervisor. The missed-authorization rates show the cost of conservative authorization and prevent the replay false-authorized-actuation result from being read as a one-sided win. For hydroponic systems, these distinctions are practical because a logged anomaly, a held trusted state, a pump command, a diagnostic pulse, and a failed post-command response are different engineering decisions.
 
 \subsection{External transfer}
 The supplementary HAI and SKAB checks show that the same streaming interface can run on independent process datasets, but direct parameter transfer is weak. HAI attacks and SKAB process anomalies are not identical to hydroponic sensor faults, and the current method uses hydroponic physical ranges and rate assumptions. These results are therefore not used as evidence of cross-domain dominance; they identify the need for process-specific limits or model residuals before claiming industrial transfer.
 
 \subsection{Limitations}
-The hydroponic experiment does not provide independent reference instruments for every sensor at every time point. Synthetic fault injection is therefore necessary for controlled scoring, but injected faults cannot cover every real failure mode. The reported false-actuation values are replayed authorization events, not measured physical process disturbances, because the replay benchmark does not close the loop around real actuators. The response and diagnostic-excitation replays are counterfactual implementation checks: replay-derived authorizations and safe diagnostic pulses stand in for actuator commands because the available feed does not contain real actuator-state columns.
+The hydroponic experiment does not provide independent reference instruments for every sensor at every time point. Synthetic fault injection is therefore necessary for controlled scoring, but injected faults cannot cover every real failure mode. The reported replay false-authorized-actuation values are replayed authorization events, not measured physical process disturbances, because the replay benchmark does not close the loop around real actuators. The historical deployment also did not retain timestamped actuator-command/state columns with relay state, command source, and lockout state. The response and diagnostic-excitation replays are therefore counterfactual implementation checks: replay-derived authorizations and safe diagnostic pulses stand in for actuator commands because measured command-response evidence is unavailable.
 
 The remaining limitations are therefore identifiable and measurable. Stuck-at behavior and weak response remain the principal algorithmic weaknesses because they can resemble real steady nutrient-solution dynamics without reference instrumentation or measured actuator effects. AASVR-R reduces repeated authority after failed response and improves slow-shift detection through the CUSUM residual gate, and the diagnostic replay shows how future actuator-state logging can expose plausible frozen values through missing response evidence. It still does not make frozen plausible values fully detectable when no command-response, diagnostic episode, or independent reference sample occurs. Water level is excluded from primary analysis because the available raw values are not defensibly calibrated; the repository now includes a calibration schema and fitting script that should be satisfied before reintegration. Crop outcomes can be linked to replay-derived exposure metrics as full-cycle deployment context, but they remain non-causal because enclosure, lighting, cooling, nutrient delivery, carbon dioxide regulation, and automation are confounded.
 
@@ -529,7 +558,7 @@ The remaining limitations are therefore identifiable and measurable. Stuck-at be
 We presented a closed hydroponic control system and proposed AASVR-R as an auditable sensor-validation and actuation-authorization interface for that setting. The method separates validation, state update, rectification, actuation authorization, and response verification so that untrusted measurements can be logged without automatically driving physical commands. On held-out hydroponic synthetic faults, the standard CUSUM residual gate makes AASVR-R competitive with tuned detectors, while the response-aware supervisor lowers replay false-authorized actuation at the cost of a higher missed-authorization rate. The remaining requirement is not another passive filter alone, but real actuator-state logs and reference measurements that make command-response evidence observable during future deployments.
 
 \section*{Data Availability}
-The repository contains code, configuration files, processed-data descriptors, Docker workflow files, and paper-generation assets. Raw hydroponic and external benchmark files are not committed to the repository during review. The authors plan to release the curated hydroponic feed and non-sensitive actuator-command evidence package on acceptance, subject to removal of credentials and private operational fields. Until then, the computational workflow is reproducible given local access to those data. Public datasets can be obtained from their original providers, and request-access datasets should be obtained under the providers' terms.
+The repository contains code, configuration files, processed-data descriptors, Docker workflow files, paper-generation assets, and optional evidence schemas for future deployments. Raw hydroponic and external benchmark files are not committed to the repository during review. The authors plan to release the curated hydroponic sensor feed on acceptance, subject to removal of credentials and private operational fields. Timestamped actuator-command/state evidence is not available for the historical deployment; future deployments should retain it using the schema supplied with the reproducibility package. Until release, the computational workflow is reproducible given local access to the data. Public datasets can be obtained from their original providers, and request-access datasets should be obtained under the providers' terms.
 
 \section*{Declaration of Competing Interest}
 The authors declare no competing interests for the current manuscript draft.

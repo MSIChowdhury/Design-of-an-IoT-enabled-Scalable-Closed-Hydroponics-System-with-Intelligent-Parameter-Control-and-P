@@ -12,6 +12,7 @@
 | `figure/hydro_exp1_ph_trace.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Representative trace only; not used as a ground-truth label. |
 | `figure/hydro_exp1_co2_trace.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Second representative trace to make gas-actuation behavior visible. |
 | `figure/hydro_exp1_fault_type_heatmap.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Fault-type comparison across methods; supports the drift and stuck-at limitation discussion. |
+| `figure/hydro_exp1_operating_tradeoff.pdf` | Generated from analysis pipeline | Vector PDF | Yes | Shows replay false-authorized-actuation versus missed-authorization operating settings; the manuscript setting is marked explicitly. |
 | `figure/fullsystemactual.JPG` | Legacy manuscript asset | Raster JPG | Yes | Used as real-deployment evidence; not a standalone contribution. |
 | `figure/agronomic_parameters_violinplots_new.pdf` | Legacy manuscript asset | Vector PDF | No | Retained for supplementary use; the main paper now uses a short deployment note instead of the multi-panel crop figure. |
 | `figure/Full_System_Final.pdf` | Legacy manuscript asset | Vector PDF | No | Retained for possible expanded system-description section. |

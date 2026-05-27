@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository supports a reproducible research article on **Actuation-Aware Sensor Validation and Rectification (AASVR)** for closed-loop measurement and control systems. The hydroponic system is the primary deployment testbed, and the current analysis focuses on whether sensor validation, rectification, persistence logic, and actuation authorization reduce anomaly pass-through and false actuation.
+This repository supports a reproducible research article on **Actuation-Aware Sensor Validation and Rectification (AASVR)** for closed-loop measurement and control systems. The hydroponic system is the primary deployment testbed, and the current analysis focuses on whether sensor validation, rectification, persistence logic, and actuation authorization reduce anomaly pass-through and replay false-authorized actuation.
 
 ## Authors
 
@@ -38,12 +38,17 @@ evidence limitations:
 ```bash
 docker compose run --rm project-shell make optional-evidence
 docker compose run --rm project-shell make water-calibration
+docker compose run --rm project-shell make revision-artifacts JOBS=8
 ```
 
 These commands define the future actuator-state log, independent reference
 measurement, and water-level calibration schemas. If the optional local CSV files
 are absent, they write explicit status outputs and leave the current benchmark
 unchanged.
+The revision-artifacts target also writes the manuscript-facing evidence-status
+table and AASVR-R replay operating-tradeoff table/figure. Actuator conclusions
+remain replay-only unless an independent command/state export is supplied through
+the optional evidence schema.
 
 If controller, relay, dashboard, or ThingSpeak exports contain real actuator
 command/state records, normalize them before running optional-evidence:
@@ -87,6 +92,7 @@ docker compose run --rm project-shell python scripts/27_run_exhaustive_benchmark
   --profile exhaustive --split test --shard-index 0 --shard-count 32
 docker compose run --rm project-shell python scripts/29_aggregate_exhaustive_results.py \
   --profile exhaustive --split test
+docker compose run --rm project-shell make exhaustive-full-attached EXHAUSTIVE_SHARDS=4096 EXHAUSTIVE_PARALLEL=8
 ```
 
 The exhaustive profile spans the six primary hydroponic sensors, fourteen fault
