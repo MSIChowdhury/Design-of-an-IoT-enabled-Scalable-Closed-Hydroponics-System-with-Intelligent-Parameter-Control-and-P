@@ -46,10 +46,8 @@ The build target compiles `main_aasvr.tex` and `main_aasvr_blinded.tex` with `la
 
 ## Current revision focus
 
-The current manuscript revision is a final-submission tightening pass: AASVR now includes
-a conservative stuck-value guard, the abstract avoids detailed numerical claims, the main
-table reports detection delay and replay false-authorized-actuation variation, paired
-effect sizes and Holm-corrected tests are reported in the paper, HAI/SKAB are demoted to
-supplementary stress-test limitations, evidence-status and operating-tradeoff artifacts
-make the actuator-log boundary explicit, and LaTeX font/Unicode settings were added to
-avoid broken ligature extraction in the compiled PDF.
+The current manuscript revision is a reviewer-response tightening pass: the conservative
+AASVR-R operating point is now justified for slow hydroponic pH/EC dosing, the diagnostic-
+excitation replay is elevated as the demonstrated stuck/weak-response mitigation pathway,
+data availability wording follows the Elsevier data-statement model, and manuscript checks
+guard against wrong-journal template footers and legacy P1/P2/P3 header mistakes.

@@ -18,5 +18,7 @@
 - The cross-dataset mean-rank plot and agronomic violin plots are generated artifacts only; they are intentionally not part of the main manuscript argument.
 - The current actuator-command/state logs are unavailable. Keep all actuator wording tied to replay false-authorized actuation, and do not infer command evidence from sensor threshold crossings.
 - The operating-tradeoff figure should remain close to the headline benchmark so the conservative authorization cost is visible before the limitations section.
+- The conservative AASVR-R operating point must be justified as a hydroponic pH/EC dosing interlock. Do not describe it as a universal control optimum; less conservative Pareto settings remain available for tighter regulation.
+- The diagnostic-excitation table is a replay demonstration of a stuck/weak-response mitigation path. It should not be described as measured actuator-response evidence unless real actuator-command/state logs are supplied.
 - The Round 3 polish keeps exact performance values out of the abstract and reserves them for the Results tables. The final abstract should remain qualitative and submission-style.
 - The current draft is closer to a final submission: it includes paired effect-size reporting, an informal bounded-rectification proposition, a tied-validation-setting consistency note, explicit stuck-at false-actuation-tail language, and ligature-safe PDF font setup. Coauthor scientific review should still check whether the stuck-at limitation language is acceptable.

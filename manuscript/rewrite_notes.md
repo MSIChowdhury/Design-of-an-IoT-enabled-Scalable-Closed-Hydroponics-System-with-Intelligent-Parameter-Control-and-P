@@ -8,10 +8,9 @@ Demote or remove these legacy claims:
 - Crop-yield causality: present as full-cycle operation evidence only.
 - Broad food-security claims: remove.
 
-Known fixes from the current PDF:
+Known legacy-PDF fixes now handled in the ISA package:
 
-- Remove "Preprint submitted to Nuclear Physics B" template artifact.
-- Fix "P1, P2, and P2" typo in Experiment 2 text.
-- Fix "P1 P3 P3" table header issue.
+- Active ISA PDFs now use the ISA Transactions footer.
+- Do not submit the old root hydroponics PDF unless regenerated from corrected editable source.
+- Correct repeated P1/P2/P3 header and Experiment 2 treatment-label typos in any recreated supplementary agronomic or macronutrient tables.
 - Correct TNL and NL10 units; they are counts, not centimeters.
-
