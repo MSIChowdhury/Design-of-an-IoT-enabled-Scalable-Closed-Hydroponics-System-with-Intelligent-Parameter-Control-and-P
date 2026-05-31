@@ -18,7 +18,7 @@
 \usepackage{multirow}
 \usepackage{placeins}
 \usepackage{tikz}
-\usepackage{url}
+\usepackage{xurl}
 \usepackage[protrusion=true,expansion=false]{microtype}
 \usetikzlibrary{arrows.meta,automata,positioning,calc,fit,backgrounds}
 \setlength{\emergencystretch}{2em}
@@ -63,7 +63,7 @@ We present a closed-loop NFT hydroponic platform and propose AASVR-R, an actuati
 \item an integrated hydroponic deployment dataset and sensor-to-actuator formulation for NFT control;
 \item AASVR-R, a streaming supervisory interface that couples standard validation evidence, bounded rectification, risk-aware authorization, and response-reliability memory;
 \item a held-out synthetic-fault protocol with validation-only tuning, tuned baselines, ablations, component analysis, and paired statistical tests;
-\item a reproducible Docker and LaTeX workflow that regenerates the tables, figures, and diagnostic outputs given the local deployment data, with curated hydroponic release planned on acceptance.
+\item a reproducible Docker and LaTeX workflow that regenerates the tables, figures, and diagnostic outputs from the data and code available in the project repository.
 \end{enumerate}
 
 \section{Related Work}
@@ -579,7 +579,11 @@ The remaining limitations are therefore identifiable and measurable. Stuck-at be
 We presented a closed hydroponic control system and proposed AASVR-R as an auditable sensor-validation and actuation-authorization interface for that setting. The method separates validation, state update, rectification, actuation authorization, and response verification so that untrusted measurements can be logged without automatically driving physical commands. On held-out hydroponic synthetic faults, the standard CUSUM residual gate makes AASVR-R competitive with tuned detectors, while the response-aware supervisor lowers replay false-authorized actuation at the cost of a higher missed-authorization rate. The remaining requirement is not another passive filter alone, but real actuator-state logs and reference measurements that make command-response evidence observable during future deployments.
 
 \section*{Data Availability}
-Code, configuration files, processed-data descriptors, paper-generation assets, and Docker workflow files will be supplied through a repository or archival record for the submission package. Raw hydroponic and external benchmark files are not committed during review. The authors plan to release or deposit the curated hydroponic sensor feed after credential removal and private-field review; if an archive DOI is assigned before publication, it should be cited in this statement and in the reference list. Timestamped actuator-command/state evidence is not available for the historical deployment because those logs were not retained, so the replay false-authorized-actuation results should not be interpreted as measured physical disturbances. Public third-party datasets can be obtained from their original providers, and restricted datasets must be obtained under the providers' terms.
+\ifdefined\AASVRBLINDED
+All data and code used for this study are available in the GitHub repository disclosed in the submission metadata. Timestamped actuator-command/state evidence is not available for the historical deployment because those logs were not retained, so the replay false-authorized-actuation results should not be interpreted as measured physical disturbances.
+\else
+All data and code used for this study are available in the GitHub repository at \url{https://github.com/MSIChowdhury/Design-of-an-IoT-enabled-Scalable-Closed-Hydroponics-System-with-Intelligent-Parameter-Control-and-P}. Timestamped actuator-command/state evidence is not available for the historical deployment because those logs were not retained, so the replay false-authorized-actuation results should not be interpreted as measured physical disturbances.
+\fi
 
 \section*{Declaration of Competing Interest}
 The authors declare no competing interests for the current manuscript draft.

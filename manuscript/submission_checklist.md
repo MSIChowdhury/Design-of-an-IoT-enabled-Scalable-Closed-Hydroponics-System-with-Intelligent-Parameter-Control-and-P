@@ -15,5 +15,5 @@
 - Active PDFs and LaTeX sources say `ISA Transactions`; no template footer names another journal.
 - Legacy `Automated_Hydroponics_Paper__Measurement_.pdf` is not part of the ISA submission package unless regenerated from corrected editable source.
 - Macronutrient or agronomic tables, if included as supplements, use corrected P1/P2/P3 headers and treat TNL/NL10 as counts.
-- Data/code availability language follows Elsevier data-statement expectations: provide availability, planned repository/archive details, and reasons for any data that cannot be accessed.
+- Data/code availability language points to the GitHub repository in the unblinded manuscript and keeps the identifying URL out of the blinded manuscript.
 - Run `make manuscript-check` and inspect the generated author and blinded PDFs before upload.
