@@ -1,0 +1,23 @@
+# Retrospective reanalysis: no claim that these periods were historically untouched.
+seed: 20260924
+split_fractions: [0.4, 0.7]
+windows_per_split: 8
+window_samples: 240
+warmup_samples: 60
+fault_samples: 30
+max_gap_seconds: 120
+reference_persistence_seconds: 32
+cooldown_seconds: 600
+deadlines_seconds: [60, 180, 600]
+selection_deadline_seconds: 180
+minimum_coverages: [0.5, 0.8, 0.95]
+threshold_multipliers: [0.75, 1.0, 1.5]
+persistence_seconds: [0, 32, 96]
+max_age_seconds: [64, 320]
+bootstrap_replicates: 1000
+sensors: [EC, pH, Humidity, Air_Temp, Water_Temp, CO2]
+# Small, plausible changes in sensor units; both signs are evaluated.
+magnitudes: {EC: 100, pH: 0.5, Humidity: 5, Air_Temp: 2, Water_Temp: 1, CO2: 500}
+scenarios: [clean, spike_positive, spike_negative, bias_positive, bias_negative,
+            drift_positive, drift_negative, stuck, dropout, legitimate_positive,
+            legitimate_negative]

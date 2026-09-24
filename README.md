@@ -129,3 +129,18 @@ We gratefully acknowledge the financial support provided
 by the ICT Division under the Ministry of Communications
 and Information Technology, People's Republic of Bangladesh. This research was fully funded
 under the ICT Innovation Fund arranged by the ICT Division.
+
+### Retrospective authorization reanalysis
+
+A separate compact benchmark uses temporally disjoint source windows, a fixed
+surrogate-reference controller, event matching, elapsed-time lockouts, explicit
+estimate age, validation-selected coverage targets, and source-day clustered
+uncertainty. It includes all six primary channels and audits legacy AASVR-R
+recovery without replacing the historical manuscript tables.
+
+```bash
+docker compose run --rm -T project-shell make replay-reanalysis
+```
+
+See [the protocol](docs/reanalysis/PROTOCOL.md) for metric definitions, controls,
+selection rules, limitations, and output paths.

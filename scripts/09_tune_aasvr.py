@@ -7,6 +7,7 @@ from pathlib import Path
 import pandas as pd
 
 from aasvr.config import load_aasvr_config
+from aasvr.core import AASVRConfig
 from aasvr.evaluation import compute_metrics
 from aasvr.fault_injection import FaultSpec, inject_fault
 from aasvr.pipeline import run_aasvr_with_config
