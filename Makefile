@@ -121,3 +121,8 @@ recovery-contract:
 	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/49_recovery_contract_benchmark.py
 	$(PYTHON) scripts/50_recovery_crash_probe.py
 	$(PYTHON) scripts/51_report_recovery_contract.py
+
+.PHONY: timing-feasibility
+timing-feasibility:
+	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/52_timing_feasibility.py
+	$(PYTHON) scripts/53_report_timing_feasibility.py

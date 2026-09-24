@@ -1,0 +1,22 @@
+# Prespecified sensitivity grid. No optimum is selected for deployment.
+seed: 24092626
+seeds: [2101, 2102, 2103]
+clock_bounds: [0, 1, 4, 8, 16]
+schedulers: [poll, deadline]
+stages: [current, durable, clock, recovery]
+bootstrap_replicates: 1000
+retry_seconds: 32
+max_attempts: 2
+expiry: 64
+freshness: 120
+cooldown: 600
+heartbeat_seconds: 32
+heartbeat_timeout: 96
+dispatch_bound: 1
+# Actual replay offset is zero. B is a hypothetical conservative bound, not measured.
+scenarios:
+  - {name: ideal}
+  - {name: iid_10, loss: 0.1, delay: 8, jitter: 24}
+  - {name: delay_tail, delay: 8, jitter: 80}
+  - {name: restart_correlated, bad_seconds: 96, delay: 8, jitter: 24, restart_period: 2704, restart_phase: 592}
+  - {name: uncertain_output, delay: 8, jitter: 24, crash_after_output_seconds: 20000}

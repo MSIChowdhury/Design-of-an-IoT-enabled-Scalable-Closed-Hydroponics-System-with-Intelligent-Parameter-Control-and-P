@@ -213,3 +213,22 @@ separately from lost availability and additional heartbeat traffic. No physical
 exactly-once guarantee or automatic reset of uncertain execution is claimed.
 The [assessment](docs/recovery_contract/ASSESSMENT.md) explains the substantial
 availability/traffic costs and the failure outside the declared clock bound.
+
+### Timing feasibility and component isolation
+
+Run the fixed-clock component ablations and deadline-aware output scheduling
+study, including per-command admissible intervals and missed-command explanations:
+
+```bash
+docker compose run --rm -T project-shell make timing-feasibility
+```
+
+The study preserves 16-second sensing and packet intake, varies assumed clock
+bounds explicitly, and selects no deployment setting. See the
+[protocol](docs/timing_feasibility/PROTOCOL.md) and
+[results](docs/timing_feasibility/RESULTS.md). Compressed command ledgers, paired
+intervals, selected timelines, and the empirical frontier are generated under
+`results/metrics/timing_feasibility/` and `results/figures/timing_feasibility/`.
+Clock bounds remain sensitivity assumptions until independently measured.
+Read the [assessment](docs/timing_feasibility/ASSESSMENT.md) for the isolated
+persistence cost, recovered scheduling opportunities, and remaining infeasibility.
