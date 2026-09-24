@@ -1,0 +1,33 @@
+# Frozen local mock-actuator protocol
+
+Purpose: measure execution components and process-failure behavior before proposing further control algorithms. User authorized a local Docker/mock-actuator run. This protocol does not claim physical actuation, independent clocks, or new plant experiments.
+
+Run `scripts/58_run_instrumented_execution.sh` from the host. All Python collection, tests, and analysis execute in Docker. The launcher creates separate sender, supervised receiver, and mock containers on the project bridge network. It removes only its own containers on exit and allocates fresh runtime directories for each invocation. Raw timing/SQLite artifacts remain ignored under `results/metrics/instrumented_execution/`; compact results and plots are tracked here.
+
+## Prespecified conditions
+
+The YAML file `configs/experiments/instrumented_execution.yaml` defines 100 measured plus 10 warmup transactions per profile: idle, one competing CPU-bound process on the receiver CPU, and injected 20 ms ingress delay with every twentieth forward packet omitted and every seventeenth output ACK withheld. These manipulations are known injected conditions. Timing requirements are hypotheses: 5 ms receiver timer lateness, 1 s dispatch, 1 ms interdevice clock error, 32 s maximum communication interruption. A short local run can observe exceedances, not certify maxima.
+
+The sender presents 110 evenly spaced reference commands selected from the existing historical evaluation block. Six sensor channels contribute; only command direction enters the adapter. Historical timestamps are retained for provenance, while the execution envelope uses new monotonic timestamps. A 25 ms sender timer and a 5 ms receiver timer provide actual scheduling measurements. Each transaction has a separate stream and SQLite journal so cooldown/recovery state cannot contaminate another isolated transaction. This is a component-latency experiment, not continuous production throughput.
+
+The receiver uses the existing durable reservation receiver with recovery-heartbeat gating disabled and B=0 on the verified shared host clock. It reserves before invoking the mock adapter; a missing ACK leaves it blocked. The mock independently logs every adapter attempt and records each stream/event effect once, with FULL synchronous SQLite commits. The mock output timestamp marks ledger insertion before commit; ACK latency includes commit. A query confirms what the mock recorded but is not an implemented reconciliation/reset mechanism.
+
+Record source presentation, timer due/wakeup, sender send, receiver socket/processing/acceptance, durable writes, authorization, adapter invocation, mock ledger insertion, and ACK receipt. Use nanosecond timestamps, reporting milliseconds with appropriate precision; nominal clock resolution is not measurement accuracy. Each RPC uses a fresh socket to isolate delayed replies.
+
+Collect 30 four-timestamp clock exchanges per profile. Compute remote-minus-local offset interval [remote send − local receive, remote receive − local send] under nonnegative transit, without symmetric-delay assumptions. Verify shared kernel boot and equal time-namespace offsets before using monotonic differences. Host NTP service status is recorded but cannot establish relative interdevice accuracy.
+
+Kill the receiver process three times at each of five boundaries: before receive, after acceptance, after durable reservation, after output/ACK, after completion commit. Verify a new process PID, persistent state, independent mock effects, and adapter attempt counts before/after retry. Reserved and output-but-uncommitted states must remain uncertain and blocked. Accepted pending work must be abandoned on restart. A command never received may execute once on retry. Completed commands must not invoke the adapter again. Also offer a new event after each ACK loss and verify no second invocation.
+
+## Fixed-candidate measured-trace extrapolation
+
+Freeze five existing candidates before collection: volatile polling B0, durable polling B0, full recovery polling B16, full recovery deadline B16, full recovery deadline B1. Do not tune parameters. Reuse historical reference/controller scoring, 16 s source and packet-intake cadence, 32 s retries (two attempts), 64 s expiry, 120 s freshness, 600 s cooldown, and recovery heartbeat settings from the preceding timing study. Recovery dispatch margin stays 1 s; B1/B16 are hypothetical clock bounds.
+
+Repeat each profile's 100 measured rows over source ticks at phases 0, 31, 67, yielding 270 replays across six sensors. This cyclic reuse is an extrapolation, not continuous measured network evidence. Pair all candidates on the same phase and source trajectory. Forward loss is omitted delivery. Received packet latency is processing arrival minus sending plus acceptance overhead; volatile reception subtracts journal-save time. Positive delays undergo the existing 16 s intake quantization.
+
+Use the first command-delivery row's receiver timer lateness and authorization-to-mock delay together for that command. Volatile output excludes measured reservation-write time. Missing output ACKs block durable receivers indefinitely; mock effects remain observer-visible. Sender timer jitter is reported independently, not added again to historical source timestamps. Heartbeat/cancel traffic shares the profile at its send tick. The reduced replay rejects traces whose ingress ≥16 s or timer-plus-output delay ≥1 s rather than silently clipping them. Output timestamp checks can expose cooldown/expiry violations even when authorization checks pass.
+
+Report independent episode/deadline coverage, direction-disagreeing outputs, full-replay duplicate/expiry/cooldown counts, and ACK-loss counts. Bootstrap paired historical days with all sensors/phases together; do not treat repeated traces or phases as independent deployments. Zero-timing regression tests must reproduce the preceding replay's outputs, references, and traffic for all five candidates. Late-wakeup tests verify expiry is rechecked.
+
+## Stopping and interpretation
+
+Freeze hashes of protocol, code, configuration, and local processed historical input before timing collection. Verify hashes before and after replay. Fail visibly on invalid clock domain, nonfinite timings, protocol violations, or incomplete crash checks. Do not replace the hypothesized clock/outage bounds with observed same-host maxima. Preserve unfavorable availability results. A publication claim must remain a computational execution/recovery study until independently clocked device and physical interface evidence exists.

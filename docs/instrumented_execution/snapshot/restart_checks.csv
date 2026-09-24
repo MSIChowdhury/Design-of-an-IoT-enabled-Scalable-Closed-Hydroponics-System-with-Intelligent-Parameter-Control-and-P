@@ -1,0 +1,16 @@
+stage,trial,timed_out,status,blocked,independent_output_before_retry,independent_output_after_retry,retry_status,attempts_before_retry,attempts_after_retry,receiver_pid_before,receiver_pid,clock_domain,passed
+before_receive,0,True,not_received,False,False,True,emitted,0,1,23,40,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+before_receive,1,True,not_received,False,False,True,emitted,0,1,40,57,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+before_receive,2,True,not_received,False,False,True,emitted,0,1,57,74,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+after_accept,0,True,abandoned_on_restart,False,False,False,abandoned_on_restart,0,0,74,91,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+after_accept,1,True,abandoned_on_restart,False,False,False,abandoned_on_restart,0,0,91,108,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+after_accept,2,True,abandoned_on_restart,False,False,False,abandoned_on_restart,0,0,108,125,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+after_reserve,0,True,uncertain,True,False,False,uncertain,0,0,125,142,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+after_reserve,1,True,uncertain,True,False,False,uncertain,0,0,142,159,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+after_reserve,2,True,uncertain,True,False,False,uncertain,0,0,159,176,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+after_output,0,True,uncertain,True,True,True,uncertain,1,1,176,193,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+after_output,1,True,uncertain,True,True,True,uncertain,1,1,193,210,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+after_output,2,True,uncertain,True,True,True,uncertain,1,1,210,227,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+after_commit,0,True,emitted,False,True,True,emitted,1,1,227,244,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+after_commit,1,True,emitted,False,True,True,emitted,1,1,244,261,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True
+after_commit,2,True,emitted,False,True,True,emitted,1,1,261,278,584254a79c694c8485317204d2e65a505f7e18164b3ea08d512c2dd37da9cb90,True

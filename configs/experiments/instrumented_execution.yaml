@@ -1,0 +1,34 @@
+# Requirements frozen before measurement; observed maxima do not redefine them.
+measured_transactions_per_profile: 100
+warmup_transactions_per_profile: 10
+clock_exchanges_per_profile: 30
+sender_timer_seconds: 0.025
+receiver_timer_seconds: 0.005
+adapter_timeout_seconds: 0.15
+rpc_timeout_seconds: 1.0
+requirements:
+  # Local laboratory acceptance budgets, not deployment guarantees.
+  relative_clock_seconds: 0.001
+  timer_lateness_seconds: 0.005
+  dispatch_seconds: 1.0
+  maximum_interruption_seconds: 32
+  command_lifetime_seconds: 64
+  source_freshness_seconds: 120
+  cooldown_seconds: 600
+  minimum_coverage: 0.95
+  maximum_undesirable_fraction: 0.01
+profiles:
+  - {name: idle, ingress_delay_seconds: 0, drop_every: 0, drop_ack_every: 0, cpu_load: false}
+  - {name: cpu_contention, ingress_delay_seconds: 0, drop_every: 0, drop_ack_every: 0, cpu_load: true}
+  - {name: injected_delay_loss, ingress_delay_seconds: 0.02, drop_every: 20, drop_ack_every: 17, cpu_load: false}
+crash_stages: [before_receive, after_accept, after_reserve, after_output, after_commit]
+crash_repeats: 3
+replay_candidates:
+  - {stage: current, bound: 0, scheduler: poll, name: current_b0_poll}
+  - {stage: durable, bound: 0, scheduler: poll, name: durable_b0_poll}
+  - {stage: recovery, bound: 16, scheduler: poll, name: recovery_b16_poll}
+  - {stage: recovery, bound: 16, scheduler: deadline, name: recovery_b16_deadline}
+  - {stage: recovery, bound: 1, scheduler: deadline, name: recovery_b1_deadline}
+trace_phases: [0, 31, 67]
+bootstrap_replicates: 1000
+seed: 24092726

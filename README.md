@@ -232,3 +232,21 @@ intervals, selected timelines, and the empirical frontier are generated under
 Clock bounds remain sensitivity assumptions until independently measured.
 Read the [assessment](docs/timing_feasibility/ASSESSMENT.md) for the isolated
 persistence cost, recovered scheduling opportunities, and remaining infeasibility.
+
+### Instrumented local execution with a mock actuator
+
+Run the local, three-container timing and actual process-crash experiment, then
+replay its measured traces through five fixed receiver/scheduling candidates:
+
+```bash
+scripts/58_run_instrumented_execution.sh
+```
+
+The host launcher executes all collection and analysis inside Docker and removes
+its own containers afterward. See the [frozen protocol](docs/instrumented_execution/PROTOCOL.md)
+and [results](docs/instrumented_execution/RESULTS.md). Raw timing records, journals,
+source-day intervals, and replay command ledgers remain local under
+`results/metrics/instrumented_execution/`. Independent mock-output lookup distinguishes
+lost acknowledgments from absent recorded effects; unresolved outcomes remain blocked.
+Same-host clocks and short repeated traces do not establish independent-device clock
+accuracy, worst-case timing, physical actuation, or closed-loop safety.

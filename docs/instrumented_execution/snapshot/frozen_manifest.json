@@ -1,0 +1,111 @@
+{
+  "config": {
+    "measured_transactions_per_profile": 100,
+    "warmup_transactions_per_profile": 10,
+    "clock_exchanges_per_profile": 30,
+    "sender_timer_seconds": 0.025,
+    "receiver_timer_seconds": 0.005,
+    "adapter_timeout_seconds": 0.15,
+    "rpc_timeout_seconds": 1.0,
+    "requirements": {
+      "relative_clock_seconds": 0.001,
+      "timer_lateness_seconds": 0.005,
+      "dispatch_seconds": 1.0,
+      "maximum_interruption_seconds": 32,
+      "command_lifetime_seconds": 64,
+      "source_freshness_seconds": 120,
+      "cooldown_seconds": 600,
+      "minimum_coverage": 0.95,
+      "maximum_undesirable_fraction": 0.01
+    },
+    "profiles": [
+      {
+        "name": "idle",
+        "ingress_delay_seconds": 0,
+        "drop_every": 0,
+        "drop_ack_every": 0,
+        "cpu_load": false
+      },
+      {
+        "name": "cpu_contention",
+        "ingress_delay_seconds": 0,
+        "drop_every": 0,
+        "drop_ack_every": 0,
+        "cpu_load": true
+      },
+      {
+        "name": "injected_delay_loss",
+        "ingress_delay_seconds": 0.02,
+        "drop_every": 20,
+        "drop_ack_every": 17,
+        "cpu_load": false
+      }
+    ],
+    "crash_stages": [
+      "before_receive",
+      "after_accept",
+      "after_reserve",
+      "after_output",
+      "after_commit"
+    ],
+    "crash_repeats": 3,
+    "replay_candidates": [
+      {
+        "stage": "current",
+        "bound": 0,
+        "scheduler": "poll",
+        "name": "current_b0_poll"
+      },
+      {
+        "stage": "durable",
+        "bound": 0,
+        "scheduler": "poll",
+        "name": "durable_b0_poll"
+      },
+      {
+        "stage": "recovery",
+        "bound": 16,
+        "scheduler": "poll",
+        "name": "recovery_b16_poll"
+      },
+      {
+        "stage": "recovery",
+        "bound": 16,
+        "scheduler": "deadline",
+        "name": "recovery_b16_deadline"
+      },
+      {
+        "stage": "recovery",
+        "bound": 1,
+        "scheduler": "deadline",
+        "name": "recovery_b1_deadline"
+      }
+    ],
+    "trace_phases": [
+      0,
+      31,
+      67
+    ],
+    "bootstrap_replicates": 1000,
+    "seed": 24092726
+  },
+  "sha256": {
+    "configs/experiments/instrumented_execution.yaml": "34486f48955ae853c753fbfee7816732b82b188eb08698f6e2093f89c9fb4541",
+    "src/aasvr/execution_instrumentation.py": "dcab5106d8db4fb8588d0240ec140932bb317a7ae33ae9f7b378ce3743380f93",
+    "src/aasvr/recovery_contract.py": "bdcfcd5fa41a46a5c0a90fba1fb804f6fec871ff310928cfb2f7d44b2310a19c",
+    "src/aasvr/timing_feasibility.py": "242d3bc63b6fc971c19cd59eab3dc118d2abc508bf11785a469abe0d67a85597",
+    "src/aasvr/measured_trace_replay.py": "e7efd7e4a95d97de26fd05155b5dbc48b168398301752f678810807fd28a5d2b",
+    "src/aasvr/reliable_events.py": "e88b441d3306a8e4179bfa68e0310da82067dbf5e7dc3a7ebc70361b9c1f0f7c",
+    "src/aasvr/telemetry.py": "adbb9e25e7a03c5925d2573a8eaa214978fa1a1e264a143bc69331da808c61ef",
+    "scripts/54_instrumented_endpoints.py": "542edcfb1c572046be4bf6682197c521fc8c64da3284781e4bed9ef4b4eff2b6",
+    "scripts/55_instrumented_execution.py": "689e415a3955b306c7e8be3210cd8dfd318225c51c605ed9392e5f155707ed98",
+    "scripts/56_replay_execution_traces.py": "372227687fa0a4e5ba9074a2753f01c6aaed14c12fbc99820a42ae83a182fb44",
+    "scripts/57_report_instrumented_execution.py": "ed5d8cf134454b0280bc971b756e0adfced736dc8c7a5dcb446bcf1a2ff6183a",
+    "configs/methods/aasvr.yaml": "485a1540f1a20f691e65f011fed7ae952a437b5e72454373e5f57cd5b69cb573",
+    "configs/experiments/telemetry.yaml": "1d62c49559e704609581c2aaaafbb54f881a3f7082c92f1f24fed3649ef23d3e",
+    "configs/experiments/timing_feasibility.yaml": "82272925ee963ddb82a48da4d70278a946c695c3a74f4ee6a57405148dcc3811",
+    "docs/instrumented_execution/PROTOCOL.md": "995a8c7dd7c007612ec7f557cda52ea5bde58878cdfb4444bad04e92c6aa63dd",
+    "scripts/58_run_instrumented_execution.sh": "d12068723d94688e4664889f8b19b9b368302b51afbbd353f55f574173ef5e7c",
+    "data/processed/hydro_exp1_measurements.parquet": "6c034bed3948172e88d5ec9caf1885efe14795e4041c6a4b9cf2decc356e6a71"
+  }
+}
