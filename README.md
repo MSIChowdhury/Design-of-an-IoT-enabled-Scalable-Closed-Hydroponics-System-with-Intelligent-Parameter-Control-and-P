@@ -175,3 +175,22 @@ docker compose run --rm -T project-shell make reliable-events
 See [protocol](docs/reliable_events/PROTOCOL.md) and
 [results](docs/reliable_events/RESULTS.md). This is retrospective computational
 fidelity evidence, not a measured actuator-response or physical safety claim.
+
+### Frozen command-delivery challenge
+
+Run the fixed candidate against same-receiver plain repetition and an acknowledged
+variant, using new network seeds, outage phases, correlated loss, clock offsets,
+and restart challenges. The launcher also executes historical windows through
+real UDP sockets in two separate Docker containers with a delay/loss relay:
+
+```bash
+scripts/48_run_delivery_challenge.sh
+```
+
+Settings are frozen before execution; the existing sensor periods remain
+retrospectively reused. See the [protocol](docs/delivery_challenge/PROTOCOL.md)
+and [generated results](docs/delivery_challenge/RESULTS.md). Outputs are written
+to `results/metrics/delivery_challenge/` and `results/figures/delivery_challenge/`.
+The launcher removes its own receiver container when finished.
+Read the [assessment](docs/delivery_challenge/ASSESSMENT.md) for the publication
+implications, including restart/clock failures that coverage metrics alone miss.

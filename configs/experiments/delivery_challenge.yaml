@@ -1,0 +1,23 @@
+# Frozen before challenge execution. No tuning or candidate selection in this suite.
+seed: 24092026
+seeds: [701, 702, 703, 704]
+retry_seconds: 32
+max_attempts: 2
+expiry_seconds: 64
+freshness_seconds: 120
+deadline_seconds: 64
+minimum_coverage: 0.95
+maximum_error: 0.01
+bootstrap_replicates: 1000
+policies: [candidate, plain_repetition, acknowledged]
+outage_durations: [32, 64, 128, 256]
+outage_phases: [0, 317, 1733]
+outage_period: 3600
+correlated_bad_seconds: [32, 96, 192]
+clock_offsets: [-64, -16, 16, 64]
+# Independent challenge scenarios; source observations remain retrospectively reused.
+probe:
+  duration_seconds: 1808
+  seconds_per_logical_second: 0.001
+  seed: 907
+  scenarios: [ideal, iid_10, delay_tail, correlated_96, asymmetric]
