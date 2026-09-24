@@ -104,3 +104,8 @@ replay-reanalysis:
 	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/38_replay_reanalysis.py
 	$(PYTHON) scripts/40_reanalysis_diagnostics.py
 	$(PYTHON) scripts/39_report_reanalysis.py
+
+.PHONY: telemetry-feasibility
+telemetry-feasibility:
+	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/41_telemetry_feasibility.py
+	$(PYTHON) scripts/42_report_telemetry.py

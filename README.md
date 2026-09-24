@@ -144,3 +144,19 @@ docker compose run --rm -T project-shell make replay-reanalysis
 
 See [the protocol](docs/reanalysis/PROTOCOL.md) for metric definitions, controls,
 selection rules, limitations, and output paths.
+
+### Decision-preserving telemetry feasibility
+
+The separate telemetry study compares full, periodic, send-on-change,
+threshold-plus-heartbeat, edge-command-event, and controller-state-snapshot
+reporting. It uses complete chronological validation/evaluation blocks, causal
+16-second controller ticks, simulated network impairments, common freshness and
+cooldown contracts, locked selection constraints, and a measured two-process
+UDP loopback probe.
+
+```bash
+docker compose run --rm -T project-shell make telemetry-feasibility
+```
+
+See [protocol](docs/telemetry/PROTOCOL.md) and [results](docs/telemetry/RESULTS.md).
+Communication fidelity does not imply measured plant-control improvement.

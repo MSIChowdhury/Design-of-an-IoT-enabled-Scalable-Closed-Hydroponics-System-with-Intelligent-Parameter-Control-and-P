@@ -1,0 +1,23 @@
+seed: 20260924
+controller_tick_seconds: 16
+source_freshness_seconds: 120
+command_expiry_seconds: 64
+warmup_seconds: 600
+tail_seconds: 192
+split_fractions: [0.4, 0.7]
+minimum_coverages: [0.95, 0.99]
+maximum_unnecessary_and_wrong_fraction: 0.01
+selection_deadline_seconds: 64
+deadlines_seconds: [16, 64, 180]
+heartbeats_seconds: [32, 64, 112, 256, 600]
+delta_multipliers: [0.5, 1, 2]
+# Units of corresponding primary sensor, swept only on validation.
+delta: {EC: 20, pH: 0.05, Humidity: 1, Air_Temp: 0.2, Water_Temp: 0.1, CO2: 50}
+sensors: [EC, pH, Humidity, Air_Temp, Water_Temp, CO2]
+network_seeds: [0, 1, 2]
+networks:
+  - {name: ideal}
+  - {name: delay_reorder, delay: 8, jitter: 56, duplicate: 0.15}
+  - {name: lossy, loss: 0.05, delay: 8, jitter: 24, duplicate: 0.1}
+  - {name: burst_outage, delay: 8, jitter: 24, burst_period: 3600, burst_duration: 128}
+bootstrap_replicates: 1000
