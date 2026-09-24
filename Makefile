@@ -109,3 +109,9 @@ replay-reanalysis:
 telemetry-feasibility:
 	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/41_telemetry_feasibility.py
 	$(PYTHON) scripts/42_report_telemetry.py
+
+.PHONY: reliable-events
+reliable-events:
+	@test -f results/metrics/telemetry/evaluation_day_clusters.csv || $(MAKE) telemetry-feasibility
+	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/43_reliable_event_benchmark.py
+	$(PYTHON) scripts/44_report_reliable_events.py

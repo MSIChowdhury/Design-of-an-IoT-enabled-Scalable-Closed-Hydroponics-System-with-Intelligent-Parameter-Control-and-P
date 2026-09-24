@@ -1,0 +1,6 @@
+# Retains telemetry.yaml's source blocks, controller, networks, seeds and objectives.
+retry_seconds: [16, 32]
+max_attempts: [2, 3, 5]
+policies: [reliable_events, without_cancellation, without_acknowledgments]
+# Expiry and source freshness remain fixed at 64 and 120 seconds.
+# ACKs acknowledge receipt/disposition, not measured physical execution.

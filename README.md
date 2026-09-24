@@ -160,3 +160,18 @@ docker compose run --rm -T project-shell make telemetry-feasibility
 
 See [protocol](docs/telemetry/PROTOCOL.md) and [results](docs/telemetry/RESULTS.md).
 Communication fidelity does not imply measured plant-control improvement.
+
+### Reliable command-event delivery
+
+The follow-up adds bounded retries, original command expiry, cancellation revisions,
+idempotent output, and impaired receipt ACKs. It compares variants without ACKs
+or cancellation using the original coverage/error requirements and counts traffic
+in both directions. Existing telemetry results are preserved.
+
+```bash
+docker compose run --rm -T project-shell make reliable-events
+```
+
+See [protocol](docs/reliable_events/PROTOCOL.md) and
+[results](docs/reliable_events/RESULTS.md). This is retrospective computational
+fidelity evidence, not a measured actuator-response or physical safety claim.
