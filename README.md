@@ -194,3 +194,22 @@ to `results/metrics/delivery_challenge/` and `results/figures/delivery_challenge
 The launcher removes its own receiver container when finished.
 Read the [assessment](docs/delivery_challenge/ASSESSMENT.md) for the publication
 implications, including restart/clock failures that coverage metrics alone miss.
+
+### Durable recovery-contract version
+
+Run a separate recovery-aware receiver with durable output reservations,
+clock-uncertainty checks, fresh-evidence recovery, and explicit blocking of
+unknown execution outcomes:
+
+```bash
+docker compose run --rm -T project-shell make recovery-contract
+```
+
+This runs a three-policy historical comparison on new fault schedules, actual
+SIGKILL/reopen tests against disk-backed SQLite journals, and a generated report.
+See the [contract and assumptions](docs/recovery_contract/PROTOCOL.md) and
+[results](docs/recovery_contract/RESULTS.md). Structural correctness is reported
+separately from lost availability and additional heartbeat traffic. No physical
+exactly-once guarantee or automatic reset of uncertain execution is claimed.
+The [assessment](docs/recovery_contract/ASSESSMENT.md) explains the substantial
+availability/traffic costs and the failure outside the declared clock bound.

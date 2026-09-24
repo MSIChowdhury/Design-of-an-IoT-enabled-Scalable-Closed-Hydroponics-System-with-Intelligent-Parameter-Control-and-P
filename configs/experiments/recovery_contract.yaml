@@ -1,0 +1,31 @@
+# Frozen version; no tuning stage. Existing sensor periods remain reused.
+seed: 24092526
+seeds: [1101, 1102, 1103, 1104]
+policies: [recovery_v2, current, plain_repetition]
+retry_seconds: 32
+max_attempts: 2
+heartbeat_seconds: 32
+clock_bound: 16
+# Output adapter must complete, or definitively not issue later, within this bound.
+dispatch_bound: 1
+expiry: 64
+freshness: 120
+cooldown: 600
+heartbeat_timeout: 96
+bootstrap_replicates: 1000
+crash_stages: [before_receive, after_accept, after_reserve, after_output, after_commit]
+crash_trials_per_stage: 5
+scenarios:
+  - {name: ideal}
+  - {name: iid_10, loss: 0.1, delay: 8, jitter: 24}
+  - {name: iid_20, loss: 0.2, delay: 8, jitter: 24}
+  - {name: correlated_64, bad_seconds: 64, delay: 8, jitter: 24}
+  - {name: correlated_160, bad_seconds: 160, delay: 8, jitter: 24}
+  - {name: delay_tail, delay: 8, jitter: 80}
+  - {name: outage_96, burst_duration: 96, burst_period: 3200, burst_phase: 911, delay: 8, jitter: 24}
+  - {name: outage_224, burst_duration: 224, burst_period: 3200, burst_phase: 911, delay: 8, jitter: 24}
+  - {name: clock_minus16, offset: -16, delay: 8, jitter: 24}
+  - {name: clock_plus16, offset: 16, delay: 8, jitter: 24}
+  - {name: restart, restart_period: 2704, restart_phase: 592, delay: 8, jitter: 24}
+  - {name: combined, restart_period: 2704, restart_phase: 592, offset: -16, bad_seconds: 64, delay: 8, jitter: 24}
+  - {name: outside_clock_bound, offset: -48, delay: 8, jitter: 80, in_contract: false}

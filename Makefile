@@ -115,3 +115,9 @@ reliable-events:
 	@test -f results/metrics/telemetry/evaluation_day_clusters.csv || $(MAKE) telemetry-feasibility
 	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/43_reliable_event_benchmark.py
 	$(PYTHON) scripts/44_report_reliable_events.py
+
+.PHONY: recovery-contract
+recovery-contract:
+	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/49_recovery_contract_benchmark.py
+	$(PYTHON) scripts/50_recovery_crash_probe.py
+	$(PYTHON) scripts/51_report_recovery_contract.py
