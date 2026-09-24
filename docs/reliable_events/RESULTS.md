@@ -86,7 +86,7 @@ Reliable protocol minus baseline; two-sided percentile 95% intervals from 1,000 
 
 Stable command IDs and revision-specific ACKs support retry without reexecution. A cancellation creates a higher-revision tombstone even when it arrives before the command. ACK of a lower revision cannot silence cancellation retries. Original creation and source times never change during retry. Receipt ACK does not certify execution; cancellation cannot undo an action already emitted. Output cooldown is authoritative, and only a still-valid command can execute after waiting for it.
 
-A two-process UDP loopback exercise sent 1000 measured datagrams after 100 warm-up messages, including deliberate duplicates and cancellation-before-command. Receiver totals: 275 distinct commands emitted, 275 future commands cancelled, 550 repeated/older-revision packets suppressed. Median RTT 0.0109 ms; p95 0.0125 ms; p99 0.0194 ms. These are host loopback measurements with logical controller times, not radio or Raspberry Pi measurements.
+A two-process UDP loopback exercise sent 1000 measured datagrams after 100 warm-up messages, including deliberate duplicates and cancellation-before-command. Receiver totals: 275 distinct commands emitted, 275 future commands cancelled, 550 repeated/older-revision packets suppressed. Median RTT 0.0111 ms; p95 0.0140 ms; p99 0.0239 ms. These are host loopback measurements with logical controller times, not radio or Raspberry Pi measurements.
 
 ## Limitations and artifacts
 
