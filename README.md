@@ -250,3 +250,23 @@ source-day intervals, and replay command ledgers remain local under
 lost acknowledgments from absent recorded effects; unresolved outcomes remain blocked.
 Same-host clocks and short repeated traces do not establish independent-device clock
 accuracy, worst-case timing, physical actuation, or closed-loop safety.
+
+### Bounded reconciliation after uncertain execution
+
+Use the existing instrumented-execution measurements to compare the blocking
+receiver with terminal-evidence recovery, without retuning the controller:
+
+```bash
+scripts/62_run_reconciliation.sh
+```
+
+Run the instrumented-execution launcher first if its local measurements are absent.
+The reconciliation launcher freezes inputs, runs real UDP and process-kill cases
+inside Docker, reproduces every prior baseline row, and evaluates available,
+delayed, unavailable, mismatched, and contradictory lookup evidence. Read the
+[contract](docs/reconciliation/PROTOCOL.md) and [results](docs/reconciliation/RESULTS.md).
+The mock supports permanent cancellation tombstones so a delayed old command
+cannot execute after cancellation. Not-found or exhausted lookup attempts never
+restore authority; confirmed completion preserves cooldown and requires new
+measurement evidence. Physical actuators must provide a defensible execution/fencing
+interface before this software contract can be claimed for deployed pumps.

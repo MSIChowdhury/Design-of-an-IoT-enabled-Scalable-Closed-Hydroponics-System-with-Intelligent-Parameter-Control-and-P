@@ -1,0 +1,9 @@
+# Fixed before execution; no control or detector retuning.
+seed: 24092826
+bootstrap_replicates: 1000
+query_interval_seconds: 16
+query_attempts: 4
+query_horizon_seconds: 64
+reply_latency_seconds: 16
+conditions: [available, delayed_32, unavailable, wrong_id, contradictory]
+# Same recorded input profiles and phases as instrumented_execution.yaml.
