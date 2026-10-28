@@ -114,6 +114,10 @@ coverage-curves:
 	AASVR_REANALYSIS_CONFIG=configs/experiments/reanalysis_extended.yaml AASVR_REANALYSIS_OUT=results/metrics/reanalysis_extended AASVR_REANALYSIS_FIG=results/figures/reanalysis_extended AASVR_REANALYSIS_METHODS=persistence_only,hampel,cusum,lof,kalman,ewma,moving_median,glr,aasvr_measurement,aasvr_hold_only,aasvr_no_cusum OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/38_replay_reanalysis.py
 	$(PYTHON) scripts/65_coverage_curves.py
 
+.PHONY: livegate
+livegate:
+	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/66_livegate_benchmark.py
+
 .PHONY: replay-reanalysis
 replay-reanalysis:
 	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/38_replay_reanalysis.py
