@@ -2,8 +2,9 @@
 
 **This is synthetic data, not measurements.** The 30-day deployment sensor log
 (Experiment 1, 121,244 rows at about 16 s) is available from the corresponding
-author on reasonable request. Every result reported in the manuscript was computed
-on that measured log, not on this file.
+author on reasonable request (a copy is also kept at
+`data/raw/hydroponic/Hydroponics Data First Trial.csv` in this repository). Every
+result reported in the manuscript was computed on that measured log, not on this file.
 
 `hydro_standin.csv.gz` mirrors the log's layout (timestamp, entry_id, EC, pH,
 Humidity, Air_Temp, Water_Temp, CO2), its 16 s cadence, and its aggregate
