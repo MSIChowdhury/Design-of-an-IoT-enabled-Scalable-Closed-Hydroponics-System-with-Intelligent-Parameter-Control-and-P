@@ -30,19 +30,29 @@ per trial):
 
 The liveness test cut stuck-fault-driven authorizations by 69% and
 saturation-driven authorizations by 31% relative to persistence-only. Every other
-method's results were identical to persistence-only on these two scenarios. The
+comparator matched persistence-only on these two scenarios, except Kalman on
+saturation (0.850). The
 liveness-only arm also had the lowest undesirable rate at the 0.8 target, but its
 coverage (0.663) was more than 0.02 below the best, so rule 1 does not credit it.
 
 ## What failed: the forecaster
 
-The conformal forecaster's scale estimate degenerated for quantized, slowly
-changing channels (fitted scale 1.6×10⁻⁵ °C for air temperature and 1.1×10⁻⁷ °C
-for water temperature, from a near-zero median absolute residual). That made its
-thresholds meaningless on those channels and added rejections without reducing
-undesirable authorizations. The protocol forbids changing the method after the
-run, so any corrected forecaster is a new, separately labelled analysis on data
-that has now been seen.
+The forecast-only ablation rejected 3.2% of clean readings at the 0.8 target
+(persistence only: 0%) and had more undesirable authorizations (0.150 vs 0.117).
+
+**Correction.** An earlier version of this file attributed the shortfall to the
+near-zero fitted scales on the temperature channels (1.6×10⁻⁵ and 1.1×10⁻⁷ °C).
+That diagnosis was wrong. The exploratory v2 below floors the scale at the
+reading resolution and changes no decision, because the conformal threshold is
+calibrated on scores divided by the same scale.
+
+## Exploratory post-hoc variant (v2)
+
+`livegate_v2` floors the residual scale at each sensor's reading resolution
+(`resolution_floor=True`). It was rerun with every comparator
+(`results/metrics/livegate_v2_exploratory/`). All 66 previously evaluated rows
+reproduced exactly. LiveGate v2's selected settings and evaluation results are
+identical to locked LiveGate at the 0.5 and 0.8 targets.
 
 ## Real-log audit
 

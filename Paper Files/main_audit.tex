@@ -1,0 +1,365 @@
+\ifdefined\AUDITBLINDED
+\documentclass[preprint,12pt,doubleblind]{elsarticle}
+\else
+\documentclass[preprint,12pt]{elsarticle}
+\fi
+
+\input{glyphtounicode}
+\pdfgentounicode=1
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{tikz}
+\usepackage{xurl}
+\usepackage[protrusion=true,expansion=false]{microtype}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds}
+\setlength{\emergencystretch}{2em}
+\newcommand{\best}[1]{\textbf{#1}}
+\newcommand{\COtwo}{CO\textsubscript{2}}
+
+\journal{Biosystems Engineering}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{From sensor fault to actuator command: a fault-to-actuation audit of a low-cost IoT closed hydroponic system, with a learned sensor-liveness test}
+
+\ifdefined\AUDITBLINDED
+\else
+\author[du]{MD. Sameer Iqbal Chowdhury}
+\author[du]{Mikdam-Al-Maad Ronoue}
+\author[kuas]{Md Asaduzzaman}
+\author[du]{Lafifa Jamal\corref{cor1}}
+\cortext[cor1]{Corresponding author.}
+\affiliation[du]{organization={Department of Robotics and Mechatronics Engineering, University of Dhaka}, postcode={Dhaka-1000}, country={Bangladesh}}
+\affiliation[kuas]{organization={Department of Agriculture and Food Technology, Kyoto University of Advanced Sciences}, country={Japan}}
+\fi
+
+\begin{abstract}
+Low-cost Internet of Things (IoT) controllers for hydroponics act directly on sensor readings, so a faulty reading can become a dosing, gas-injection, or cooling command. Studies of such systems usually report the platform and crop yield, while fault-detection studies score detection accuracy rather than the commands that faults cause. This paper audits how often measured sensor faults would have become executable actuator commands in a 30-day deployment of a closed nutrient film technique (NFT) lettuce system operated in a hot season. The 121,244-sample log contained physically impossible pH and \COtwo{} readings, a \COtwo{} sensor pinned at its 5000~ppm full scale for up to 8.5~h, a humidity channel saturated for almost the entire run, and logging gaps covering 23\% of the period. Replaying the deployed threshold control law on the unmodified log, 19\% of pH dosing commands and 7\% of \COtwo{} injection commands from a naive controller were triggered by faulty readings; a physical-range check with 32~s persistence removed all faulty pH commands and reduced faulty \COtwo{} commands to 1.6\%. Air and water temperature stayed within their setpoint bands only 3\% and 10\% of the time, exposing insufficient cooling capacity rather than a sensing problem. We also propose LiveGate, a learned gate combining a conformally calibrated one-step forecast with a run-length test of whether a sensor is still alive. Under a protocol frozen before evaluation, LiveGate did not outperform simple baselines overall, but its liveness component reduced authorizations driven by stuck readings by 69\% and by full-scale saturation by 31\% relative to persistence-based gating, faults that no other tested method reduced comparably. The results translate into concrete sensor, gating, and capacity guidelines for low-cost hydroponic automation.
+\end{abstract}
+
+\begin{keyword}
+hydroponics \sep nutrient film technique \sep Internet of Things \sep sensor faults \sep actuation \sep conformal prediction
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Introduction}
+Closed hydroponic systems recirculate a nutrient solution whose pH, electrical conductivity (EC), and temperature must be held within narrow ranges, while the surrounding air temperature, humidity, and carbon dioxide (\COtwo) concentration shape growth in enclosed production \cite{niu2022hydroponics,asaduzzaman2022nutrients}. Automated controllers built from low-cost sensors, microcontrollers, and single-board computers now regulate these quantities with dosing pumps, valves, chillers, and coolers \cite{domingues2012automated,tatas2022reliable}. In such controllers a sensor reading is not only a data point: it can trigger a physical action. One spurious high pH reading can authorize acid dosing into the whole recirculating volume, and the correction may require dilution, counter-dosing, and another mixing interval.
+
+Two literatures touch this problem without measuring it. System studies of IoT hydroponics describe architectures, dashboards, and crop outcomes, but rarely quantify how sensor faults propagate into control actions. Sensor-fault studies characterize fault types and their prevalence \cite{ni2009faulttypes,sharma2010sensorfaults,teh2020sensorquality} and propose detection methods, including for agricultural IoT \cite{zou2023agriiotfaults,lin2019sensortalk}, but usually score the detector, not the commands a controller would issue. As a result, a practitioner building a low-cost hydroponic controller has little quantitative guidance on which faults actually matter for actuation and which safeguards remove them.
+
+This paper addresses that gap with data from a deployed closed NFT lettuce system. Its contributions are:
+\begin{enumerate}
+\item a measured inventory of the sensor faults in a 30-day, 16~s deployment log of a low-cost hydroponic controller operated in a hot season;
+\item a fault-to-actuation audit that replays the deployed control law, restricted to the directions the installed actuators can execute, on the unmodified log, and quantifies how many commands each gating rule lets faults trigger;
+\item a control-capacity audit separating sensing problems from actuator-sizing problems;
+\item LiveGate, a learned gate that adds a sensor-liveness test to a conformally calibrated forecast, evaluated against 13 alternatives under a protocol fixed before evaluation, with its negative overall result and its positive component result both reported;
+\item practical guidelines on sensor selection, gating, and capacity for low-cost hydroponic automation.
+\end{enumerate}
+
+\section{Related work}
+\subsection{IoT control of hydroponic systems}
+Automated hydroponic control typically measures pH and EC in the nutrient tank and corrects them with acid, base, concentrate, or water dosing, often with a mixing delay between doses \cite{domingues2012automated}. IoT variants add networked logging and remote monitoring \cite{tatas2022reliable}. Reliability in these studies is usually discussed in terms of communication and uptime, and evaluation focuses on whether the controlled variables stay near their setpoints and on crop performance. How often the controller acts on readings that were wrong is rarely reported.
+
+\subsection{Sensor faults and their detection}
+Field sensor deployments exhibit outliers, spikes, stuck-at values, offsets, drift, and missing data \cite{ni2009faulttypes,sharma2010sensorfaults}, and data quality in IoT pipelines has been reviewed systematically \cite{teh2020sensorquality}. Reviews of agricultural IoT report similar fault classes and a growing set of model-based and learning-based detectors \cite{zou2023agriiotfaults}. Classical detectors include robust outlier filters \cite{hampel1974influence}, sequential change detectors such as CUSUM \cite{page1954continuous,basseville1993detection}, exponentially weighted moving averages \cite{roberts1959control}, state estimation with the Kalman filter \cite{kalman1960new}, and density-based novelty detection such as the local outlier factor (LOF) \cite{breunig2000lof}; model-based fault diagnosis is surveyed in \cite{isermann2005fault}. Most of these methods treat a reading that changes little as normal. A stuck or saturated sensor is therefore hard for them to detect, and persistence-based confirmation rules can even make such readings look more trustworthy.
+
+\subsection{Conformal calibration}
+Split conformal prediction converts any predictor into a set or threshold with a finite-sample coverage guarantee under exchangeability \cite{vovk2005algorithmic,angelopoulos2023gentle}. It is attractive for actuation gating because the operator can choose the clean-reading rejection rate directly. Sensor time series are not exchangeable, so the guarantee is only approximate here, and we report empirical rejection rates instead of relying on it.
+
+\section{System and deployment}
+\subsection{Platform}
+The platform is a closed NFT system for leaf lettuce consisting of a Growth Module and a Nutrient Solution Container Module (Fig.~\ref{fig:system}, Table~\ref{tab:components}). The Growth Module measures air temperature and humidity with a DHT22 sensor and \COtwo{} with an MH-Z19C non-dispersive infrared sensor whose range ends at 5000~ppm. \COtwo{} is raised by a normally closed solenoid valve on a \COtwo{} cylinder, air temperature is lowered by a thermoelectric cooler, and LED grow lights provide the photoperiod. The Nutrient Solution Container Module measures pH with an Atlas Scientific analog pH kit, EC with an Atlas Scientific Mini Conductivity K~1.0 kit, water temperature, and water level with a JSN-SR04T ultrasonic sensor. pH is corrected by acid or base dosing, EC by concentrate or distilled-water dosing, and water temperature by a refrigerative chiller. A pump circulates the solution continuously and an aerator runs throughout.
+
+Sensors are read by an Arduino Nano, which applies median filtering; actuators are driven by an Arduino Mega; a Raspberry Pi~4 Model~B runs the controller and uploads readings to a ThingSpeak channel at about 16~s intervals. Actuator commands and relay states were not logged.
+
+\begin{figure}[!htbp]
+\centering
+\begin{minipage}{0.62\linewidth}
+\centering
+\resizebox{\linewidth}{!}{\input{figure/audit/system_architecture.tikz}}
+\end{minipage}\hfill
+\begin{minipage}{0.33\linewidth}
+\centering
+\includegraphics[width=\linewidth]{figure/fullsystemactual.JPG}
+\end{minipage}
+\caption{Sensing-to-actuation path of the closed NFT system (left) and the deployed system (right). The audited stream is the logged sensor feed; command states were not recorded.}
+\label{fig:system}
+\end{figure}
+
+\begin{table}[!htbp]
+\centering
+\caption{Controlled quantities, deployed setpoint bands, and the directions the installed actuators can execute. Humidity and water level were monitored but not actuated.}
+\label{tab:components}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llll}
+\toprule
+Quantity & Setpoint band & Actuator & Executable direction \\
+\midrule
+pH & 5.8--6.5 & Acid / base dosing, 10-min lockout & Lower and raise \\
+EC & 1000--1500~\textmu S\,cm$^{-1}$ & Water / concentrate dosing, 10-min lockout & Lower and raise \\
+\COtwo & 1900--2100~ppm & Solenoid valve on cylinder & Raise only \\
+Water temperature & 18--22~\textdegree C & Refrigerative chiller & Lower only \\
+Air temperature & 20--26~\textdegree C & Thermoelectric cooler & Lower only \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\subsection{Control law and the deployed gating rule}
+The controller issues a correction when a reading leaves its setpoint band, then locks the corresponding dosing subsystem for 10~min to allow mixing. In the first growing season the controller acted on logged readings without further gating. In the second season, which produced the log analysed here, it used an error-resilience rule: a reading was accepted only if it differed from the last trusted value by at most $(1+\beta)\xi$, where $\xi$ is the mean absolute change between successive readings; after 50 consecutive rejections the trusted value was reset to the current reading; and a correction required $\psi$ consecutive accepted out-of-band readings, where $\psi$ is the mean length of runs of small successive changes. The published multipliers $\beta$ were 0.0002 (EC), 0.0005 (pH), 0.0022 (air temperature), 0.0009 (water temperature), and 0.0010 (\COtwo).
+
+\subsection{Deployment}
+The analysed deployment ran from 27 February to 28 March 2024 in Dhaka, Bangladesh, with ambient temperatures of about 25--36~\textdegree C, which is off-season for lettuce. Seven seedlings per treatment were grown in the NFT system, in pots with soil and compost, and in a manually managed deep water culture (DWC) system.
+
+\section{Methods}
+\subsection{Data}
+The log contains 121,244 rows with a median interval of 16~s. The analysis uses the five actuated quantities, plus humidity for the fault inventory. Water level is excluded because its raw values were never calibrated to a physical level. Timestamps are split chronologically into development (first 40\%), validation (next 30\%), and evaluation (last 30\%) blocks.
+
+\subsection{Fault inventory}
+For each channel we count readings outside the physical range ($0$--$14$ for pH, $0$--$5000$~\textmu S\,cm$^{-1}$ for EC, $250$--$5000$~ppm for \COtwo, $-10$--$60$~\textdegree C for air and $0$--$50$~\textdegree C for water temperature, $0$--$100$\% for humidity); isolated spikes, defined as in-range readings whose deviation from a centred 9-sample median exceeds eight robust standard deviations; flat-line runs of identical readings lasting at least 1~h without a logging gap; the fraction of readings at the channel's in-range maximum; and logging gaps longer than 120~s. These are descriptive definitions, not ground-truth labels.
+
+\subsection{Fault-to-actuation audit}
+The audit replays the deployed control law (setpoint bands, 10-min cooldown) on the unmodified log under six gating arms: (i) a naive threshold on every logged reading, as in the first season; (ii) a physical-range check; (iii) a range check with 32~s persistence before acting; (iv) the deployed error-resilience rule, reconstructed from its description with the published $\beta$ values and with $\xi$ and $\psi$ re-estimated on the development block because the first-season data used originally are unavailable; (v) arm (iii) plus the LiveGate liveness test (Section~\ref{sec:livegate}); and (vi) arm (iii) plus rejection of readings exactly at a declared physical bound. A command is counted only if the installed actuator can execute it (Table~\ref{tab:components}). Each command is attributed to the reading that supplied the controller's held value, and is counted as fault-triggered when that reading was out of range, exactly at full scale, or an isolated spike.
+
+\subsection{Controlled benchmark}
+Because the log has no actuator records or reference instruments, faults that cannot be identified from the log alone are studied with controlled injection into real backgrounds. Eight non-overlapping, gap-free 240-sample windows are drawn from each of the validation and evaluation blocks. In each window, one of 12 scenarios is applied to one channel after a 60-sample warm-up: clean; positive or negative spikes, 30-sample biases, and 30-sample drifts; a 30-sample stuck value; 30 samples pinned at the declared physical maximum (saturation); a 30-sample dropout; and positive or negative legitimate level shifts that also change the reference background. Magnitudes are 0.5 for pH, 100~\textmu S\,cm$^{-1}$ for EC, 2~\textdegree C for air and 1~\textdegree C for water temperature, and 500~ppm for \COtwo.
+
+Every method produces an accepted/rejected decision for each reading. A common downstream controller holds the last accepted value for up to a maximum age (64 or 320~s), requires out-of-band persistence (0, 32, or 96~s), and applies the 10-min cooldown. Reference opportunities are defined from the uncorrupted background with the same timing, and an authorization matches an opportunity if it occurs in the same out-of-band episode and direction within 180~s. Coverage is the fraction of reference opportunities matched; undesirable authorizations are commands issued when the background is in band or in the opposite direction. The benchmark scores both directions for every channel, which is more conservative than the executable-direction audit.
+
+Each method's detector setting, persistence, and maximum age are selected on validation windows at three coverage targets (0.5, 0.8, 0.95): among settings meeting the target, the one with the fewest undesirable authorizations per trial is locked, and evaluation windows are then scored once. Comparators are persistence only, Hampel, CUSUM, LOF, Kalman, EWMA, moving median, generalized likelihood ratio (GLR), three variants of a previously developed actuation-aware supervisor (AASVR-R measurement supervisor, hold-only, and without CUSUM), always-deny, and two LiveGate ablations. Kalman noise is scaled per channel from development data. Paired 95\% intervals resample source days jointly across sensors and scenarios with 1000 bootstrap replicates \cite{efron1979bootstrap}.
+
+\subsection{LiveGate}
+\label{sec:livegate}
+LiveGate accepts a reading $y_t$ for actuation only if it is consistent with a learned forecast and the sensor appears alive.
+
+\paragraph{Consistency} Let $\ell_t$ be the mean of the last $K=5$ accepted readings and $\tau_t$ the difference between the newest and oldest of them. The forecast is
+\begin{equation}
+\hat{y}_t = \ell_t + \mathbf{w}^\top \boldsymbol{\phi}_t + b,\qquad
+\boldsymbol{\phi}_t = \big[\tau_t,\ \sin(2\pi h_t/24),\ \cos(2\pi h_t/24),\ \mathbf{z}_t\big],
+\end{equation}
+where $h_t$ is the hour of day and $\mathbf{z}_t$ contains the other four actuated channels, winsorized at their development 1st and 99th percentiles and centred at their medians. The weights are fitted by Huber regression \cite{huber1964robust} of $y_t-\ell_t$ on the first 75\% of the development block, using only in-range, non-spike readings. The score is $s_t=|y_t-\hat{y}_t|/\sigma$, where $\sigma$ is 1.4826 times the median absolute training residual. The threshold is the split-conformal quantile
+\begin{equation}
+q_\varepsilon = s_{(\lceil (n+1)(1-\varepsilon) \rceil)}
+\end{equation}
+of the $n$ clean scores in the last 25\% of the development block.
+
+\paragraph{Liveness} Let $r_t$ be the length of the current run of identical readings. From the $N$ runs of clean development readings, excluding readings at a declared physical bound, the smoothed survival function is $S(r)=(|\{\text{runs}\ge r\}|+1)/(N+1)$. The sensor is considered alive while $S(r_t)\ge\varepsilon$.
+
+\paragraph{Decision} A reading is accepted if it is within the physical range, the sensor is alive, and $s_t\le q_\varepsilon$. A live but surprising reading starts a candidate level, and the trusted state re-anchors after
+\begin{equation}
+m(s_t) = \mathrm{clip}\big(1+\lceil \log_2(s_t/q_\varepsilon)\rceil,\ 2,\ 8\big)
+\end{equation}
+mutually consistent readings, so larger surprises require more confirmation. The single parameter $\varepsilon\in\{0.002,0.01,0.05\}$ sets both the consistency and liveness thresholds and takes the place of the baselines' threshold multipliers.
+
+\paragraph{Protocol} The method, the benchmark, and the decision rules were committed to the project repository before LiveGate was run on the measured log. LiveGate would be called best at a coverage target only if it had the lowest evaluation undesirable rate among methods feasible at that target, with coverage within 0.02 of the best feasible method; and best overall only if this held at every target where it was feasible. One design change, anchoring the forecast on a 5-sample level rather than the last value, was made beforehand to fix cascading rejections found in synthetic unit tests. The data had been analysed in earlier studies, so the evaluation is retrospective rather than on untouched data.
+
+\section{Results}
+\subsection{Faults in the deployment log}
+Faults were frequent and channel-specific (Table~\ref{tab:inventory}, Fig.~\ref{fig:heatmap}). pH produced 464 physically impossible readings, up to 67,101, consistent with corrupted analog or serial transfers. \COtwo{} produced 819 impossible readings, up to 200,850~ppm, and 961 isolated spikes, and it sat exactly at its 5000~ppm full scale for 2.3\% of the run, including one 8.5~h episode. Humidity read 99.9\% for 99.97\% of samples, so the DHT22 either saturated or the enclosure stayed at condensation; the log cannot distinguish the two, and in either case the channel carried almost no information. EC, air temperature, and water temperature were comparatively clean, consistent with the view that temperature sensors are stable. All channels shared 194 logging gaps longer than 120~s, the longest lasting 9.0~h, together covering 23\% of the deployment.
+
+\begin{table}[!htbp]
+\centering
+\caption{Fault inventory of the 30-day deployment log (121,244 readings per channel). Spikes are in-range readings more than eight robust standard deviations from a centred 9-sample median.}
+\label{tab:inventory}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Channel & Out of range & Maximum value & Isolated spikes & Flat-lines $\ge$1~h & Longest flat-line (h) \\
+\midrule
+pH & 464 & 67,101 & 76 & 0 & -- \\
+EC & 0 & -- & 14 & 0 & -- \\
+\COtwo & 819 & 200,850 & 961 & 3 & 8.5 \\
+Air temperature & 1 & 99.9 & 17 & 1 & 1.4 \\
+Water temperature & 0 & -- & 39 & 7 & 1.5 \\
+Humidity & 0 & -- & 10 & 79 & 35.2 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\linewidth]{figure/audit/real_fault_heatmap.pdf}
+\caption{Daily fault events per channel: out-of-range readings, isolated spikes, and onsets of flat-lines lasting at least 1~h. pH and \COtwo{} faults occurred on almost every day.}
+\label{fig:heatmap}
+\end{figure}
+
+The long \COtwo{} episode was preceded by a steady rise from about 2000 to 5000~ppm over 2~h (Fig.~\ref{fig:co2}). The true concentration may therefore have exceeded the sensor range, for example through a valve that failed open, rather than the sensor failing. Either way, a reading at full scale is not a measurement of the concentration, only a lower bound on it. The liveness test rejected the pinned readings within four samples.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\linewidth]{figure/audit/co2_saturation_trace.pdf}
+\caption{Longest \COtwo{} full-scale episode in the log, with readings rejected by the LiveGate liveness test ($\varepsilon=0.05$) shaded. Downward excursions are isolated logging faults.}
+\label{fig:co2}
+\end{figure}
+
+\subsection{Control capacity}
+pH and EC stayed within their bands 88\% and 84\% of the time, and \COtwo{} 47\% (Fig.~\ref{fig:band}). Air temperature was within 20--26~\textdegree C only 3\% of the time, with a median of 28.6~\textdegree C, and water temperature within 18--22~\textdegree C only 10\%, with a median of 24.8~\textdegree C. Because the temperature channels were among the cleanest, these excursions reflect cooling capacity that was insufficient for the hot-season ambient conditions, not sensing faults. In such conditions the cooling actuators were commanded almost continuously, so gating decisions had little effect on them.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.85\linewidth]{figure/audit/time_in_band.pdf}
+\caption{Fraction of valid readings below, within, and above each setpoint band over the deployment.}
+\label{fig:band}
+\end{figure}
+
+\subsection{Fault-to-actuation audit}
+A naive controller acting on every logged reading would have issued 655 pH dosing commands, of which 125 (19.1\%) were triggered by faulty readings, and 1010 \COtwo{} injection commands, of which 68 (6.7\%) were fault-triggered (Table~\ref{tab:audit}, Fig.~\ref{fig:audit}). A physical-range check alone removed most impossible-value triggers but left 40 faulty pH commands, mostly from spikes. Adding 32~s of persistence removed every faulty pH and EC command and reduced faulty \COtwo{} injections to 7 of 441 (1.6\%). The liveness test and full-scale rejection added nothing on the executable \COtwo{} commands because the long full-scale episodes read high, which never triggers injection in a raise-only loop.
+
+The reconstructed deployed rule issued 43--73\% as many commands as the range-and-persistence arm, depending on the channel, because its repeatability requirement corresponded to about 2--7~min of confirmation. It nevertheless let 13 \COtwo{} injections through on physically impossible readings: after 50 consecutive rejections its reset step accepts whatever the sensor reports.
+
+\begin{table}[!htbp]
+\centering
+\caption{Executable commands over the 30-day log and the number triggered by faulty readings (out-of-range, full-scale, or isolated-spike readings), under the deployed setpoints and 10-min cooldown.}
+\label{tab:audit}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{pH dosing} & \multicolumn{2}{c}{EC dosing} & \multicolumn{2}{c}{\COtwo{} injection} \\
+Gating arm & Commands & Faulty & Commands & Faulty & Commands & Faulty \\
+\midrule
+Naive threshold & 655 & 125 & 535 & 6 & 1010 & 68 \\
+Range check & 593 & 40 & 535 & 6 & 991 & 33 \\
+Range + 32~s persistence & 417 & \best{0} & 526 & \best{0} & 441 & 7 \\
+Deployed rule (reconstructed) & 216 & \best{0} & 227 & \best{0} & 322 & 13 \\
+Range + persistence + liveness & 417 & \best{0} & 526 & \best{0} & 442 & 7 \\
+Range + persistence + full-scale & 417 & \best{0} & 526 & \best{0} & 442 & 7 \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\linewidth]{figure/audit/audit_fault_commands.pdf}
+\caption{Executable pH dosing and \COtwo{} injection commands triggered by faulty readings under each gating arm, with the total number of executable commands.}
+\label{fig:audit}
+\end{figure}
+
+The liveness test had a cost on the cooling loops: it suppressed 10\% of air-temperature and 9\% of water-temperature cooling commands (3215 to 2891 and 2698 to 2446), because those coarsely quantized sensors legitimately repeat values for long periods.
+
+\subsection{Controlled benchmark and the locked LiveGate result}
+No method reached the 0.95 coverage target on validation. At the 0.5 and 0.8 targets, LiveGate did not meet the frozen criterion for best method (Table~\ref{tab:benchmark}). At 0.5, LOF had the fewest undesirable authorizations (0.075 per trial versus 0.135 for LiveGate; paired difference 95\% interval $-0.148$ to $-0.004$) but at much lower coverage (0.357). At 0.8, persistence only reached higher coverage (0.886) with fewer undesirable authorizations (0.117) than LiveGate (0.790 and 0.135). The liveness-only ablation had the lowest undesirable rate at 0.8 (0.104) but its evaluation coverage fell to 0.663. The AASVR-R measurement supervisor did not reach the 0.5 target. Figure~\ref{fig:operating} shows all validation operating points.
+
+\begin{table}[!htbp]
+\centering
+\caption{Locked evaluation results at the 180~s matching deadline. Settings were selected on validation at each coverage target; methods that did not reach the target on validation are omitted. Lower undesirable authorizations and higher coverage are better.}
+\label{tab:benchmark}
+\small
+\begin{tabular}{llrr}
+\toprule
+Target & Method & Coverage & Undesirable / trial \\
+\midrule
+0.5 & LOF & 0.357 & \best{0.075} \\
+ & LiveGate, liveness only & 0.560 & 0.081 \\
+ & Kalman & 0.594 & 0.098 \\
+ & GLR & 0.760 & 0.100 \\
+ & Persistence only & 0.795 & 0.110 \\
+ & CUSUM & 0.794 & 0.110 \\
+ & Hampel / moving median & 0.795 & 0.121 \\
+ & EWMA & \best{0.801} & 0.121 \\
+ & LiveGate & 0.505 & 0.135 \\
+ & LiveGate, forecast only & 0.704 & 0.163 \\
+ & AASVR-R hold only & 0.721 & 0.233 \\
+\midrule
+0.8 & LiveGate, liveness only & 0.663 & \best{0.104} \\
+ & Persistence only & 0.886 & 0.117 \\
+ & CUSUM & 0.862 & 0.121 \\
+ & LiveGate & 0.790 & 0.135 \\
+ & Hampel / moving median & 0.848 & 0.150 \\
+ & EWMA & 0.857 & 0.150 \\
+ & LiveGate, forecast only & 0.837 & 0.150 \\
+ & Kalman & \best{0.910} & 0.158 \\
+ & GLR & 0.854 & 0.165 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.8\linewidth]{figure/audit/operating_points.pdf}
+\caption{Validation operating points of all methods and settings. Points towards the lower right authorize more of the commands that are needed while issuing fewer that are not.}
+\label{fig:operating}
+\end{figure}
+
+The forecast component accounts for the shortfall. The forecast-only ablation rejected 3.2\% of clean readings at the 0.8 target, against none for persistence only, and had more undesirable authorizations (0.150 versus 0.117 per trial). A one-step forecast cannot distinguish a fault from a legitimate change of the same shape on one channel, so its extra rejections removed useful readings without removing faulty ones.
+
+\subsection{Stuck and saturated sensors}
+The liveness component addressed the faults no other method handled (Fig.~\ref{fig:stuck}). With a stuck reading, every comparator, and LiveGate without liveness, authorized on fault evidence 0.725 times per trial. The liveness-only arm reduced this to 0.225 (69\% fewer), and full LiveGate to 0.500. With readings pinned at full scale, comparators authorized 0.975 times per trial (Kalman 0.850), and the liveness-only arm and LiveGate reduced this to 0.675 and 0.650 (31\% and 33\% fewer). The liveness-only arm also had the fewest undesirable authorizations in the saturation scenario (0.325 per trial versus 0.450 for persistence only).
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\linewidth]{figure/audit/stuck_saturation.pdf}
+\caption{Authorizations made on fault evidence per trial in the stuck and full-scale saturation scenarios (evaluation, 0.8 coverage target). Arms containing the liveness test are highlighted.}
+\label{fig:stuck}
+\end{figure}
+
+\input{livegate_v2_results.tex}
+
+\subsection{Crop outcome in the same season}
+In the same season, NFT plants produced a mean aerial fresh mass of 264.8~g (SD 35.0, $n=7$), compared with 68.2~g (SD 19.5) in soil and 109.5~g (SD 23.3) in manual DWC (Table~\ref{tab:harvest}). These treatments differ in growing medium, enclosure, \COtwo{} enrichment, cooling, nutrient management, and automation at once, so the comparison describes the deployment context and does not isolate the effect of automation or of any gating rule.
+
+\begin{table}[!htbp]
+\centering
+\caption{Harvest of the season analysed (mean $\pm$ SD, $n=7$ plants per treatment). FMAP and DMAP: fresh and dry mass of the aerial part; TPL: total plant length; TNL: total number of leaves; NL10: leaves longer than 10~cm.}
+\label{tab:harvest}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Trait & NFT (automated) & Soil & Manual DWC \\
+\midrule
+FMAP (g) & 264.81 $\pm$ 35.02 & 68.24 $\pm$ 19.46 & 109.49 $\pm$ 23.31 \\
+DMAP (g) & 33.19 $\pm$ 8.24 & 8.63 $\pm$ 2.51 & 13.85 $\pm$ 2.70 \\
+TPL (cm) & 72.52 $\pm$ 11.61 & 19.46 $\pm$ 3.54 & 20.12 $\pm$ 2.04 \\
+TNL & 20.29 $\pm$ 2.87 & 9.86 $\pm$ 1.68 & 11.86 $\pm$ 1.95 \\
+NL10 & 13.00 $\pm$ 2.00 & 3.00 $\pm$ 1.15 & 7.57 $\pm$ 1.51 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\FloatBarrier
+
+\section{Discussion}
+\subsection{Which faults matter for actuation}
+The audit separates faults that change commands from faults that only look alarming. Impossible pH values and pH spikes were the most consequential: with a naive controller, one in five pH doses would have been driven by a faulty reading, a direct risk in a recirculating root zone. A range check and half a minute of persistence removed all of them in this log, at the cost of dosing 30~s later. The long \COtwo{} full-scale episodes were the most visible faults, yet in this deployment they triggered no executable command because the \COtwo{} loop can only inject and a high reading never requests injection. The same saturation in a sensor that reads low, or in a two-sided loop, would drive actuation continuously, and that is the case the liveness test targets. Fault severity therefore depends on the actuator's direction as much as on the fault.
+
+\subsection{Why simple rules competed well}
+In the controlled benchmark, a clean bias fault and a legitimate level shift of the same size look identical on a single channel until the fault ends. Any method that authorizes a real shift within the matching deadline will also authorize a short bias of the same shape, so confirmation time is close to the best available discriminator, and persistence-based rules sit near the achievable frontier. Adding a forecast does not create information that the channel does not contain. Stuck and saturated readings are different: they contain a signature, the absence of normal sensor jitter, that persistence rules ignore and that a learned run-length model captures cheaply.
+
+\subsection{Design guidelines}
+The results suggest the following for low-cost hydroponic controllers. (i) Gate every actuated channel with a physical-range check and a short persistence requirement; in this log that alone removed all faulty pH and EC commands. (ii) Avoid gating rules that eventually accept any reading after repeated rejections; the reconstructed deployed rule's reset let impossible \COtwo{} values through. (iii) Add a liveness test to channels whose sensors can stick or saturate, and fit its run-length model on clean data; temperature channels with coarse resolution need longer allowances or a lower $\varepsilon$ to avoid suppressing cooling. (iv) Choose sensor ranges with headroom above the setpoint: a 0--5000~ppm \COtwo{} sensor saturates during enrichment faults, and a resistive humidity sensor that saturates near 100\% gives no information in a humid enclosure. (v) Size cooling for the warmest expected ambient conditions; no gating rule can compensate for a loop that cannot reach its setpoint. (vi) Log actuator commands and relay states alongside readings; without them, fault consequences can only be reconstructed.
+
+\subsection{Limitations}
+The evidence comes from one system and one 30-day season. The audit reconstructs commands from a control law and does not observe the commands actually issued, because command states were not logged. Spike labels are heuristic, and the deployed gating rule is reconstructed from its description with re-estimated parameters. The controlled benchmark injects synthetic faults into real backgrounds, scores both directions for every channel, and uses data analysed in earlier studies, so its results are retrospective. The large \COtwo{} full-scale episodes lie in the development block; they were excluded from fitting the liveness model by the declared-bound rule but were not unseen in time. The crop comparison is confounded by multiple simultaneous treatment differences. A prospective deployment with logged commands, reference measurements, and a frozen gating configuration is needed to confirm the liveness benefit on real stuck faults.
+
+\section{Conclusions}
+In a 30-day hot-season deployment of a low-cost closed NFT system, sensor faults were frequent, and with naive control one in five pH dosing commands and one in fifteen \COtwo{} injection commands would have been triggered by faulty readings. A physical-range check with 32~s persistence removed every faulty pH and EC command in the log. The temperature loops' failure to reach their setpoints reflected insufficient cooling capacity, not sensing faults. A learned gate combining a conformal forecast with a liveness test did not outperform simple rules overall under a frozen protocol, but its liveness component was the only tested mechanism that reduced authorizations driven by stuck and saturated sensors. Fault-handling studies for agricultural controllers should report what faults do to commands, not only how well they are detected.
+
+\section*{Data and code availability}
+\ifdefined\AUDITBLINDED
+Code, configurations, the frozen evaluation protocol, harvest data, and a synthetic stand-in for the sensor log are available in the repository disclosed in the submission metadata. The measured sensor log is available from the corresponding author on reasonable request.
+\else
+Code, configurations, the frozen evaluation protocol, harvest data, and a synthetic stand-in for the sensor log are available at \url{https://github.com/MSIChowdhury/Design-of-an-IoT-enabled-Scalable-Closed-Hydroponics-System-with-Intelligent-Parameter-Control-and-P}. The measured sensor log is available from the corresponding author on reasonable request.
+\fi
+
+\section*{Declaration of competing interest}
+The authors declare no competing interests.
+
+\section*{Declaration of generative AI and AI-assisted technologies}
+AI-assisted tools were used to help write analysis code, draft text, and check consistency. The authors reviewed and are responsible for the content.
+
+\bibliographystyle{elsarticle-num}
+\bibliography{audit_references}
+
+\end{document}

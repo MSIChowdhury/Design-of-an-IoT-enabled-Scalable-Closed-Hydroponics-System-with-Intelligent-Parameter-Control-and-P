@@ -1,0 +1,5 @@
+- 30-day hydroponic log audited for how sensor faults become actuator commands.
+- Naive control: 19% of pH doses would be triggered by faulty readings.
+- Range check plus 32 s persistence removed all faulty pH and EC commands.
+- Temperature loops held setpoints 3-10% of time: a cooling capacity limit.
+- Learned liveness test cut stuck-sensor authorizations by 69%.

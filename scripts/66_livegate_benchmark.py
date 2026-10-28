@@ -34,9 +34,12 @@ OUT = ROOT / os.environ.get("LIVEGATE_OUT", "results/metrics/livegate")
 FIG = ROOT / os.environ.get("LIVEGATE_FIG", "results/figures/livegate")
 SOURCE = ROOT / os.environ.get("LIVEGATE_SOURCE", "data/processed/hydro_exp1_measurements.parquet")
 CONFIG = ROOT / os.environ.get("LIVEGATE_CONFIG", "configs/experiments/livegate.yaml")
-GATES = ("livegate", "livegate_no_liveness", "livegate_no_forecast")
-METHODS = ("persistence_only", "hampel", "cusum", "lof", "kalman", "ewma", "moving_median", "glr",
-           "aasvr_measurement", "aasvr_hold_only", "aasvr_no_cusum", *GATES)
+GATES = ("livegate", "livegate_no_liveness", "livegate_no_forecast", "livegate_v2")
+# livegate_v2 is the exploratory post-hoc variant; it only runs when listed here.
+METHODS = tuple(os.environ.get("LIVEGATE_METHODS", ",".join((
+    "persistence_only", "hampel", "cusum", "lof", "kalman", "ewma", "moving_median", "glr",
+    "aasvr_measurement", "aasvr_hold_only", "aasvr_no_cusum",
+    "livegate", "livegate_no_liveness", "livegate_no_forecast"))).split(","))
 
 
 def scenario(values, kind, magnitude, start, duration, sensor):
@@ -53,7 +56,8 @@ def scenario(values, kind, magnitude, start, duration, sensor):
 def detect(method, x, times, hours, context, sensor, base, setting_value, lof, noise, models, cfg):
     if method not in GATES:
         return replay.detector(method, x, times, sensor, base, setting_value, lof, noise)
-    accepted = livegate.gate(models[sensor.name], x, times, hours, context, epsilon=setting_value,
+    model = models["v2"][sensor.name] if method == "livegate_v2" else models["v1"][sensor.name]
+    accepted = livegate.gate(model, x, times, hours, context, epsilon=setting_value,
                              use_liveness=method != "livegate_no_liveness",
                              use_forecast=method != "livegate_no_forecast",
                              max_confirm=cfg["livegate"]["max_confirm"], max_gap=cfg["max_gap_seconds"])
@@ -132,7 +136,7 @@ def real_audit(frame, boundaries, sensors, base, models, lofs, noise, selections
         value, persistence, max_age = (float(part[1:]) for part in setting.split("_"))
         for sensor in sensors:
             x = sub[sensor.name].to_numpy(dtype=float)
-            context = sub[list(models[sensor.name].others)].to_numpy(dtype=float)
+            context = sub[list(models["v1"][sensor.name].others)].to_numpy(dtype=float)
             accepted, gate = detect(method, x, times, hours, context, sensor, base, value,
                                     lofs[sensor.name], noise[sensor.name], models, cfg)
             estimate, age = hold_estimate(times, x, accepted, max_gap=timing.max_gap)
@@ -165,12 +169,14 @@ def main():
     sensors = [replace(s, control_low=cfg["setpoints"][s.name][0], control_high=cfg["setpoints"][s.name][1])
                for s in base.sensors if s.name in cfg["sensors"]]
     development = frame[frame.timestamp.astype("int64") / 1e9 < boundaries[1]]
-    models = livegate.fit(development, sensors, calibration_fraction=cfg["livegate"]["calibration_fraction"],
-                          max_gap=cfg["max_gap_seconds"])
-    pd.DataFrame([{"sensor": m.name, "scale": m.scale, "calibration_scores": len(m.calibration_scores),
+    models = {version: livegate.fit(development, sensors,
+                                    calibration_fraction=cfg["livegate"]["calibration_fraction"],
+                                    max_gap=cfg["max_gap_seconds"], resolution_floor=version == "v2")
+              for version in ("v1", "v2")}
+    pd.DataFrame([{"version": version, "sensor": m.name, "scale": m.scale, "calibration_scores": len(m.calibration_scores),
                    "live_runs": len(m.run_lengths), "max_live_run": int(m.run_lengths.max()),
                    **{f"q_eps_{e:g}": m.threshold(e) for e in cfg["livegate"]["epsilons"]}}
-                  for m in models.values()]).to_csv(OUT / "livegate_models.csv", index=False)
+                  for version, group in models.items() for m in group.values()]).to_csv(OUT / "livegate_models.csv", index=False)
     lofs, noise = {}, {}
     for sensor in sensors:
         values = development[sensor.name].dropna().to_numpy()
@@ -190,7 +196,7 @@ def main():
             score_start = times[cfg["warmup_samples"]]
             score_stop = times[-1] - max(cfg["deadlines_seconds"])
             for sensor in sensors:
-                context = sub[list(models[sensor.name].others)].to_numpy(dtype=float)
+                context = sub[list(models["v1"][sensor.name].others)].to_numpy(dtype=float)
                 for kind in cfg["scenarios"]:
                     background, corrupted, labels = scenario(sub[sensor.name].to_numpy(), kind,
                         cfg["magnitudes"][sensor.name], cfg["warmup_samples"], cfg["fault_samples"], sensor)

@@ -82,8 +82,13 @@ def _runs(values):
 
 
 def fit(frame: pd.DataFrame, sensors, *, calibration_fraction: float = 0.25,
-        max_gap: float = 120.0) -> dict[str, LiveGateModel]:
-    """Fit one forecaster, conformal score set, and liveness model per sensor."""
+        max_gap: float = 120.0, resolution_floor: bool = False) -> dict[str, LiveGateModel]:
+    """Fit one forecaster, conformal score set, and liveness model per sensor.
+
+    ``resolution_floor`` (exploratory v2, added after the locked run) floors the
+    residual scale at the sensor's reading resolution so quantized channels with
+    a near-zero median residual do not get a degenerate scale.
+    """
     frame = frame.sort_values("timestamp").reset_index(drop=True)
     times = frame.timestamp.astype("int64").to_numpy() / 1e9
     hours = (frame.timestamp.dt.hour + frame.timestamp.dt.minute / 60).to_numpy()
@@ -119,6 +124,9 @@ def fit(frame: pd.DataFrame, sensors, *, calibration_fraction: float = 0.25,
         regressor = HuberRegressor(max_iter=500).fit(X[train], x[train] - level[train])
         residual = x - level - regressor.predict(np.nan_to_num(X))
         scale = float(np.median(np.abs(residual[train])) * 1.4826) or float(np.std(residual[train])) or 1e-6
+        if resolution_floor:
+            steps = np.abs(np.diff(np.unique(x[clean[s.name]])))
+            scale = max(scale, float(steps[steps > 0].min()))
         runs = _runs(x[:split][clean[s.name][:split]])
         models[s.name] = LiveGateModel(
             name=s.name, others=others, coef=regressor.coef_, intercept=float(regressor.intercept_),
