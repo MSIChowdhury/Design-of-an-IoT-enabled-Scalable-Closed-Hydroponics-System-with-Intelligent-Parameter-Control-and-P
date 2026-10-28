@@ -66,3 +66,14 @@ venv/
 
 # Credential files
 Code Files/Web Interface/*.json
+
+# Paper-supporting results are tracked; large per-sample decision dumps stay ignored.
+!results/tables/
+!results/tables/**
+!results/figures/
+!results/figures/**
+!results/metrics/livegate/
+!results/metrics/livegate/**
+!results/metrics/livegate_v2_exploratory/
+!results/metrics/livegate_v2_exploratory/**
+!results/metrics/real_fault_daily_events.csv

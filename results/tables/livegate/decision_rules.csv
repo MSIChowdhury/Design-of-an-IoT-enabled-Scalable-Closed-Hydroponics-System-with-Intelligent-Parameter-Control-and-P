@@ -1,0 +1,4 @@
+target,feasible_methods,livegate_feasible,lowest_undesirable_method,best_coverage,livegate_coverage,livegate_undesirable,runner_up,runner_up_coverage,runner_up_undesirable,runner_minus_livegate_ci,rule1_best,rule2_clearly_best
+0.5,12,True,lof,0.8013245033112583,0.5047829286239882,0.1354166666666666,lof,0.3568800588668138,0.075,"[-0.1476, -0.0042]",False,False
+0.8,10,True,livegate_no_forecast,0.9102281089036056,0.7902869757174393,0.1354166666666666,livegate_no_forecast,0.6629874908020603,0.1041666666666666,"[-0.0834, 0.0019]",False,False
+0.95,0,False,,,,,,,,,,

@@ -1,0 +1,2 @@
+precision,recall,f1,specificity,balanced_accuracy,false_positive_rate,false_negative_rate,false_actuations,missed_actuations,unsafe_samples,event_recall,mean_detection_delay_samples,false_alarm_events,alerts
+0.0,0.0,0.0,0.9630071599045346,0.4815035799522673,0.0369928400954653,1.0,0,21,21,0.0,0.0,62,62

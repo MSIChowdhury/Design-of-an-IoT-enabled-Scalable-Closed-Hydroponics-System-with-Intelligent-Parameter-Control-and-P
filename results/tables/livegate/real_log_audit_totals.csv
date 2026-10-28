@@ -1,0 +1,15 @@
+method,setting,setting_basis,authorizations,fault_driven_authorizations,certain_fault_readings,rejected_certain_fault_readings
+aasvr_hold_only,m1_p32_a320,locked@0.5,2472,0,180,180
+aasvr_no_cusum,m0.75_p32_a320,max_validation_coverage,2083,0,180,180
+hampel,m1_p32_a64,locked@0.8,2450,0,180,179
+ewma,m1.5_p32_a64,locked@0.8,2447,0,180,177
+kalman,m1.5_p32_a320,locked@0.8,2423,0,180,180
+moving_median,m1_p32_a64,locked@0.8,2450,0,180,179
+livegate_no_liveness,m0.002_p32_a64,locked@0.8,2438,0,180,178
+livegate,m0.002_p32_a64,locked@0.8,2429,0,180,180
+glr,m1.5_p32_a64,locked@0.8,2446,1,180,177
+cusum,m1.5_p32_a64,locked@0.8,2434,1,180,177
+aasvr_measurement,m1.5_p32_a320,max_validation_coverage,2178,1,180,177
+livegate_no_forecast,m0.05_p32_a64,locked@0.8,2340,1,180,178
+lof,m1.5_p32_a320,locked@0.5,919,1,180,174
+persistence_only,m1_p32_a64,locked@0.8,2435,3,180,0

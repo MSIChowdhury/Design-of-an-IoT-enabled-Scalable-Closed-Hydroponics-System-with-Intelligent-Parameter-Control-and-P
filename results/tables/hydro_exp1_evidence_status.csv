@@ -1,0 +1,6 @@
+evidence_source,availability,available,rows,current_use,claim_boundary,next_deployment_requirement
+Hydroponic sensor feed,available,True,121244,Real signal background for replay and synthetic-fault injection.,"Supports replay validation, not independent sensor metrology.",Keep raw feed export with timezone-stable timestamps.
+Synthetic fault labels,available,True,810,Controlled held-out labels for fault detection and authorization scoring.,Injected faults cannot represent every real hardware failure.,Retain deterministic seeds and fault protocol metadata.
+Actuator command/state log,not retained,False,0,Unavailable; response scoring remains replay-derived.,No measured physical actuator-response or dosing-improvement claim.,"Record timestamp, actuator_id, command source, commanded state, measured relay state, target sensor, expected response direction, runtime/dose, lockout, and override."
+Independent reference measurements,not available continuously,False,0,Unavailable for continuous scoring.,"No full metrology ground truth for plausible bias, drift, or stuck values.",Pair sensor values with calibrated handheld or benchtop reference measurements.
+Water-level calibration,not available,False,0,Water_Level excluded from the primary analysis.,No water-level fault or control-performance claim.,Collect paired ultrasonic raw readings and physical levels in cm.

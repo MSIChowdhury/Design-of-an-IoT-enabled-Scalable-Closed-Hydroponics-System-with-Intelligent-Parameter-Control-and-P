@@ -1,0 +1,12 @@
+method,settings_searched,max_validation_coverage,undesirable_at_max_coverage,eval_coverage_at_0.5,eval_undesirable_at_0.5,eval_coverage_at_0.8,eval_undesirable_at_0.8,eval_coverage_at_0.95,eval_undesirable_at_0.95
+Persistence only,6,0.9521,0.04545,0.8775,0.02273,0.8775,0.02273,0.9778,0.02083
+GLR,18,0.9337,0.04167,0.8017,0.02273,0.8148,0.02273,,
+CUSUM,18,0.9304,0.05114,0.8393,0.02273,0.8148,0.02083,,
+Hampel,18,0.9292,0.05114,0.8239,0.02462,0.8125,0.02462,,
+Moving median,18,0.9292,0.05114,0.8239,0.02462,0.8125,0.02462,,
+EWMA,18,0.9292,0.05114,0.8182,0.0303,0.8125,0.02462,,
+Kalman,18,0.9142,0.05682,0.6182,0.01326,0.8997,0.02841,,
+AASVR-R hold only,18,0.7404,0.07386,0.5915,0.01894,,,,
+LOF,18,0.7337,0.02841,0.3795,0.01705,,,,
+AASVR-R without CUSUM,18,0.3967,0.04167,,,,,,
+AASVR-R supervisor,18,0.3967,0.04167,,,,,,

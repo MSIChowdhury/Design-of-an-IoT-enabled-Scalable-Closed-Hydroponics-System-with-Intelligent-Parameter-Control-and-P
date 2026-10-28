@@ -1,0 +1,2 @@
+method,response_fault_detected,response_fault_alert,response_correct,response_fault_delay,authorizations,repeated_authorizations_after_fault,final_response_reliability
+aasvr_r,1.0,0.6666666666666666,1.0,12.0,0.0,0.0,0.6666666666666666

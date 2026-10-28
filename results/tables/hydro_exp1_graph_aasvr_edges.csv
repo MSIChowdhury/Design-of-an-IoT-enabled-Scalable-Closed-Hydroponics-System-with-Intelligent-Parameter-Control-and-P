@@ -1,0 +1,7 @@
+sensor,neighbors,residual_sigma
+EC,Water_Temp;Air_Temp,4.1443014725040905
+pH,CO2;Water_Temp,0.2022797962449546
+Humidity,CO2;Water_Temp,0.0023174131597624
+Air_Temp,Water_Temp;EC,0.4858133655412057
+Water_Temp,EC;Air_Temp,0.3985163242170589
+CO2,Water_Temp;EC,316.538296076759
