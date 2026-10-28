@@ -1,0 +1,67 @@
+\subsection{Post-hoc direct-baseline comparison}
+
+A separately labelled follow-up reran the original methods and added two direct comparators: a fixed repeat cap and rejection at either physical bound. The repeat cap accepts the first $R$ identical in-range readings, rejects subsequent repeats, and resets after a change, invalid reading, or logging gap. $R\in\{2,4,8,16,32,64\}$ is shared across channels; the six-value grid is larger than LiveGate's three-value grid. Both comparators use the original timing grid and validation-only selection. All original evaluation summary rows and selections reproduced, while the frozen artifacts remained unchanged. The follow-up is post-hoc because the data and original results had already been examined.
+
+\begin{table}[!htbp]\centering\small\setlength{\tabcolsep}{4pt}
+
+\caption{Post-hoc evaluation at the 0.8 validation coverage target. A dagger marks evaluation coverage below 0.8. Fault-source counts attribute each command to its last accepted reading, per trial. These are simulated authorizations.}
+
+\label{tab:followup}
+
+\begin{tabular}{p{0.35\linewidth}rrrr}\toprule
+
+& Coverage & Undesirable & \multicolumn{2}{c}{Fault-source commands}\\
+
+Method & & / trial & Stuck & Saturation\\\midrule
+
+Persistence only & 0.886 & 0.117 & 0.725 & 0.975\\
+
+LiveGate & 0.790$^{\dagger}$ & 0.135 & 0.500 & 0.575\\
+
+Learned liveness only & 0.663$^{\dagger}$ & 0.104 & 0.150 & 0.675\\
+
+Fixed repeat cap & 0.849 & 0.117 & 0.675 & 0.975\\
+
+Physical-bound rejection & 0.798$^{\dagger}$ & 0.083 & 0.725 & 0.000\\
+
+\bottomrule\end{tabular}\end{table}
+
+Physical-bound rejection produced 0.000 commands per saturation trial using an injected-fault source, while its useful-command coverage in those trials was 0.073. Thus learned liveness was not unique in suppressing saturated source evidence. The fixed-cap gate and physical-bound gate improved both overall coverage and undesirable-command rate relative to full LiveGate at the selected 0.8 target. Physical-bound rejection also improved both relative to learned liveness-only, but its evaluation coverage (0.798) fell slightly below 0.8. Persistence-only had higher coverage than the fixed-cap gate at the same undesirable rate. These are point-estimate operating comparisons, not statistical superiority claims or evidence of field safety.
+
+At target 0.8, validation selected a repeat cap of 64, 32~s persistence and 64~s maximum age for fixed repeat cap.
+
+At target 0.8, validation selected 32~s persistence and 64~s maximum age for physical-bound rejection.
+
+For stuck, the learned liveness-only arm's reduction relative to persistence was 69.0 [54.3, 85.7]\% for commands during injected-fault samples, and 79.3 [71.0, 88.9]\% for commands using injected-fault source readings (paired source-day 95\% intervals in brackets).
+
+Useful-command coverage in the same stuck trials fell from 0.982 with persistence to 0.273 with learned liveness. These reductions therefore do not establish better fault handling at matched useful-command coverage.
+
+For saturation, the learned liveness-only arm's reduction relative to persistence was 30.8 [18.0, 46.2]\% for commands during injected-fault samples, and 30.8 [18.0, 46.2]\% for commands using injected-fault source readings (paired source-day 95\% intervals in brackets).
+
+Useful-command coverage in the same saturation trials fell from 0.918 with persistence to 0.409 with learned liveness. These reductions therefore do not establish better fault handling at matched useful-command coverage.
+
+These two counters answer different questions: a command during a fault interval can still use a held clean reading. Neither measures physical execution or damage. The estimates use eight evaluation windows on seven source-day clusters; settings remain fixed during resampling, and the secondary intervals have no multiplicity adjustment. The limited number of days makes generalization uncertain.
+
+\begin{table}[!htbp]\centering\small\setlength{\tabcolsep}{4pt}
+
+\caption{Sensor-specific learned-liveness effects relative to persistence at target 0.8. Differences are method minus persistence. Fault-source differences are commands per trial; brackets give paired source-day 95\% intervals. Coverage differences pool all scenarios.}
+
+\label{tab:liveness-sensors}
+
+\begin{tabular}{lrrr}\toprule
+
+Sensor & \shortstack{Coverage\\difference} & \shortstack{Stuck\\difference [95\% CI]} & \shortstack{Saturation\\difference [95\% CI]}\\\midrule
+
+EC & -0.167 & -0.750 [-1.000, -0.400] & -0.750 [-1.000, -0.400]\\
+
+pH & -0.231 & -0.375 [-0.750, -0.091] & -0.375 [-0.750, -0.091]\\
+
+Air temp. & -0.458 & -0.750 [-1.000, -0.499] & 0.000 [0.000, 0.000]\\
+
+Water temp. & -0.067 & -0.250 [-0.500, 0.000] & 0.000 [0.000, 0.000]\\
+
+CO$_2$ & -0.071 & -0.750 [-1.000, -0.429] & -0.375 [-0.714, 0.000]\\
+
+\bottomrule\end{tabular}\end{table}
+
+The learned rule is itself a sensor-specific repeat threshold at fixed $\varepsilon$. Comparison with a global fixed cap does not establish superiority over all per-sensor thresholds. Benefits must be weighed against the useful-authorizations lost by rejecting legitimate repeated readings.

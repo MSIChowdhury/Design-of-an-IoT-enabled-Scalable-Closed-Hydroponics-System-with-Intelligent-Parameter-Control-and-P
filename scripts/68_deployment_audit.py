@@ -1,9 +1,12 @@
 """Fault-to-actuation audit of the measured experiment-2 log.
 
 Replays the deployed threshold control law (setpoints, 10-min cooldown, and only
-the directions the deployed actuators can execute) on the unmodified log under six gating arms and counts commands triggered by certain
-faults (out-of-range or exactly-full-scale readings) and by isolated spikes.
-Also reports time in band per controlled channel. No synthetic faults.
+the directions the deployed actuators can execute) on the unmodified log under
+six gating arms. Counts distinguish out-of-range readings, readings at a declared
+physical bound, and heuristic isolated spikes. Bound readings are censored
+measurements, not proof of sensor failure. Also reports fractions of valid logged
+readings in band per controlled channel, not whole-deployment time occupancy.
+No synthetic faults.
 
 The deployed error-resilience rule is reconstructed from the original system
 description (sensing-reliability gate, 50-rejection reset, repeatability count)
@@ -82,13 +85,14 @@ def main():
         in_range = (x >= s.physical_min) & (x <= s.physical_max)
         full_scale = (x == s.physical_max) | (x == s.physical_min)
         spike, _, _ = _spikes(np.where(in_range, x, np.nan))
-        certain = ~in_range | full_scale
+        flagged_bound_or_range = ~in_range | full_scale
         valid = x[in_range & ~full_scale]
         band_rows.append({"sensor": s.name, "setpoint_low": s.control_low, "setpoint_high": s.control_high,
                           "fraction_in_band": float(np.mean((valid >= s.control_low) & (valid <= s.control_high))),
                           "fraction_below": float(np.mean(valid < s.control_low)),
                           "fraction_above": float(np.mean(valid > s.control_high)),
-                          "median": float(np.median(valid))})
+                          "median": float(np.median(valid)),
+                          "valid_readings": len(valid), "total_readings": len(x)})
         dev = development[s.name].to_numpy(dtype=float)
         dev = dev[(dev >= s.physical_min) & (dev < s.physical_max)]
         xi = np.sum(np.abs(np.diff(dev))) / len(dev)
@@ -108,20 +112,27 @@ def main():
         for arm, (accepted, persistence) in arms.items():
             estimate, age = hold_estimate(times, x, accepted, max_gap=timing.max_gap)
             actions = authorize(times, estimate, age <= timing.max_age, s.control_low, s.control_high,
-                                replace(timing, persistence=persistence))
-            acted = np.isin(actions, ACTIONABLE[s.name])
+                                replace(timing, persistence=persistence),
+                                allowed_directions=ACTIONABLE[s.name])
+            acted = actions != 0
             # Attribute each command to the reading that supplied its held estimate.
             source = np.maximum.accumulate(np.where(accepted, np.arange(len(x)), -1))
             src = source[acted]
             rows.append({"sensor": s.name, "arm": arm, "commands": int(acted.sum()),
-                         "certain_fault_commands": int(certain[src].sum()),
-                         "spike_commands": int((spike[src] & ~certain[src]).sum()),
+                         "out_of_range_commands": int((~in_range[src]).sum()),
+                         "full_scale_commands": int(full_scale[src].sum()),
+                         # Retained for readers of the historical output schema;
+                         # use the separate columns to interpret fault certainty.
+                         "certain_fault_commands": int(flagged_bound_or_range[src].sum()),
+                         "spike_commands": int((spike[src] & ~flagged_bound_or_range[src]).sum()),
                          "persistence_seconds": persistence,
                          "xi": xi if "Deployed" in arm else np.nan,
                          "psi": psi if "Deployed" in arm else np.nan})
     TABLE.parent.mkdir(parents=True, exist_ok=True)
     table = pd.DataFrame(rows)
-    table["fault_command_fraction"] = (table.certain_fault_commands + table.spike_commands) / table.commands
+    table["flagged_commands"] = table.certain_fault_commands + table.spike_commands
+    table["flagged_command_fraction"] = table.flagged_commands / table.commands
+    table["fault_command_fraction"] = table.flagged_command_fraction  # historical column alias
     table.to_csv(TABLE, index=False, float_format="%.5g")
     pd.DataFrame(band_rows).to_csv(BAND, index=False, float_format="%.4g")
     pd.set_option("display.width", 200)

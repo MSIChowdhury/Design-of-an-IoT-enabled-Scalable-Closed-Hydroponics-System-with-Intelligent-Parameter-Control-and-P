@@ -38,13 +38,17 @@ def hold_estimate(times, values, accepted, *, max_gap=120.0):
     return estimate, age
 
 
-def authorize(times, estimate, eligible, low, high, timing=Timing()):
+def authorize(times, estimate, eligible, low, high, timing=Timing(),
+              *, allowed_directions=(-1, 1)):
     """One pulse per eligible opportunity; cooldown is measured in seconds.
 
     Direction persistence accumulates during cooldown. Gaps reset persistence,
     but never shorten an outstanding cooldown. Eligibility loss resets it too.
+    Unavailable actuator directions are removed before either persistence or
+    cooldown is updated. The default retains the bidirectional benchmark.
     """
     direction = directions(estimate, low, high)
+    direction = np.where(np.isin(direction, allowed_directions), direction, 0)
     actions = np.zeros(len(times), dtype=int)
     since, previous, next_allowed = None, 0, -np.inf
     for i, t in enumerate(times):

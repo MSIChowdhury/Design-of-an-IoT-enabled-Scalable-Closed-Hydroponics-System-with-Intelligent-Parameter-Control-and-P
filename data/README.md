@@ -2,6 +2,13 @@
 
 Do not commit raw third-party datasets or sensitive hydroponic exports.
 
+The authors have released the measured experiment-2 sensor log and harvest
+sheets in this repository. `Hydroponics Data First Trial.csv` contains the
+30-day deployment from 27 February to 28 March 2024 despite its historical
+filename. Legacy `hydro_exp1` output names and command-line options refer to
+this same feed. The synthetic files under `data/standin/` support smoke tests
+only; reported manuscript results use the measured log.
+
 Expected local layout:
 
 ```text
@@ -31,7 +38,7 @@ Use `python scripts/01_validate_data_layout.py` to check which datasets are pres
 Use `python scripts/run_all.py --toy` to run the full pipeline on generated toy data.
 Use `python scripts/run_all.py --available-real` to run locally available real data.
 
-For the current first-trial hydroponic feed, `Water_Level` is retained only in raw data
+For the current experiment-2 hydroponic feed, `Water_Level` is retained only in raw data
 and excluded from primary analysis until calibration is available.
 
 Optional limitation-closing files can be placed in `data/raw/hydroponic/`:
@@ -84,3 +91,6 @@ without failing the hydroponic pipeline.
 Use `python scripts/download_datasets.py --all --profile paper` to write acquisition
 notes without downloading large archives. Use `--profile full --download` only when
 you intentionally want full public archives such as the 133 GB DTU TEP data.
+
+Run the Python commands in this guide inside the project container, for example
+`docker compose run --rm project-shell python scripts/01_validate_data_layout.py`.

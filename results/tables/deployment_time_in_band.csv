@@ -1,6 +1,6 @@
-sensor,setpoint_low,setpoint_high,fraction_in_band,fraction_below,fraction_above,median
-pH,5.8,6.5,0.8768,0.1148,0.008349,6.16
-EC,1000,1500,0.8383,4.124e-05,0.1617,1333
-Air_Temp,20,26,0.02518,0,0.9748,28.6
-Water_Temp,18,22,0.09534,0.07967,0.825,24.81
-CO2,1900,2100,0.4743,0.1784,0.3474,2037
+sensor,setpoint_low,setpoint_high,fraction_in_band,fraction_below,fraction_above,median,valid_readings,total_readings
+pH,5.8,6.5,0.8768,0.1148,0.008349,6.16,120728,121244
+EC,1000,1500,0.8383,4.124e-05,0.1617,1333,121242,121244
+Air_Temp,20,26,0.02518,0,0.9748,28.6,121243,121244
+Water_Temp,18,22,0.09534,0.07967,0.825,24.81,121244,121244
+CO2,1900,2100,0.4743,0.1784,0.3474,2037,117680,121244

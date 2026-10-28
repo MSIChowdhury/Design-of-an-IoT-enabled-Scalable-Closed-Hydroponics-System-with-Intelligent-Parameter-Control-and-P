@@ -1,9 +1,8 @@
 # Synthetic stand-in for the hydroponic sensor log
 
 **This is synthetic data, not measurements.** The 30-day deployment sensor log
-(experiment 2, 121,244 rows at about 16 s) is available from the corresponding
-author on reasonable request (a copy is also kept at
-`data/raw/hydroponic/Hydroponics Data First Trial.csv` in this repository). Every
+(experiment 2, 121,244 rows at about 16 s) is publicly available at
+`data/raw/hydroponic/Hydroponics Data First Trial.csv` in this repository. Every
 result reported in the manuscript was computed on that measured log, not on this file.
 
 `hydro_standin.csv.gz` mirrors the log's layout (timestamp, entry_id, EC, pH,

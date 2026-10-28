@@ -28,7 +28,7 @@ results/run_logs/**/*
 !data/raw/hydroponic/Hydroponics Data First Trial.csv
 !data/raw/hydroponic/Agronomic Data.csv
 !data/raw/hydroponic/Lettuce Agronomic and Nutritional Data - 1st Trial Agronomic Data for ANOVA.csv
-# Public synthetic stand-in for the request-only sensor log
+# Labelled synthetic stand-in for smoke tests of the public-log workflow
 !data/standin/
 !data/standin/**
 !results/metrics/**/
@@ -78,3 +78,6 @@ Code Files/Web Interface/*.json
 !results/metrics/livegate_v2_exploratory/
 !results/metrics/livegate_v2_exploratory/**
 !results/metrics/real_fault_daily_events.csv
+!results/metrics/livegate_followup/
+!results/metrics/livegate_followup/*.csv
+!results/metrics/livegate_followup/*.json

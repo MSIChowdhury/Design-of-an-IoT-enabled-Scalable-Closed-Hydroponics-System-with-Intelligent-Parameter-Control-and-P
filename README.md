@@ -1,8 +1,14 @@
-# AASVR Hydroponic Closed-Loop Control Study
+# Hydroponic Sensor Fault-to-Actuation Audit
 
 ## Overview
 
-This repository supports a reproducible research article on **Actuation-Aware Sensor Validation and Rectification (AASVR)** for closed-loop measurement and control systems. The hydroponic system is the primary deployment testbed, and the current analysis focuses on whether sensor validation, rectification, persistence logic, and actuation authorization reduce anomaly pass-through and replay false-authorized actuation.
+This repository supports a retrospective **fault-to-actuation audit** of a low-cost closed nutrient film technique (NFT) hydroponic system. The current Biosystems Engineering manuscript studies how flagged sensor readings become executable controller commands, compares practical safeguards, and reports the locked LiveGate comparison, including its negative overall result.
+
+The current manuscript is [the audit paper](Paper%20Files/main_audit.pdf), with
+[editable source](Paper%20Files/main_audit.tex) and a
+[blinded PDF](Paper%20Files/main_audit_blinded.pdf). The AASVR-R manuscript
+(`main_aasvr.tex`) and the original root PDF are historical artifacts and should
+not be submitted as the current paper.
 
 ## Authors
 
@@ -16,17 +22,44 @@ This repository supports a reproducible research article on **Actuation-Aware Se
 
 ## Current Research Focus
 
-1. Streaming AASVR implementation for sensor validation and rectification.
-2. Hydroponic Experiment 1 preprocessing and reproducible Docker pipeline.
-3. Synthetic fault injection for spikes, dropout, drift, bias, noise bursts, and steps.
-4. Baseline comparison against thresholding, moving filters, Hampel, Kalman, EWMA, CUSUM, and PCA-style monitoring.
-5. Ablation, bootstrap confidence intervals, sensor-wise summaries, and fault-type summaries.
-6. Availability-aware external benchmark scaffolding for TEP, WUR, HAI, SKAB, MetroPT-3, BATADAL, SWaT, WaDi, and DAMADICS when raw files are placed locally.
-7. A documented benchmark-subset protocol so external validation is smaller, reproducible, and not cherry-picked.
+1. A fault inventory and executable-command replay of the 30-day experiment-2 sensor log.
+2. Explicit separation of impossible values, heuristic spike flags, full-scale readings, and poor temperature regulation.
+3. A frozen retrospective LiveGate comparison, with shared downstream control and validation-selected operating points.
+4. A separately labelled follow-up with simple run-length and physical-bound rejection baselines, paired day-cluster intervals, and sensor-wise results.
+5. Public measured sensor and harvest data, reproducible Docker workflows, and a synthetic stand-in used only for smoke tests.
+
+Historical AASVR and external benchmark workflows remain available below. The
+`hydro_exp1` identifiers and `--hydro-exp1` options are retained for compatibility:
+the file `Hydroponics Data First Trial.csv` actually contains **experiment 2**
+(27 February--28 March 2024), not the first growing season.
 
 ## Reproducible Workflow
 
-Run all project work through Docker:
+Run the current audit and follow-up through Docker (the user flag keeps generated
+files editable by the workspace owner):
+
+```bash
+docker compose run --rm --user "$(id -u):$(id -g)" project-shell python scripts/02_prepare_datasets.py --hydro-exp1
+docker compose run --rm --user "$(id -u):$(id -g)" project-shell make audit-results
+docker compose run --rm --user "$(id -u):$(id -g)" project-shell make livegate-followup
+docker compose run --rm --user "$(id -u):$(id -g)" project-shell make test manuscript-check
+make paper-docker
+```
+
+`make paper-docker` is a host launcher for the pinned TeX container; it builds
+both current PDFs. `make paper` can instead be run inside a TeX-capable container.
+After building, run `make manuscript-pdf-check` in a container with Python and
+Poppler (`pdftotext`); this strict check requires both PDFs. Source checks report
+explicitly when PDF inspection was skipped. `make paper-legacy` builds the
+superseded AASVR package only.
+
+The original [LiveGate protocol](docs/livegate/PROTOCOL.md) and
+[locked results](docs/livegate/RESULTS.md) remain separate from the
+[follow-up protocol](docs/livegate/FOLLOWUP_PROTOCOL.md) and
+[follow-up results](docs/livegate/FOLLOWUP_RESULTS.md). No replay establishes
+actual actuator execution, avoided physical damage, or a causal crop benefit.
+
+To run the broader historical pipeline:
 
 ```bash
 docker compose run --rm project-shell make real
@@ -45,7 +78,7 @@ These commands define the future actuator-state log, independent reference
 measurement, and water-level calibration schemas. If the optional local CSV files
 are absent, they write explicit status outputs and leave the current benchmark
 unchanged.
-The revision-artifacts target also writes the manuscript-facing evidence-status
+The revision-artifacts target also writes the historical manuscript's evidence-status
 table and AASVR-R replay operating-tradeoff table/figure. Actuator conclusions
 remain replay-only unless an independent command/state export is supplied through
 the optional evidence schema.
@@ -79,11 +112,15 @@ Optional local evidence files can be added next to the feed as
 `actuator_state_log.csv`, `reference_measurements.csv`, and
 `water_level_calibration.csv`.
 
-Raw and generated data are ignored by git. External benchmark raw files should be placed under their configured `data/raw/<dataset>/` directories and regenerated locally.
+The measured hydroponic log and author-approved harvest sheets are tracked and
+public in this repository. Large generated outputs and raw third-party benchmark
+files remain ignored; place external files under their configured
+`data/raw/<dataset>/` directories. The [synthetic stand-in](data/standin/README.md)
+is for code-level smoke tests only and is never used for reported results.
 
 Run the exhaustive hydroponic stress-test protocol in shards. The `mini` profile
-is a smoke test; the `exhaustive` profile defines the full factorial protocol
-used for final resubmission runs:
+is a smoke test; the `exhaustive` profile defines the historical full factorial
+stress-test protocol, which is not the current audit paper's evidence base:
 
 ```bash
 docker compose run --rm project-shell make exhaustive-mini
@@ -101,14 +138,16 @@ windows per cell for each tune/validation/test split. It produces 403,200
 trial descriptors before method expansion and is intentionally shardable so it
 can run on a workstation or cluster without changing the protocol.
 
-Large public archives are not downloaded by default. The paper workflow uses the `paper` profile, which documents fixed subset rules for defensible cross-domain validation. SKAB is compact enough to clone directly; MetroPT-3 is manageable but still downloaded only when requested. Full TEP/WUR archive download remains an explicit opt-in through `scripts/download_datasets.py --profile full --download`.
+Large public archives are not downloaded by default. The historical external-benchmark workflow uses the `paper` profile, which documents fixed subset rules for cross-domain validation. These external results are not part of the current audit paper. SKAB is compact enough to clone directly; MetroPT-3 is manageable but still downloaded only when requested. Full TEP/WUR archive download remains an explicit opt-in through `scripts/download_datasets.py --profile full --download`.
 
-## Current Hydroponic Synthetic-Fault Result
+## Historical AASVR and External Benchmarks
 
-Current manuscript-facing results are generated from the hydroponic Experiment 1
-synthetic-fault benchmark and are written to `results/tables/`. The current paper
-uses AASVR-R as the main method and reports the held-out benchmark in
-`Paper Files/main_aasvr.tex`.
+The superseded AASVR-R manuscript used the synthetic-fault benchmark of the same
+experiment-2 log, under historical `hydro_exp1` filenames. Its results remain in
+`results/tables/` and `Paper Files/main_aasvr.tex` for reproducibility. Current
+audit inputs are `results/tables/deployment_audit.csv`, the locked
+`results/metrics/livegate/` outputs, and the separate
+`results/metrics/livegate_followup/` outputs.
 
 These results are synthetic-fault benchmark results, not agronomic causality
 claims. Crop-yield and dashboard material are retained only as deployment context.

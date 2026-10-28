@@ -94,7 +94,7 @@ def main():
 
 def plot(daily):
     FIG.parent.mkdir(parents=True, exist_ok=True)
-    fig, ax = plt.subplots(figsize=(10, 2.8))
+    fig, ax = plt.subplots(figsize=(6.8, 3.0))
     shown = daily.replace(0, np.nan)
     cmap = LinearSegmentedColormap.from_list("blue", RAMP)
     cmap.set_bad("#f0efec")
@@ -103,13 +103,13 @@ def plot(daily):
     ax.set_yticks(range(len(daily.index)), [s.replace("_", " ") for s in daily.index])
     labels = [d[5:] for d in daily.columns]
     step = max(len(labels) // 10, 1)
-    ax.set_xticks(range(0, len(labels), step), labels[::step], fontsize=8)
+    ax.set_xticks(range(0, len(labels), step), labels[::step], fontsize=9)
     ax.set_xlabel("Deployment day (month-day, UTC); gray = no detected events")
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
     bar = fig.colorbar(image, ax=ax, pad=.01)
-    bar.set_label("Fault events / day (log)")
-    ax.set_title("Out-of-range readings, isolated spikes, and ≥1 h flat-line onsets in the deployment log",
+    bar.set_label("Flags / day (log)")
+    ax.set_title("Out-of-range values, spikes, and flat-line onsets (at least 1 h)",
                  fontsize=10, loc="left")
     fig.tight_layout()
     fig.savefig(FIG.with_suffix(".pdf"))

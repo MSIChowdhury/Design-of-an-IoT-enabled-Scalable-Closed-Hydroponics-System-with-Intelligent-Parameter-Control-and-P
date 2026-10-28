@@ -1,0 +1,7 @@
+target,method,status,setting
+0.5,fixed_run_length,selected,m4_p96_a320
+0.5,physical_bound,selected,m1_p96_a64
+0.8,fixed_run_length,selected,m64_p32_a64
+0.8,physical_bound,selected,m1_p32_a64
+0.95,fixed_run_length,infeasible,
+0.95,physical_bound,infeasible,

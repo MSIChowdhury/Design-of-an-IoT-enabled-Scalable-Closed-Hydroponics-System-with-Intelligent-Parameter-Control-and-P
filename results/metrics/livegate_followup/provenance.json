@@ -1,0 +1,43 @@
+{
+  "status": "post-hoc retrospective follow-up",
+  "original_artifacts_preserved": true,
+  "frozen_fingerprints": {
+    "scripts/66_livegate_benchmark.py": "fb24d01f38cdc1050e870d78b93f246b51dca5e42b3b94a2f9e7f1eac25f164b",
+    "src/aasvr/livegate.py": "04c12312aa85e59d45ba01a141a0a9b44b1464c053c5b3c0e478a342ec72470d",
+    "configs/experiments/livegate.yaml": "b32155fbd4dd0cfd0522dcb157829924b185bd4cd20fa65ed796d4c775c7d0de",
+    "docs/livegate/PROTOCOL.md": "430341021bfec4963571894a27125329008c7ec995a0993320c7e0c282f500d0",
+    "results/metrics/livegate/evaluation_by_scenario.csv": "1d2fcb49fc306758cb6fb2d536051dba264ed4c8082f4bc61b79124f72fd576b",
+    "results/metrics/livegate/evaluation_detail.csv.gz": "8801560ad7f4d602e30b19e4b5f6216f4ba397b2fef523dc199ac1a91161acd8",
+    "results/metrics/livegate/evaluation_summary.csv": "f826ac885bb3350c345d29c3e8862ba60bef50a6c473ec6e4d275798293af3b3",
+    "results/metrics/livegate/livegate_models.csv": "80306a4e326ba35aaaa578c300fb0c8798dedce9c66d746cd3789782fffb9f13",
+    "results/metrics/livegate/locked_validation_selections.csv": "8397ceff3d26abb21f6b7250f8971c9d02e329687c4d5ac0ccea69b1eace22eb",
+    "results/metrics/livegate/paired_intervals_vs_livegate.csv": "751766ad9a5279012a06c051668e5381068616b4bd82d2a5c48bf7f92bc1a673",
+    "results/metrics/livegate/real_log_audit.csv": "7a53c048024386af73ef24f3606c1139871e4f9d2a3b633729c817544a089f99",
+    "results/metrics/livegate/source_windows.csv": "42ff1759e0a5d16a3704228f10c79f61ff79dae8913f09145c5b5c1a569f2198",
+    "results/metrics/livegate/validation_detail.csv.gz": "507578ccce058c20d42daaacac7dd1696b3b10aef04d157aeaa90697ca301581",
+    "results/metrics/livegate/validation_operating_points.csv": "ee0228df65ad061a6d1995a5ff79e94cc468b755178da0f3abc23ef8e6967d99"
+  },
+  "reproduction_checks": [
+    {
+      "artifact": "evaluation_summary.csv",
+      "rows": 89,
+      "reproduced": true
+    },
+    {
+      "artifact": "locked_validation_selections.csv",
+      "rows": 45,
+      "reproduced": true
+    },
+    {
+      "artifact": "source_windows.csv",
+      "rows": 24,
+      "reproduced": true
+    }
+  ],
+  "followup_inputs": {
+    "configs/experiments/livegate_followup.yaml": "bc090653684488dffa06969d44e04192aa87484faf7157293051e47bdfada625",
+    "scripts/70_livegate_followup.py": "58b07ca23ad89e52145cb0fbdce2c5d80e5b323ffcec54e13ad4f0029f1d4b96",
+    "src/aasvr/simple_gates.py": "8a7de5b0e25fc624ec34e5ba94632e88fcf36ee3b441875c97cfb085c1e2d876",
+    "data/processed/hydro_exp1_measurements.parquet": "6c034bed3948172e88d5ec9caf1885efe14795e4041c6a4b9cf2decc356e6a71"
+  }
+}

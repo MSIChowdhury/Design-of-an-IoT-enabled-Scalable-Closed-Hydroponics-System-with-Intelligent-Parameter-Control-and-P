@@ -1,6 +1,7 @@
 .PHONY: test smoke prepare evaluate figures manuscript-check paper real all stats paper-sensitivity paper-revision-stats revision-artifacts subset-protocol agronomic optional-evidence reconstruct-actuator-log water-calibration exhaustive-mini exhaustive-grid exhaustive-test exhaustive-aggregate exhaustive-sweep-mini exhaustive-full-attached
 
 PYTHON ?= python
+TEX_IMAGE ?= texlive/texlive@sha256:2895fb163c63e5e0276a543b1ca89884cce86cb004b1c5e6b061f5c82709bd73
 JOBS ?= 1
 EXHAUSTIVE_SHARDS ?= 4096
 EXHAUSTIVE_PARALLEL ?= 8
@@ -90,9 +91,34 @@ exhaustive-full-attached:
 manuscript-check:
 	$(PYTHON) scripts/check_manuscript.py
 
+.PHONY: manuscript-pdf-check manuscript-check-legacy paper-legacy paper-docker audit-results livegate-followup
+manuscript-pdf-check:
+	$(PYTHON) scripts/check_manuscript.py --require-pdfs
+
+manuscript-check-legacy:
+	$(PYTHON) scripts/check_manuscript.py --legacy
+
 paper:
+	cd "Paper Files" && latexmk -pdf -interaction=nonstopmode -halt-on-error main_audit.tex
+	cd "Paper Files" && latexmk -pdf -interaction=nonstopmode -halt-on-error main_audit_blinded.tex
+	chmod ug+rw,o+r "Paper Files/main_audit.pdf" "Paper Files/main_audit_blinded.pdf"
+
+# Host launcher: preserve workspace ownership when LaTeX creates files.
+paper-docker:
+	docker run --rm --user $(shell id -u):$(shell id -g) -v "$(CURDIR):/workspace" -w /workspace $(TEX_IMAGE) make paper
+
+# Historical AASVR-R package, retained for reproducibility, not submission.
+paper-legacy:
 	cd "Paper Files" && latexmk -pdf -interaction=nonstopmode -halt-on-error main_aasvr.tex
 	cd "Paper Files" && latexmk -pdf -interaction=nonstopmode -halt-on-error main_aasvr_blinded.tex
+
+audit-results:
+	$(PYTHON) scripts/64_real_fault_characterization.py
+	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/68_deployment_audit.py
+	$(PYTHON) scripts/69_audit_paper_figures.py
+
+livegate-followup:
+	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/70_livegate_followup.py
 
 real:
 	$(PYTHON) scripts/run_all.py --available-real

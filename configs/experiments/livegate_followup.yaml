@@ -1,0 +1,44 @@
+# Post-hoc direct-baseline follow-up. Protocol: docs/livegate/FOLLOWUP_PROTOCOL.md.
+# Original windows, scoring, timing options, and method grids are unchanged.
+# Retrospective: these periods were analysed before; no claim that they are untouched.
+seed: 20261028
+split_fractions: [0.4, 0.7]
+windows_per_split: 8
+window_samples: 240
+warmup_samples: 60
+fault_samples: 30
+max_gap_seconds: 120
+reference_persistence_seconds: 32
+cooldown_seconds: 600
+deadlines_seconds: [60, 180, 600]
+selection_deadline_seconds: 180
+minimum_coverages: [0.5, 0.8, 0.95]
+threshold_multipliers: [0.75, 1.0, 1.5]
+persistence_seconds: [0, 32, 96]
+max_age_seconds: [64, 320]
+bootstrap_replicates: 1000
+# Controlled channels only; humidity is not actuated in the deployed system.
+sensors: [EC, pH, Air_Temp, Water_Temp, CO2]
+# Deployed setpoints from the original system description (experiment 2).
+setpoints:
+  pH: [5.8, 6.5]
+  EC: [1000, 1500]
+  CO2: [1900, 2100]
+  Water_Temp: [18, 22]
+  Air_Temp: [20, 26]
+magnitudes: {EC: 100, pH: 0.5, Air_Temp: 2, Water_Temp: 1, CO2: 500}
+# "saturation" pins the reading at the declared physical maximum, as observed for
+# CO2 at 5000 ppm in the deployment log.
+scenarios: [clean, spike_positive, spike_negative, bias_positive, bias_negative,
+            drift_positive, drift_negative, stuck, saturation, dropout,
+            legitimate_positive, legitimate_negative]
+livegate:
+  epsilons: [0.002, 0.01, 0.05]
+  calibration_fraction: 0.25
+  max_confirm: 8
+# Real-log audit uses each method's locked setting at this validation target,
+# falling back to the next lower feasible target, then to its max-coverage setting.
+audit_target: 0.8
+# A single cap across channels, selected with the original validation objective.
+# These six caps span 16--1008 s of repeats at the nominal 16 s interval.
+fixed_run_caps: [2, 4, 8, 16, 32, 64]
