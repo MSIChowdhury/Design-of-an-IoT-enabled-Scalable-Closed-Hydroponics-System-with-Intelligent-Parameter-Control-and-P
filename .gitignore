@@ -27,6 +27,9 @@ results/run_logs/**/*
 # Agronomic harvest sheets are publicly shareable (sensor log stays request-only)
 !data/raw/hydroponic/Agronomic Data.csv
 !data/raw/hydroponic/Lettuce Agronomic and Nutritional Data - 1st Trial Agronomic Data for ANOVA.csv
+# Public synthetic stand-in for the request-only sensor log
+!data/standin/
+!data/standin/**
 !results/metrics/**/
 !results/tables/**/
 !results/figures/**/

@@ -99,6 +99,21 @@ real:
 
 all: test smoke manuscript-check
 
+.PHONY: standin standin-smoke fault-characterization coverage-curves
+standin:
+	$(PYTHON) scripts/63_make_synthetic_standin.py
+
+# Runs the reanalysis protocol on the public synthetic stand-in; numbers are not results.
+standin-smoke:
+	AASVR_REANALYSIS_SOURCE=data/standin/hydro_standin.csv.gz AASVR_REANALYSIS_CONFIG=configs/experiments/reanalysis_standin_smoke.yaml AASVR_REANALYSIS_OUT=results/metrics/standin_smoke AASVR_REANALYSIS_FIG=results/figures/standin_smoke OMP_NUM_THREADS=1 $(PYTHON) scripts/38_replay_reanalysis.py
+
+fault-characterization:
+	$(PYTHON) scripts/64_real_fault_characterization.py
+
+coverage-curves:
+	AASVR_REANALYSIS_CONFIG=configs/experiments/reanalysis_extended.yaml AASVR_REANALYSIS_OUT=results/metrics/reanalysis_extended AASVR_REANALYSIS_FIG=results/figures/reanalysis_extended AASVR_REANALYSIS_METHODS=persistence_only,hampel,cusum,lof,kalman,ewma,moving_median,glr,aasvr_measurement,aasvr_hold_only,aasvr_no_cusum OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/38_replay_reanalysis.py
+	$(PYTHON) scripts/65_coverage_curves.py
+
 .PHONY: replay-reanalysis
 replay-reanalysis:
 	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 $(PYTHON) scripts/38_replay_reanalysis.py

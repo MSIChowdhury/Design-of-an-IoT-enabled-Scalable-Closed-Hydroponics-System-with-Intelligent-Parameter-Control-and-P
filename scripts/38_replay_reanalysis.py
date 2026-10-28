@@ -28,9 +28,13 @@ from aasvr.core import AASVR
 from aasvr.reanalysis import Timing, authorize, hold_estimate, score_actions, summarize
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "results/metrics/reanalysis"
-FIG = ROOT / "results/figures/reanalysis"
-METHODS = ("persistence_only", "hampel", "cusum", "lof", "aasvr_measurement", "aasvr_hold_only", "aasvr_no_cusum")
+# Environment overrides run the stand-in smoke test or extra baselines without
+# touching the default outputs.
+OUT = ROOT / os.environ.get("AASVR_REANALYSIS_OUT", "results/metrics/reanalysis")
+FIG = ROOT / os.environ.get("AASVR_REANALYSIS_FIG", "results/figures/reanalysis")
+SOURCE = ROOT / os.environ.get("AASVR_REANALYSIS_SOURCE", "data/processed/hydro_exp1_measurements.parquet")
+CONFIG = ROOT / os.environ.get("AASVR_REANALYSIS_CONFIG", "configs/experiments/reanalysis.yaml")
+METHODS = tuple(os.environ.get("AASVR_REANALYSIS_METHODS", "persistence_only,hampel,cusum,lof,aasvr_measurement,aasvr_hold_only,aasvr_no_cusum").split(","))
 
 
 def digest(path):
@@ -114,7 +118,7 @@ def scenario(values, kind, magnitude, start, duration):
     return background, corrupted, labels
 
 
-def detector(method, x, times, sensor, base, multiplier, lof):
+def detector(method, x, times, sensor, base, multiplier, lof, noise_sd=1.0):
     if method == "persistence_only":
         return np.isfinite(x), np.ones(len(x), dtype=bool)
     if method == "lof":
@@ -133,9 +137,12 @@ def detector(method, x, times, sensor, base, multiplier, lof):
                               eta_min_high=0, eta_min_medium=0, eta_min_low=0,
                               compact_diagnostics=True))
     else:
+        # Kalman noise is scaled per sensor from development data so its gate is
+        # not fixed in raw units; GLR shares the threshold multiplier sweep.
         model = StreamingBaseline((sensor,), BaselineConfig(
             method=method, window=9, threshold_multiplier=3 * multiplier,
-            cusum_threshold=5 * multiplier))
+            cusum_threshold=5 * multiplier, glr_threshold=3 * multiplier,
+            kalman_measurement_var=noise_sd ** 2, kalman_process_var=0.05 * noise_sd ** 2))
     accepted, eligible = [], []
     for i, value in enumerate(x):
         model.dt_seconds = times[i] - times[i-1] if i else 16.0
@@ -282,10 +289,12 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     FIG.mkdir(parents=True, exist_ok=True)
     snapshot()
-    cfg = load_yaml(ROOT / "configs/experiments/reanalysis.yaml")
+    cfg = load_yaml(CONFIG)
     base = load_aasvr_config(ROOT / "configs/methods/aasvr.yaml")
-    path = ROOT / "data/processed/hydro_exp1_measurements.parquet"
-    frame = pd.read_parquet(path).sort_values("timestamp").reset_index(drop=True)
+    path = SOURCE
+    frame = pd.read_parquet(path) if path.suffix == ".parquet" else pd.read_csv(path)
+    frame["timestamp"] = pd.to_datetime(frame.timestamp, format="ISO8601", utc=True)
+    frame = frame.sort_values("timestamp").reset_index(drop=True)
     if frame.timestamp.duplicated().any():
         raise ValueError("Duplicate timestamps need explicit resolution before replay")
     grid, boundaries = windows(frame, cfg)
@@ -297,7 +306,7 @@ def main():
              "gaps_above_120_seconds": int((deltas > 120).sum()),
              "missing_by_sensor": frame[cfg["sensors"]].isna().sum().to_dict(),
              "split_boundaries_unix_seconds": boundaries, "source_sha256": digest(path),
-             "config_sha256": digest(ROOT / "configs/experiments/reanalysis.yaml"),
+             "config_sha256": digest(CONFIG),
              "history": "Retrospective reanalysis; source periods were used in earlier development.",
              "preprocessing": "Injection after stored acquisition/preparation; historical firmware filtering unverified.",
              "actuator_evidence": "unknown; response and uncommanded-trend gates disabled in main comparison",
@@ -309,9 +318,12 @@ def main():
     recovery_audit(base)
     sensors = [s for s in base.sensors if s.name in cfg["sensors"]]
     development = frame[frame.timestamp.astype("int64")/1e9 < boundaries[1]]
-    models = {}
+    models, noise = {}, {}
     for sensor in sensors:
         values = development[sensor.name].dropna().to_numpy()
+        steps = np.diff(values[(values >= sensor.physical_min) & (values <= sensor.physical_max)])
+        # Mean absolute step (Gaussian-consistent); robust to quantized readings.
+        noise[sensor.name] = max(np.sqrt(np.pi) / 2 * np.mean(np.abs(steps)), 1e-6)
         # Deterministic bounded fit uses development only; no test-prefix fitting.
         values = values[np.linspace(0, len(values)-1, min(2000, len(values)), dtype=int)]
         models[sensor.name] = LocalOutlierFactor(n_neighbors=20, novelty=True, n_jobs=1).fit(values[:, None])
@@ -334,7 +346,8 @@ def main():
                         multipliers = [1.] if method in ("always_deny", "persistence_only") else cfg["threshold_multipliers"]
                         for multiplier in multipliers:
                             accepted, gate = detector("persistence_only" if method == "always_deny" else method,
-                                corrupted, times, sensor, base, multiplier, models[sensor.name])
+                                corrupted, times, sensor, base, multiplier, models[sensor.name],
+                                noise[sensor.name])
                             estimate, age = hold_estimate(times, corrupted, accepted, max_gap=timing.max_gap)
                             settings = [(0,64)] if method == "always_deny" else [
                                 (p,a) for p in cfg["persistence_seconds"] for a in cfg["max_age_seconds"]]

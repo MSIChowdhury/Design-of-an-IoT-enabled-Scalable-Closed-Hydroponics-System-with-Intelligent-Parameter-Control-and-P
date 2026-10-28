@@ -1,0 +1,13 @@
+sensor,rows,median,iqr,lag1_autocorrelation,spike_rate,out_of_range_rate,gaps_above_120_s,source
+pH,121244,6.16,0.25,0.86408,0.00062684,0.003827,194,deployment
+EC,121244,1333,42,0.99639,0.00011547,0,194,deployment
+Air_Temp,121244,28.6,2.3,0.99957,0.00014021,8.2478e-06,194,deployment
+Humidity,121244,99.9,0,0.16559,8.2478e-05,0,194,deployment
+Water_Temp,121244,24.81,3,0.99919,0.00032167,0,194,deployment
+CO2,121244,2041,228,0.92277,0.0079262,0.006755,194,deployment
+pH,121244,6.16,0.26,0.79973,0.0011382,0.0039507,195,synthetic_standin
+EC,121244,1341,40,0.96588,9.0726e-05,8.2478e-06,195,synthetic_standin
+Air_Temp,121244,28.8,2.2,0.99891,5.7735e-05,0,195,synthetic_standin
+Humidity,121244,99.9,0,-4.0566e-05,4.9487e-05,2.4743e-05,195,synthetic_standin
+Water_Temp,121244,24.84,3.06,0.99652,0.00031342,0,195,synthetic_standin
+CO2,121244,2043,232,0.7838,0.0073158,0.0067962,195,synthetic_standin
