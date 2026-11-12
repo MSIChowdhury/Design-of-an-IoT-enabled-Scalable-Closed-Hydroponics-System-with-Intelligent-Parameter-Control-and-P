@@ -1,0 +1,18 @@
+{
+  "EC": {
+    "cells_passing": 0,
+    "cells_total": 8,
+    "cells_not_testable": 0,
+    "lines_positive_gain": 3,
+    "decision": "NO-GO",
+    "role": "primary"
+  },
+  "pH": {
+    "cells_passing": 0,
+    "cells_total": 8,
+    "cells_not_testable": 0,
+    "lines_positive_gain": 1,
+    "decision": "NO-GO",
+    "role": "exploratory, no gate"
+  }
+}
