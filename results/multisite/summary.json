@@ -1,0 +1,11 @@
+{
+  "protocol": "docs/multisite/PROTOCOL.md",
+  "criterion": {
+    "replicated": 1,
+    "failed": 6,
+    "not testable": 1
+  },
+  "e3_trials_passing_95pct": [
+    "T2"
+  ]
+}
