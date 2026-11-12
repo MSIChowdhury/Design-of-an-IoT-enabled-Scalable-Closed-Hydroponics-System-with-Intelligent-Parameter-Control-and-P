@@ -1,0 +1,69 @@
+{
+  "source": "data/raw/hydroponic/Agronomic Data.csv",
+  "canonical_records": 63,
+  "duplicate_plant_keys": 0,
+  "missing_after_normalization": {
+    "experiment": 0,
+    "treatment": 0,
+    "plant_id": 0,
+    "FMAP_g": 0,
+    "DMAP_g": 0,
+    "TPL_cm": 0,
+    "RL_cm": 0,
+    "SL_cm": 0,
+    "TNL_count": 0,
+    "NL10_count": 0,
+    "DRM_g": 0
+  },
+  "groups": [
+    {
+      "experiment": 1,
+      "treatment": "P1",
+      "plants": 14,
+      "FMAP_mean_g": 252.87428571428572,
+      "FMAP_sd_g": 32.767851203999825,
+      "TPL_mean_cm": 81.00571428571428
+    },
+    {
+      "experiment": 1,
+      "treatment": "P2",
+      "plants": 14,
+      "FMAP_mean_g": 141.97857142857143,
+      "FMAP_sd_g": 17.996417531165584,
+      "TPL_mean_cm": 57.27214285714285
+    },
+    {
+      "experiment": 1,
+      "treatment": "P3",
+      "plants": 14,
+      "FMAP_mean_g": 94.08571428571429,
+      "FMAP_sd_g": 10.772247615113509,
+      "TPL_mean_cm": 20.67142857142857
+    },
+    {
+      "experiment": 2,
+      "treatment": "P1",
+      "plants": 7,
+      "FMAP_mean_g": 264.81,
+      "FMAP_sd_g": 35.02408076357369,
+      "TPL_mean_cm": 72.52
+    },
+    {
+      "experiment": 2,
+      "treatment": "P2",
+      "plants": 7,
+      "FMAP_mean_g": 68.24285714285715,
+      "FMAP_sd_g": 19.457205789703135,
+      "TPL_mean_cm": 19.458571428571425
+    },
+    {
+      "experiment": 2,
+      "treatment": "P3",
+      "plants": 7,
+      "FMAP_mean_g": 109.4857142857143,
+      "FMAP_sd_g": 23.30661054804184,
+      "TPL_mean_cm": 20.118571428571425
+    }
+  ],
+  "interpretation": "Wide-sheet blank/header rows are formatting, not duplicate plants. Plants sharing a treatment apparatus do not establish independent system replicates; no causal gate/yield claim."
+}

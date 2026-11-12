@@ -1,0 +1,15 @@
+ Container design-of-an-iot-enabled-scalable-closed-hydroponics-system-with-intelligent-parameter-control-and-p-project-shell-run-41cf11cee13f Creating 
+ Container design-of-an-iot-enabled-scalable-closed-hydroponics-system-with-intelligent-parameter-control-and-p-project-shell-run-41cf11cee13f Created 
+{
+  "stage": "full",
+  "started_utc": "2026-11-12T21:27:45.008457+00:00",
+  "finished_utc": "2026-11-12T21:27:59.029324+00:00",
+  "elapsed_seconds": 14.020879965013592,
+  "peak_rss_kib": 233972,
+  "source_rows": 121244,
+  "sensors": 5,
+  "cells": 1620,
+  "locked_cells_reproduced": 15,
+  "nonzero_ph_ec_cells": 54,
+  "randomness": "none; deterministic whole-log replay"
+}

@@ -1,0 +1,6 @@
+ Container design-of-an-iot-enabled-scalable-closed-hydroponics-system-with-intelligent-parameter-control-and-p-project-shell-run-70f736a3a6ee Creating 
+ Container design-of-an-iot-enabled-scalable-closed-hydroponics-system-with-intelligent-parameter-control-and-p-project-shell-run-70f736a3a6ee Created 
+python scripts/check_manuscript.py --require-pdfs
+PDF checks require Poppler pdftotext in the container.
+make: *** [Makefile:96: manuscript-pdf-check] Error 1
+

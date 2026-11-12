@@ -1,0 +1,21 @@
+{
+  "timestamp_utc": "2026-11-12T22:05:47.055495+00:00",
+  "controlled_frozen_artifacts_still_unchanged": true,
+  "raw_reproduction_checks": {
+    "all_processed_rows_exactly_equal": true,
+    "deployment_audit.csv_byte_equal": true,
+    "deployment_time_in_band.csv_byte_equal": true,
+    "original_artifacts_unchanged": true
+  },
+  "controlled_csv_comparisons": 11,
+  "tests": "178 passed in rebuilt image; see test_verified.txt",
+  "lint_and_strict_pdf_checks": "pass; see paper_proxy_final.txt",
+  "final_pdf_pages": {
+    "author": 25,
+    "blinded": 25
+  },
+  "visual_review": "all50pages in contact sheets plus individual changed pages; no clipping/overlap observed",
+  "historical_audit_executable_AST": "unchanged versus base commit; docstrings only",
+  "untracked_user_input": "data/Actual preserved; not staged",
+  "scientific_completion": "not established; see STATE.md and REQUIREMENTS.csv"
+}

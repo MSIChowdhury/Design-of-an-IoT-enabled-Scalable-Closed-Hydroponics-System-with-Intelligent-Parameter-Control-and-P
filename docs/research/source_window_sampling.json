@@ -1,0 +1,44 @@
+{
+  "source_rows": 121244,
+  "selection": "deterministic evenly spaced eligible blocks; not random sampling",
+  "window_samples": 240,
+  "split_by": "elapsed duration at40% and70%; not row fractions",
+  "max_gap_seconds": 120,
+  "split_coverage": [
+    {
+      "split": "development",
+      "available_rows": 58453,
+      "nonoverlapping_candidate_blocks": 243,
+      "gap_free_candidate_blocks": 209,
+      "excluded_gap_blocks": 34,
+      "selected_windows": 8,
+      "selected_source_rows": 1920,
+      "selected_fraction_of_split_rows": 0.03284690263972764,
+      "selected_source_days": 8
+    },
+    {
+      "split": "validation",
+      "available_rows": 36109,
+      "nonoverlapping_candidate_blocks": 150,
+      "gap_free_candidate_blocks": 119,
+      "excluded_gap_blocks": 31,
+      "selected_windows": 8,
+      "selected_source_rows": 1920,
+      "selected_fraction_of_split_rows": 0.0531723393059902,
+      "selected_source_days": 8
+    },
+    {
+      "split": "evaluation",
+      "available_rows": 26682,
+      "nonoverlapping_candidate_blocks": 111,
+      "gap_free_candidate_blocks": 84,
+      "excluded_gap_blocks": 27,
+      "selected_windows": 8,
+      "selected_source_rows": 1920,
+      "selected_fraction_of_split_rows": 0.07195862379132,
+      "selected_source_days": 7
+    }
+  ],
+  "expansion": "5 sensors x12scenarios gives480trial descriptors per split; shared backgrounds do not create independent deployments",
+  "primary_exclusions": "Water_Level uncalibrated; humidity unactuated; candidate blocks with gaps>120s; no independent reference truth"
+}

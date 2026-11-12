@@ -1,0 +1,4 @@
+sensor,arm,grid_persistence_s,actual_persistence_s,max_age_s,cooldown_s,spike_cutoff,commands,out_of_range_commands,bound_commands,spike_commands,flagged_commands,flagged_fraction,authorization_retention_vs_naive
+pH,range_persistence,32,32,64,300,6,787,0,1,1,2,0.0025412960609911056,0.709009009009009
+pH,range_persistence,32,32,64,300,8,787,0,1,0,1,0.0012706480304955528,0.709009009009009
+pH,range_persistence,32,32,64,300,10,787,0,1,0,1,0.0012706480304955528,0.709009009009009

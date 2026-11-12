@@ -1,0 +1,94 @@
+{
+  "timestamp_utc": "2026-11-12T22:05:50.020633+00:00",
+  "git_head": "cbf7149b47bd34c97436f8c66f91d9c688ba13c9",
+  "entries": 3447,
+  "hashed_files": 3435,
+  "hashed_bytes": 6345366377,
+  "meaning": "Hashes establish identity, not semantic reading or validation. See coverage.csv and reviewer_coverage.csv.",
+  "exclusions": [
+    {
+      "path": ".git",
+      "kind": "directory",
+      "bytes": "",
+      "sha256": "",
+      "status": "dependency/cache/version-control metadata"
+    },
+    {
+      "path": ".idea",
+      "kind": "directory",
+      "bytes": "",
+      "sha256": "",
+      "status": "dependency/cache/version-control metadata"
+    },
+    {
+      "path": ".pytest_cache",
+      "kind": "directory",
+      "bytes": "",
+      "sha256": "",
+      "status": "dependency/cache/version-control metadata"
+    },
+    {
+      "path": ".ruff_cache",
+      "kind": "directory",
+      "bytes": "",
+      "sha256": "",
+      "status": "dependency/cache/version-control metadata"
+    },
+    {
+      "path": "Code Files/Web Interface/automated-hydroponics-data-40ded0143ddf.json",
+      "kind": "file",
+      "bytes": 2404,
+      "sha256": "",
+      "status": "potential credential; content excluded"
+    },
+    {
+      "path": "data/raw/hai/hai_repo/.git",
+      "kind": "directory",
+      "bytes": "",
+      "sha256": "",
+      "status": "dependency/cache/version-control metadata"
+    },
+    {
+      "path": "data/raw/skab/skab_repo/.git",
+      "kind": "directory",
+      "bytes": "",
+      "sha256": "",
+      "status": "dependency/cache/version-control metadata"
+    },
+    {
+      "path": "docs/research/inventory.csv",
+      "kind": "file",
+      "bytes": 651797,
+      "sha256": "",
+      "status": "inventory output; avoids self-reference"
+    },
+    {
+      "path": "docs/research/inventory_summary.json",
+      "kind": "file",
+      "bytes": 2480,
+      "sha256": "",
+      "status": "inventory output; avoids self-reference"
+    },
+    {
+      "path": "scripts/__pycache__",
+      "kind": "directory",
+      "bytes": "",
+      "sha256": "",
+      "status": "dependency/cache/version-control metadata"
+    },
+    {
+      "path": "src/aasvr/__pycache__",
+      "kind": "directory",
+      "bytes": "",
+      "sha256": "",
+      "status": "dependency/cache/version-control metadata"
+    },
+    {
+      "path": "tests/__pycache__",
+      "kind": "directory",
+      "bytes": "",
+      "sha256": "",
+      "status": "dependency/cache/version-control metadata"
+    }
+  ]
+}

@@ -1,0 +1,475 @@
+{
+  "access_date": "2026-11-12",
+  "source": "Crossref works API",
+  "records": [
+    {
+      "DOI": "10.1016/j.compag.2025.110544",
+      "title": [
+        "Machine learning-based fault detection and diagnosis of electrical conductivity and pH sensors in hydroponic systems"
+      ],
+      "author": [
+        {
+          "given": "Saeed",
+          "family": "Karimzadeh",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Zhian",
+          "family": "Li",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Md Shamim",
+          "family": "Ahamed",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Computers and Electronics in Agriculture"
+      ],
+      "volume": "237",
+      "issue": null,
+      "page": "110544",
+      "article-number": "110544",
+      "published": {
+        "date-parts": [
+          [
+            2025,
+            10
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.1016/j.compag.2025.110544"
+    },
+    {
+      "DOI": "10.1016/j.jprocont.2025.103607",
+      "title": [
+        "Residual-based fault detection and isolation in control environment agriculture"
+      ],
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0003-3127-3194",
+          "authenticated-orcid": false,
+          "given": "Lukas",
+          "family": "Munser",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0003-3316-8718",
+          "authenticated-orcid": false,
+          "given": "\u00c1ngeles",
+          "family": "Hoyo",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-6490-6069",
+          "authenticated-orcid": false,
+          "given": "Felix",
+          "family": "Petzke",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-2556-9784",
+          "authenticated-orcid": false,
+          "given": "Jaime A.",
+          "family": "Moreno",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-3398-1226",
+          "authenticated-orcid": false,
+          "given": "Stefan",
+          "family": "Streif",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Journal of Process Control"
+      ],
+      "volume": "157",
+      "issue": null,
+      "page": "103607",
+      "article-number": "103607",
+      "published": {
+        "date-parts": [
+          [
+            2026,
+            1
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.1016/j.jprocont.2025.103607"
+    },
+    {
+      "DOI": "10.1016/j.compag.2024.109198",
+      "title": [
+        "AI-powered sensor fault detection for cost-effective smart greenhouses"
+      ],
+      "author": [
+        {
+          "given": "Seyed",
+          "family": "Mohammadhossein Shekarian",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Mahdi",
+          "family": "Aminian",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Amir",
+          "family": "Mohammad Fallah",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Vaha",
+          "family": "Akbary Moghaddam",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Computers and Electronics in Agriculture"
+      ],
+      "volume": "224",
+      "issue": null,
+      "page": "109198",
+      "article-number": "109198",
+      "published": {
+        "date-parts": [
+          [
+            2024,
+            9
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.1016/j.compag.2024.109198"
+    },
+    {
+      "DOI": "10.1016/s0168-1699(03)00012-7",
+      "title": [
+        "Neural network-based detection of mechanical, sensor and biological faults in deep-trough hydroponics"
+      ],
+      "author": [
+        {
+          "given": "K.P.",
+          "family": "Ferentinos",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "L.D.",
+          "family": "Albright",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "B.",
+          "family": "Selman",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Computers and Electronics in Agriculture"
+      ],
+      "volume": "40",
+      "issue": "1-3",
+      "page": "65-85",
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            2003,
+            10
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.1016/s0168-1699(03)00012-7"
+    },
+    {
+      "DOI": "10.1016/j.compag.2011.08.008",
+      "title": [
+        "The effect of sensor errors on production and energy consumption in greenhouse horticulture"
+      ],
+      "author": [
+        {
+          "given": "J.",
+          "family": "Bontsema",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        },
+        {
+          "given": "E.J.",
+          "family": "van Henten",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        },
+        {
+          "given": "Th.H.",
+          "family": "Gieling",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        },
+        {
+          "given": "G.L.A.M.",
+          "family": "Swinkels",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "role": "author",
+              "vocabulary": "crossref"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Computers and Electronics in Agriculture"
+      ],
+      "volume": "79",
+      "issue": "1",
+      "page": "63-66",
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            2011,
+            10
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.1016/j.compag.2011.08.008"
+    },
+    {
+      "DOI": "10.3390/s19214788",
+      "title": [
+        "SensorTalk: An IoT Device Failure Detection and Calibration Mechanism for Smart Farming"
+      ],
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0001-6841-4718",
+          "authenticated-orcid": false,
+          "given": "Yi-Bing",
+          "family": "Lin",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Department of Computer Science, National Chiao Tung University, Hsinchu 300, Taiwan"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-8916-7020",
+          "authenticated-orcid": false,
+          "given": "Yun-Wei",
+          "family": "Lin",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "College of Artificial Intelligence, National Chiao Tung University, Tainan 711, Taiwan"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Jiun-Yi",
+          "family": "Lin",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Department of Computer Science, National Chiao Tung University, Hsinchu 300, Taiwan"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Hui-Nien",
+          "family": "Hung",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Institute of Statistics, National Chiao Tung University, Hsinchu 300, Taiwan"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Sensors"
+      ],
+      "volume": "19",
+      "issue": "21",
+      "page": "4788",
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            2019,
+            11,
+            4
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.3390/s19214788"
+    }
+  ]
+}

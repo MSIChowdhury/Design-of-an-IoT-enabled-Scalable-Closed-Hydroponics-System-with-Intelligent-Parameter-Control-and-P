@@ -1,0 +1,13 @@
+date,query_or_url,source_type,result,access_limit
+2026-11-12,site.scimagojr.com Biosystems Engineering2025Q1,web search,secondary leads only; not accepted as current ranking verification,no direct matching primary journal record returned
+2026-11-12,site.scimagojr.com Computers and Electronics in Agriculture2025Q1,web search,secondary leads only,do not substitute third-party or CiteScore/OJR quartiles for SJR/JCR
+2026-11-12,site.scimagojr.com Smart Agricultural Technology2025Q1,web search,secondary leads only,same limitation
+2026-11-12,https://www.scimagojr.com/journalrank.php?category=1102&year=2024,direct database fetch,access failure,no authenticated or current database claim
+2026-11-12,https://www.scimagojr.com/journalrank.php?category=1101&year=2024,direct database fetch,access failure,same limitation
+2026-11-12,https://www.scimagojr.com/journalrank.php?category=1102,direct database fetch,HTTP403,same limitation
+2026-11-12,https://www.scimagojr.com/journalrank.php?category=1101,direct database fetch,HTTP403,same limitation
+2026-11-12,https://shop.elsevier.com/journals/biosystems-engineering/1537-5110,publisher scope,full scope inspected; science novelty and operational-validation exclusions recorded,no acceptance prediction
+2026-11-12,https://shop.elsevier.com/journals/computers-and-electronics-in-agriculture/0168-1699,publisher scope,full scope inspected including routing applied technology to SAT,no acceptance prediction
+2026-11-12,https://www.sciencedirect.com/journal/smart-agricultural-technology/about/aims-and-scope,publisher scope,HTTP403; CEA companion-journal description provides limited publisher scope evidence,direct SAT scope access not claimed
+2026-11-12,https://kniznica.umb.sk/app/cmsSiteBoxAttachment.php?ID=6160&cmsDataID=0,institutional copy of Clarivate export,JCR2024JIF Agronomy SAT Q1; dataset header updated18June2025,not authenticated current JCR edition
+2026-11-12,https://kniznica.umb.sk/app/cmsFile.php?ID=21694&disposition=i,institutional copy of SCImago export,CEA and BE Q1 categories; literal snapshot SJR2025 label with March2025 data date,do not infer latest2025performance-year metrics from this header

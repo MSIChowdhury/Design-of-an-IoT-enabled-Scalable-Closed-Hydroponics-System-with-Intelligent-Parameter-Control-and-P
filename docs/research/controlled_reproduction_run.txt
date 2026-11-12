@@ -1,0 +1,56 @@
+ Container design-of-an-iot-enabled-scalable-closed-hydroponics-system-with-intelligent-parameter-control-and-p-project-shell-run-97a73cc34262 Creating 
+ Container design-of-an-iot-enabled-scalable-closed-hydroponics-system-with-intelligent-parameter-control-and-p-project-shell-run-97a73cc34262 Created 
+mkdir -p failed for path /.config/matplotlib: [Errno 13] Permission denied: '/.config'
+Matplotlib created a temporary cache directory at /tmp/matplotlib-gb1sha82 because there was an issue with the default path (/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+validation: window 1/8 complete
+validation: window 2/8 complete
+validation: window 3/8 complete
+validation: window 4/8 complete
+validation: window 5/8 complete
+validation: window 6/8 complete
+validation: window 7/8 complete
+validation: window 8/8 complete
+Validation selections locked before evaluation scoring
+evaluation: window 1/8 complete
+evaluation: window 2/8 complete
+evaluation: window 3/8 complete
+evaluation: window 4/8 complete
+evaluation: window 5/8 complete
+evaluation: window 6/8 complete
+evaluation: window 7/8 complete
+evaluation: window 8/8 complete
+Results: /workspace/results/metrics/research_reproduction_controlled
+{
+  "status": "passed",
+  "elapsed_seconds": 363.8930259140034,
+  "checks": [
+    "evaluation_by_scenario.csv",
+    "evaluation_summary.csv",
+    "livegate_models.csv",
+    "locked_validation_selections.csv",
+    "paired_intervals_vs_livegate.csv",
+    "real_log_audit.csv",
+    "source_windows.csv",
+    "validation_operating_points.csv",
+    "tables/paired_source_day_intervals.csv",
+    "tables/reproduction_checks.csv",
+    "tables/sensor_scenario_metrics.csv"
+  ],
+  "original_artifacts_unchanged": true
+}

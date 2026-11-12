@@ -7,11 +7,11 @@ sampling_seconds: 16
 labels: data/processed/hydro_exp1_rule_labels.parquet
 prepared_measurements: data/processed/hydro_exp1_measurements.parquet
 prepared_metadata: data/processed/hydro_exp1_metadata.csv
-access_type: local_private
-redistribution_allowed: false
+access_type: public_repository
+redistribution_allowed: true
 primary_sensors: ["EC", "pH", "Humidity", "Air_Temp", "Water_Temp", "CO2"]
 exclude_sensors: ["Water_Level"]
 optional_actuator_log: "data/raw/hydroponic/actuator_state_log.csv"
 optional_reference_measurements: "data/raw/hydroponic/reference_measurements.csv"
 optional_water_level_calibration: "data/raw/hydroponic/water_level_calibration.csv"
-notes: "Real first-trial feed is available locally. Water_Level is excluded from primary analysis because the raw values are uncalibrated and mostly negative. Optional actuator-state, reference-measurement, and water-level calibration files can be added locally without changing the primary pipeline."
+notes: "The compatibility identifier hydro_exp1 denotes the author-released experiment-2 log (27 February--28 March 2024), publicly tracked with permission. It is retrospectively reused, not an untouched holdout. Water_Level is excluded because raw values are uncalibrated. Optional actuator-state, reference-measurement, and calibration files remain absent unless supplied independently."

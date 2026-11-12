@@ -1,0 +1,21 @@
+date,engine,query,purpose,result_and_access
+2026-11-12,web search,SensorTalk failure calibration 2019 hydroponics,nearest prior context,publisher primary full page accessible; sections 1-4.2 inspected
+2026-11-12,web search,hydroponic sensor fault detection actuator sensor failure control 2024 2025 2026,current disconfirming work,located Karimzadeh 2025 Munser 2026 Shekarian 2024; newer reviews treated as leads only
+2026-11-12,web search,10.1016/j.compag.2025.110544 pdf,full-text access,publisher full fetch HTTP 403; institutional abstract accessible
+2026-11-12,web search,Residual-based fault detection and isolation Munser pdf,full-text access,Fraunhofer primary PDF accessible downloaded to temporary reviewer directory and text read
+2026-11-12,web search,AI-powered sensor fault detection for cost-effective smart greenhouses pdf,full-text access,publisher-indexed snippets accessible; full fetch HTTP 403
+2026-11-12,web search,10.1016/j.aej.2026.04.011 hydroponic,current lead,publisher abstract lead only; full fetch HTTP 403; not used as verified methodological evidence
+2026-11-12,web search,10.1016/j.compag.2025.110544 correction retraction,notice search,no primary correction/retraction notice found in returned results; absence not proved
+2026-11-12,web search,10.1016/j.jprocont.2025.103607 correction retraction,notice search,no primary notice found; third-party withdrawal labels disregarded
+2026-11-12,web search,10.1016/j.compag.2024.109198 correction retraction,notice search,no primary correction/retraction notice found in returned results; absence not proved
+2026-11-12,web search,10.3390/s19214788 correction retraction,notice search,no primary correction/retraction notice found in returned results; version notes HTTP 429
+2026-11-12,Crossref works API,first four DOIs in reviewer_literature.csv,primary metadata notice check,update-to and updated-by missing; relation empty in inspected work records; no absence guarantee
+2026-11-12,web search,Neural network-based detection of mechanical sensor and biological faults hydroponics,backward citation trace from Munser 2026,located publisher abstract and Cornell author PDF; PDF not read
+2026-11-12,web search,The effect of sensor errors on production and energy consumption greenhouse,backward citation trace from Munser 2026,WUR institutional abstract and publisher snippets accessible; full text not read
+2026-11-12,web search,site.research.google Chubby sequencer duplicate,alternative novelty check,Google Research page and author PDF located; selected sections inspected
+2026-11-12,web search,site.cs.princeton.edu Birrell Nelson implementing remote procedure calls 1984 duplicate sequence,alternative novelty check,primary-paper mirrored PDF section 3.2 indexed and inspected; not full paper
+2026-11-12,web search,site.kafka.apache.org exactly once semantics external system cooperation transactions,alternative novelty check,official Kafka 4.0 semantics and transactions sections inspected
+2026-11-12,web search,site.usenix.org RIFL implementing linearizability large-scale systems duplicate RPC 2015,alternative novelty check,author-hosted Stanford PDF located; introduction and architecture inspected
+2026-11-12,web search,10.1145/2815400.2815416 correction retraction,notice search,no primary notice found in returned results; absence not proved
+2026-11-12,web search,The Chubby lock service correction retraction,notice search,no primary notice found in returned results; absence not proved
+2026-11-12,Crossref works API,10.1145/2815400.2815416 and 10.1145/2080.357392,DOI verification and notice metadata,verified titles; no update-to or updated-by field and empty relation in inspected records

@@ -1,0 +1,25 @@
+{
+  "timestamp_utc": "2026-11-12T22:05:47.055495+00:00",
+  "git_base": "cbf7149b47bd34c97436f8c66f91d9c688ba13c9",
+  "research_goal_status": "incomplete; independent confirmation and Q1 novelty not established",
+  "artifacts": {
+    "Paper Files/main_audit.tex": "8c0325891b8ba9aa3d7deff3c9e7ec0708b535aeb00d59369ab2d442851a5c65",
+    "Paper Files/main_audit.pdf": "e91edc02787b2a9a92756f4c2ae19a822bb3ac0283966c74e78669df2e9da07d",
+    "Paper Files/main_audit_blinded.pdf": "c7bc41963b379f900365e56b1ba8d19040d2a0ab17d0d926630ff581de60c087",
+    "Paper Files/audit_references.bib": "edbc8a65f2d95216e15ad1cfcce8dde8922afcd6abc833450c49ddbf8d3b701b",
+    "Paper Files/highlights_audit.txt": "a449d9e53e4e435a8b67b8fbd0ac992ca738ad4d28d5e293868657a221822e7e",
+    "Paper Files/figure/audit/audit_fault_commands.pdf": "41785313d82d80d2380229e5668ceb106e60a1a7e63399c4e9c0b661af91ff75",
+    "Paper Files/figure/audit/audit_fault_commands.png": "3a5e3dd66a34c24c1899426ed792887ba41aa08a70ccee922255dba5f54baf15",
+    "docs/research/sensitivity/full_cells.csv": "9db956e1e39cf955007b6f88e7f2d295083db9269fa5a9a1e3eb5d4a87a66bf6",
+    "docs/research/sensitivity/full_report.json": "e4dc7a4b8d0010d2ced43023dece8b04f1f1ecc04c024a493acd9715b2196f4d",
+    "docs/research/reproduction/report.json": "38e325d99ded4197a710e5d7e6e12a9bbd9f0d99d68cc402d81ab29e907a901f",
+    "docs/research/reproduction/report_cycle01.json": "84eb4bc427c6c12456c644b2abd0db84aa992fb68679a08f04698006fc11585b",
+    "docs/research/controlled_reproduction.json": "525bd44cb2e8da4aae1f93c050bf4d3891ce6e5a9d439873c5d8d958bbaf918b",
+    "docs/research/CLAIMS.md": "20d61feef89a63f36b4d2f01df12f1fc4d8bbc8136b08f27cec3f392fd1130b3",
+    "docs/research/REQUIREMENTS.csv": "80dd49e427708b52dcfed183281563c71c07cad748630bd554503648877877b8",
+    "docs/research/ALTERNATIVES_REVIEW.md": "1cfd99371675c45f361126c78f67185d2d57a04a2442b352d1fddf04a4d19a09",
+    "docs/research/reviewer_coverage.csv": "559eb8bedece0bb7ce5b35425ecb817aeaa65ab5a41dc6da683b5b2cc3481b95",
+    "docs/research/coverage.csv": "dc54245fb551c1bb04005d72df869e1bd893e07d778d2b60ee3f5d1267eb2640",
+    "docs/research/final_verification.json": "525067b9d75109729e6913f8a8acd9fa365c3519b5430b28a96b725be56516eb"
+  }
+}

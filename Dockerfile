@@ -16,6 +16,7 @@ RUN apt-get update \
         octave \
         octave-io \
         octave-statistics \
+        poppler-utils \
         texlive-latex-base \
         texlive-latex-extra \
         texlive-latex-recommended \

@@ -1,0 +1,28 @@
+{
+  "stage": "pilot",
+  "started_utc": "2026-11-12T21:27:12.090997+00:00",
+  "finished_utc": "2026-11-12T21:27:14.524542+00:00",
+  "elapsed_seconds": 2.4335560360050295,
+  "peak_rss_kib": 239404,
+  "source_rows": 121244,
+  "sensors": 5,
+  "cells": 135,
+  "locked_cells_reproduced": 15,
+  "nonzero_ph_ec_cells": 3,
+  "randomness": "none; deterministic whole-log replay",
+  "input_hashes": {
+    "data/processed/hydro_exp1_measurements.parquet": "6c034bed3948172e88d5ec9caf1885efe14795e4041c6a4b9cf2decc356e6a71",
+    "configs/experiments/livegate.yaml": "b32155fbd4dd0cfd0522dcb157829924b185bd4cd20fa65ed796d4c775c7d0de",
+    "configs/methods/aasvr.yaml": "485a1540f1a20f691e65f011fed7ae952a437b5e72454373e5f57cd5b69cb573",
+    "scripts/73_audit_sensitivity.py": "dbaa67a271eb6fe3cee9b27ed3d2236810a8442da11ad063d5417ede08de996a",
+    "scripts/68_deployment_audit.py": "9df186f4c2587d86bfd06c1c03d71dcde9d99d5f786aa11eba8f67c6fa8f1682",
+    "src/aasvr/reanalysis.py": "1664852a3c2e84c1868d7f2a2d03622b40c6088103ac3e2543430731eb9d98f9",
+    "src/aasvr/standin.py": "2890b7aa6a927934501cf617cbef0eca48688688cd01b97e65cc10f284ca7aa2",
+    "docs/research/CYCLE_02_PROTOCOL.md": "eb5c5e1439240f6a034364213d942fb8ffb185fe1f35912ca845c46baeb7c2a8"
+  },
+  "output_hashes": {
+    "docs/research/sensitivity/pilot_cells.csv": "ff33e7b23ff41396e03549a837bd1494ff73aefe80f941767560086c95309f61",
+    "docs/research/sensitivity/pilot_envelopes.csv": "3db0edcde8fa5b23784f15b80be404958a60db9063c2feff1c8bd51772985ea9",
+    "docs/research/sensitivity/pilot_nonzero_ph_ec.csv": "2e102dcae10334abff1418476ef49ee7744350bd9492837e42d5b6eb2e6aa3e6"
+  }
+}

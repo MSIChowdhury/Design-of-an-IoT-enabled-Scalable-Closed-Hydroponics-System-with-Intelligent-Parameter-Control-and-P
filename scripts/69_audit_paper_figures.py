@@ -43,7 +43,7 @@ def audit_commands():
     table["fault"] = table.flagged_commands
     arms = list(dict.fromkeys(table.arm))
     labels = ["Naive threshold", "Range check", "Range + persistence",
-              "Reconstructed deployed", "+ liveness", "+ bound rejection"]
+              "Legacy-gate proxy", "+ liveness", "+ bound rejection"]
     fig, axes = plt.subplots(1, 2, figsize=(6.8, 3.1), sharey=True)
     for ax, sensor in zip(axes, ("pH", "CO2")):
         part = table[table.sensor == sensor].set_index("arm").loc[arms]

@@ -1,17 +1,19 @@
 """Fault-to-actuation audit of the measured experiment-2 log.
 
-Replays the deployed threshold control law (setpoints, 10-min cooldown, and only
-the directions the deployed actuators can execute) on the unmodified log under
+Replays reported setpoints and installed actuator directions with a common
+10-min cooldown (documented for pH/EC, assumed for cooling/CO2) on the log under
 six gating arms. Counts distinguish out-of-range readings, readings at a declared
 physical bound, and heuristic isolated spikes. Bound readings are censored
 measurements, not proof of sensor failure. Also reports fractions of valid logged
 readings in band per controlled channel, not whole-deployment time occupancy.
 No synthetic faults.
 
-The deployed error-resilience rule is reconstructed from the original system
-description (sensing-reliability gate, 50-rejection reset, repeatability count)
-with its published gamma = 0.75 beta values; xi and psi are re-estimated on the
-development period because the experiment-1 data they came from is unavailable.
+The legacy comparator is a sensing-gate proxy, not verified firmware replay.
+It retains the sensing-reliability gate and 50-rejection reset, omits alpha's
+actuation bands, and maps psi to elapsed persistence of an age-eligible held
+estimate. Published gamma = 0.75 beta values are retained; xi and psi are
+re-estimated on development because their experiment-1 inputs are unavailable.
+The historical CSV arm name is retained for reproducibility.
 The liveness arm uses the LiveGate run-length model fitted on the development
 period; the large CO2 full-scale episodes lie in that period but were excluded
 from fitting by the declared-bound rule. Run in Docker.
@@ -45,7 +47,7 @@ LIVENESS_EPSILON = 0.05
 
 
 def deployed_rule(x, beta, xi, psi):
-    """Accepted readings of the reconstructed sensing loop plus its repeatability count."""
+    """Legacy sensing-gate proxy; psi later supplies held-estimate persistence."""
     accepted = np.zeros(len(x), dtype=bool)
     trusted, rejections = np.nan, 0
     for i, y in enumerate(x):

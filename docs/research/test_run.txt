@@ -1,0 +1,40 @@
+........................................................................ [ 40%]
+........................................................................ [ 81%]
+................................                                         [100%]
+=============================== warnings summary ===============================
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+  /usr/local/lib/python3.11/site-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+  /usr/local/lib/python3.11/site-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+  /usr/local/lib/python3.11/site-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+tests/test_reanalysis.py::test_blocked_windows_and_fault_metadata
+  /usr/local/lib/python3.11/site-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+../usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:475
+  /usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:475: PytestCacheWarning: cache could not write path /workspace/.pytest_cache/v/cache/nodeids: [Errno 13] Permission denied: '/workspace/.pytest_cache/v/cache/nodeids'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+../usr/local/lib/python3.11/site-packages/_pytest/stepwise.py:51
+  /usr/local/lib/python3.11/site-packages/_pytest/stepwise.py:51: PytestCacheWarning: cache could not write path /workspace/.pytest_cache/v/cache/stepwise: [Errno 13] Permission denied: '/workspace/.pytest_cache/v/cache/stepwise'
+    session.config.cache.set(STEPWISE_CACHE_DIR, [])
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+176 passed, 16 warnings in 2.40s

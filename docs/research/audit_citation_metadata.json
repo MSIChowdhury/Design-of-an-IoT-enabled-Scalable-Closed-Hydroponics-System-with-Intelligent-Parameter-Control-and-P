@@ -1,0 +1,1303 @@
+{
+  "access_date": "2026-11-12",
+  "source": "Crossref works API; bibliographic metadata only, not full-paper reading",
+  "records": [
+    {
+      "DOI": "10.1186/s40537-020-0285-1",
+      "title": [
+        "Sensor data quality: a systematic review"
+      ],
+      "author": [
+        {
+          "given": "Hui Yie",
+          "family": "Teh",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0001-5558-0573",
+          "authenticated-orcid": false,
+          "given": "Andreas W.",
+          "family": "Kempa-Liehr",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Kevin I-Kai",
+          "family": "Wang",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Journal of Big Data"
+      ],
+      "volume": "7",
+      "issue": "1",
+      "page": null,
+      "article-number": "11",
+      "published": {
+        "date-parts": [
+          [
+            2020,
+            2,
+            11
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.1186/s40537-020-0285-1"
+    },
+    {
+      "DOI": "10.1080/01621459.1974.10482962",
+      "title": [
+        "The Influence Curve and its Role in Robust Estimation"
+      ],
+      "author": [
+        {
+          "given": "Frank R.",
+          "family": "Hampel",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Abt. 9, Swiss Federal Institute of Technology",
+              "place": [
+                "Switzerland"
+              ]
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Journal of the American Statistical Association"
+      ],
+      "volume": "69",
+      "issue": "346",
+      "page": "383-393",
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            1974,
+            6
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.1080/01621459.1974.10482962"
+    },
+    {
+      "DOI": "10.1115/1.3662552",
+      "error": "HTTPError: HTTP Error 429: Too Many Requests"
+    },
+    {
+      "DOI": "10.1093/biomet/41.1-2.100",
+      "title": [
+        "CONTINUOUS INSPECTION SCHEMES"
+      ],
+      "author": [
+        {
+          "given": "E. S.",
+          "family": "PAGE",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Biometrika"
+      ],
+      "volume": "41",
+      "issue": "1-2",
+      "page": "100-115",
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            1954
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.1093/biomet/41.1-2.100"
+    },
+    {
+      "DOI": "10.1080/00401706.1959.10489860",
+      "title": [
+        "Control Chart Tests Based on Geometric Moving Averages"
+      ],
+      "author": [
+        {
+          "given": "S. W.",
+          "family": "Roberts",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Technometrics"
+      ],
+      "volume": "1",
+      "issue": "3",
+      "page": "239-250",
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            1959,
+            8
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.1080/00401706.1959.10489860"
+    },
+    {
+      "DOI": "10.1007/3-540-30368-5",
+      "title": [
+        "Fault-Diagnosis Systems"
+      ],
+      "author": [
+        {
+          "given": "Rolf",
+          "family": "Isermann",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [],
+      "volume": null,
+      "issue": null,
+      "page": null,
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            2006
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {
+        "has-part": [
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_9",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_23",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_14",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_3",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_2",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_4",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_7",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_12",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_15",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_16",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_22",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_10",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_5",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_20",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_18",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_1",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_11",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_6",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_19",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_17",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_8",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_13",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_21",
+            "asserted-by": "subject"
+          }
+        ]
+      },
+      "URL": "https://doi.org/10.1007/3-540-30368-5"
+    },
+    {
+      "DOI": "10.1145/342009.335388",
+      "title": [
+        "LOF"
+      ],
+      "author": [
+        {
+          "given": "Markus M.",
+          "family": "Breunig",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Institute for Computer Science, University of Munich, Oettingenstr. 67, D-80538 Munich, Germany"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Hans-Peter",
+          "family": "Kriegel",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Institute for Computer Science, University of Munich, Oettingenstr. 67, D-80538 Munich, Germany"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Raymond T.",
+          "family": "Ng",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Department of Computer Science, University of British Columbia, Vancouver, BC V6T 1Z4 Canada"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "J\u00f6rg",
+          "family": "Sander",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Institute for Computer Science, University of Munich, Oettingenstr. 67, D-80538 Munich, Germany"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Proceedings of the 2000 ACM SIGMOD international conference on Management of data"
+      ],
+      "volume": null,
+      "issue": null,
+      "page": "93-104",
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            2000,
+            5,
+            16
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {
+        "is-identical-to": [
+          {
+            "id-type": "doi",
+            "id": "10.1145/335191.335388",
+            "asserted-by": "object"
+          }
+        ]
+      },
+      "URL": "https://doi.org/10.1145/342009.335388"
+    },
+    {
+      "DOI": "10.3390/s23052528",
+      "title": [
+        "Current Status and Prospects of Research on Sensor Fault Diagnosis of Agricultural Internet of Things"
+      ],
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0002-8074-7555",
+          "authenticated-orcid": false,
+          "given": "Xiuguo",
+          "family": "Zou",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "College of Artificial Intelligence, Nanjing Agricultural University, Nanjing 210031, China"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Wenchao",
+          "family": "Liu",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "College of Artificial Intelligence, Nanjing Agricultural University, Nanjing 210031, China"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Zhiqiang",
+          "family": "Huo",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "School of Population Health Sciences, King\u2019s College London, London WC2R 2LS, UK"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Sunyuan",
+          "family": "Wang",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "College of Artificial Intelligence, Nanjing Agricultural University, Nanjing 210031, China"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Zhilong",
+          "family": "Chen",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "College of Artificial Intelligence, Nanjing Agricultural University, Nanjing 210031, China"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Chengrui",
+          "family": "Xin",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "College of Engineering, Nanjing Agricultural University, Nanjing 210031, China"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Yungang",
+          "family": "Bai",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "College of Engineering, Nanjing Agricultural University, Nanjing 210031, China"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Zhenyu",
+          "family": "Liang",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "College of Artificial Intelligence, Nanjing Agricultural University, Nanjing 210031, China"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Yan",
+          "family": "Gong",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "College of Engineering, Northeastern University, Boston, MA 02115, USA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Yan",
+          "family": "Qian",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "College of Artificial Intelligence, Nanjing Agricultural University, Nanjing 210031, China"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-6700-9347",
+          "authenticated-orcid": false,
+          "given": "Lei",
+          "family": "Shu",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "College of Artificial Intelligence, Nanjing Agricultural University, Nanjing 210031, China"
+            },
+            {
+              "name": "School of Engineering, University of Lincoln, Lincoln LN6 7TS, UK"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Sensors"
+      ],
+      "volume": "23",
+      "issue": "5",
+      "page": "2528",
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            2023,
+            2,
+            24
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.3390/s23052528"
+    },
+    {
+      "DOI": "10.3390/s19214788",
+      "title": [
+        "SensorTalk: An IoT Device Failure Detection and Calibration Mechanism for Smart Farming"
+      ],
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0001-6841-4718",
+          "authenticated-orcid": false,
+          "given": "Yi-Bing",
+          "family": "Lin",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Department of Computer Science, National Chiao Tung University, Hsinchu 300, Taiwan"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-8916-7020",
+          "authenticated-orcid": false,
+          "given": "Yun-Wei",
+          "family": "Lin",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "College of Artificial Intelligence, National Chiao Tung University, Tainan 711, Taiwan"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Jiun-Yi",
+          "family": "Lin",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Department of Computer Science, National Chiao Tung University, Hsinchu 300, Taiwan"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Hui-Nien",
+          "family": "Hung",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Institute of Statistics, National Chiao Tung University, Hsinchu 300, Taiwan"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Sensors"
+      ],
+      "volume": "19",
+      "issue": "21",
+      "page": "4788",
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            2019,
+            11,
+            4
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.3390/s19214788"
+    },
+    {
+      "DOI": "10.1016/B978-0-323-85152-7.00014-6",
+      "error": "HTTPError: HTTP Error 404: Not Found"
+    },
+    {
+      "DOI": "10.3389/fpls.2022.845472",
+      "title": [
+        "Editorial: Nutrients Recycling in Hydroponics: Opportunities and Challenges Toward Sustainable Crop Production Under Controlled Environment Agriculture"
+      ],
+      "author": [
+        {
+          "given": "Md",
+          "family": "Asaduzzaman",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Genhua",
+          "family": "Niu",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Toshiki",
+          "family": "Asao",
+          "sequence": "additional",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Frontiers in Plant Science"
+      ],
+      "volume": "13",
+      "issue": null,
+      "page": null,
+      "article-number": "845472",
+      "published": {
+        "date-parts": [
+          [
+            2022,
+            3,
+            14
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.3389/fpls.2022.845472"
+    },
+    {
+      "DOI": "10.3390/technologies10010026",
+      "title": [
+        "Reliable IoT-Based Monitoring and Control of Hydroponic Systems"
+      ],
+      "author": [
+        {
+          "ORCID": "https://orcid.org/0000-0001-5087-5778",
+          "authenticated-orcid": false,
+          "given": "Konstantinos",
+          "family": "Tatas",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "Frederick Research Center, Frederick University, Nicosia 1036, Cyprus"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Ahmad",
+          "family": "Al-Zoubi",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Institute of Embedded Systems, Hamburg University of Technology (TUHH), Am Schwarzenberg-Campus 3 (E), 21073 Hamburg, Germany"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0002-3080-4910",
+          "authenticated-orcid": false,
+          "given": "Nicholas",
+          "family": "Christofides",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Frederick Research Center, Frederick University, Nicosia 1036, Cyprus"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Chrysostomos",
+          "family": "Zannettis",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Department of Electrical and Computer Engineering and Informatics, Frederick University, Nicosia 1036, Cyprus"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "ORCID": "https://orcid.org/0000-0003-2750-3209",
+          "authenticated-orcid": false,
+          "given": "Michael",
+          "family": "Chrysostomou",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Frederick Research Center, Frederick University, Nicosia 1036, Cyprus"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Stavros",
+          "family": "Panteli",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Adaptive Hydroponics Limited, Larnaca 6010, Cyprus"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Anthony",
+          "family": "Antoniou",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "Adaptive Hydroponics Limited, Larnaca 6010, Cyprus"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "Technologies"
+      ],
+      "volume": "10",
+      "issue": "1",
+      "page": "26",
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            2022,
+            2,
+            2
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.3390/technologies10010026"
+    },
+    {
+      "DOI": "10.1016/j.compag.2012.02.006",
+      "error": "HTTPError: HTTP Error 429: Too Many Requests"
+    },
+    {
+      "DOI": "10.1145/1525856.1525863",
+      "title": [
+        "Sensor network data fault types"
+      ],
+      "author": [
+        {
+          "given": "Kevin",
+          "family": "Ni",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "University of California, Los Angeles"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Nithya",
+          "family": "Ramanathan",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of California, Los Angeles"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Mohamed Nabil Hajj",
+          "family": "Chehade",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of California, Los Angeles"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Laura",
+          "family": "Balzano",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of California, Los Angeles"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Sheela",
+          "family": "Nair",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of California, Los Angeles"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Sadaf",
+          "family": "Zahedi",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of California, Los Angeles"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Eddie",
+          "family": "Kohler",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of California, Los Angeles"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Greg",
+          "family": "Pottie",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of California, Los Angeles"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Mark",
+          "family": "Hansen",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of California, Los Angeles"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Mani",
+          "family": "Srivastava",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of California, Los Angeles"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "ACM Transactions on Sensor Networks"
+      ],
+      "volume": "5",
+      "issue": "3",
+      "page": "1-29",
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            2009,
+            5
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.1145/1525856.1525863"
+    },
+    {
+      "DOI": "10.1145/1754414.1754419",
+      "title": [
+        "Sensor faults"
+      ],
+      "author": [
+        {
+          "given": "Abhishek B.",
+          "family": "Sharma",
+          "sequence": "first",
+          "affiliation": [
+            {
+              "name": "University of Southern California, Los Angeles, CA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Leana",
+          "family": "Golubchik",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of Southern California, Los Angeles, CA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        },
+        {
+          "given": "Ramesh",
+          "family": "Govindan",
+          "sequence": "additional",
+          "affiliation": [
+            {
+              "name": "University of Southern California, Los Angeles, CA"
+            }
+          ],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "ACM Transactions on Sensor Networks"
+      ],
+      "volume": "6",
+      "issue": "3",
+      "page": "1-39",
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            2010,
+            6
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.1145/1754414.1754419"
+    },
+    {
+      "DOI": "10.1561/2200000101",
+      "error": "HTTPError: HTTP Error 429: Too Many Requests"
+    },
+    {
+      "DOI": "10.1214/aoms/1177703732",
+      "title": [
+        "Robust Estimation of a Location Parameter"
+      ],
+      "author": [
+        {
+          "given": "Peter J.",
+          "family": "Huber",
+          "sequence": "first",
+          "affiliation": [],
+          "role": [
+            {
+              "vocabulary": "crossref",
+              "role": "author"
+            }
+          ]
+        }
+      ],
+      "container-title": [
+        "The Annals of Mathematical Statistics"
+      ],
+      "volume": "35",
+      "issue": "1",
+      "page": "73-101",
+      "article-number": null,
+      "published": {
+        "date-parts": [
+          [
+            1964,
+            3
+          ]
+        ]
+      },
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "URL": "https://doi.org/10.1214/aoms/1177703732"
+    },
+    {
+      "DOI": "10.1214/aos/1176344552",
+      "error": "HTTPError: HTTP Error 429: Too Many Requests"
+    },
+    {
+      "DOI": "10.1016/S0168-1699(03)00012-7",
+      "error": "HTTPError: HTTP Error 429: Too Many Requests"
+    },
+    {
+      "DOI": "10.1016/j.compag.2011.08.008",
+      "error": "HTTPError: HTTP Error 429: Too Many Requests"
+    },
+    {
+      "DOI": "10.1016/j.compag.2025.110544",
+      "error": "HTTPError: HTTP Error 429: Too Many Requests"
+    },
+    {
+      "DOI": "10.1016/j.jprocont.2025.103607",
+      "error": "HTTPError: HTTP Error 429: Too Many Requests"
+    }
+  ]
+}

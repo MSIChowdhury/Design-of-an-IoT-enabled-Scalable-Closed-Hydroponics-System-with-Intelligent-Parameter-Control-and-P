@@ -1,0 +1,10 @@
+ Container design-of-an-iot-enabled-scalable-closed-hydroponics-system-with-intelligent-parameter-control-and-p-project-shell-run-baf044726074 Creating 
+ Container design-of-an-iot-enabled-scalable-closed-hydroponics-system-with-intelligent-parameter-control-and-p-project-shell-run-baf044726074 Created 
+{
+  "raw_csv_files": 67,
+  "notebooks": 13,
+  "dataset_statuses": {
+    "fully profiled; individual values not manually adjudicated": 41,
+    "Git LFS pointer only; data not locally accessible": 26
+  }
+}

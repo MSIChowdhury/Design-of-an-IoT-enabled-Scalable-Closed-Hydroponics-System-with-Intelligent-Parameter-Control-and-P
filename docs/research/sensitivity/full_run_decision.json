@@ -1,0 +1,7 @@
+{
+  "timestamp_utc": "2026-11-12T21:27:44.550447+00:00",
+  "pilot_runtime_s": 2.4335560360050295,
+  "grid_expansion": 12,
+  "projected_runtime_s": 29.202672432060353,
+  "decision": "execute unchanged full grid under predeclared resource rule; pilot already falsifies universal zero-count prediction"
+}

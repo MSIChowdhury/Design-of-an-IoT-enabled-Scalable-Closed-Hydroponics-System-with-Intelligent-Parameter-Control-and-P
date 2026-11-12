@@ -59,6 +59,33 @@ The original [LiveGate protocol](docs/livegate/PROTOCOL.md) and
 [follow-up results](docs/livegate/FOLLOWUP_RESULTS.md). No replay establishes
 actual actuator execution, avoided physical damage, or a causal crop benefit.
 
+The continuing [research audit](docs/research/STATE.md) records file coverage,
+source hashes, literature access, hypotheses, skeptical review, and the
+[claim-to-evidence map](docs/research/CLAIMS.md). A separately declared whole-log
+timing sensitivity falsified a broad zero-pH-flag prediction: range plus
+persistence produced 0--3 flagged pH commands across the complete grid, while
+EC remained at zero. The original setting still reproduces exactly. Run:
+
+```bash
+docker compose run --rm --user "$(id -u):$(id -g)" project-shell python scripts/71_research_inventory.py
+docker compose run --rm --user "$(id -u):$(id -g)" project-shell python scripts/72_reproduce_audit.py
+docker compose run --rm --user "$(id -u):$(id -g)" project-shell python scripts/73_audit_sensitivity.py --stage pilot
+docker compose run --rm --user "$(id -u):$(id -g)" project-shell python scripts/73_audit_sensitivity.py --stage full
+docker compose run --rm --user "$(id -u):$(id -g)" project-shell python scripts/74_profile_research_assets.py
+docker compose run --rm --user "$(id -u):$(id -g)" -e OMP_NUM_THREADS=1 -e OPENBLAS_NUM_THREADS=1 -e MKL_NUM_THREADS=1 project-shell python scripts/75_reproduce_controlled.py
+```
+
+These are retrospective reproduction and robustness checks. The alternative
+local `data/Actual/feeds.csv` contains the same observations after timestamp and
+header normalization and supplies no independent validation. The research goal
+remains active until its remaining inspection and evidence requirements pass.
+
+The controlled rerun reproduced all 11 comparison CSVs while preserving the
+locked artifacts. The audit's legacy comparator is an approximate sensing-gate
+proxy: it omits the original alpha actuation bands and estimates unavailable
+parameters. Applying the documented pH/EC cooldown to cooling and CO2 is a
+shared replay assumption. These counts do not recover verified firmware commands.
+
 To run the broader historical pipeline:
 
 ```bash

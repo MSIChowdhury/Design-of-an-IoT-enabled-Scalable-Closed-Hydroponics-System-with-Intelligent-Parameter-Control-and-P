@@ -1,9 +1,9 @@
 name: hydro_exp2
 domain: closed hydroponic CEA
-role: target_domain_holdout
+role: unavailable_placeholder
 path: data/raw/hydroponic/experiment_2.csv
 timestamp_column: timestamp
 sampling_seconds: 15
 labels: data/raw/hydroponic/experiment_2_events.csv
-notes: "Expected from original hydroponic trial logs; not currently committed."
+notes: "Historical placeholder only: this file is absent and supplies no independent holdout. The released experiment-2 log uses the compatibility identifier hydro_exp1. Verify provenance and independence before using any future file placed here."
 

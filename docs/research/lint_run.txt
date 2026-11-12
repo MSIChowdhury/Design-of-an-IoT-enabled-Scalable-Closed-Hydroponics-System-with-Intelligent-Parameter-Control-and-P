@@ -1,0 +1,6 @@
+warning: Failed to open cache file `/workspace/.ruff_cache/0.11.10/1666290280177781404`: Permission denied (os error 13)
+warning: Failed to open cache file `/workspace/.ruff_cache/0.11.10/17298518482324719125`: Permission denied (os error 13)
+warning: Failed to open cache file `/workspace/.ruff_cache/0.11.10/17121642972925294567`: Permission denied (os error 13)
+ruff failed
+  Cause: Failed to create temporary file
+  Cause: Permission denied (os error 13) at path "/workspace/.ruff_cache/0.11.10/.tmpbLq7EP"

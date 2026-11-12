@@ -1,0 +1,88 @@
+{
+  "started_utc": "2026-11-12T21:53:21.325312+00:00",
+  "checks": [
+    "evaluation_by_scenario.csv",
+    "evaluation_summary.csv",
+    "livegate_models.csv",
+    "locked_validation_selections.csv",
+    "paired_intervals_vs_livegate.csv",
+    "real_log_audit.csv",
+    "source_windows.csv",
+    "validation_operating_points.csv",
+    "tables/paired_source_day_intervals.csv",
+    "tables/reproduction_checks.csv",
+    "tables/sensor_scenario_metrics.csv"
+  ],
+  "original_checks": [
+    {
+      "artifact": "evaluation_summary.csv",
+      "rows": 89,
+      "reproduced": true
+    },
+    {
+      "artifact": "locked_validation_selections.csv",
+      "rows": 45,
+      "reproduced": true
+    },
+    {
+      "artifact": "source_windows.csv",
+      "rows": 24,
+      "reproduced": true
+    }
+  ],
+  "status": "passed",
+  "finished_utc": "2026-11-12T21:59:25.218327+00:00",
+  "elapsed_seconds": 363.8930259140034,
+  "process_peak_rss_kib": 1167536,
+  "original_artifacts_unchanged": true,
+  "frozen_fingerprints": {
+    "results/metrics/livegate_followup/validation_detail.csv.gz": "46cb9ba74d7c42d11fbc273a41623b3e1012a1a5d4e91c41d4e09753141ac79c",
+    "results/metrics/livegate_followup/real_log_audit.csv": "818d105d13f9b339d183f7e3495b210213866b1e9cb278075e2b878f863cda4e",
+    "results/metrics/livegate_followup/evaluation_summary.csv": "a8f8a7973aee6309a8520ff6cae41bf0bc742ae26a4eb147ec9bc07adeaed7de",
+    "results/metrics/livegate_followup/livegate_models.csv": "0f41170250526823e4cb84fd978c0617e5ff911deed882243a0f50c849eec6d8",
+    "results/metrics/livegate_followup/locked_validation_selections.csv": "c1e4b1948272aa3393ff664dffea17c91fc90a4b44e571515ac1763d899b396f",
+    "results/metrics/livegate_followup/validation_operating_points.csv": "ddbeba9ab5ddbfc0442e11d9d8eb7f5795a13b1d41b87f8ed74e694666612fbe",
+    "results/metrics/livegate_followup/evaluation_detail.csv.gz": "0b15213d2c016d22b7d74e6f6d5ccd040aace043b32ea1f6061230975586e006",
+    "results/metrics/livegate_followup/source_windows.csv": "42ff1759e0a5d16a3704228f10c79f61ff79dae8913f09145c5b5c1a569f2198",
+    "results/metrics/livegate_followup/paired_intervals_vs_livegate.csv": "1e1475c4465aff62cbdada6f333c49ae1eeb47da2cfbedc0bdc0dfdde867a903",
+    "results/metrics/livegate_followup/evaluation_by_scenario.csv": "25d8b622852e2a7870ff60feafdb5db54c2ae28721f6245c9e68e87862cbad6c",
+    "results/metrics/livegate_followup/provenance.json": "e4c787af04a7839006526c8e8856adb4714b62bb94999d69c5979ce88eee0bbe",
+    "results/metrics/livegate/validation_detail.csv.gz": "507578ccce058c20d42daaacac7dd1696b3b10aef04d157aeaa90697ca301581",
+    "results/metrics/livegate/real_log_audit.csv": "7a53c048024386af73ef24f3606c1139871e4f9d2a3b633729c817544a089f99",
+    "results/metrics/livegate/evaluation_summary.csv": "f826ac885bb3350c345d29c3e8862ba60bef50a6c473ec6e4d275798293af3b3",
+    "results/metrics/livegate/livegate_models.csv": "80306a4e326ba35aaaa578c300fb0c8798dedce9c66d746cd3789782fffb9f13",
+    "results/metrics/livegate/locked_validation_selections.csv": "8397ceff3d26abb21f6b7250f8971c9d02e329687c4d5ac0ccea69b1eace22eb",
+    "results/metrics/livegate/validation_operating_points.csv": "ee0228df65ad061a6d1995a5ff79e94cc468b755178da0f3abc23ef8e6967d99",
+    "results/metrics/livegate/evaluation_detail.csv.gz": "8801560ad7f4d602e30b19e4b5f6216f4ba397b2fef523dc199ac1a91161acd8",
+    "results/metrics/livegate/source_windows.csv": "42ff1759e0a5d16a3704228f10c79f61ff79dae8913f09145c5b5c1a569f2198",
+    "results/metrics/livegate/paired_intervals_vs_livegate.csv": "751766ad9a5279012a06c051668e5381068616b4bd82d2a5c48bf7f92bc1a673",
+    "results/metrics/livegate/evaluation_by_scenario.csv": "1d2fcb49fc306758cb6fb2d536051dba264ed4c8082f4bc61b79124f72fd576b",
+    "configs/experiments/livegate_followup.yaml": "bc090653684488dffa06969d44e04192aa87484faf7157293051e47bdfada625",
+    "configs/experiments/livegate.yaml": "b32155fbd4dd0cfd0522dcb157829924b185bd4cd20fa65ed796d4c775c7d0de",
+    "src/aasvr/livegate.py": "04c12312aa85e59d45ba01a141a0a9b44b1464c053c5b3c0e478a342ec72470d",
+    "src/aasvr/simple_gates.py": "8a7de5b0e25fc624ec34e5ba94632e88fcf36ee3b441875c97cfb085c1e2d876",
+    "scripts/66_livegate_benchmark.py": "fb24d01f38cdc1050e870d78b93f246b51dca5e42b3b94a2f9e7f1eac25f164b",
+    "scripts/70_livegate_followup.py": "58b07ca23ad89e52145cb0fbdce2c5d80e5b323ffcec54e13ad4f0029f1d4b96"
+  },
+  "output_hashes": {
+    "results/metrics/research_reproduction_controlled/evaluation_by_scenario.csv": "25d8b622852e2a7870ff60feafdb5db54c2ae28721f6245c9e68e87862cbad6c",
+    "results/metrics/research_reproduction_controlled/evaluation_detail.csv.gz": "35c76b798023c51b972e3f64c3fbb20b82b73d57ba873f02e71f4acb6f83a88e",
+    "results/metrics/research_reproduction_controlled/evaluation_summary.csv": "a8f8a7973aee6309a8520ff6cae41bf0bc742ae26a4eb147ec9bc07adeaed7de",
+    "results/metrics/research_reproduction_controlled/figures/operating_points.pdf": "c9b5f21fca1ca61cc46bfd87be34ce646eb155deb3e223509c511ebc93ca57c9",
+    "results/metrics/research_reproduction_controlled/figures/operating_points.png": "66a56cfdea1dc824198c4198edbd7d5848c796e64116aaa8c3f5fe5710bcccae",
+    "results/metrics/research_reproduction_controlled/livegate_models.csv": "0f41170250526823e4cb84fd978c0617e5ff911deed882243a0f50c849eec6d8",
+    "results/metrics/research_reproduction_controlled/locked_validation_selections.csv": "c1e4b1948272aa3393ff664dffea17c91fc90a4b44e571515ac1763d899b396f",
+    "results/metrics/research_reproduction_controlled/paired_intervals_vs_livegate.csv": "1e1475c4465aff62cbdada6f333c49ae1eeb47da2cfbedc0bdc0dfdde867a903",
+    "results/metrics/research_reproduction_controlled/real_log_audit.csv": "818d105d13f9b339d183f7e3495b210213866b1e9cb278075e2b878f863cda4e",
+    "results/metrics/research_reproduction_controlled/source_windows.csv": "42ff1759e0a5d16a3704228f10c79f61ff79dae8913f09145c5b5c1a569f2198",
+    "results/metrics/research_reproduction_controlled/tables/paired_source_day_intervals.csv": "d2efd0b2fca8d73ce6811a46af5ee5069fa48e04cdb4b2116e1c7ad2a35e2c6c",
+    "results/metrics/research_reproduction_controlled/tables/reproduction_checks.csv": "d5a8a73770852fb7391f87b1d88e7c6b77f0adbd5984e4a71953b3ff9ef3ac0d",
+    "results/metrics/research_reproduction_controlled/tables/sensor_scenario_metrics.csv": "54765faa40cdce10b08871ae07d4c701b82e743e914a5771267bb32de107ef72",
+    "results/metrics/research_reproduction_controlled/validation_detail.csv.gz": "a0a22a011abbe992d5e5f9809e3be57e96b53e350784eadc9fb39100fb1fb0e3",
+    "results/metrics/research_reproduction_controlled/validation_operating_points.csv": "ddbeba9ab5ddbfc0442e11d9d8eb7f5795a13b1d41b87f8ed74e694666612fbe"
+  },
+  "runner_hash": {
+    "scripts/75_reproduce_controlled.py": "77f9223ca0ce99001aace8fdff961cafa58bd6afd5a163a40a67004d5cc66c8a",
+    "docs/research/CYCLE_03_PROTOCOL.md": "2e5f81ac29b88cf7a86624212ab10851e1ea47b2e90462773d54408905f6af71"
+  }
+}
