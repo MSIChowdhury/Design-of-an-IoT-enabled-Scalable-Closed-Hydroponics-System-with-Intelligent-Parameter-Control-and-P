@@ -128,3 +128,5 @@ The minimum new physical evidence remains independently calibrated pH/EC
 references, observed command/relay or delivered-volume records, and frozen
 comparisons across independent benchtop sessions. No hardware purchase,
 collection expense or submission is authorized or performed.
+
+The verified scientific package is committed and pushed; see [delivery verification](DELIVERY.json). The untracked user input remains unchanged. GitHub reported 20 dependency alerts during push (10 high, 8 moderate, 2 low); they were not triaged in this research cycle and are not asserted to be independently confirmed vulnerabilities.

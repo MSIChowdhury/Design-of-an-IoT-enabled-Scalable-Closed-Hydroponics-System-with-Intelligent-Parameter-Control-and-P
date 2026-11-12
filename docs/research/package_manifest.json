@@ -16,10 +16,13 @@
     "docs/research/reproduction/report_cycle01.json": "84eb4bc427c6c12456c644b2abd0db84aa992fb68679a08f04698006fc11585b",
     "docs/research/controlled_reproduction.json": "525bd44cb2e8da4aae1f93c050bf4d3891ce6e5a9d439873c5d8d958bbaf918b",
     "docs/research/CLAIMS.md": "20d61feef89a63f36b4d2f01df12f1fc4d8bbc8136b08f27cec3f392fd1130b3",
-    "docs/research/REQUIREMENTS.csv": "80dd49e427708b52dcfed183281563c71c07cad748630bd554503648877877b8",
+    "docs/research/REQUIREMENTS.csv": "6c40b959d2cd877d5170bf9287b7aa1b6b369aeb795c97d4d95b67b69f56d672",
     "docs/research/ALTERNATIVES_REVIEW.md": "1cfd99371675c45f361126c78f67185d2d57a04a2442b352d1fddf04a4d19a09",
     "docs/research/reviewer_coverage.csv": "559eb8bedece0bb7ce5b35425ecb817aeaa65ab5a41dc6da683b5b2cc3481b95",
     "docs/research/coverage.csv": "dc54245fb551c1bb04005d72df869e1bd893e07d778d2b60ee3f5d1267eb2640",
-    "docs/research/final_verification.json": "525067b9d75109729e6913f8a8acd9fa365c3519b5430b28a96b725be56516eb"
-  }
+    "docs/research/final_verification.json": "525067b9d75109729e6913f8a8acd9fa365c3519b5430b28a96b725be56516eb",
+    "docs/research/STATE.md": "f10e36ee4600c5924a1b760bc701902234554c50f66b29cbe93e1570f68e6287",
+    "docs/research/DELIVERY.json": "7c597b8a2dcbe838009c7e5b2044518c39f6969b37a7ffacf4c3e7f2bd9d90d0"
+  },
+  "delivery_metadata_updated_utc": "2026-11-12T22:07:44.268940+00:00"
 }

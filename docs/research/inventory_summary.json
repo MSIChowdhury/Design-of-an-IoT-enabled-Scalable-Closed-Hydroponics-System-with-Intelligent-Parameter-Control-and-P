@@ -1,9 +1,9 @@
 {
-  "timestamp_utc": "2026-11-12T22:05:50.020633+00:00",
-  "git_head": "cbf7149b47bd34c97436f8c66f91d9c688ba13c9",
-  "entries": 3447,
-  "hashed_files": 3435,
-  "hashed_bytes": 6345366377,
+  "timestamp_utc": "2026-11-12T22:07:47.882979+00:00",
+  "git_head": "ae4fe7260bb9c150605a57d32ce989add7d0f848",
+  "entries": 3448,
+  "hashed_files": 3436,
+  "hashed_bytes": 6345367840,
   "meaning": "Hashes establish identity, not semantic reading or validation. See coverage.csv and reviewer_coverage.csv.",
   "exclusions": [
     {
@@ -58,7 +58,7 @@
     {
       "path": "docs/research/inventory.csv",
       "kind": "file",
-      "bytes": 651797,
+      "bytes": 656608,
       "sha256": "",
       "status": "inventory output; avoids self-reference"
     },

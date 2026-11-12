@@ -1,0 +1,17 @@
+{
+  "verified_utc": "2026-11-12T22:07:44.268940+00:00",
+  "scientific_package_commit": "ae4fe7260bb9c150605a57d32ce989add7d0f848",
+  "remote_main_at_verification": "ae4fe7260bb9c150605a57d32ce989add7d0f848",
+  "remote_matches": true,
+  "worktree_after_package_push": "only untracked data/Actual/; no tracked changes",
+  "research_goal_complete": false,
+  "followup_metadata": "this delivery record and requirement status are recorded in a separate documentation commit",
+  "github_push_notice": {
+    "dependency_alerts_reported": 20,
+    "high": 10,
+    "moderate": 8,
+    "low": 2,
+    "triaged": false
+  },
+  "next_required_evidence": "independent calibrated pH/EC references plus issued/observed actuation in frozen independent sessions; see INSPECTION_LIMITS.md"
+}
