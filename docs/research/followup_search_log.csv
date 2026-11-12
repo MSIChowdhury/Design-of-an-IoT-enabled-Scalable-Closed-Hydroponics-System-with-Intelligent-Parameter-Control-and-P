@@ -1,0 +1,44 @@
+date,action,query_or_url,result,limit
+2026-11-12,search,"""10.1016/j.compag.2025.110544"" filetype:pdf",No accessible target full text located,primary full text remains unavailable
+2026-11-12,search,"""Machine learning-based fault detection and diagnosis"" ""Karimzadeh"" hydroponic full text",publisher/Aalto abstract leads,no target PDF
+2026-11-12,search,"""Biosystems Engineering"" ""2025"" ""Q1"" SCImago",institutional and secondary2025 leads,not accepted as current database/category verification
+2026-11-12,search,"""Smart Agricultural Technology"" ""2025"" ""Agronomy"" ""Q1""",institutional/secondary leads and historical2024 export,not authenticated current edition
+2026-11-12,open,https://www.sciencedirect.com/science/article/pii/S0168169925006507,HTTP403,full text not read
+2026-11-12,open,https://research.aalto.fi/en/publications/machine-learning-based-fault-detection-and-diagnosis-of-electrica/,abstract and bibliography read; DOI-only access link,no file attachment
+2026-11-12,open,https://www.sciencedirect.com/journal/smart-agricultural-technology/about/aims-and-scope,HTTP403,direct full scope not read
+2026-11-12,open,https://www.iit.comillas.edu/publicacion/info_revista/en/288/Biosystems_Engineering,2025 JCR/SJR institutional table read,no category printed; not accepted as direct current DB verification
+2026-11-12,open,https://panorama.upv.es/es/ipublic/source/9866033,institutional source links/categories inspected,dynamic quartile/year not reliably read
+2026-11-12,search,"""10.1016/j.compag.2025.110544"" (pdf OR manuscript OR repository) -site:minicod.com -site:research.aalto.fi",no accessible target PDF,do not request author copy without messaging authorization
+2026-11-12,search,"""Saeed Karimzadeh"" ""110544"" ""pdf""",UC Davis publication list DOI lead,metadata only
+2026-11-12,search,"site:shop.elsevier.com ""Smart Agricultural Technology""",publisher CEA companion description,full SAT scope still not obtained
+2026-11-12,search,"site:uefiscdi.gov.ro ""2025"" ""Biosystems Engineering"" ""Q1""",government JCR2024 June2025 export located,dated historical edition
+2026-11-12,open,https://jcr.clarivate.com/jcr-jp/journal-profile?journal=SMART_AGR_TECHNOL&year=2025,HTTP403,no authenticated current JCR access
+2026-11-12,open,https://www.scimagojr.com/journalsearch.php?clean=0&q=21101111783&tip=sid,HTTP403,no current direct SCImago access
+2026-11-12,open/render,https://uefiscdi.gov.ro/resource-865584-JCR_2024.iunie2025.pdf,selected target rows extracted; pages3/137 visually checked,785-page document not fully read; font-mapping warnings overcome by rendered checks
+2026-11-12,open,https://shop.elsevier.com/journals/smart-agricultural-technology/2772-3755,HTTP404,no direct scope obtained
+2026-11-12,API,https://api.crossref.org/works/{DOI},22/22 original active work records retrieved; new2003 companion checked separately,no update links is limited registration evidence
+2026-11-12,open,https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.845472/full,title/type/authors and introductory nutrient section read,not full editorial or all cited research
+2026-11-12,open,https://www.mdpi.com/2227-7080/10/1/26,author record and abstract/introduction inspected,full methods not newly read
+2026-11-12,search,"""10.1016/j.compag.2025.110544"" (correction OR corrigendum OR retraction OR erratum)",no associated primary notice located,not exhaustive absence proof
+2026-11-12,search,"""10.1016/j.jprocont.2025.103607"" (correction OR corrigendum OR retraction OR erratum)",secondary generic withdrawn badge encountered; primary follow-up required,badge not accepted as retraction evidence
+2026-11-12,search,"site:sciencedirect.com/journal/smart-agricultural-technology ""aims and scope"" ""research""",no direct full scope obtained,irrelevant results discarded
+2026-11-12,open,https://aaltodoc.aalto.fi/bitstreams/11133e78-e888-4653-913d-4a438440efc3/download,HTTP403,citing-paper lead not target full-text access
+2026-11-12,Crossmark,https://crossmark.crossref.org/dialog/?doi=10.1016/j.jprocont.2025.103607,web tool unavailable; direct HTTP200 says Document is current,checked status only at this time; does not prove no future notice
+2026-11-12,Crossmark,https://crossmark.crossref.org/dialog/?doi=10.1016/j.compag.2025.110544,web tool unavailable; direct HTTP200 says Document is current,same limit
+2026-11-12,search,"""Residual-based fault detection and isolation in control environment agriculture"" ""retracted"" site:sciencedirect.com",no associated primary notice found,no universal absence claim
+2026-11-12,search,"""Residual-based fault detection and isolation in control environment agriculture"" ""retraction""",no associated primary notice found,same limit
+2026-11-12,search,"""10.1016/j.jprocont.2025.103607"" ""corrigendum""",unrelated notice matches only,unrelated notices not attributed to target
+2026-11-12,search,"""Machine learning-based fault detection and diagnosis of electrical conductivity and pH sensors"" site:escholarship.org",target full text not located,author dissertation lead considered only
+2026-11-12,search,"""Lettuce dataset with RGB canopy images, biomass, nutrient solution""",Aalto primary dataset metadata read,30-minute averages; no numerical data opened
+2026-11-12,open,https://doi.org/10.5281/zenodo.17041810,web tool inaccessible,Aalto dataset record instead cites16912088; versions not equated
+2026-11-12,open,https://zenodo.org/records/17041810,web tool inaccessible,no full dataset inspected
+2026-11-12,open,https://zenodo.org/records/16912088,web tool inaccessible,primary institutional metadata used
+2026-11-12,search,"""10.1016/S1537-5110(02)00232-5""",publisher abstract plus author-institution publication record,full methods not read
+2026-11-12,search,"hydroponic sensor fault dataset ""actuator"" ""reference"" public",Frontiers2024 paired-reference lead; other uninspected leads,bounded source screening; not exhaustive
+2026-11-12,search,"""Multi-Sensor High-Throughput Phenotyping Dataset"" hydroponic lettuce",Zenodo20759414 metadata read,39.1GB archive not downloaded; crop-trait references not demonstrated dynamic EC/pH truth
+2026-11-12,search,"""hydroponic"" ""fault"" ""dataset"" ""Karimzadeh"" data available",new2026 review and primary study leads,no numerical data opened
+2026-11-12,primary indexed record,https://zenodo.org/records/20759414,description and39.1GB archive size read in primary search result,metadata only; no raw outcomes
+2026-11-12,open/methods,https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2024.1270544/full,selected methods2.3/6.2/6.3 and availability read; clock/calibration terms searched,not full scientific text; web substring absence is not proof of absent calibration
+2026-11-12,open,https://arxiv.org/abs/2611.03849,abstract andv1 submission metadata read,preprint only; no methods/results validation
+2026-11-12,open/API,https://github.com/JeanPompeo/Hydroponic_Control_System_Chamber_1,repository tree and source/header eligibility screen,no raw numerical sensor/reference outcomes read; calibration/clock relation unresolved
+2026-11-12,search,Hydrofarm APCEM2 manual accuracy CO2 temperature pdf site:hydrofarm.com,manufacturer product page located,quantified accuracy/clock bounds not verified; no purchase

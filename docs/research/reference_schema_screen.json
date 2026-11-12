@@ -1,0 +1,85 @@
+{
+  "checked_utc": "2026-11-12T22:17:41.118409+00:00",
+  "repository_commit": "9a38f79ff6a4df68720ea2a87f1d458a38be3329",
+  "protocol_sha256": "7860f582ad38c7c43f290bd12a7eb82ae2f041f6a3da9e3a3f3e91c21c6d3e79",
+  "mode": "source files and first data-file lines only; no numerical outcome scoring",
+  "files": [
+    {
+      "path": "Arduino Sketches/Hydroponic_Control/Hydroponic_Control.ino",
+      "url": "https://raw.githubusercontent.com/JeanPompeo/Hydroponic_Control_System_Chamber_1/9a38f79ff6a4df68720ea2a87f1d458a38be3329/Arduino%20Sketches/Hydroponic_Control/Hydroponic_Control.ino",
+      "inspection": "source",
+      "bytes_received": 11175,
+      "received_sha256": "d38c4cfa08552e067fc492b89db149f58787d0224e1bedf052f12374d03684f6",
+      "local_copy": "tmp/reference_eligibility_2026-11-12/0-Hydroponic_Control.ino"
+    },
+    {
+      "path": "Arduino Sketches/CO2_Sensors/CO2_Sensors.ino",
+      "url": "https://raw.githubusercontent.com/JeanPompeo/Hydroponic_Control_System_Chamber_1/9a38f79ff6a4df68720ea2a87f1d458a38be3329/Arduino%20Sketches/CO2_Sensors/CO2_Sensors.ino",
+      "inspection": "source",
+      "bytes_received": 4461,
+      "received_sha256": "0280abf3974c754b38c1909b9772d93a88a8d00939c6e0d22a9e39379aa2399b",
+      "local_copy": "tmp/reference_eligibility_2026-11-12/1-CO2_Sensors.ino"
+    },
+    {
+      "path": "Arduino Sketches/SHT31_Multiplexer/SHT31_Multiplexer.ino",
+      "url": "https://raw.githubusercontent.com/JeanPompeo/Hydroponic_Control_System_Chamber_1/9a38f79ff6a4df68720ea2a87f1d458a38be3329/Arduino%20Sketches/SHT31_Multiplexer/SHT31_Multiplexer.ino",
+      "inspection": "source",
+      "bytes_received": 3676,
+      "received_sha256": "a2d373d4330de7ae7906cec94f96c411157e18edf19193e71631420ae12d5246",
+      "local_copy": "tmp/reference_eligibility_2026-11-12/2-SHT31_Multiplexer.ino"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/02.24.2022.txt",
+      "url": "https://raw.githubusercontent.com/JeanPompeo/Hydroponic_Control_System_Chamber_1/9a38f79ff6a4df68720ea2a87f1d458a38be3329/Low-Cost%20Sensor%20Data/T1%20Data%20%2830C%29/02.24.2022.txt",
+      "inspection": "first line only",
+      "bytes_received": 608,
+      "received_sha256": "0c3351c543f34d4a33c510f00ff697daf4981adb495781e7cdf177e51303588a",
+      "local_copy": "tmp/reference_eligibility_2026-11-12/3-02.24.2022.txt",
+      "header": "Datetime, temp_LNS_1, temp_LNS_2, temp_LNS_3, temp_LNS_4, temp_sensor, hum_sensor, temp_outside, hum_outside, temp_upper, hum_upper, temp_intake, hum_intake, temp_outflow, hum_outflow, V_CO2_below, V_CO2_lower,V_CO2_upper, V_CO2_above, V_CO2_sensor, CO2_Tank, ORP_LNS_1, DO_LNS_1, pH_LNS_1, EC_LNS_1, Water_Dose_1, ORP_LNS_2, DO_LNS_2, pH_LNS_2, EC_LNS_2, Water_Dose_2, pH_Dose_1, pH_Dose_2, EC_Dose_1, EC_Dose_2, ORP_LNS_3, DO_LNS_3, pH_LNS_3, EC_LNS_3, Water_Dose_3, ORP_LNS_4, DO_LNS_4, pH_LNS_4, EC_LNS_4, Water_Dose_4, pH_Dose_3, pH_Dose_4, EC_Dose_3, EC_Dose_4, Person_1, Person_2, Person_3, Door_Open"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.03.2022.txt",
+      "url": "https://raw.githubusercontent.com/JeanPompeo/Hydroponic_Control_System_Chamber_1/9a38f79ff6a4df68720ea2a87f1d458a38be3329/Low-Cost%20Sensor%20Data/T1%20Data%20%2830C%29/03.03.2022.txt",
+      "inspection": "first line only",
+      "bytes_received": 568,
+      "received_sha256": "9e546610a7cae6c8fc4b8077622fdb725882690b44a23a9b1b98e2cb000a6f88",
+      "local_copy": "tmp/reference_eligibility_2026-11-12/4-03.03.2022.txt",
+      "header": "Datetime, temp_LNS_1, temp_LNS_2, temp_LNS_3, temp_LNS_4, temp_sensor, hum_sensor, temp_outside, hum_outside, temp_upper, hum_upper, temp_intake, hum_intake, temp_outflow, hum_outflow, V_CO2_below, V_CO2_lower,V_CO2_upper, V_CO2_above, V_CO2_sensor, CO2_Tank, ORP_LNS_1, DO_LNS_1, pH_LNS_1, EC_LNS_1, Water_Dose_1, ORP_LNS_2, DO_LNS_2, pH_LNS_2, EC_LNS_2, Water_Dose_2, pH_Dose_1, pH_Dose_2, EC_Dose_1, EC_Dose_2, ORP_LNS_3, DO_LNS_3, pH_LNS_3, EC_LNS_3, Water_Dose_3, ORP_LNS_4, DO_LNS_4, pH_LNS_4, EC_LNS_4, Water_Dose_4, pH_Dose_3, pH_Dose_4, EC_Dose_3, EC_Dose_4,"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-2-22-132510.csv",
+      "url": "https://raw.githubusercontent.com/JeanPompeo/Hydroponic_Control_System_Chamber_1/9a38f79ff6a4df68720ea2a87f1d458a38be3329/Referense%20Sensor%20Data/T1%20Data%20%2830C%29/Mar-2-22-132510.csv",
+      "inspection": "first line only",
+      "bytes_received": 57,
+      "received_sha256": "e42aae255477790feb2f3afa6638dbc9d96af2755f1c37fb2e431cda9ee7a87d",
+      "local_copy": "tmp/reference_eligibility_2026-11-12/5-Mar-2-22-132510.csv",
+      "header": "Position,M_D_YYYY,TIME[HH:mm:ss],CO2[ppm],Temp[C],RH[%]"
+    }
+  ],
+  "clock_source_check": {
+    "checked_utc": "2026-11-12T22:23:52.308155+00:00",
+    "path": "Python Files/Write_Arduino_Data.py",
+    "url": "https://raw.githubusercontent.com/JeanPompeo/Hydroponic_Control_System_Chamber_1/9a38f79ff6a4df68720ea2a87f1d458a38be3329/Python%20Files/Write_Arduino_Data.py",
+    "source_sha256": "02cbebc8969d920b16e4ace817138daf09738d363614486847028f8f306f47f5",
+    "inspection": "timestamp-expression lines only; database connection/configuration content excluded",
+    "lines": [
+      {
+        "line": 2,
+        "text": "import datetime as datetime"
+      },
+      {
+        "line": 67,
+        "text": "# Prints datetime and sensor data to serial monitor"
+      },
+      {
+        "line": 69,
+        "text": "print(datetime.datetime.now().strftime(\"%Y-%m-%d %H:%M:%S\"), \",\", stream1, stream2, stream3, stream4,"
+      },
+      {
+        "line": 72,
+        "text": "Data = (datetime.datetime.now().strftime(\"%Y-%m-%d %H:%M:%S\"), \",\", stream1, stream2, stream3, stream4,"
+      }
+    ],
+    "reference_clock_relation": "not established by these logger expressions"
+  }
+}

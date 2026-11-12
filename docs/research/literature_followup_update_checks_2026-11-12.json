@@ -1,0 +1,165 @@
+{
+  "access_date": "2026-11-12",
+  "scope": "New reviewer follow-up only; selected registration/update evidence, not absence proof",
+  "crossmark": [
+    {
+      "doi": "10.1016/S0168-1699(03)00012-7",
+      "url": "https://crossmark.crossref.org/dialog/?doi=10.1016%2FS0168-1699%2803%2900012-7",
+      "checked_utc": "2026-11-12T22:14:34.146830+00:00",
+      "status": 200,
+      "final_url": "https://crossmark.crossref.org/dialog/?doi=10.1016%2FS0168-1699%2803%2900012-7",
+      "extracted_text": "Crossmark CrossMark data for this content is not currently available. About CrossMark"
+    },
+    {
+      "doi": "10.3390/s19214788",
+      "url": "https://crossmark.crossref.org/dialog/?doi=10.3390%2Fs19214788",
+      "checked_utc": "2026-11-12T22:14:34.817476+00:00",
+      "status": 200,
+      "final_url": "https://crossmark.crossref.org/dialog/?doi=10.3390%2Fs19214788",
+      "extracted_text": "Crossmark Document is current Any future updates will be listed below SensorTalk: An IoT Device Failure Detection and Calibration Mechanism for Smart Farming Crossref DOI link: https://doi.org/10.3390/s19214788 Published Online: 2019-11-04 Update policy: https://doi.org/10.3390/mdpi_crossmark_policy Authors Lin, Yi-Bing https://orcid.org/0000-0001-6841-4718 Lin, Yun-Wei https://orcid.org/0000-0002-8916-7020 Lin, Jiun-Yi Hung, Hui-Nien Funding Funding for this research was provided by: Ministry of Education (MOE) in Taiwan, R.O.C. (the Center for Open Intelligent Connectivity from The Featured Areas Research Center Program within the framework of the Higher Education Sprout Project by the Ministry of Education (MOE) in Taiwan, R.O.C.) Ministry of Science and Technology (106N490, 107R491, 108-2221-E-009-047) License Information Version of Record valid from 2019-11-04 About CrossMark"
+    },
+    {
+      "doi": "10.1016/S1537-5110(02)00232-5",
+      "url": "https://crossmark.crossref.org/dialog/?doi=10.1016%2FS1537-5110%2802%2900232-5",
+      "checked_utc": "2026-11-12T22:14:35.266002+00:00",
+      "status": 200,
+      "final_url": "https://crossmark.crossref.org/dialog/?doi=10.1016%2FS1537-5110%2802%2900232-5",
+      "extracted_text": "Crossmark CrossMark data for this content is not currently available. About CrossMark"
+    }
+  ],
+  "selected_newlead_metadata": [
+    {
+      "doi": "10.3390/agriengineering8110461",
+      "url": "https://api.crossref.org/works/10.3390%2Fagriengineering8110461",
+      "checked_utc": "2026-11-12T22:18:12.581022+00:00",
+      "status": 200,
+      "selected_fields": {
+        "DOI": "10.3390/agriengineering8110461",
+        "title": [
+          "Data-Processing and Signal Analysis Methods for Operational Status Monitoring and Sensor–Actuator Anomaly Detection for Smart Vertical Farms"
+        ],
+        "type": "journal-article",
+        "publisher": "MDPI AG",
+        "published": {
+          "date-parts": [
+            [
+              2026,
+              10,
+              29
+            ]
+          ]
+        },
+        "update-to": null,
+        "updated-by": null,
+        "relation": {}
+      }
+    },
+    {
+      "doi": "10.13031/ja.15603",
+      "url": "https://api.crossref.org/works/10.13031%2Fja.15603",
+      "checked_utc": "2026-11-12T22:18:12.752835+00:00",
+      "status": 200,
+      "selected_fields": {
+        "DOI": "10.13031/ja.15603",
+        "title": [
+          "Automated Drift Compensation System for Electrical Conductivity and pH Probes in Hydroponic Systems"
+        ],
+        "type": "journal-article",
+        "publisher": "American Society of Agricultural and Biological Engineers (ASABE)",
+        "published": {
+          "date-parts": [
+            [
+              2024
+            ]
+          ]
+        },
+        "update-to": null,
+        "updated-by": null,
+        "relation": {}
+      }
+    },
+    {
+      "doi": "10.3390/agriengineering8110461",
+      "url": "https://crossmark.crossref.org/dialog/?doi=10.3390%2Fagriengineering8110461",
+      "checked_utc": "2026-11-12T22:18:13.205971+00:00",
+      "status": 200,
+      "extracted_text": "Crossmark Document is current Any future updates will be listed below Data-Processing and Signal Analysis Methods for Operational Status Monitoring and Sensor–Actuator Anomaly Detection for Smart Vertical Farms Crossref DOI link: https://doi.org/10.3390/agriengineering8110461 Published Online: 2026-10-29 Update policy: https://doi.org/10.3390/mdpi_crossmark_policy Authors Rahman, Md Ashikur https://orcid.org/0009-0002-1197-1876 Reza, Md Nasim https://orcid.org/0000-0002-7793-400X Mun, Yong Il Majumder, Arnab https://orcid.org/0009-0003-0122-6060 Jeong, Kanghee Ali, Md Razob Chung, Sun-Ok https://orcid.org/0000-0001-7629-7224 Funding Funding for this research was provided by: Korea Institute of Planning and Evaluation for Technology in Food, Agriculture and Forestry Ministry of Agriculture, Food and Rural Affairs (RS-2025-02303373) (RS-2025-02303373) License Information Version of Record \n                             valid from 2026-10-29 Text and Data Mining \n                             valid from 2026-10-29 About CrossMark"
+    }
+  ],
+  "crossref_selected": [
+    {
+      "DOI": "10.1016/s0168-1699(03)00012-7",
+      "title": [
+        "Neural network-based detection of mechanical, sensor and biological faults in deep-trough hydroponics"
+      ],
+      "type": "journal-article",
+      "publisher": "Elsevier BV",
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "assertion": null
+    },
+    {
+      "DOI": "10.1016/s1537-5110(02)00232-5",
+      "title": [
+        "Fault Detection and Diagnosis in Deep-trough Hydroponics using Intelligent Computational Tools"
+      ],
+      "type": "journal-article",
+      "publisher": "Elsevier BV",
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "assertion": null
+    },
+    {
+      "DOI": "10.1080/24751839.2017.1347393",
+      "title": [
+        "On improving agricultural IoT management process for fault detection"
+      ],
+      "type": "journal-article",
+      "publisher": "Informa UK Limited",
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "assertion": [
+        {
+          "value": "The publishing and review policy for this title is described in its Aims & Scope.",
+          "order": 1,
+          "name": "peerreview_statement",
+          "label": "Peer Review Statement"
+        },
+        {
+          "value": "http://www.tandfonline.com/action/journalInformation?show=aimsScope&journalCode=tjit20",
+          "URL": "http://www.tandfonline.com/action/journalInformation?show=aimsScope&journalCode=tjit20",
+          "order": 2,
+          "name": "aims_and_scope_url",
+          "label": "Aim & Scope"
+        }
+      ]
+    },
+    {
+      "DOI": "10.13031/2013.11412",
+      "title": [
+        "PREDICTIVE NEURAL NETWORK MODELING OF pH AND ELECTRICAL CONDUCTIVITY IN DEEPTROUGH HYDROPONICS"
+      ],
+      "type": "journal-article",
+      "publisher": "American Society of Agricultural and Biological Engineers (ASABE)",
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "assertion": null
+    },
+    {
+      "DOI": "10.3390/s19214788",
+      "title": [
+        "SensorTalk: An IoT Device Failure Detection and Calibration Mechanism for Smart Farming"
+      ],
+      "type": "journal-article",
+      "publisher": "MDPI AG",
+      "update-to": null,
+      "updated-by": null,
+      "relation": {},
+      "assertion": null
+    }
+  ]
+}

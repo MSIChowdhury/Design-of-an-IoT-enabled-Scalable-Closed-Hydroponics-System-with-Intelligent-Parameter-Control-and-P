@@ -1,0 +1,1278 @@
+{
+  "started_utc": "2026-11-12T22:10:47.196813+00:00",
+  "scope": "Current Crossref work metadata for22 active DOIs before the new2003 companion citation; companion metadata checked separately and appended; not absence-of-retraction proof",
+  "records": [
+    {
+      "doi": "10.1186/s40537-020-0285-1",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Sensor data quality: a systematic review"
+      ],
+      "publisher": "Springer Science and Business Media LLC",
+      "published": {
+        "date-parts": [
+          [
+            2020,
+            2,
+            11
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            10
+          ]
+        ],
+        "date-time": "2026-11-10T00:06:33Z",
+        "timestamp": 1794269193828,
+        "version": "4.9.0"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 363,
+      "link": [
+        {
+          "URL": "http://link.springer.com/content/pdf/10.1186/s40537-020-0285-1.pdf",
+          "content-type": "application/pdf",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        },
+        {
+          "URL": "http://link.springer.com/article/10.1186/s40537-020-0285-1/fulltext.html",
+          "content-type": "text/html",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        },
+        {
+          "URL": "http://link.springer.com/content/pdf/10.1186/s40537-020-0285-1.pdf",
+          "content-type": "application/pdf",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.1080/01621459.1974.10482962",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "The Influence Curve and its Role in Robust Estimation"
+      ],
+      "publisher": "Informa UK Limited",
+      "published": {
+        "date-parts": [
+          [
+            1974,
+            6
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            12
+          ]
+        ],
+        "date-time": "2026-11-12T14:11:17Z",
+        "timestamp": 1794492677256,
+        "version": "4.9.1"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 2451,
+      "link": [
+        {
+          "URL": "https://www.tandfonline.com/doi/pdf/10.1080/01621459.1974.10482962",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.1115/1.3662552",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "A New Approach to Linear Filtering and Prediction Problems"
+      ],
+      "publisher": "ASME International",
+      "published": {
+        "date-parts": [
+          [
+            1960,
+            3,
+            1
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            12
+          ]
+        ],
+        "date-time": "2026-11-12T12:53:54Z",
+        "timestamp": 1794488034143,
+        "version": "4.9.1"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 24367,
+      "link": [
+        {
+          "URL": "http://asmedigitalcollection.asme.org/fluidsengineering/article-pdf/82/1/35/5518977/35_1.pdf",
+          "content-type": "application/pdf",
+          "content-version": "vor",
+          "intended-application": "syndication"
+        },
+        {
+          "URL": "http://asmedigitalcollection.asme.org/fluidsengineering/article-pdf/82/1/35/5518977/35_1.pdf",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.1093/biomet/41.1-2.100",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "CONTINUOUS INSPECTION SCHEMES"
+      ],
+      "publisher": "Oxford University Press (OUP)",
+      "published": {
+        "date-parts": [
+          [
+            1954
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            12
+          ]
+        ],
+        "date-time": "2026-11-12T12:39:13Z",
+        "timestamp": 1794487153121,
+        "version": "4.9.1"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 3247,
+      "link": [
+        {
+          "URL": "http://academic.oup.com/biomet/article-pdf/41/1-2/100/1243987/41-1-2-100.pdf",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.1080/00401706.1959.10489860",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Control Chart Tests Based on Geometric Moving Averages"
+      ],
+      "publisher": "Informa UK Limited",
+      "published": {
+        "date-parts": [
+          [
+            1959,
+            8
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            12
+          ]
+        ],
+        "date-time": "2026-11-12T08:03:59Z",
+        "timestamp": 1794470639845,
+        "version": "4.9.1"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 2292,
+      "link": [
+        {
+          "URL": "http://www.tandfonline.com/doi/pdf/10.1080/00401706.1959.10489860",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.1007/3-540-30368-5",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Fault-Diagnosis Systems"
+      ],
+      "publisher": "Springer Berlin Heidelberg",
+      "published": {
+        "date-parts": [
+          [
+            2006
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            12
+          ]
+        ],
+        "date-time": "2026-11-12T06:48:23Z",
+        "timestamp": 1794466103326,
+        "version": "4.9.1"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {
+        "has-part": [
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_9",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_23",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_14",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_3",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_2",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_4",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_7",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_12",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_15",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_16",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_22",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_10",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_5",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_20",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_18",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_1",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_11",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_6",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_19",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_17",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_8",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_13",
+            "asserted-by": "subject"
+          },
+          {
+            "id-type": "doi",
+            "id": "https://doi.org/10.1007/3-540-30368-5_21",
+            "asserted-by": "subject"
+          }
+        ]
+      },
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 1037,
+      "link": [
+        {
+          "URL": "http://link.springer.com/content/pdf/10.1007/3-540-30368-5.pdf",
+          "content-type": "application/pdf",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        },
+        {
+          "URL": "http://link.springer.com/content/pdf/10.1007/3-540-30368-5",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.1145/342009.335388",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "LOF"
+      ],
+      "publisher": "ACM",
+      "published": {
+        "date-parts": [
+          [
+            2000,
+            5,
+            16
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            12
+          ]
+        ],
+        "date-time": "2026-11-12T12:03:16Z",
+        "timestamp": 1794484996987,
+        "version": "4.9.1"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {
+        "is-identical-to": [
+          {
+            "id-type": "doi",
+            "id": "10.1145/335191.335388",
+            "asserted-by": "object"
+          }
+        ]
+      },
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 4269,
+      "link": [
+        {
+          "URL": "https://dl.acm.org/doi/10.1145/342009.335388",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        },
+        {
+          "URL": "https://dl.acm.org/doi/pdf/10.1145/342009.335388",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.3390/s23052528",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Current Status and Prospects of Research on Sensor Fault Diagnosis of Agricultural Internet of Things"
+      ],
+      "publisher": "MDPI AG",
+      "published": {
+        "date-parts": [
+          [
+            2023,
+            2,
+            24
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            7
+          ]
+        ],
+        "date-time": "2026-11-07T19:19:57Z",
+        "timestamp": 1794079197809,
+        "version": "4.8.0"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 65,
+      "link": [
+        {
+          "URL": "https://www.mdpi.com/1424-8220/23/5/2528/pdf",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.3390/s19214788",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "SensorTalk: An IoT Device Failure Detection and Calibration Mechanism for Smart Farming"
+      ],
+      "publisher": "MDPI AG",
+      "published": {
+        "date-parts": [
+          [
+            2019,
+            11,
+            4
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            9,
+            7
+          ]
+        ],
+        "date-time": "2026-09-07T02:54:28Z",
+        "timestamp": 1788749668527,
+        "version": "build-2803163510"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 45,
+      "link": [
+        {
+          "URL": "https://www.mdpi.com/1424-8220/19/21/4788/pdf",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.1016/B978-0-323-85152-7.00023-9",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Hydroponics"
+      ],
+      "publisher": "Elsevier",
+      "published": {
+        "date-parts": [
+          [
+            2022
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            10,
+            16
+          ]
+        ],
+        "date-time": "2026-10-16T19:05:08Z",
+        "timestamp": 1792177508395,
+        "version": "4.4.0"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 32,
+      "link": [
+        {
+          "URL": "https://api.elsevier.com/content/article/PII:B9780323851527000239?httpAccept=text/xml",
+          "content-type": "text/xml",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        },
+        {
+          "URL": "https://api.elsevier.com/content/article/PII:B9780323851527000239?httpAccept=text/plain",
+          "content-type": "text/plain",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        }
+      ]
+    },
+    {
+      "doi": "10.3389/fpls.2022.845472",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Editorial: Nutrients Recycling in Hydroponics: Opportunities and Challenges Toward Sustainable Crop Production Under Controlled Environment Agriculture"
+      ],
+      "publisher": "Frontiers Media SA",
+      "published": {
+        "date-parts": [
+          [
+            2022,
+            3,
+            14
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            10,
+            22
+          ]
+        ],
+        "date-time": "2026-10-22T23:53:19Z",
+        "timestamp": 1792713199669,
+        "version": "4.5.0"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 33,
+      "link": [
+        {
+          "URL": "https://www.frontiersin.org/articles/10.3389/fpls.2022.845472/full",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.3390/technologies10010026",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Reliable IoT-Based Monitoring and Control of Hydroponic Systems"
+      ],
+      "publisher": "MDPI AG",
+      "published": {
+        "date-parts": [
+          [
+            2022,
+            2,
+            2
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            10,
+            29
+          ]
+        ],
+        "date-time": "2026-10-29T19:05:45Z",
+        "timestamp": 1793300745548,
+        "version": "4.5.0"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 77,
+      "link": [
+        {
+          "URL": "https://www.mdpi.com/2227-7080/10/1/26/pdf",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.1016/j.compag.2012.02.006",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Automated system developed to control pH and concentration of nutrient solution evaluated in hydroponic lettuce production"
+      ],
+      "publisher": "Elsevier BV",
+      "published": {
+        "date-parts": [
+          [
+            2012,
+            6
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            6
+          ]
+        ],
+        "date-time": "2026-11-06T06:40:01Z",
+        "timestamp": 1793947201780,
+        "version": "4.8.0"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 172,
+      "link": [
+        {
+          "URL": "https://api.elsevier.com/content/article/PII:S0168169912000361?httpAccept=text/xml",
+          "content-type": "text/xml",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        },
+        {
+          "URL": "https://api.elsevier.com/content/article/PII:S0168169912000361?httpAccept=text/plain",
+          "content-type": "text/plain",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        }
+      ]
+    },
+    {
+      "doi": "10.1145/1525856.1525863",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Sensor network data fault types"
+      ],
+      "publisher": "Association for Computing Machinery (ACM)",
+      "published": {
+        "date-parts": [
+          [
+            2009,
+            5
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            10,
+            27
+          ]
+        ],
+        "date-time": "2026-10-27T20:28:20Z",
+        "timestamp": 1793132900851,
+        "version": "4.5.0"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 354,
+      "link": [
+        {
+          "URL": "https://dl.acm.org/doi/10.1145/1525856.1525863",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        },
+        {
+          "URL": "https://dl.acm.org/doi/pdf/10.1145/1525856.1525863",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.1145/1754414.1754419",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Sensor faults"
+      ],
+      "publisher": "Association for Computing Machinery (ACM)",
+      "published": {
+        "date-parts": [
+          [
+            2010,
+            6
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            10
+          ]
+        ],
+        "date-time": "2026-11-10T23:41:08Z",
+        "timestamp": 1794354068677,
+        "version": "4.9.0"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 289,
+      "link": [
+        {
+          "URL": "https://dl.acm.org/doi/10.1145/1754414.1754419",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        },
+        {
+          "URL": "https://dl.acm.org/doi/pdf/10.1145/1754414.1754419",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.1561/2200000101",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Conformal Prediction: A Gentle Introduction"
+      ],
+      "publisher": "Emerald",
+      "published": {
+        "date-parts": [
+          [
+            2023,
+            3,
+            27
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            12
+          ]
+        ],
+        "date-time": "2026-11-12T09:34:26Z",
+        "timestamp": 1794476066366,
+        "version": "4.9.1"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 1059,
+      "link": [
+        {
+          "URL": "https://www.emerald.com/ftmal/article-pdf/16/4/494/11155920/2200000101en.pdf",
+          "content-type": "application/pdf",
+          "content-version": "vor",
+          "intended-application": "syndication"
+        },
+        {
+          "URL": "https://www.emerald.com/ftmal/article-pdf/16/4/494/11155920/2200000101en.pdf",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.1214/aoms/1177703732",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Robust Estimation of a Location Parameter"
+      ],
+      "publisher": "Institute of Mathematical Statistics",
+      "published": {
+        "date-parts": [
+          [
+            1964,
+            3
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            12
+          ]
+        ],
+        "date-time": "2026-11-12T19:34:44Z",
+        "timestamp": 1794512084536,
+        "version": "4.9.1"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 5878,
+      "link": [
+        {
+          "URL": "http://projecteuclid.org/download/pdf_1/euclid.aoms/1177703732",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.1214/aos/1176344552",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Bootstrap Methods: Another Look at the Jackknife"
+      ],
+      "publisher": "Institute of Mathematical Statistics",
+      "published": {
+        "date-parts": [
+          [
+            1979,
+            1,
+            1
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            12
+          ]
+        ],
+        "date-time": "2026-11-12T12:57:26Z",
+        "timestamp": 1794488246862,
+        "version": "4.9.1"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 13307,
+      "link": [
+        {
+          "URL": "http://projecteuclid.org/download/pdf_1/euclid.aos/1176344552",
+          "content-type": "unspecified",
+          "content-version": "vor",
+          "intended-application": "similarity-checking"
+        }
+      ]
+    },
+    {
+      "doi": "10.1016/S0168-1699(03)00012-7",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Neural network-based detection of mechanical, sensor and biological faults in deep-trough hydroponics"
+      ],
+      "publisher": "Elsevier BV",
+      "published": {
+        "date-parts": [
+          [
+            2003,
+            10
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            10,
+            29
+          ]
+        ],
+        "date-time": "2026-10-29T19:05:47Z",
+        "timestamp": 1793300747158,
+        "version": "4.5.0"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 14,
+      "link": [
+        {
+          "URL": "https://api.elsevier.com/content/article/PII:S0168169903000127?httpAccept=text/xml",
+          "content-type": "text/xml",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        },
+        {
+          "URL": "https://api.elsevier.com/content/article/PII:S0168169903000127?httpAccept=text/plain",
+          "content-type": "text/plain",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        }
+      ]
+    },
+    {
+      "doi": "10.1016/j.compag.2011.08.008",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "The effect of sensor errors on production and energy consumption in greenhouse horticulture"
+      ],
+      "publisher": "Elsevier BV",
+      "published": {
+        "date-parts": [
+          [
+            2011,
+            10
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            1,
+            15
+          ]
+        ],
+        "date-time": "2026-01-15T22:56:40Z",
+        "timestamp": 1768517800410,
+        "version": "3.49.0"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 29,
+      "link": [
+        {
+          "URL": "https://api.elsevier.com/content/article/PII:S0168169911001852?httpAccept=text/xml",
+          "content-type": "text/xml",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        },
+        {
+          "URL": "https://api.elsevier.com/content/article/PII:S0168169911001852?httpAccept=text/plain",
+          "content-type": "text/plain",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        }
+      ]
+    },
+    {
+      "doi": "10.1016/j.compag.2025.110544",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Machine learning-based fault detection and diagnosis of electrical conductivity and pH sensors in hydroponic systems"
+      ],
+      "publisher": "Elsevier BV",
+      "published": {
+        "date-parts": [
+          [
+            2025,
+            10
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            11,
+            3
+          ]
+        ],
+        "date-time": "2026-11-03T20:39:24Z",
+        "timestamp": 1793738364215,
+        "version": "4.6.1"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 29,
+      "link": [
+        {
+          "URL": "https://api.elsevier.com/content/article/PII:S0168169925006507?httpAccept=text/xml",
+          "content-type": "text/xml",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        },
+        {
+          "URL": "https://api.elsevier.com/content/article/PII:S0168169925006507?httpAccept=text/plain",
+          "content-type": "text/plain",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        }
+      ]
+    },
+    {
+      "doi": "10.1016/j.jprocont.2025.103607",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "success"
+        }
+      ],
+      "status": "retrieved",
+      "title": [
+        "Residual-based fault detection and isolation in control environment agriculture"
+      ],
+      "publisher": "Elsevier BV",
+      "published": {
+        "date-parts": [
+          [
+            2026,
+            1
+          ]
+        ]
+      },
+      "indexed": {
+        "date-parts": [
+          [
+            2026,
+            10,
+            29
+          ]
+        ],
+        "date-time": "2026-10-29T19:06:29Z",
+        "timestamp": 1793300789045,
+        "version": "4.5.0"
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "crossmark_restriction": null,
+      "is_referenced_by_count": 3,
+      "link": [
+        {
+          "URL": "https://api.elsevier.com/content/article/PII:S0959152425002355?httpAccept=text/xml",
+          "content-type": "text/xml",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        },
+        {
+          "URL": "https://api.elsevier.com/content/article/PII:S0959152425002355?httpAccept=text/plain",
+          "content-type": "text/plain",
+          "content-version": "vor",
+          "intended-application": "text-mining"
+        }
+      ]
+    },
+    {
+      "doi": "10.1016/s1537-5110(02)00232-5",
+      "status": "retrieved in reviewer citation-tracing check",
+      "title": [
+        "Fault Detection and Diagnosis in Deep-trough Hydroponics using Intelligent Computational Tools"
+      ],
+      "publisher": "Elsevier BV",
+      "published": {
+        "date-parts": [
+          [
+            2003,
+            1
+          ]
+        ]
+      },
+      "update_to": [],
+      "updated_by": [],
+      "relation": {},
+      "source_file_sha256": "e55c016cd0c816d873282b737a0844486883913b46c6e330027f5b46008167c7"
+    }
+  ],
+  "finished_utc": "2026-11-12T22:10:56.878349+00:00",
+  "appended_companion_metadata_utc": "2026-11-12T22:25:23.918506+00:00"
+}

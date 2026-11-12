@@ -1,0 +1,71 @@
+{
+  "checked_utc": "2026-11-12T22:11:35.122158+00:00",
+  "source_url": "https://uefiscdi.gov.ro/resource-865584-JCR_2024.iunie2025.pdf",
+  "sha256": "86f3e2e44be263bcd0e5411b376995d6fe6a1ac3f9b1d9368549ad4870620274",
+  "pdfinfo": "Title:           JCR_2024.iunie2025.xlsx\nAuthor:          victor.velter\nCreator:         Bullzip PDF Printer (14.1.0.2951) / www.bullzip.com / FG / Freeware Edition (max 10 users)\nProducer:        GPL Ghostscript 9.56.1\nCreationDate:    Tue Jun 24 11:30:57 2025 UTC\nModDate:         Tue Jun 24 11:30:57 2025 UTC\nCustom Metadata: no\nMetadata Stream: yes\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           785\nEncrypted:       no\nPage size:       595 x 842 pts (A4)\nPage rot:        90\nFile size:       2186448 bytes\nOptimized:       no\nPDF version:     1.5\n",
+  "access_depth": "selected target-journal rows extracted; pages3/137 rendered for visual column verification; entire785-page export not read",
+  "ranking_year": "2024 JIF; export labelled June2025; not latest2025 performance-year verification",
+  "substring_candidates": [
+    {
+      "printed_page": 3,
+      "row": "BIOSYSTEMS ENGINEERING                                                           1537-5110          1537-5129         AGRICULTURAL ENGINEERING                               SCIE                  Q1             Q1"
+    },
+    {
+      "printed_page": 3,
+      "row": "Smart Agricultural Technology                                                    2772-3755          2772-3755         AGRICULTURAL ENGINEERING                               ESCI                  Q1             Q1"
+    },
+    {
+      "printed_page": 6,
+      "row": "BIOSYSTEMS ENGINEERING                                                           1537-5110          1537-5129         AGRICULTURE, MULTIDISCIPLINARY                         SCIE                   Q1            Q1"
+    },
+    {
+      "printed_page": 6,
+      "row": "COMPUTERS AND ELECTRONICS IN AGRICULTURE                                         0168-1699          1872-7107         AGRICULTURE, MULTIDISCIPLINARY                         SCIE                   Q1            Q1"
+    },
+    {
+      "printed_page": 7,
+      "row": "Smart Agricultural Technology                                                      2772-3755          2772-3755         AGRICULTURE, MULTIDISCIPLINARY                         ESCI                  Q1             Q1"
+    },
+    {
+      "printed_page": 10,
+      "row": "Smart Agricultural Technology                                                     2772-3755          2772-3755       AGRONOMY                                                 ESCI                   Q1            Q1"
+    },
+    {
+      "printed_page": 57,
+      "row": "BIOPROCESS AND BIOSYSTEMS ENGINEERING                                      1615-7591          1615-7605       BIOTECHNOLOGY & APPLIED MICROBIOLOGY                     SCIE                   Q2            Q3"
+    },
+    {
+      "printed_page": 137,
+      "row": "COMPUTERS AND ELECTRONICS IN AGRICULTURE                                           0168-1699          1872-7107                                                                SCIE                  Q1             Q1"
+    },
+    {
+      "printed_page": 227,
+      "row": "BIOPROCESS AND BIOSYSTEMS ENGINEERING                                             1615-7591          1615-7605       ENGINEERING, CHEMICAL                                    SCIE                   Q2            Q2"
+    }
+  ],
+  "visually_verified_rows": [
+    {
+      "journal": "Biosystems Engineering",
+      "edition": "SCIE",
+      "category": "Agricultural Engineering",
+      "JIF_quartile": "Q1",
+      "printed_page": 3
+    },
+    {
+      "journal": "Smart Agricultural Technology",
+      "edition": "ESCI",
+      "category": "Agricultural Engineering",
+      "JIF_quartile": "Q1",
+      "printed_page": 3
+    },
+    {
+      "journal": "Computers and Electronics in Agriculture",
+      "edition": "SCIE",
+      "category": "Computer Science, Interdisciplinary Applications",
+      "JIF_quartile": "Q1",
+      "printed_page": 137
+    }
+  ],
+  "visual_inspection_completed_utc": "2026-11-12T22:25:23.918506+00:00",
+  "excluded_substring_matches": "Bioprocess and Biosystems Engineering is a different journal; not used"
+}

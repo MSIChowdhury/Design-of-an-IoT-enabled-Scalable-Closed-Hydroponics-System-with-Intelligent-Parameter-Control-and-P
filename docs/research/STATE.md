@@ -68,6 +68,42 @@ reviewer completed the historical source/results comparison before final ranking
 Durable mock-ledger recovery is genuine software evidence but does not establish
 new physical exactly-once execution or a novel general RPC principle.
 
+## Literature and reference-data follow-up
+
+The next goal turn revalidated the pushed worktree and classified the preceding
+turn as progress. The reviewer then read the complete Ferentinos 2003 and
+SensorTalk scientific texts and traced directly relevant predecessors. The
+manuscript now explicitly acknowledges actuator-input diagnosis, reference
+routing during calibration, and the 2003 Biosystems Engineering supervisor.
+The nutrient-recycling citation now identifies its editorial article type.
+The [separate follow-up review](LITERATURE_FOLLOWUP_2026-11-12.md) preserves the
+original access history and distinguishes full text from excerpts and new leads.
+
+All 23 active bibliography DOIs now have retrieved Crossref metadata, including
+the separately checked new companion citation. No update links were registered
+in the checked records. Crossmark explicitly reported the two recent nearest
+papers current at access time; this resolves an ambiguous secondary badge, not
+all possible correction/retraction uncertainty. SensorTalk's version history
+does disclose a revised 2019 version without an explained change list.
+
+A government-hosted JCR 2024 export adds explicit JIF categories/quartiles for
+all three shortlisted journals. Relevant rows were visually checked on pages
+3 and 137, not all 785 pages. This establishes the stated historical edition;
+latest authenticated JCR/SCImago access remains unavailable. The shortlist keeps
+database, year, category and source limitations separate.
+
+A newly located 2024 study links public 2022 chamber data with a separate
+environmental reference. It is a conditional independent-data candidate, so
+the evidence gap must not be described as absence of all public hydroponic data.
+Under a timestamped [eligibility screen](CYCLE_04_ELIGIBILITY.md), three small
+firmware sources, timestamp expressions and three T1 headers were inspected.
+No numerical sensor/reference outcomes were read or scored; T2--T4 remain
+unopened. The checked metadata do not establish reference clock/calibration
+bounds, and the environmental reference does not cover pH/EC. The
+[screening decision](REFERENCE_CANDIDATE_SCREEN.md) records the contract and
+parser/provenance issues that must be resolved before a confirmation protocol.
+No new independent confirmation is claimed from a file tree or header.
+
 ## Coverage and remaining work
 
 The initial inventory recorded 3,350 hashed accessible files (6.34 GB), with
@@ -97,7 +133,7 @@ CAD geometry, model validity or physical execution. Ten larger historical
 tables received explicitly partial inspection; large traces/ledgers, vendor
 sources, and portions of generic writing guides remain outside full-content
 reading. These limits are not hidden behind the inventory count. The author
-PDF (25 pages) and blinded PDF (25 pages) were built and visually inspected;
+PDF (26 pages) and blinded PDF (25 pages) were built and visually inspected;
 the final bibliography and proxy-description changes were re-rendered and checked. Poppler is
 now installed by Dockerfile, and strict checks on both PDFs, all 178 tests and
 lint pass in the rebuilt image. LaTeX underfull-box warnings remain but no
@@ -113,10 +149,12 @@ the available external benchmarks cannot establish hydroponic physical effects.
 The reviewer explicitly reached the same conclusion. Additional replay or
 retuning on these backgrounds would not close that evidence gap.
 
-The current turn made substantive progress, including executed reproduction,
+The initial goal turn made substantive progress, including executed reproduction,
 an informative falsification, revised manuscript, package verification, and
-coverage records. This is the first recorded goal-turn occurrence of the
-remaining independent-evidence/resource blocker. The full goal remains active;
+coverage records. The following turn closed literature/metadata gaps, revised
+the manuscript and screened a new public source without opening its outcomes.
+The remaining reference/physical-evidence contract is now recorded in two
+consecutive goal turns. The full goal remains active;
 it is neither complete nor autonomously paused. Revalidate the worktree and
 any newly supplied independent evidence on continuation. Do not restart or
 retune the frozen methods, reuse the revealed holdout as confirmation, or

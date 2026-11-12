@@ -1,0 +1,1960 @@
+{
+  "checked_utc": "2026-11-12T22:15:36.598703+00:00",
+  "source_url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1",
+  "raw_data_values_inspected": false,
+  "repository": {
+    "full_name": "JeanPompeo/Hydroponic_Control_System_Chamber_1",
+    "default_branch": "main",
+    "size": 50126,
+    "license": null,
+    "pushed_at": "2023-07-28T14:04:28Z",
+    "archived": false,
+    "description": null
+  },
+  "tree_truncated": false,
+  "tree": [
+    {
+      "path": "Arduino Sketches",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ead1adb1ef4ccc17396fa2d2803b0434053badf4",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/ead1adb1ef4ccc17396fa2d2803b0434053badf4"
+    },
+    {
+      "path": "Arduino Sketches/Agr_Operations_Counter",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "0fec388efc164d738572bc25718861bff6cfe9b7",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/0fec388efc164d738572bc25718861bff6cfe9b7"
+    },
+    {
+      "path": "Arduino Sketches/Agr_Operations_Counter/Agr_Operations_Counter.ino",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7e677457678c5ce8b065f48c66ab7ede56e3d690",
+      "size": 3490,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/7e677457678c5ce8b065f48c66ab7ede56e3d690"
+    },
+    {
+      "path": "Arduino Sketches/CO2_Sensors",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "38ee01bef737567dcbaf77d9e6e2879fa08577f6",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/38ee01bef737567dcbaf77d9e6e2879fa08577f6"
+    },
+    {
+      "path": "Arduino Sketches/CO2_Sensors/CO2_Sensors.ino",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2eab0e903896e98fdf232d7599f693e292e07215",
+      "size": 4461,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/2eab0e903896e98fdf232d7599f693e292e07215"
+    },
+    {
+      "path": "Arduino Sketches/DS18B20_Thermocouples",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c4b46fb8e024e11b0284cce323fe108fd95773fe",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/c4b46fb8e024e11b0284cce323fe108fd95773fe"
+    },
+    {
+      "path": "Arduino Sketches/DS18B20_Thermocouples/DS18B20_Thermocouples.ino",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7c9c080b93313dcd096d494eff7bf38b9242680e",
+      "size": 4583,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/7c9c080b93313dcd096d494eff7bf38b9242680e"
+    },
+    {
+      "path": "Arduino Sketches/Hydroponic_Control",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "26ad7e49ebf0a8ba7ef55d5597d8a7b7828573b4",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/26ad7e49ebf0a8ba7ef55d5597d8a7b7828573b4"
+    },
+    {
+      "path": "Arduino Sketches/Hydroponic_Control/Hydroponic_Control.ino",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "552a570a1623ba34dc792bc443f7dd3685b15238",
+      "size": 11175,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/552a570a1623ba34dc792bc443f7dd3685b15238"
+    },
+    {
+      "path": "Arduino Sketches/SHT31_Multiplexer",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b2788549ebf8830a0ede8039541e7c2f7ef1b48d",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/b2788549ebf8830a0ede8039541e7c2f7ef1b48d"
+    },
+    {
+      "path": "Arduino Sketches/SHT31_Multiplexer/SHT31_Multiplexer.ino",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fe9a1c1b5c288bcf8651a0a4a049e8ced7d6bc1b",
+      "size": 3676,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/fe9a1c1b5c288bcf8651a0a4a049e8ced7d6bc1b"
+    },
+    {
+      "path": "Low-Cost Sensor Data",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "cfc06551e3ff781b1936b735364881d416598f06",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/cfc06551e3ff781b1936b735364881d416598f06"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "5e32f4621bbb8b009136113324cbf01034a8ae1b",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/5e32f4621bbb8b009136113324cbf01034a8ae1b"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/02.24.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fa5fa95200e8952473b5903dacc848d7a8c7230b",
+      "size": 628,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/fa5fa95200e8952473b5903dacc848d7a8c7230b"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/02.25.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5880536c2dc7442bbfa70228e2ec339891658ca5",
+      "size": 628,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/5880536c2dc7442bbfa70228e2ec339891658ca5"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/02.26.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "de8280bea693ec4ea02de0e7ecc303ab0b30cdc7",
+      "size": 628,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/de8280bea693ec4ea02de0e7ecc303ab0b30cdc7"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/02.27.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "073a9b2c6b7d4641c6bf20fde38ec7623c56779a",
+      "size": 628,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/073a9b2c6b7d4641c6bf20fde38ec7623c56779a"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/02.28.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7027219f730afe380b7680c81822aca82beb79d7",
+      "size": 628,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/7027219f730afe380b7680c81822aca82beb79d7"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.01.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d04e158507eaccebfbab7b0185300cecba95cbd1",
+      "size": 628,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/d04e158507eaccebfbab7b0185300cecba95cbd1"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.02.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8aeb65b49e57e845817218cfd3bda7d139791d11",
+      "size": 628,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/8aeb65b49e57e845817218cfd3bda7d139791d11"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.03.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a7d01d1fed6996bc25cea8df1f7278b5b72df798",
+      "size": 753092,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/a7d01d1fed6996bc25cea8df1f7278b5b72df798"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.04.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "981c9e0d183478267162d2db72793b64574b36a3",
+      "size": 1354274,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/981c9e0d183478267162d2db72793b64574b36a3"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.05.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fd0cb1d4051e8d23f6d7de186fd23adfb3d8d90f",
+      "size": 2344330,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/fd0cb1d4051e8d23f6d7de186fd23adfb3d8d90f"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.06.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e9061d90b20c729a0d2a0e16e3499fc734abc475",
+      "size": 2417638,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/e9061d90b20c729a0d2a0e16e3499fc734abc475"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.07.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0eee0dc91278e5e82c141553d16d74bb9f64c851",
+      "size": 2410097,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/0eee0dc91278e5e82c141553d16d74bb9f64c851"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.08.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7dd6320d7c725630aa3815ec57f691691bb37074",
+      "size": 2358016,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/7dd6320d7c725630aa3815ec57f691691bb37074"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.09.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "59c3de5042ae30cfac20469991e8618c0fe3f520",
+      "size": 2354850,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/59c3de5042ae30cfac20469991e8618c0fe3f520"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.10.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f427242ea0633bc189ec490978d26f64330d2105",
+      "size": 2359047,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/f427242ea0633bc189ec490978d26f64330d2105"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.11.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bd6b7e3bdabd4ec396334c2b2d86c73cf6381797",
+      "size": 2368372,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/bd6b7e3bdabd4ec396334c2b2d86c73cf6381797"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.12.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "683ce80a20125a91969690a30bff190e1c4d1d23",
+      "size": 2368498,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/683ce80a20125a91969690a30bff190e1c4d1d23"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.13.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "65d55372da68914a9cd7c53bbdfe33b61ef10edc",
+      "size": 2272096,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/65d55372da68914a9cd7c53bbdfe33b61ef10edc"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.14.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "88328f2c433e40604f79ad6c5794844a8a1de252",
+      "size": 2376557,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/88328f2c433e40604f79ad6c5794844a8a1de252"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.15.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "818cd7f555e565ffed20d9d0e306c341a3e08746",
+      "size": 2366350,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/818cd7f555e565ffed20d9d0e306c341a3e08746"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.16.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1ab5f86a7252e478ea2422dad25b68570042e625",
+      "size": 2374560,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/1ab5f86a7252e478ea2422dad25b68570042e625"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.17.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "35de315440d75836ab5ae704d502fefdf9f72d12",
+      "size": 2372719,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/35de315440d75836ab5ae704d502fefdf9f72d12"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.18.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ab36bdba2d47316885c49f0b9ae1919bdd3553ce",
+      "size": 2375593,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ab36bdba2d47316885c49f0b9ae1919bdd3553ce"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.19.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3f3207b4f08cab321d1baddb9c2ed5913281eafd",
+      "size": 2375430,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/3f3207b4f08cab321d1baddb9c2ed5913281eafd"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.20.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1f1fe349655b10e46859761d75e5821415e0f086",
+      "size": 2366974,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/1f1fe349655b10e46859761d75e5821415e0f086"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.21.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2ae7abf1a31320736f28179078d7361bb3da4ea5",
+      "size": 2367167,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/2ae7abf1a31320736f28179078d7361bb3da4ea5"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.22.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "aab47489c6487f6bab7a574eaeea8740e8734bb0",
+      "size": 2366919,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/aab47489c6487f6bab7a574eaeea8740e8734bb0"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.23.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "052ce4b78e8e4fb74adbb637e235bb7e2f833d30",
+      "size": 2370137,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/052ce4b78e8e4fb74adbb637e235bb7e2f833d30"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.24.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "300bd59527b39e22a7c6c04bbe54d3c6158b0a67",
+      "size": 1351857,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/300bd59527b39e22a7c6c04bbe54d3c6158b0a67"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.25.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8c3cba1978426ea0e84cd6967ee6002938930353",
+      "size": 628,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/8c3cba1978426ea0e84cd6967ee6002938930353"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.26.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6b180017a83dd4a5b684e5e149ae2fa94d7bd589",
+      "size": 628,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/6b180017a83dd4a5b684e5e149ae2fa94d7bd589"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.27.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2a74189eef17e03a0b11383b9960a13713cbd2cd",
+      "size": 628,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/2a74189eef17e03a0b11383b9960a13713cbd2cd"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.28.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "efefb0df1a0430d68a8601af9761a830afcdadd1",
+      "size": 628,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/efefb0df1a0430d68a8601af9761a830afcdadd1"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.29.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b247d2c4335f3f1e24412f0031fa9084c777c4ee",
+      "size": 2341044,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/b247d2c4335f3f1e24412f0031fa9084c777c4ee"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T1 Data (30C)/03.30.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5180983ed8262087082c650428fe309d5214fdb5",
+      "size": 1184316,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/5180983ed8262087082c650428fe309d5214fdb5"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b8a10c0229a6cd195fb39ab19288cbf4cf5d68d8",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/b8a10c0229a6cd195fb39ab19288cbf4cf5d68d8"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.07.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e62d00b41a24ff9c779cacb32c8558d0f438dd0d",
+      "size": 629,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/e62d00b41a24ff9c779cacb32c8558d0f438dd0d"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.08.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fa28bfdff1de01275bd23fae97c9d9eb749b85ce",
+      "size": 629,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/fa28bfdff1de01275bd23fae97c9d9eb749b85ce"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.09.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b17d9ce630eec20914dd7ef4f72566ffc9a467ba",
+      "size": 629,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/b17d9ce630eec20914dd7ef4f72566ffc9a467ba"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.10.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ddd52361245f54c1061418ac932958688b8b57ae",
+      "size": 629,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ddd52361245f54c1061418ac932958688b8b57ae"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.11.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d5663dac8231c8a88f5f5c982aa5b68f69a836d4",
+      "size": 670103,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/d5663dac8231c8a88f5f5c982aa5b68f69a836d4"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.12.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e67952e608468aadcd9dd240b183d78443e36b6c",
+      "size": 1341934,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/e67952e608468aadcd9dd240b183d78443e36b6c"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.13.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "94308ea08325e63791bfd073d3e1ede9a336662e",
+      "size": 1364506,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/94308ea08325e63791bfd073d3e1ede9a336662e"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.14.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "01114e6fba6dc80da8b52ac4de929a40270b7701",
+      "size": 2317040,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/01114e6fba6dc80da8b52ac4de929a40270b7701"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.15.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5bd4188bd19fb819cf6b834a29154561d6966645",
+      "size": 2315075,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/5bd4188bd19fb819cf6b834a29154561d6966645"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.16.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9c9f27717c928555ebe1fbf5ddd00d787f9de7a3",
+      "size": 2315326,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/9c9f27717c928555ebe1fbf5ddd00d787f9de7a3"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.17.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0b9a65e0e3de843a72a0574b1b1a4e4fd8ec1ff0",
+      "size": 2315054,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/0b9a65e0e3de843a72a0574b1b1a4e4fd8ec1ff0"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.18.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "792ca4f2c572b3dfdf9599de8ae35e0b963aadcd",
+      "size": 2315072,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/792ca4f2c572b3dfdf9599de8ae35e0b963aadcd"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.19.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "574fccc8800b21230f3c96d82d6587db9d31cb35",
+      "size": 2315092,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/574fccc8800b21230f3c96d82d6587db9d31cb35"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.20.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9b7502c6d9ca2127a8743e659d4da7e2ca27a74a",
+      "size": 2318053,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/9b7502c6d9ca2127a8743e659d4da7e2ca27a74a"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.21.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ee5561dba0265a1a32af66f36e9a7d3921facdf6",
+      "size": 2315354,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ee5561dba0265a1a32af66f36e9a7d3921facdf6"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.22.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3d063b7a54f754005ce22f5a21b3148d93b6792e",
+      "size": 2298882,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/3d063b7a54f754005ce22f5a21b3148d93b6792e"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.23.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "356c98c79eccef0903fbf2a2bd55a19f27c951e5",
+      "size": 2315068,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/356c98c79eccef0903fbf2a2bd55a19f27c951e5"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.24.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fa435f9c75a890d14dcbe0bdf5650e8ea1007afa",
+      "size": 2315397,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/fa435f9c75a890d14dcbe0bdf5650e8ea1007afa"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.25.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3f5757ea0b4fb9714015942f6873f54b15b6e938",
+      "size": 2257385,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/3f5757ea0b4fb9714015942f6873f54b15b6e938"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.26.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e1df416563172a159347462c49dcc9333848af37",
+      "size": 2326028,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/e1df416563172a159347462c49dcc9333848af37"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.27.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a5cb43ea85358a784f699e4ecbb34987b9939909",
+      "size": 2315468,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/a5cb43ea85358a784f699e4ecbb34987b9939909"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.28.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0e3ca57fda2bbf57c28ab898fccfbc903fe1432c",
+      "size": 2028139,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/0e3ca57fda2bbf57c28ab898fccfbc903fe1432c"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.29.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "adeaf0171d250f4624f59a2f458046447b2096a6",
+      "size": 2291284,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/adeaf0171d250f4624f59a2f458046447b2096a6"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/04.30.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "86d626824b849db1fd4e5e6755ed7301721e2314",
+      "size": 2315332,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/86d626824b849db1fd4e5e6755ed7301721e2314"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/05.01.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0b341cde5e7373ed62590c323931a6b1eec1ae4c",
+      "size": 2315444,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/0b341cde5e7373ed62590c323931a6b1eec1ae4c"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/05.02.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c3ca434081dda9859596782560f4fec503a6200e",
+      "size": 2318877,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/c3ca434081dda9859596782560f4fec503a6200e"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/05.03.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ab0d72565120cb805da0d60d5c57641501f2d3d9",
+      "size": 2324482,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ab0d72565120cb805da0d60d5c57641501f2d3d9"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/05.04.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cc02e2c7b3935a0b7b604d41972a0c11739cb156",
+      "size": 1816210,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/cc02e2c7b3935a0b7b604d41972a0c11739cb156"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/05.05.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4cfb8a01d2c505f4480b3d6858e59778b646ae98",
+      "size": 2112843,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/4cfb8a01d2c505f4480b3d6858e59778b646ae98"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/05.06.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "48e358c3247db745540bac07b2a76fd38e479bd0",
+      "size": 2324327,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/48e358c3247db745540bac07b2a76fd38e479bd0"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/05.07.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3363e608775a9db40bf0ff4fc1b719fa1bcb11bb",
+      "size": 2324028,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/3363e608775a9db40bf0ff4fc1b719fa1bcb11bb"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/05.08.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9c5fc628c8e9da9208c9725e3f351b12ca348c31",
+      "size": 2318039,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/9c5fc628c8e9da9208c9725e3f351b12ca348c31"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/05.09.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b24f87d340e8763df05c524cfa6531cb840682bd",
+      "size": 2321959,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/b24f87d340e8763df05c524cfa6531cb840682bd"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/05.10.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "362a0719016e118ddcb28713446d48c757cd9b81",
+      "size": 2324054,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/362a0719016e118ddcb28713446d48c757cd9b81"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T2 Data (24C)/05.11.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "da530b050a21b28df4737191bcf66f561e8f0efc",
+      "size": 1162160,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/da530b050a21b28df4737191bcf66f561e8f0efc"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "8bb15883bcacbf58cacdffefc5d98a54f1463085",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/8bb15883bcacbf58cacdffefc5d98a54f1463085"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.08.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b7404fbc77e91e52dbcc88e3ca5ce429c98cb12d",
+      "size": 1185758,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/b7404fbc77e91e52dbcc88e3ca5ce429c98cb12d"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.09.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "eaaaee7328bd9e5b1386e6e6b1719eabeb0b761a",
+      "size": 2404143,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/eaaaee7328bd9e5b1386e6e6b1719eabeb0b761a"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.10.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "04f53f991f66738f5b1129179943fdc1bdcf4faf",
+      "size": 2405261,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/04f53f991f66738f5b1129179943fdc1bdcf4faf"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.11.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "23bfda84c935cb416896c11fb2daaa9a99489a72",
+      "size": 2271467,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/23bfda84c935cb416896c11fb2daaa9a99489a72"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.12.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ea9b1ea56d4ce080c00d3692b4540d4969f160f2",
+      "size": 2341985,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ea9b1ea56d4ce080c00d3692b4540d4969f160f2"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.13.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f047909abbb87a1cb0cef99e98171927bca97437",
+      "size": 2340918,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/f047909abbb87a1cb0cef99e98171927bca97437"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.14.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2cb3c296f1cfb1eafc9e7752be207a1809687776",
+      "size": 2348748,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/2cb3c296f1cfb1eafc9e7752be207a1809687776"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.15.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "adb411904f48066dd73ba1b3cd989a2489f1ebd5",
+      "size": 2349899,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/adb411904f48066dd73ba1b3cd989a2489f1ebd5"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.16.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "72527862502d9318294938ab03ae0a6fe3b73ed5",
+      "size": 2349594,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/72527862502d9318294938ab03ae0a6fe3b73ed5"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.17.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "844bc6d78b8712697bf7c4667a1720d9e7d328cc",
+      "size": 2349572,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/844bc6d78b8712697bf7c4667a1720d9e7d328cc"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.18.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "460ade3d28b60456156f4b26c9d7f65497a2168b",
+      "size": 2349528,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/460ade3d28b60456156f4b26c9d7f65497a2168b"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.19.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f261fa21669c714f7995f9aae1778fac619b4211",
+      "size": 2349374,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/f261fa21669c714f7995f9aae1778fac619b4211"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.20.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "86a01972851eb80d21118cf953430e592d0137bf",
+      "size": 2349629,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/86a01972851eb80d21118cf953430e592d0137bf"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.21.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1ae56a52c0f403ca4d23bdcd84724ef528996eae",
+      "size": 2349728,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/1ae56a52c0f403ca4d23bdcd84724ef528996eae"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.22.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f2aa75de9cb419e4908820bff5f3255f002b1418",
+      "size": 2349624,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/f2aa75de9cb419e4908820bff5f3255f002b1418"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.23.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "eb6e53553a8ea3b1e4caf2029cf454d83204115b",
+      "size": 2349442,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/eb6e53553a8ea3b1e4caf2029cf454d83204115b"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.24.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "62a9863dc27e5974dabf79784148f99aa78adfa9",
+      "size": 2349649,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/62a9863dc27e5974dabf79784148f99aa78adfa9"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.25.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f55343cb5e946a7cff61606ec03920ddec09610f",
+      "size": 2349692,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/f55343cb5e946a7cff61606ec03920ddec09610f"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.26.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "93b9f93438111242b44a3c95f486a9e47fa9be21",
+      "size": 2349744,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/93b9f93438111242b44a3c95f486a9e47fa9be21"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.27.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bffdad32a6b21c721fd66436debef1d929266f8e",
+      "size": 2349555,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/bffdad32a6b21c721fd66436debef1d929266f8e"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.28.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1dc6a477b7bafa3c5e6e76745300123e37d945ad",
+      "size": 1968484,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/1dc6a477b7bafa3c5e6e76745300123e37d945ad"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.29.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e0961e096aea5bf14b7bbe12fb364c672e0cbe09",
+      "size": 2323555,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/e0961e096aea5bf14b7bbe12fb364c672e0cbe09"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.30.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9e4b4ea50429879348bb6c926a92e63a162a9541",
+      "size": 2363180,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/9e4b4ea50429879348bb6c926a92e63a162a9541"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/07.31.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b47b420d8653f34131fe48b1f80f521d3164b1cd",
+      "size": 2349598,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/b47b420d8653f34131fe48b1f80f521d3164b1cd"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/08.01.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5903e90504436c7f25625ddeffaa437daae94666",
+      "size": 2345129,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/5903e90504436c7f25625ddeffaa437daae94666"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/08.02.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "193d02dd2488bff28848fa98e9ec09e33bee44c2",
+      "size": 2350014,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/193d02dd2488bff28848fa98e9ec09e33bee44c2"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/08.03.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "446368008573af2a3439fbf0b2bc4cd009e6349a",
+      "size": 2349953,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/446368008573af2a3439fbf0b2bc4cd009e6349a"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/08.04.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "24eacd98df5580b07c10f7e06fc979dcd9f0ef5b",
+      "size": 2354596,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/24eacd98df5580b07c10f7e06fc979dcd9f0ef5b"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/08.05.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "11b4a079b80368a6cdd1b78678f16dbca9364e56",
+      "size": 2358456,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/11b4a079b80368a6cdd1b78678f16dbca9364e56"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/08.06.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9c6feb6c73bbf6b3e3b1644059c2cf411154c950",
+      "size": 2358610,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/9c6feb6c73bbf6b3e3b1644059c2cf411154c950"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/08.07.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "818637efe4a02966d8e345a2c5a0a18251e4531a",
+      "size": 2358655,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/818637efe4a02966d8e345a2c5a0a18251e4531a"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/08.08.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "444f00d26080bf19cbfef40510aa0699a2ce9433",
+      "size": 2358506,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/444f00d26080bf19cbfef40510aa0699a2ce9433"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/08.09.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "17fc40730ddf997e0ec11b3ca4bf42f9928f31eb",
+      "size": 1529888,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/17fc40730ddf997e0ec11b3ca4bf42f9928f31eb"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/08.10.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9999993b79973a6c7d90b53d3fdb6d780a7eaefb",
+      "size": 37604,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/9999993b79973a6c7d90b53d3fdb6d780a7eaefb"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T3 Data (28C)/08.11.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b0410dff6ff98318b4d53f845b58b7308a6fa709",
+      "size": 566765,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/b0410dff6ff98318b4d53f845b58b7308a6fa709"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a7c9b29f1446773c16cfc60ec66a30139ca1de8c",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/a7c9b29f1446773c16cfc60ec66a30139ca1de8c"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/08.25.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f20cb13635479ab81ba006ce29bfdbaaf4babb7a",
+      "size": 629,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/f20cb13635479ab81ba006ce29bfdbaaf4babb7a"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/08.26.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "66ce430ba8b4565ea4046b9976165e1412c73797",
+      "size": 629,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/66ce430ba8b4565ea4046b9976165e1412c73797"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/08.27.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a3a92de24654f8040da865686e2df3594db27b6a",
+      "size": 629,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/a3a92de24654f8040da865686e2df3594db27b6a"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/08.28.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f060976b38beaf0c4ff9fb86cdeb94c415a901c4",
+      "size": 629,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/f060976b38beaf0c4ff9fb86cdeb94c415a901c4"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/08.29.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5d85d3df8a53993a82aa1f5ff931074ee9eb7f17",
+      "size": 1417026,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/5d85d3df8a53993a82aa1f5ff931074ee9eb7f17"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/08.30.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "523e60adf7027012606b07b789b65f814ba21dac",
+      "size": 2332330,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/523e60adf7027012606b07b789b65f814ba21dac"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/08.31.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e271128001ae04a0dd8d26d8b06933aedbd3ee67",
+      "size": 1168344,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/e271128001ae04a0dd8d26d8b06933aedbd3ee67"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.01.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5998c5d92de66fc518dada29d5859bb8a2bed847",
+      "size": 2332330,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/5998c5d92de66fc518dada29d5859bb8a2bed847"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.02.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cbebfb718e7cd73f6e7029cf1c5e94e8feb92c26",
+      "size": 2332349,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/cbebfb718e7cd73f6e7029cf1c5e94e8feb92c26"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.03.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6de27e556616f737bdd2190d4c198c40494fd31e",
+      "size": 2332324,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/6de27e556616f737bdd2190d4c198c40494fd31e"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.04.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0675a989306cc45a433e93365f98a0895ab29a29",
+      "size": 2332374,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/0675a989306cc45a433e93365f98a0895ab29a29"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.05.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a9edc587e99ab059ae6b42b74a0b342efe63d69e",
+      "size": 2332355,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/a9edc587e99ab059ae6b42b74a0b342efe63d69e"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.06.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cdfc49fbb7d8f4aaad38e3a1a87da93eaf823bc1",
+      "size": 2329696,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/cdfc49fbb7d8f4aaad38e3a1a87da93eaf823bc1"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.07.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "243a1863875aeec0e03cf88b494c210c090fb634",
+      "size": 2332374,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/243a1863875aeec0e03cf88b494c210c090fb634"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.08.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9658899c4d16aa855f94533ab61520a7773fc307",
+      "size": 2332500,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/9658899c4d16aa855f94533ab61520a7773fc307"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.09.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "29e404b12d0f6f5e889318e82fe2032df84ac8de",
+      "size": 2332395,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/29e404b12d0f6f5e889318e82fe2032df84ac8de"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.10.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b16702f4dcc395db645970993a88e0469257d799",
+      "size": 2332516,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/b16702f4dcc395db645970993a88e0469257d799"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.11.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "36188aa33add7604b9542786b4a0dd2593e228d1",
+      "size": 2332468,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/36188aa33add7604b9542786b4a0dd2593e228d1"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.12.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ec668f3fbd19d0d403a5c7455fd5165a5ec31dfd",
+      "size": 2332546,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ec668f3fbd19d0d403a5c7455fd5165a5ec31dfd"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.13.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "22a7468603ff8df01faac3561f337302ec304101",
+      "size": 2332782,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/22a7468603ff8df01faac3561f337302ec304101"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.14.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1924bed40828f5032d1e63abbb1508e1966849b0",
+      "size": 1143379,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/1924bed40828f5032d1e63abbb1508e1966849b0"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.15.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "02d5857d89940c1d200380252d5af39b3b699c5e",
+      "size": 1147586,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/02d5857d89940c1d200380252d5af39b3b699c5e"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.16.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3a0e92c9fea97993f510dcea49e3fc07ff6569da",
+      "size": 2332940,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/3a0e92c9fea97993f510dcea49e3fc07ff6569da"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.17.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c65eb02af69ce58dfb5d823983e49c669e0f446a",
+      "size": 2335582,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/c65eb02af69ce58dfb5d823983e49c669e0f446a"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.18.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9484345391871a87c5b23f6236244b5531f827e2",
+      "size": 2332644,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/9484345391871a87c5b23f6236244b5531f827e2"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.19.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5f3fe297fbffcaf90c593b5b84113429e0353970",
+      "size": 2332796,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/5f3fe297fbffcaf90c593b5b84113429e0353970"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.20.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7e69c0a3c39dcdb52a6281ee07a6c1cd8c4b7d27",
+      "size": 2249848,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/7e69c0a3c39dcdb52a6281ee07a6c1cd8c4b7d27"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.21.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c4f42f1ca4334f261238e9525bdeab00147cc2bb",
+      "size": 1365674,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/c4f42f1ca4334f261238e9525bdeab00147cc2bb"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.22.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ff773abb5c0963dac6fc9f8984f9cb9886c13d31",
+      "size": 2332864,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ff773abb5c0963dac6fc9f8984f9cb9886c13d31"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.23.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "106a5a0fc13e59e157aead571fa11c96a756b8d2",
+      "size": 2283293,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/106a5a0fc13e59e157aead571fa11c96a756b8d2"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.24.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4526d50b716fed97779800a5782c0e8fc079b017",
+      "size": 1007294,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/4526d50b716fed97779800a5782c0e8fc079b017"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.25.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c783d7d7c4d2ac5bff2ae3c703cd922c7a2de9ee",
+      "size": 628,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/c783d7d7c4d2ac5bff2ae3c703cd922c7a2de9ee"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.26.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b93fe7f1a88cc302b20aa2c3d45c05b7bb92721a",
+      "size": 1595589,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/b93fe7f1a88cc302b20aa2c3d45c05b7bb92721a"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.27.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5ce5e3cb0abb3bcc8d7f67f1d136bfafac7a4d44",
+      "size": 1699895,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/5ce5e3cb0abb3bcc8d7f67f1d136bfafac7a4d44"
+    },
+    {
+      "path": "Low-Cost Sensor Data/T4 Data (26C)/09.28.2022.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ed23926e83084f3ffa2ba1ec9c8f92262ac1e25",
+      "size": 628,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/6ed23926e83084f3ffa2ba1ec9c8f92262ac1e25"
+    },
+    {
+      "path": "Python Files",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "f2a7875d9548c66ba363edc93eed2d5758313902",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/f2a7875d9548c66ba363edc93eed2d5758313902"
+    },
+    {
+      "path": "Python Files/Arduino_Serial_Comm.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ce593a9ae864d7c7028029a726f68cff15d83ea2",
+      "size": 818,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ce593a9ae864d7c7028029a726f68cff15d83ea2"
+    },
+    {
+      "path": "Python Files/Write_Arduino_Data.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "502e58e0747d221c1db32f0edd69ea6b3d10af76",
+      "size": 3694,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/502e58e0747d221c1db32f0edd69ea6b3d10af76"
+    },
+    {
+      "path": "Referense Sensor Data",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a53721cb9b967aa8c2b94da82c2d76ec28d1f287",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/a53721cb9b967aa8c2b94da82c2d76ec28d1f287"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "32d09461cd28021aa827270f0637b257fb7923bf",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/32d09461cd28021aa827270f0637b257fb7923bf"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Feb-24-22-144510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d42b3cd42b03de10dc3ac1f80be4c357003ae4cc",
+      "size": 588003,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/d42b3cd42b03de10dc3ac1f80be4c357003ae4cc"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Feb-25-22-082510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a154a14dd2bf2af83448410c2e0dc8f153c35dd4",
+      "size": 1191001,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/a154a14dd2bf2af83448410c2e0dc8f153c35dd4"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Feb-27-22-020510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cb29315eaeaac7d478ca201232fbcc31f3dabff8",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/cb29315eaeaac7d478ca201232fbcc31f3dabff8"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Feb-28-22-194510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f10fe80ff93c920df0d2ab10a8f8d412df424914",
+      "size": 1164842,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/f10fe80ff93c920df0d2ab10a8f8d412df424914"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-11-22-054510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3f656d28d40e0f78d251c9782e5a695286bc684a",
+      "size": 1189363,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/3f656d28d40e0f78d251c9782e5a695286bc684a"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-12-22-232510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ca8a1ee162c5e6f22e8c9552c365a6c2a3e8b6f0",
+      "size": 1190437,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ca8a1ee162c5e6f22e8c9552c365a6c2a3e8b6f0"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-14-22-170510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "38201c19894ca502b5ce16638d7f09905f4e0d44",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/38201c19894ca502b5ce16638d7f09905f4e0d44"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-16-22-104510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "265d48d97333a337e08bf2cf0d3b00035ac658f6",
+      "size": 1188970,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/265d48d97333a337e08bf2cf0d3b00035ac658f6"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-18-22-042510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d70ef219372afb242e202b6136ab5ea1560cb55e",
+      "size": 1189044,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/d70ef219372afb242e202b6136ab5ea1560cb55e"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-19-22-220510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e0274630d17356dd46643ba49220d53ea811fa65",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/e0274630d17356dd46643ba49220d53ea811fa65"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-2-22-132510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "095ba4045c1378e5c87ada0dd6b3d7144818cf12",
+      "size": 1166661,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/095ba4045c1378e5c87ada0dd6b3d7144818cf12"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-21-22-154510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3ca8a92efc17e3e993d7ac2d8e2be70375608329",
+      "size": 1188959,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/3ca8a92efc17e3e993d7ac2d8e2be70375608329"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-23-22-092510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "da9298608337878fe8d0fa2aebd4d65b84dc773b",
+      "size": 1189581,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/da9298608337878fe8d0fa2aebd4d65b84dc773b"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-25-22-030510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7c41f90341db46334e5351a054454e5b9ec987eb",
+      "size": 1189255,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/7c41f90341db46334e5351a054454e5b9ec987eb"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-26-22-204510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ea27e57e7a1800481956fff59f5ad16c77bbd777",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ea27e57e7a1800481956fff59f5ad16c77bbd777"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-28-22-142510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f931a9aeb7ca39fb041ec374f72c23ec772dc14f",
+      "size": 1189796,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/f931a9aeb7ca39fb041ec374f72c23ec772dc14f"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-30-22-080510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e938e333b887b402a43acd008ab85a54d77f680e",
+      "size": 109051,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/e938e333b887b402a43acd008ab85a54d77f680e"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-4-22-070510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "419cc58a7d12bc27ed4ac0f86f7b38b2895f2e5a",
+      "size": 1160111,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/419cc58a7d12bc27ed4ac0f86f7b38b2895f2e5a"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-6-22-004510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1f1fb5e5a0e775bd629469611f844d3196c7d982",
+      "size": 1158951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/1f1fb5e5a0e775bd629469611f844d3196c7d982"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-7-22-182510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "235603430878c82461f42e4dc8e749410e579024",
+      "size": 1160322,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/235603430878c82461f42e4dc8e749410e579024"
+    },
+    {
+      "path": "Referense Sensor Data/T1 Data (30C)/Mar-9-22-120510.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f459b056f675255c48d1874ea24102c46d898971",
+      "size": 1180368,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/f459b056f675255c48d1874ea24102c46d898971"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ff7ae0383eaf59bee530e31bb7f0ad6bc8657489",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/ff7ae0383eaf59bee530e31bb7f0ad6bc8657489"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-10-22-213430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d2838c6983f27fb83b9cac54bc190756fbcc2f6f",
+      "size": 1190968,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/d2838c6983f27fb83b9cac54bc190756fbcc2f6f"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-12-22-151430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "64180896b3e518708fdc3d605597726427eba2e6",
+      "size": 1189919,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/64180896b3e518708fdc3d605597726427eba2e6"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-14-22-085430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8870fe4adef53fb9a497a2fa60e6b9bfabe3857e",
+      "size": 1190155,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/8870fe4adef53fb9a497a2fa60e6b9bfabe3857e"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-16-22-023430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ecea24b1d355615280204c665cf9078f41a1344e",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ecea24b1d355615280204c665cf9078f41a1344e"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-17-22-201430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a091150d20fcf5f1b315d67b8d73503007e6007e",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/a091150d20fcf5f1b315d67b8d73503007e6007e"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-19-22-135430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f5467284477780d9f9be40547a4a357392143a0b",
+      "size": 1191001,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/f5467284477780d9f9be40547a4a357392143a0b"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-21-22-073430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "137940f1915215167e6eca092677cc380ad06da2",
+      "size": 1189745,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/137940f1915215167e6eca092677cc380ad06da2"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-23-22-011430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "65783edaa21bb8b4d22a52ea4daea41b3fa6612a",
+      "size": 1189102,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/65783edaa21bb8b4d22a52ea4daea41b3fa6612a"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-24-22-185430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "28964a578dc98927c83d3739e12346059ae68b8d",
+      "size": 1189951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/28964a578dc98927c83d3739e12346059ae68b8d"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-26-22-123430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "21418e440774f5c81f704f73de8cc812cb748aa8",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/21418e440774f5c81f704f73de8cc812cb748aa8"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-28-22-061430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7c0096889224b1f5983b0edda190c7ed878b2449",
+      "size": 1189764,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/7c0096889224b1f5983b0edda190c7ed878b2449"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-29-22-235430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4bdac0fc14d13da78018eecc88316bdcef19284f",
+      "size": 1176302,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/4bdac0fc14d13da78018eecc88316bdcef19284f"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-7-22-101430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "856b9529b64c86fb4475411d94f766430c456c61",
+      "size": 1111760,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/856b9529b64c86fb4475411d94f766430c456c61"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/Apr-9-22-035430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d54831d10314af71e5eedfe94eebd264bfe0bbe6",
+      "size": 1174480,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/d54831d10314af71e5eedfe94eebd264bfe0bbe6"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/May-1-22-173430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6f48bc08a3017fd8e00b4f340209c9d1c4e45421",
+      "size": 1158951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/6f48bc08a3017fd8e00b4f340209c9d1c4e45421"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/May-10-22-095430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5efab9cdfac41bad95d3ba0ad2c58685aa40e7a6",
+      "size": 740608,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/5efab9cdfac41bad95d3ba0ad2c58685aa40e7a6"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/May-3-22-111430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c1b5060c10a8d8a5d8458e7d983fec19a12891cd",
+      "size": 1021318,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/c1b5060c10a8d8a5d8458e7d983fec19a12891cd"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/May-5-22-045430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "480eb5394b34fea0b25d6511d94027d02dee2588",
+      "size": 1296581,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/480eb5394b34fea0b25d6511d94027d02dee2588"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/May-6-22-223430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dc1ff1ac95da5ff9aadbaba974f898a1b37b0183",
+      "size": 1158951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/dc1ff1ac95da5ff9aadbaba974f898a1b37b0183"
+    },
+    {
+      "path": "Referense Sensor Data/T2 Data (24C)/May-8-22-161430.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "caa7c9fb55806495b87f45fed5f73e1c473f7c6f",
+      "size": 1166080,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/caa7c9fb55806495b87f45fed5f73e1c473f7c6f"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "98ea310a3612cd19e5ed9ca5f2f5fe15d024c96e",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/98ea310a3612cd19e5ed9ca5f2f5fe15d024c96e"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Aug-1-22-094805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "493bd2e2cdf4c906e7675bd689c50cda219e0790",
+      "size": 1158951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/493bd2e2cdf4c906e7675bd689c50cda219e0790"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Aug-10-22-020805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cbb7fa457328ebbc92af87bb38835bce14664a70",
+      "size": 964669,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/cbb7fa457328ebbc92af87bb38835bce14664a70"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Aug-3-22-032805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "45c27f2442d32e648b33d26fa3e3bf4881747c98",
+      "size": 1159329,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/45c27f2442d32e648b33d26fa3e3bf4881747c98"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Aug-4-22-210805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "171dfb17c93345322b080ef63c3b23215e006dc1",
+      "size": 1158980,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/171dfb17c93345322b080ef63c3b23215e006dc1"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Aug-6-22-144805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c7a2dc0f4b8c2860785899a1befc4f533d22499f",
+      "size": 1158951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/c7a2dc0f4b8c2860785899a1befc4f533d22499f"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Aug-8-22-082805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9aa00efaf92c0ed1ab1c1a9dcfb55c2ccc84f1af",
+      "size": 1160812,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/9aa00efaf92c0ed1ab1c1a9dcfb55c2ccc84f1af"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-11-22-134805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "13fc400f2084e01526e2cedc0dea974cbd4bdd99",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/13fc400f2084e01526e2cedc0dea974cbd4bdd99"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-13-22-072805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1c203e4f7dbf8a2fbbe61150b9ca020f8df84fd2",
+      "size": 1190380,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/1c203e4f7dbf8a2fbbe61150b9ca020f8df84fd2"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-15-22-010805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4e7b16e28d2c1c8ab24ba690cfbfadd6e6aaace4",
+      "size": 1189048,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/4e7b16e28d2c1c8ab24ba690cfbfadd6e6aaace4"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-16-22-184805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d5bef0fb87640283cefa27ccf508357f2f48a275",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/d5bef0fb87640283cefa27ccf508357f2f48a275"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-18-22-122805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4a6bd8a5469c0ea5e1448543e2c43edaf27fab11",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/4a6bd8a5469c0ea5e1448543e2c43edaf27fab11"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-20-22-060805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f1556e844c4669e85fdfce55886f5dcf7c4a9d27",
+      "size": 1189033,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/f1556e844c4669e85fdfce55886f5dcf7c4a9d27"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-21-22-234805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "226438f41985ae037bf259b89e435af6f783e3d4",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/226438f41985ae037bf259b89e435af6f783e3d4"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-23-22-172805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "311abaf91aac86bddb2be1122abde5fe5ad245da",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/311abaf91aac86bddb2be1122abde5fe5ad245da"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-25-22-110805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "462456306175b7c7e37c2a3e2e3335d87928e126",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/462456306175b7c7e37c2a3e2e3335d87928e126"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-27-22-044805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "877a5fa038ff10094e6cc2ba06eff38dfbd25ce5",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/877a5fa038ff10094e6cc2ba06eff38dfbd25ce5"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-28-22-222805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cbac31e2723b8348c591129ffcf3828a7041742d",
+      "size": 1189941,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/cbac31e2723b8348c591129ffcf3828a7041742d"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-30-22-160805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1be695e1b3ec6b2271fb4aec94cef46adc220679",
+      "size": 1181899,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/1be695e1b3ec6b2271fb4aec94cef46adc220679"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-8-22-022805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ede430e6ad7920bbb7faa9dc2270808c4705d2fb",
+      "size": 899206,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ede430e6ad7920bbb7faa9dc2270808c4705d2fb"
+    },
+    {
+      "path": "Referense Sensor Data/T3 Data (28C)/Jul-9-22-200805.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ad6cb4c56f59f58e01d590b6715f8a2fe3d10bde",
+      "size": 1187373,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ad6cb4c56f59f58e01d590b6715f8a2fe3d10bde"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4e51a1f11cbc130e9cfc93232c7c4d1cdfd6d540",
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/trees/4e51a1f11cbc130e9cfc93232c7c4d1cdfd6d540"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Aug-25-22-150600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6724bc9079519386a92eff8836315d25d8dfa175",
+      "size": 1278030,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/6724bc9079519386a92eff8836315d25d8dfa175"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Aug-27-22-084600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ba72b941e4363ec5bf289fb92ee007e3f94e3e96",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/ba72b941e4363ec5bf289fb92ee007e3f94e3e96"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Aug-29-22-022600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c567812ff1c0524d0a3b2beb35f5596c56ef81ae",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/c567812ff1c0524d0a3b2beb35f5596c56ef81ae"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Aug-30-22-200600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f6f57d442d05d05deb6264a323520e36db9e2352",
+      "size": 1179846,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/f6f57d442d05d05deb6264a323520e36db9e2352"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-1-22-134600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3d442015c341c550d47131c06008ad5ba732dd6f",
+      "size": 1158951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/3d442015c341c550d47131c06008ad5ba732dd6f"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-10-22-060600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "aabcc686591ef3c851cd7ae1bbc36cd25611fb1c",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/aabcc686591ef3c851cd7ae1bbc36cd25611fb1c"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-11-22-234600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "28ae882d4d7d5ea6a07105020693fd70bc6f75b4",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/28ae882d4d7d5ea6a07105020693fd70bc6f75b4"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-13-22-172600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3ee792f89441be7f2fbd844a6537b23a82e3eadd",
+      "size": 1189679,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/3ee792f89441be7f2fbd844a6537b23a82e3eadd"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-15-22-110600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fcdf107c8c087fe710f3ceb168d0b08c9840e91d",
+      "size": 1189286,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/fcdf107c8c087fe710f3ceb168d0b08c9840e91d"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-17-22-044600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5da449cec46a5631532de1357433b6a3bfccd16b",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/5da449cec46a5631532de1357433b6a3bfccd16b"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-18-22-222600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "372bc4ad42d284338544fd13f1954f7580b0ee91",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/372bc4ad42d284338544fd13f1954f7580b0ee91"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-20-22-160600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4fc3c1eed2b4659bcba7516b7e64f5cc523d6b9d",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/4fc3c1eed2b4659bcba7516b7e64f5cc523d6b9d"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-22-22-094600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "139388928c835085cffba316c043b7502a380edf",
+      "size": 1428590,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/139388928c835085cffba316c043b7502a380edf"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-24-22-032600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7a81b0d902afff1e4643f94f2aee22bfd610cb09",
+      "size": 949311,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/7a81b0d902afff1e4643f94f2aee22bfd610cb09"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-25-22-210600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d02abcaf79e7e5e9b47aac61d37630789394ec1d",
+      "size": 1188951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/d02abcaf79e7e5e9b47aac61d37630789394ec1d"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-27-22-144600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cde028a075b670b3ab13c53dda222c7b79a0e234",
+      "size": 42006,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/cde028a075b670b3ab13c53dda222c7b79a0e234"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-3-22-072600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0ae0931a408f7623778e0c5434cb6da2c5a9d1d2",
+      "size": 1158951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/0ae0931a408f7623778e0c5434cb6da2c5a9d1d2"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-5-22-010600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c64624c0531f3df38ff73afc26e9437424bb3b3f",
+      "size": 1159249,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/c64624c0531f3df38ff73afc26e9437424bb3b3f"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-6-22-184600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "87eee5f0c197a4090e972ed43163b15e260b132b",
+      "size": 1158951,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/87eee5f0c197a4090e972ed43163b15e260b132b"
+    },
+    {
+      "path": "Referense Sensor Data/T4 Data (26C)/Sep-8-22-122600.csv",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "76d3b62f6dfc0fe07b5ac86cef0ae48564c658fb",
+      "size": 1163793,
+      "url": "https://api.github.com/repos/JeanPompeo/Hydroponic_Control_System_Chamber_1/git/blobs/76d3b62f6dfc0fe07b5ac86cef0ae48564c658fb"
+    }
+  ]
+}
