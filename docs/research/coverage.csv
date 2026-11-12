@@ -1,6 +1,6 @@
 path,status,scope,limits,review_date,sha256
 README.md,fully_read,full initial text plus all current authored/reviewed diffs,source inspection; execution separately logged,2026-11-12,a62630c941ff89fe0c4264873842d3f7825834cfd6d4bec5ed92fc278748b6bd
-AGENTS.md,fully_read,full initial text plus all current authored/reviewed diffs,source inspection; execution separately logged,2026-11-12,86323a3f9d89552221b224a864683d91cabfa403e354011e489cc1a9321fc1d6
+AGENTS.md,fully_read,full initial text plus all current authored/reviewed diffs,source inspection; execution separately logged,2026-11-12,c2ae28c40d34336af241912bbda26285708d9c24e94499ec79357c16ae150526
 Makefile,fully_read,all source/markdown cells for notebooks; other text fully read,source inspection; execution separately logged,2026-11-12,5995c7e3e6e16f6a8f8dd42a0aa84638341e89f0d6c00cd69ae0bc38a7cb26a8
 Dockerfile,fully_read,full initial text plus all current authored/reviewed diffs,source inspection; execution separately logged,2026-11-12,8ad327c85bf20807ea2aefb051be2004c1a688172d7c70c9e02c1ae034144e96
 docker-compose.yml,fully_read,all source/markdown cells for notebooks; other text fully read,source inspection; execution separately logged,2026-11-12,6ac5a62d0e2664585a70084786f1f4901582b3eab1e7d46095ad6592de1f465c
@@ -93,3 +93,4 @@ tmp/reference_eligibility_2026-11-12/3-02.24.2022.txt,header_only,only downloade
 tmp/reference_eligibility_2026-11-12/4-03.03.2022.txt,header_only,only downloaded first line of the pinned original data file,third-party source not executed or historically verified; no numerical sensor/reference values inspected,2026-11-12,9e546610a7cae6c8fc4b8077622fdb725882690b44a23a9b1b98e2cb000a6f88
 tmp/reference_eligibility_2026-11-12/5-Mar-2-22-132510.csv,header_only,only downloaded first line of the pinned original data file,third-party source not executed or historically verified; no numerical sensor/reference values inspected,2026-11-12,e42aae255477790feb2f3afa6638dbc9d96af2755f1c37fb2e431cda9ee7a87d
 /tmp/hydro-followup-journals/JCR_2024.iunie2025.pdf,partially_read,target-journal row extraction; rendered pages3 and137 visually checked,full785-page export not read; historical2024JIF edition only,2026-11-12,86f3e2e44be263bcd0e5411b376995d6fe6a1ac3f9b1d9368549ad4870620274
+docs/research/STOPPING_AUDIT.md,fully_read,complete authored stopping and requirement audit reviewed,no new experimental evidence; status is incomplete/blocked assessment,2026-11-12,4aa70df2beaa76494008ede2d375397f2c589215a4a7974e07fcc25d6860381a

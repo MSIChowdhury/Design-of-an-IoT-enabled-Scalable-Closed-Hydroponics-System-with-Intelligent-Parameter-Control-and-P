@@ -1,8 +1,9 @@
 # Research state: 12 November 2026
 
-We are developing a reproducible manuscript package around the deployment-specific
-fault-to-authorization audit. The full user objective remains active. Neither Q1
-publication readiness nor whole-repository inspection has been established.
+The reproducible draft package concerns a deployment-specific fault-to-authorization
+audit. The full user objective remains incomplete. A third consecutive evidence-gap
+audit now supports blocked status; see [the stopping audit](STOPPING_AUDIT.md).
+Neither Q1 publication readiness nor whole-repository inspection is established.
 
 ## Current evidence
 
@@ -153,14 +154,16 @@ The initial goal turn made substantive progress, including executed reproduction
 an informative falsification, revised manuscript, package verification, and
 coverage records. The following turn closed literature/metadata gaps, revised
 the manuscript and screened a new public source without opening its outcomes.
-The remaining reference/physical-evidence contract is now recorded in two
-consecutive goal turns. The full goal remains active;
-it is neither complete nor autonomously paused. Revalidate the worktree and
-any newly supplied independent evidence on continuation. Do not restart or
-retune the frozen methods, reuse the revealed holdout as confirmation, or
-declare the goal achieved merely because the draft builds. If the same genuine
-blocker persists for three consecutive goal turns with no useful authorized
-progress left, mark the goal blocked under the goal-status rules.
+The third consecutive goal turn revalidated the same missing reference/physical
+evidence contract. No new data files or reference/actuator logs appeared; the
+public candidate's pinned commit and all frozen numerical artifacts remained
+unchanged, and no process is running. The [stopping audit](STOPPING_AUDIT.md)
+records why further local replay cannot meet the independent-confirmation
+requirement and supports marking the goal blocked, not complete or paused.
+Resume when the required provenance or independently instrumented evidence is
+available. Revalidate it and start a fresh blocked-audit sequence on resumption.
+Do not restart or retune frozen methods, reuse revealed evaluation as confirmation,
+or declare completion because the draft builds.
 
 The minimum new physical evidence remains independently calibrated pH/EC
 references, observed command/relay or delivered-volume records, and frozen

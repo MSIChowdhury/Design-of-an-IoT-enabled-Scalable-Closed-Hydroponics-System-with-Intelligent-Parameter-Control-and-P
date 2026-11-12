@@ -15,7 +15,7 @@ path,kind,bytes,sha256,status
 3D CAD Files/Tube_2-Full-set-of-1-inch-pipe-21-inch.sldasm,file,19114,8f561f099d9084ee9db984a79bcd87d07eef00aaed234ea242862c9d3e5d23b8,inventoried; content review pending
 3D CAD Files/Tube_6-Full-set-of-1-inch-pipe-21-inch.sldasm,file,19646,bfbb1279ef0170663032a8d156988ca7f513127665e7ca244ee0652e2bf10831,inventoried; content review pending
 3D CAD Files/Tubing for motor to 1 inch pipe.SLDPRT,file,103837,177acbe2bb6957538de4b4e0f7a2619b737a20c966571ff15fb2b2e2b6dc4d77,inventoried; content review pending
-AGENTS.md,file,40827,86323a3f9d89552221b224a864683d91cabfa403e354011e489cc1a9321fc1d6,inventoried; content review pending
+AGENTS.md,file,41419,c2ae28c40d34336af241912bbda26285708d9c24e94499ec79357c16ae150526,inventoried; content review pending
 Automated_Hydroponics_Paper__Measurement_.pdf,file,600269,11be2a212521f592404fb27b5093fecab07929ce1e82f80f5e827e764a745707,inventoried; content review pending
 Code Files/Jupyter Notebooks/Automated Hydroponics System Sensor Data Analysis.ipynb,file,176461,c79cbf0893f8fd440e99c24a364ffe8788e096c5257fef74803d287897460aee,inventoried; content review pending
 Code Files/Jupyter Notebooks/Xgboost Regressor for Automatic Hydroponics System Growth Parameter Control.ipynb,file,20981,2c616c824cff742a8fbed8b93c7965e39c3475e2fba71cab6df4016925d7b471,inventoried; content review pending
@@ -439,15 +439,16 @@ docs/research/INSPECTION_LIMITS.md,file,3733,31fb5e462e3a139a69be9cebd972bbd52a9
 docs/research/JOURNALS.md,file,4300,331950e39ef96f13ea809d94bbf881f10891f244112083f024cdad81c06bc7aa,inventoried; content review pending
 docs/research/LITERATURE_FOLLOWUP_2026-11-12.md,file,8486,52e24960955781f6d639d88d2259e22d30de0576472a485977ac3d27cdb08ced,inventoried; content review pending
 docs/research/REFERENCE_CANDIDATE_SCREEN.md,file,4349,f56f12ec76be4be0e18e54858dc1a025537ef90407f77b040a96d32873292f56,inventoried; content review pending
-docs/research/REQUIREMENTS.csv,file,5358,38541e639f223b2781133baaa701af2b41e3af89ec64fbe3b9d38d20e2281e61,inventoried; content review pending
+docs/research/REQUIREMENTS.csv,file,5431,b5d8678bc68494c478fa8a881c252012459f298407ac5d90e602fe302e2d56b3,inventoried; content review pending
 docs/research/REVIEW_2026-11-12.md,file,19647,0011a4d2d4cdb5bb070eb2596accde1c3fccdce85497fec55616f2c338107585,inventoried; content review pending
-docs/research/STATE.md,file,11268,55ff960d163cd4e5a86a2aabb3da1aaffab83d7f4b9d635515e89b0f526de666,inventoried; content review pending
+docs/research/STATE.md,file,11537,9992ad9ff1e9334ea6903de8be29220df24a3f376589ec631e1ec200051980a8,inventoried; content review pending
+docs/research/STOPPING_AUDIT.md,file,5111,4aa70df2beaa76494008ede2d375397f2c589215a4a7974e07fcc25d6860381a,inventoried; content review pending
 docs/research/agronomic_profile.json,file,1743,a85bb44fb40595fea24781ed72200431dd113dec72e25f6f05ae1237aa6e6e6d,inventoried; content review pending
 docs/research/asset_profile_run.txt,file,509,f3adc2866197396e01e61d7c4c416e46994f96eed0da61f412f03aaa444038ae,inventoried; content review pending
 docs/research/asset_profile_run_02.txt,file,509,cf6d4128d6f8a7c8047d6f7834b0b83e022eaee9dca3b192614c8971cc2d280a,inventoried; content review pending
 docs/research/asset_profile_run_03.txt,file,509,66538de81df5761839a097baa1fdad9bc7a6c333e9e6cd4d557c9ab031946323,inventoried; content review pending
 docs/research/asset_profiles.json,file,151069,cc6ac5f96ec4459913ea81dc16de7908d79532e4b2fa16af3c1957fe2ba24233,inventoried; content review pending
-docs/research/attempts.csv,file,6560,c3eb21736ad91b116903a890b5788d5019fce266a72f19aa8941bf4e920c715b,inventoried; content review pending
+docs/research/attempts.csv,file,7042,3dceff96d1edf6eed341494d562d0acfed0c7fe69ce04b5467c36a0ad3ddf39e,inventoried; content review pending
 docs/research/audit_citation_metadata.json,file,32676,1dfcf613da409b457f4747f9139e3e113f331a8368f438842483b9ed2e3d38ec,inventoried; content review pending
 docs/research/binary_profiles.json,file,370320,07a17caae93926615b092a04f83df59785a2216b72031926661de92ae4ba2034,inventoried; content review pending
 docs/research/citation_corrections.csv,file,1485,340d2a40196359d15d28abacbe02239eaedc02cc12d20a2a0b5c1a58d0027b61,inventoried; content review pending
@@ -455,7 +456,7 @@ docs/research/container_build.txt,file,195944,bcb338b6464d9ff0b04da63103b50ca20d
 docs/research/controlled_lint.txt,file,324,ace0b8086065dcc63f370d88969bacf3d73f4531a39915a5fa5c0ec4d0306aca,inventoried; content review pending
 docs/research/controlled_reproduction.json,file,6931,525bd44cb2e8da4aae1f93c050bf4d3891ce6e5a9d439873c5d8d958bbaf918b,inventoried; content review pending
 docs/research/controlled_reproduction_run.txt,file,2639,03eb00086cf9502bf4ede8516045f1beb5a69a8a51f214a5f0ae3f17e34dde1a,inventoried; content review pending
-docs/research/coverage.csv,file,22696,fb62698fe16fc8416d8f8c5dcff5533c8a233e2be0a2d9dfedbba9639348c6a8,inventoried; content review pending
+docs/research/coverage.csv,file,22943,c2acef0c4eca0a23e16fcc0e2c1202b98bdb1fcdbd697ce2d6f4d50fa7c095be,inventoried; content review pending
 docs/research/crossmark_followup.json,file,3379,3cf235adef13744b699930685949b14ad4d77a978e330ff4686dbc4361109065,inventoried; content review pending
 docs/research/crossref_followup.json,file,32280,97ba6d9af8aa4d19438927f2a021a836f823180398ba569c67cc3c1f39e27158,inventoried; content review pending
 docs/research/environment.json,file,1258,b4142c0f4150a56fd823af2eee36ef584e41a9c8f269a868f7aa6da62fffef2c,inventoried; content review pending
@@ -463,7 +464,7 @@ docs/research/external_reference_candidate.json,file,85475,c75cbae5dff61ab487be8
 docs/research/final_verification.json,file,906,525067b9d75109729e6913f8a8acd9fa365c3519b5430b28a96b725be56516eb,inventoried; content review pending
 docs/research/followup_search_log.csv,file,7294,c200820919bf9e02d372d2345788e0224c2160e6e2ec51257459f8437dd07259,inventoried; content review pending
 docs/research/hypotheses.csv,file,4140,7742eee4afe98529981351464e9bc0a1792ba54c7510f6c5ded0b6f38a597388,inventoried; content review pending
-docs/research/inventory.csv,file,656747,,inventory output; avoids self-reference
+docs/research/inventory.csv,file,662582,,inventory output; avoids self-reference
 docs/research/inventory_final_run.txt,file,617,f41a100a565e3724e3fa2e69abebd8031899d97243ab8919dc3e9137d1fb0cc5,inventoried; content review pending
 docs/research/inventory_summary.json,file,2480,,inventory output; avoids self-reference
 docs/research/journal_followup_verification.json,file,4358,4722548cc516be5285d42c69666dec2e1bebfa5c8d96704fedf333cc29e5e90c,inventoried; content review pending
@@ -477,7 +478,7 @@ docs/research/literature_followup_coverage_2026-11-12.csv,file,5241,14d25f3733c1
 docs/research/literature_followup_queries_2026-11-12.csv,file,2864,ece13c86246b489dc9e1388254b9216c89fc91f1e317d001ddcb00e8d905166d,inventoried; content review pending
 docs/research/literature_followup_update_checks_2026-11-12.json,file,7484,e2d34f88c095a21ed476cfa75dd03b63ab3a19369bcd62ff3bb971d611d4054a,inventoried; content review pending
 docs/research/literature_metadata.json,file,11582,381a911d393c18d7059dd94b79224af9bdee2b9691ca3afdbef078099f34bac1,inventoried; content review pending
-docs/research/package_manifest.json,file,4346,67c77a83c7953cc51f9a53f369644b7966d02d92fd3a6f5a99c79decedb6b367,inventoried; content review pending
+docs/research/package_manifest.json,file,4748,7ba2824fdbaab52e84fcd1aac4b5ca601ca2e6c060e090b2420dac73d747f4b7,inventoried; content review pending
 docs/research/paper_and_pdf_verified.txt,file,26681,92189327027341b77d7b46d2e60a6049f570a73a5ded23f85d2fa2dd052e190e,inventoried; content review pending
 docs/research/paper_build.txt,file,84561,6981c547a8596f7bbf258a9bc9c590f54edb21588e79ba3ff676627edf0f8295,inventoried; content review pending
 docs/research/paper_final.txt,file,27866,27e380e06d7fd1aecac5a054ad9a438b83c712f7e9d7c53e270e2088098e48e3,inventoried; content review pending
@@ -509,6 +510,7 @@ docs/research/sensitivity/pilot_report.json,file,1634,9c1c10cb847c8d59d8fb5d45e5
 docs/research/sensitivity_full_run.txt,file,677,0afa9020bd6e024fdf6d3e1f0eb213f4a2a7bd6f164f43efcbdb0861c46cdff3,inventoried; content review pending
 docs/research/sensitivity_pilot_run.txt,file,676,3e83573308ecc6ee8e71c30c7e8285131f76c3c1265bd481232a627f9fbcb10f,inventoried; content review pending
 docs/research/source_window_sampling.json,file,1576,425bb4bd6319028c2a878320a4eb12c7b35eff9d26dc882eb98cc393a4428afc,inventoried; content review pending
+docs/research/stopping_revalidation.json,file,1533,f3dd89ebfbc67bf12a4fd9bff78bbaced74d62c696da5477e7b6d861fcf99a2e,inventoried; content review pending
 docs/research/test_final.txt,file,2138,9e7515913364c7f64aa22afcd0b6c75b4c4168f4448274ac6fe4c956bf7946cc,inventoried; content review pending
 docs/research/test_run.txt,file,2860,3607a8770cbf46947aa57e51e9f6f7cfac52e6cb14d26c0ae6929cad64d3ccb1,inventoried; content review pending
 docs/research/test_verified.txt,file,2138,b9fd970f76c0e0b68f20b076bf7b46ba13743718f1e3fa31ffc200a07f2b5378,inventoried; content review pending

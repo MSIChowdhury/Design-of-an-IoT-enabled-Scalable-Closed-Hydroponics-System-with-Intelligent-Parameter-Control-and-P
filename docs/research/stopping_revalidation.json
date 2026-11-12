@@ -1,0 +1,31 @@
+{
+  "checked_utc": "2026-11-12T22:36:01.785124+00:00",
+  "git_head": "9c1c817cb99efa8420d1cde254985ab7250e9aff",
+  "origin_main": "9c1c817cb99efa8420d1cde254985ab7250e9aff",
+  "worktree": "?? data/Actual/\n",
+  "optional_evidence_exists": {
+    "actuator_state_log.csv": false,
+    "reference_measurements.csv": false,
+    "water_level_calibration.csv": false
+  },
+  "public_log_unchanged": true,
+  "user_feed_unchanged": true,
+  "frozen_controlled_artifacts_unchanged": true,
+  "package_manifest_matches": true,
+  "reference_candidate_pinned_commit": "9a38f79ff6a4df68720ea2a87f1d458a38be3329",
+  "reference_candidate_current_commit": "9a38f79ff6a4df68720ea2a87f1d458a38be3329",
+  "reference_candidate_last_commit_date": "2023-07-28T14:04:28Z",
+  "reference_candidate_unchanged": true,
+  "candidate_header_excerpts_unchanged": true,
+  "new_data_files_since_inventory": [],
+  "running_docker_containers": "none at revalidation",
+  "inventory_comparison_exclusions": "same credential/cache/version-control rules as script71; initial .git-path false positives excluded; contents not read",
+  "previous_goal_turn_classification": "progress",
+  "this_goal_turn_classification": "no new scientific progress; repeated blocker revalidated",
+  "consecutive_same_blocker_goal_turns": 3,
+  "blocked_audit_passed": true,
+  "scientific_completion": false,
+  "goal_status_transition": "set blocked after verified record commit/push; never mark complete",
+  "full_objective_preserved": true,
+  "recorded_utc": "2026-11-12T22:38:53.804395+00:00"
+}
