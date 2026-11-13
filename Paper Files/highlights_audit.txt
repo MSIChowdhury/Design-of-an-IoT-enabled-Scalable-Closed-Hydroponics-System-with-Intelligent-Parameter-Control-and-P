@@ -1,5 +1,5 @@
-- 30-day hydroponic log audited for how sensor faults become actuator commands.
-- Flagged readings supplied 19% of pH and 10% of CO2 commands in naive replay.
-- Timing sensitivity retained 0-3 flagged pH commands after range and persistence.
-- Only 3-10% of valid temperature readings were in band; the cause is unresolved.
-- Liveness benefits are assessed with coverage costs and simple comparators.
+- Flagged readings supplied 19% of pH and 10% of CO2 commands in naive replay
+- An independent chamber logged nutrient doses requested on zero EC readings
+- Range plus persistence met a pre-registered criterion in only 1 of 8 cells
+- Rejecting readings at a sensor bound removed 69-99% of flagged EC commands
+- A commercial greenhouse showed no out-of-range or bound CO2 readings
