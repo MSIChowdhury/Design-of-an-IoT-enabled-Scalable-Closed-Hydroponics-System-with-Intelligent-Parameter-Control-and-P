@@ -81,3 +81,6 @@ Code Files/Web Interface/*.json
 !results/metrics/livegate_followup/
 !results/metrics/livegate_followup/*.csv
 !results/metrics/livegate_followup/*.json
+
+# Third-party clone used by the multi-site audit; has its own .git, never commit it.
+data/raw/multisite/pompeo/repo/

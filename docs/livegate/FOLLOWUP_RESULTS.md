@@ -25,7 +25,7 @@ The cap in a fixed-repeat setting `mR_pP_aA` permits R identical readings; P and
 
 ## Interpretation
 
-Physical-bound rejection produced 0.000 commands per saturation trial using an injected-fault source, while its useful-command coverage in those trials was 0.073. Thus learned liveness was not unique in suppressing saturated source evidence. The fixed-cap gate and physical-bound gate improved both overall coverage and undesirable-command rate relative to full LiveGate at the selected 0.8 target. Physical-bound rejection also improved both relative to learned liveness-only, but its evaluation coverage (0.798) fell slightly below 0.8. Persistence-only had higher coverage than the fixed-cap gate at the same undesirable rate. These are point-estimate operating comparisons, not statistical superiority claims or evidence of field safety.
+Physical-bound rejection issued 0.000 commands per saturation trial from an injected-fault source, while its useful-command coverage in those trials was 0.073. Thus, learned liveness was not the only rule that suppressed saturated source readings. At the 0.8 target, both the fixed-cap gate and the physical-bound gate improved overall coverage and the undesirable-command rate relative to full LiveGate. Physical-bound rejection also improved both relative to learned liveness only, although its evaluation coverage (0.798) fell slightly below 0.8. In comparison, persistence only reached a higher coverage than the fixed-cap gate at the same undesirable rate. These are point-estimate operating comparisons. They are not statistical superiority claims or evidence of field safety.
 
 ## Learned liveness versus persistence: pooled paired intervals
 

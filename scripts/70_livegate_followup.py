@@ -224,15 +224,16 @@ def report(checks, intervals, by_sensor, cfg):
     bound_source = saturation.loc["physical_bound"].held_fault_evidence_per_trial
     bound_coverage = saturation.loc["physical_bound"].coverage
     interpretation = (
-        f"Physical-bound rejection produced {bound_source:.3f} commands per saturation trial "
-        "using an injected-fault source, while its useful-command coverage in those trials was "
-        f"{bound_coverage:.3f}. Thus learned liveness was not unique in suppressing saturated "
-        "source evidence. The fixed-cap gate and physical-bound gate improved both overall "
-        "coverage and undesirable-command rate relative to full LiveGate at the selected 0.8 "
-        "target. Physical-bound rejection also improved both relative to learned liveness-only, "
-        "but its evaluation coverage (0.798) fell slightly below 0.8. Persistence-only had higher "
-        "coverage than the fixed-cap gate at the same undesirable rate. These are point-estimate "
-        "operating comparisons, not statistical superiority claims or evidence of field safety.")
+        f"Physical-bound rejection issued {bound_source:.3f} commands per saturation trial "
+        "from an injected-fault source, while its useful-command coverage in those trials was "
+        f"{bound_coverage:.3f}. Thus, learned liveness was not the only rule that suppressed "
+        "saturated source readings. At the 0.8 target, both the fixed-cap gate and the "
+        "physical-bound gate improved overall coverage and the undesirable-command rate relative "
+        "to full LiveGate. Physical-bound rejection also improved both relative to learned "
+        "liveness only, although its evaluation coverage (0.798) fell slightly below 0.8. In "
+        "comparison, persistence only reached a higher coverage than the fixed-cap gate at the "
+        "same undesirable rate. These are point-estimate operating comparisons. They are not "
+        "statistical superiority claims or evidence of field safety.")
     text = ("# Post-hoc direct-baseline follow-up results\n\n"
             "Protocol: [FOLLOWUP_PROTOCOL.md](FOLLOWUP_PROTOCOL.md). Run: "
             "`make livegate-followup` (or `python scripts/70_livegate_followup.py` in Docker).\n\n"
@@ -265,20 +266,27 @@ def report(checks, intervals, by_sensor, cfg):
             "per-sensor tuned cap. Physical-bound rejection is a direct saturation comparator. "
             "Claims should be limited to these settings and this retrospective benchmark.\n")
     (ROOT / "docs/livegate/FOLLOWUP_RESULTS.md").write_text(text)
-    tex = [r"\subsection{Post-hoc direct-baseline comparison}",
-           "A separately labelled follow-up reran the original methods and added two direct "
-           "comparators: a fixed repeat cap and rejection at either physical bound. The repeat "
-           "cap accepts the first $R$ identical in-range readings, rejects subsequent repeats, "
-           "and resets after a change, invalid reading, or logging gap. "
-           "$R\\in\\{2,4,8,16,32,64\\}$ is shared across channels; the six-value grid is larger "
-           "than LiveGate's three-value grid. Both comparators use the original timing grid "
-           "and validation-only selection. All original evaluation summary rows and selections "
-           "reproduced, while the frozen artifacts remained unchanged. The follow-up is "
-           "post-hoc because the data and original results had already been examined.",
+    tex = [r"\subsection{Post-hoc Direct-Baseline Comparison}",
+           "After the locked comparison, we recognised that the liveness and saturation results "
+           "had not been compared against the simplest rules aimed at the same faults. This led "
+           "us to rerun the original methods with 2 direct comparators added:\n"
+           "\\begin{enumerate}\n"
+           "\\item \\textbf{Fixed repeat cap:} The gate accepts the first $R$ identical in-range "
+           "readings and rejects later repeats. It resets after a change, an invalid reading or a "
+           "logging gap. The cap $R\\in\\{2,4,8,16,32,64\\}$ is shared across channels, which gives "
+           "it a larger grid than the 3 values of LiveGate.\n"
+           "\\item \\textbf{Physical-bound rejection:} The gate rejects any reading exactly at "
+           "either physical bound of the sensor.\n"
+           "\\end{enumerate}\n"
+           "Both comparators use the original timing grid and are selected on the validation "
+           "windows only. All original evaluation summary rows and selections reproduced, and "
+           "the frozen artifacts remained unchanged. The follow-up is post-hoc, since the data "
+           "and the original results had already been examined. Table~\\ref{tab:followup} lists "
+           "the selected operating points at the 0.8 target.",
            r"\begin{table}[!htbp]\centering\small\setlength{\tabcolsep}{4pt}",
            r"\caption{Post-hoc evaluation at the 0.8 validation coverage target. A dagger marks "
            r"evaluation coverage below 0.8. Fault-source counts attribute each command to its "
-           r"last accepted reading, per trial. These are simulated authorizations.}",
+           r"last accepted reading, per trial. All counts are simulated authorizations.}",
            r"\label{tab:followup}",
            r"\begin{tabular}{p{0.35\linewidth}rrrr}\toprule",
            r"& Coverage & Undesirable & \multicolumn{2}{c}{Fault-source commands}\\",
@@ -295,30 +303,32 @@ def report(checks, intervals, by_sensor, cfg):
         row = table.loc[method]
         value, persistence, age = [float(x[1:]) for x in row.setting.split("_")]
         cap = f"a repeat cap of {int(value)}, " if method == "fixed_run_length" else ""
-        tex.append(f"At target 0.8, validation selected {cap}{persistence:g}~s persistence "
+        tex.append(f"At the 0.8 target, validation selected {cap}{persistence:g}~s persistence "
                    f"and {age:g}~s maximum age for {LABELS[method].lower()}.")
     for kind in ("stuck", "saturation"):
         a = effects[(effects.scenario == kind) & (effects.metric == "fault_interval_per_trial") &
                     (effects.effect == "relative_reduction")].iloc[0]
         b = effects[(effects.scenario == kind) & (effects.metric == "held_fault_per_trial") &
                     (effects.effect == "relative_reduction")].iloc[0]
-        tex.append(f"For {kind}, the learned liveness-only arm's reduction relative to persistence "
-                   f"was {cell_interval(a, True)}\\% for commands during injected-fault samples, "
-                   f"and {cell_interval(b, True)}\\% for commands using injected-fault source readings "
-                   "(paired source-day 95\\% intervals in brackets).")
+        tex.append(f"For {kind} faults, learned liveness only reduced commands relative to "
+                   f"persistence by {cell_interval(a, True)}\\% during injected-fault samples, "
+                   f"and by {cell_interval(b, True)}\\% for commands using injected-fault source "
+                   "readings. The brackets give paired source-day 95\\% intervals.")
         scenario_rows = by_sensor[(by_sensor.target == target) & (by_sensor.sensor == "ALL")
                                   & (by_sensor.scenario == kind)].set_index("method")
         learned_coverage = scenario_rows.loc["livegate_no_forecast"].coverage
         reference_coverage = scenario_rows.loc["persistence_only"].coverage
-        tex.append(f"Useful-command coverage in the same {kind} trials fell from "
+        tex.append(f"However, useful-command coverage in the same {kind} trials fell from "
                    f"{reference_coverage:.3f} with persistence to {learned_coverage:.3f} "
-                   "with learned liveness. These reductions therefore do not establish "
+                   "with learned liveness. As such, these reductions do not establish "
                    "better fault handling at matched useful-command coverage.")
-    tex.append("These two counters answer different questions: a command during a fault interval "
-               "can still use a held clean reading. Neither measures physical execution or damage. "
-               "The estimates use eight evaluation windows on seven source-day clusters; settings "
-               "remain fixed during resampling, and the secondary intervals have no multiplicity "
-               "adjustment. The limited number of days makes generalization uncertain.")
+    tex.append("The 2 counters answer different questions, since a command during a fault "
+               "interval can still use a held clean reading. Neither counter measures physical "
+               "execution or damage. The estimates use 8 evaluation windows on 7 source-day "
+               "clusters. The settings remain fixed during resampling, and the secondary intervals "
+               "have no multiplicity adjustment. Thus, the small number of days makes "
+               "generalization uncertain. Table~\\ref{tab:liveness-sensors} lists the "
+               "sensor-specific effects of learned liveness.")
     tex += [r"\begin{table}[!htbp]\centering\small\setlength{\tabcolsep}{4pt}",
             r"\caption{Sensor-specific learned-liveness effects relative to persistence at target 0.8. "
             r"Differences are method minus persistence. Fault-source differences are commands per "
@@ -335,10 +345,10 @@ def report(checks, intervals, by_sensor, cfg):
         sat = part[(part.metric == "held_fault_per_trial") & (part.scenario == "saturation")].iloc[0]
         tex.append(f"{labels.get(sensor, sensor)} & {cov.estimate:.3f} & {cell_interval(stuck)} & {cell_interval(sat)}" + r"\\")
     tex += [r"\bottomrule\end{tabular}\end{table}",
-            "The learned rule is itself a sensor-specific repeat threshold at fixed $\\varepsilon$. "
-            "Comparison with a global fixed cap does not establish superiority over all "
-            "per-sensor thresholds. Benefits must be weighed against the useful-authorizations "
-            "lost by rejecting legitimate repeated readings."]
+            "At a fixed $\\varepsilon$, the learned rule is itself a sensor-specific repeat "
+            "threshold. Comparison with a global fixed cap therefore does not establish "
+            "superiority over every per-sensor threshold. Any benefit must be weighed against "
+            "the useful authorizations lost by rejecting legitimate repeated readings."]
     (ROOT / "Paper Files/livegate_followup_results.tex").write_text("\n\n".join(tex) + "\n")
     print(view.to_string(index=False), flush=True)
     print(compact.to_string(index=False), flush=True)

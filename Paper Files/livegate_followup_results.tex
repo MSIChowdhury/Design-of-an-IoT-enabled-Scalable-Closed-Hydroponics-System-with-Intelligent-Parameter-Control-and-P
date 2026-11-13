@@ -1,10 +1,15 @@
-\subsection{Post-hoc direct-baseline comparison}
+\subsection{Post-hoc Direct-Baseline Comparison}
 
-A separately labelled follow-up reran the original methods and added two direct comparators: a fixed repeat cap and rejection at either physical bound. The repeat cap accepts the first $R$ identical in-range readings, rejects subsequent repeats, and resets after a change, invalid reading, or logging gap. $R\in\{2,4,8,16,32,64\}$ is shared across channels; the six-value grid is larger than LiveGate's three-value grid. Both comparators use the original timing grid and validation-only selection. All original evaluation summary rows and selections reproduced, while the frozen artifacts remained unchanged. The follow-up is post-hoc because the data and original results had already been examined.
+After the locked comparison, we recognised that the liveness and saturation results had not been compared against the simplest rules aimed at the same faults. This led us to rerun the original methods with 2 direct comparators added:
+\begin{enumerate}
+\item \textbf{Fixed repeat cap:} The gate accepts the first $R$ identical in-range readings and rejects later repeats. It resets after a change, an invalid reading or a logging gap. The cap $R\in\{2,4,8,16,32,64\}$ is shared across channels, which gives it a larger grid than the 3 values of LiveGate.
+\item \textbf{Physical-bound rejection:} The gate rejects any reading exactly at either physical bound of the sensor.
+\end{enumerate}
+Both comparators use the original timing grid and are selected on the validation windows only. All original evaluation summary rows and selections reproduced, and the frozen artifacts remained unchanged. The follow-up is post-hoc, since the data and the original results had already been examined. Table~\ref{tab:followup} lists the selected operating points at the 0.8 target.
 
 \begin{table}[!htbp]\centering\small\setlength{\tabcolsep}{4pt}
 
-\caption{Post-hoc evaluation at the 0.8 validation coverage target. A dagger marks evaluation coverage below 0.8. Fault-source counts attribute each command to its last accepted reading, per trial. These are simulated authorizations.}
+\caption{Post-hoc evaluation at the 0.8 validation coverage target. A dagger marks evaluation coverage below 0.8. Fault-source counts attribute each command to its last accepted reading, per trial. All counts are simulated authorizations.}
 
 \label{tab:followup}
 
@@ -26,21 +31,21 @@ Physical-bound rejection & 0.798$^{\dagger}$ & 0.083 & 0.725 & 0.000\\
 
 \bottomrule\end{tabular}\end{table}
 
-Physical-bound rejection produced 0.000 commands per saturation trial using an injected-fault source, while its useful-command coverage in those trials was 0.073. Thus learned liveness was not unique in suppressing saturated source evidence. The fixed-cap gate and physical-bound gate improved both overall coverage and undesirable-command rate relative to full LiveGate at the selected 0.8 target. Physical-bound rejection also improved both relative to learned liveness-only, but its evaluation coverage (0.798) fell slightly below 0.8. Persistence-only had higher coverage than the fixed-cap gate at the same undesirable rate. These are point-estimate operating comparisons, not statistical superiority claims or evidence of field safety.
+Physical-bound rejection issued 0.000 commands per saturation trial from an injected-fault source, while its useful-command coverage in those trials was 0.073. Thus, learned liveness was not the only rule that suppressed saturated source readings. At the 0.8 target, both the fixed-cap gate and the physical-bound gate improved overall coverage and the undesirable-command rate relative to full LiveGate. Physical-bound rejection also improved both relative to learned liveness only, although its evaluation coverage (0.798) fell slightly below 0.8. In comparison, persistence only reached a higher coverage than the fixed-cap gate at the same undesirable rate. These are point-estimate operating comparisons. They are not statistical superiority claims or evidence of field safety.
 
-At target 0.8, validation selected a repeat cap of 64, 32~s persistence and 64~s maximum age for fixed repeat cap.
+At the 0.8 target, validation selected a repeat cap of 64, 32~s persistence and 64~s maximum age for fixed repeat cap.
 
-At target 0.8, validation selected 32~s persistence and 64~s maximum age for physical-bound rejection.
+At the 0.8 target, validation selected 32~s persistence and 64~s maximum age for physical-bound rejection.
 
-For stuck, the learned liveness-only arm's reduction relative to persistence was 69.0 [54.3, 85.7]\% for commands during injected-fault samples, and 79.3 [71.0, 88.9]\% for commands using injected-fault source readings (paired source-day 95\% intervals in brackets).
+For stuck faults, learned liveness only reduced commands relative to persistence by 69.0 [54.3, 85.7]\% during injected-fault samples, and by 79.3 [71.0, 88.9]\% for commands using injected-fault source readings. The brackets give paired source-day 95\% intervals.
 
-Useful-command coverage in the same stuck trials fell from 0.982 with persistence to 0.273 with learned liveness. These reductions therefore do not establish better fault handling at matched useful-command coverage.
+However, useful-command coverage in the same stuck trials fell from 0.982 with persistence to 0.273 with learned liveness. As such, these reductions do not establish better fault handling at matched useful-command coverage.
 
-For saturation, the learned liveness-only arm's reduction relative to persistence was 30.8 [18.0, 46.2]\% for commands during injected-fault samples, and 30.8 [18.0, 46.2]\% for commands using injected-fault source readings (paired source-day 95\% intervals in brackets).
+For saturation faults, learned liveness only reduced commands relative to persistence by 30.8 [18.0, 46.2]\% during injected-fault samples, and by 30.8 [18.0, 46.2]\% for commands using injected-fault source readings. The brackets give paired source-day 95\% intervals.
 
-Useful-command coverage in the same saturation trials fell from 0.918 with persistence to 0.409 with learned liveness. These reductions therefore do not establish better fault handling at matched useful-command coverage.
+However, useful-command coverage in the same saturation trials fell from 0.918 with persistence to 0.409 with learned liveness. As such, these reductions do not establish better fault handling at matched useful-command coverage.
 
-These two counters answer different questions: a command during a fault interval can still use a held clean reading. Neither measures physical execution or damage. The estimates use eight evaluation windows on seven source-day clusters; settings remain fixed during resampling, and the secondary intervals have no multiplicity adjustment. The limited number of days makes generalization uncertain.
+The 2 counters answer different questions, since a command during a fault interval can still use a held clean reading. Neither counter measures physical execution or damage. The estimates use 8 evaluation windows on 7 source-day clusters. The settings remain fixed during resampling, and the secondary intervals have no multiplicity adjustment. Thus, the small number of days makes generalization uncertain. Table~\ref{tab:liveness-sensors} lists the sensor-specific effects of learned liveness.
 
 \begin{table}[!htbp]\centering\small\setlength{\tabcolsep}{4pt}
 
@@ -64,4 +69,4 @@ CO$_2$ & -0.071 & -0.750 [-1.000, -0.429] & -0.375 [-0.714, 0.000]\\
 
 \bottomrule\end{tabular}\end{table}
 
-The learned rule is itself a sensor-specific repeat threshold at fixed $\varepsilon$. Comparison with a global fixed cap does not establish superiority over all per-sensor thresholds. Benefits must be weighed against the useful-authorizations lost by rejecting legitimate repeated readings.
+At a fixed $\varepsilon$, the learned rule is itself a sensor-specific repeat threshold. Comparison with a global fixed cap therefore does not establish superiority over every per-sensor threshold. Any benefit must be weighed against the useful authorizations lost by rejecting legitimate repeated readings.
